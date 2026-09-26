@@ -1,0 +1,476 @@
+{
+  "source": "https://roadmap.sh/roadmaps/",
+  "reviewed": "2026-09-24",
+  "items": [
+    {
+      "title": "Frontend",
+      "url": "https://roadmap.sh/frontend",
+      "category": "Role based"
+    },
+    {
+      "title": "Backend",
+      "url": "https://roadmap.sh/backend",
+      "category": "Role based"
+    },
+    {
+      "title": "Full Stack",
+      "url": "https://roadmap.sh/full-stack",
+      "category": "Role based"
+    },
+    {
+      "title": "Android",
+      "url": "https://roadmap.sh/android",
+      "category": "Role based"
+    },
+    {
+      "title": "DevOps",
+      "url": "https://roadmap.sh/devops",
+      "category": "Role based"
+    },
+    {
+      "title": "DevSecOps",
+      "url": "https://roadmap.sh/devsecops",
+      "category": "Role based"
+    },
+    {
+      "title": "Data Analyst",
+      "url": "https://roadmap.sh/data-analyst",
+      "category": "Role based"
+    },
+    {
+      "title": "AI Engineer",
+      "url": "https://roadmap.sh/ai-engineer",
+      "category": "Role based"
+    },
+    {
+      "title": "AI and Data Scientist",
+      "url": "https://roadmap.sh/ai-data-scientist",
+      "category": "Role based"
+    },
+    {
+      "title": "Data Engineer",
+      "url": "https://roadmap.sh/data-engineer",
+      "category": "Role based"
+    },
+    {
+      "title": "Machine Learning",
+      "url": "https://roadmap.sh/machine-learning",
+      "category": "Role based"
+    },
+    {
+      "title": "PostgreSQL",
+      "url": "https://roadmap.sh/postgresql-dba",
+      "category": "Role based"
+    },
+    {
+      "title": "iOS",
+      "url": "https://roadmap.sh/ios",
+      "category": "Role based"
+    },
+    {
+      "title": "Blockchain",
+      "url": "https://roadmap.sh/blockchain",
+      "category": "Role based"
+    },
+    {
+      "title": "QA",
+      "url": "https://roadmap.sh/qa",
+      "category": "Role based"
+    },
+    {
+      "title": "Software Architect",
+      "url": "https://roadmap.sh/software-architect",
+      "category": "Role based"
+    },
+    {
+      "title": "API Design",
+      "url": "https://roadmap.sh/api-design",
+      "category": "Role based"
+    },
+    {
+      "title": "Cyber Security",
+      "url": "https://roadmap.sh/cyber-security",
+      "category": "Role based"
+    },
+    {
+      "title": "UX Design",
+      "url": "https://roadmap.sh/ux-design",
+      "category": "Role based"
+    },
+    {
+      "title": "Technical Writer",
+      "url": "https://roadmap.sh/technical-writer",
+      "category": "Role based"
+    },
+    {
+      "title": "Game Developer",
+      "url": "https://roadmap.sh/game-developer",
+      "category": "Role based"
+    },
+    {
+      "title": "Server Side Game Developer",
+      "url": "https://roadmap.sh/server-side-game-developer",
+      "category": "Role based"
+    },
+    {
+      "title": "MLOps",
+      "url": "https://roadmap.sh/mlops",
+      "category": "Role based"
+    },
+    {
+      "title": "Product Manager",
+      "url": "https://roadmap.sh/product-manager",
+      "category": "Role based"
+    },
+    {
+      "title": "Engineering Manager",
+      "url": "https://roadmap.sh/engineering-manager",
+      "category": "Role based"
+    },
+    {
+      "title": "Developer Relations",
+      "url": "https://roadmap.sh/devrel",
+      "category": "Role based"
+    },
+    {
+      "title": "BI Analyst",
+      "url": "https://roadmap.sh/bi-analyst",
+      "category": "Role based"
+    },
+    {
+      "title": "AI Red Teaming",
+      "url": "https://roadmap.sh/ai-red-teaming",
+      "category": "Role based"
+    },
+    {
+      "title": "Network Engineer",
+      "url": "https://roadmap.sh/network-engineer",
+      "category": "Role based"
+    },
+    {
+      "title": "Forward Deployed Engineer",
+      "url": "https://roadmap.sh/forward-deployed-engineer",
+      "category": "Role based"
+    },
+    {
+      "title": "Claude Code",
+      "url": "https://roadmap.sh/claude-code",
+      "category": "Skill based"
+    },
+    {
+      "title": "Python for Data Analysis",
+      "url": "https://roadmap.sh/python-data-analysis",
+      "category": "Skill based"
+    },
+    {
+      "title": "R Programming",
+      "url": "https://roadmap.sh/r-programming",
+      "category": "Skill based"
+    },
+    {
+      "title": "Vibe Coding",
+      "url": "https://roadmap.sh/vibe-coding",
+      "category": "Skill based"
+    },
+    {
+      "title": "Power BI",
+      "url": "https://roadmap.sh/power-bi",
+      "category": "Skill based"
+    },
+    {
+      "title": "LeetCode",
+      "url": "https://roadmap.sh/leetcode",
+      "category": "Skill based"
+    },
+    {
+      "title": "Python",
+      "url": "https://roadmap.sh/python",
+      "category": "Skill based"
+    },
+    {
+      "title": "Computer Science",
+      "url": "https://roadmap.sh/computer-science",
+      "category": "Skill based"
+    },
+    {
+      "title": "SQL",
+      "url": "https://roadmap.sh/sql",
+      "category": "Skill based"
+    },
+    {
+      "title": "OpenClaw",
+      "url": "https://roadmap.sh/openclaw",
+      "category": "Skill based"
+    },
+    {
+      "title": "React",
+      "url": "https://roadmap.sh/react",
+      "category": "Skill based"
+    },
+    {
+      "title": "Vue",
+      "url": "https://roadmap.sh/vue",
+      "category": "Skill based"
+    },
+    {
+      "title": "Angular",
+      "url": "https://roadmap.sh/angular",
+      "category": "Skill based"
+    },
+    {
+      "title": "JavaScript",
+      "url": "https://roadmap.sh/javascript",
+      "category": "Skill based"
+    },
+    {
+      "title": "TypeScript",
+      "url": "https://roadmap.sh/typescript",
+      "category": "Skill based"
+    },
+    {
+      "title": "Node.js",
+      "url": "https://roadmap.sh/nodejs",
+      "category": "Skill based"
+    },
+    {
+      "title": "System Design",
+      "url": "https://roadmap.sh/system-design",
+      "category": "Skill based"
+    },
+    {
+      "title": "Java",
+      "url": "https://roadmap.sh/java",
+      "category": "Skill based"
+    },
+    {
+      "title": "ASP.NET Core",
+      "url": "https://roadmap.sh/aspnet-core",
+      "category": "Skill based"
+    },
+    {
+      "title": "Spring Boot",
+      "url": "https://roadmap.sh/spring-boot",
+      "category": "Skill based"
+    },
+    {
+      "title": "Flutter",
+      "url": "https://roadmap.sh/flutter",
+      "category": "Skill based"
+    },
+    {
+      "title": "C Programming",
+      "url": "https://roadmap.sh/c",
+      "category": "Skill based"
+    },
+    {
+      "title": "C++",
+      "url": "https://roadmap.sh/cpp",
+      "category": "Skill based"
+    },
+    {
+      "title": "Rust",
+      "url": "https://roadmap.sh/rust",
+      "category": "Skill based"
+    },
+    {
+      "title": "Go",
+      "url": "https://roadmap.sh/golang",
+      "category": "Skill based"
+    },
+    {
+      "title": "AI Product Builders",
+      "url": "https://roadmap.sh/ai-product-builder",
+      "category": "Skill based"
+    },
+    {
+      "title": "Design and Architecture",
+      "url": "https://roadmap.sh/software-design-architecture",
+      "category": "Skill based"
+    },
+    {
+      "title": "React Native",
+      "url": "https://roadmap.sh/react-native",
+      "category": "Skill based"
+    },
+    {
+      "title": "Design System",
+      "url": "https://roadmap.sh/design-system",
+      "category": "Skill based"
+    },
+    {
+      "title": "Prompt Engineering",
+      "url": "https://roadmap.sh/prompt-engineering",
+      "category": "Skill based"
+    },
+    {
+      "title": "MongoDB",
+      "url": "https://roadmap.sh/mongodb",
+      "category": "Skill based"
+    },
+    {
+      "title": "Linux",
+      "url": "https://roadmap.sh/linux",
+      "category": "Skill based"
+    },
+    {
+      "title": "Kubernetes",
+      "url": "https://roadmap.sh/kubernetes",
+      "category": "Skill based"
+    },
+    {
+      "title": "Docker",
+      "url": "https://roadmap.sh/docker",
+      "category": "Skill based"
+    },
+    {
+      "title": "AWS",
+      "url": "https://roadmap.sh/aws",
+      "category": "Skill based"
+    },
+    {
+      "title": "Terraform",
+      "url": "https://roadmap.sh/terraform",
+      "category": "Skill based"
+    },
+    {
+      "title": "Data Structures & Algorithms",
+      "url": "https://roadmap.sh/datastructures-and-algorithms",
+      "category": "Skill based"
+    },
+    {
+      "title": "Redis",
+      "url": "https://roadmap.sh/redis",
+      "category": "Skill based"
+    },
+    {
+      "title": "Git and GitHub",
+      "url": "https://roadmap.sh/git-github",
+      "category": "Skill based"
+    },
+    {
+      "title": "PHP",
+      "url": "https://roadmap.sh/php",
+      "category": "Skill based"
+    },
+    {
+      "title": "Cloudflare",
+      "url": "https://roadmap.sh/cloudflare",
+      "category": "Skill based"
+    },
+    {
+      "title": "AI Agents",
+      "url": "https://roadmap.sh/ai-agents",
+      "category": "Skill based"
+    },
+    {
+      "title": "Next.js",
+      "url": "https://roadmap.sh/nextjs",
+      "category": "Skill based"
+    },
+    {
+      "title": "Kotlin",
+      "url": "https://roadmap.sh/kotlin",
+      "category": "Skill based"
+    },
+    {
+      "title": "HTML",
+      "url": "https://roadmap.sh/html",
+      "category": "Skill based"
+    },
+    {
+      "title": "CSS",
+      "url": "https://roadmap.sh/css",
+      "category": "Skill based"
+    },
+    {
+      "title": "Swift & Swift UI",
+      "url": "https://roadmap.sh/swift-ui",
+      "category": "Skill based"
+    },
+    {
+      "title": "Shell / Bash",
+      "url": "https://roadmap.sh/shell-bash",
+      "category": "Skill based"
+    },
+    {
+      "title": "Laravel",
+      "url": "https://roadmap.sh/laravel",
+      "category": "Skill based"
+    },
+    {
+      "title": "Elasticsearch",
+      "url": "https://roadmap.sh/elasticsearch",
+      "category": "Skill based"
+    },
+    {
+      "title": "WordPress",
+      "url": "https://roadmap.sh/wordpress",
+      "category": "Skill based"
+    },
+    {
+      "title": "Django",
+      "url": "https://roadmap.sh/django",
+      "category": "Skill based"
+    },
+    {
+      "title": "Ruby",
+      "url": "https://roadmap.sh/ruby",
+      "category": "Skill based"
+    },
+    {
+      "title": "Ruby on Rails",
+      "url": "https://roadmap.sh/ruby-on-rails",
+      "category": "Skill based"
+    },
+    {
+      "title": "Scala",
+      "url": "https://roadmap.sh/scala",
+      "category": "Skill based"
+    },
+    {
+      "title": "Frontend Beginner",
+      "url": "https://roadmap.sh/frontend-beginner",
+      "category": "Beginner"
+    },
+    {
+      "title": "Backend Beginner",
+      "url": "https://roadmap.sh/backend-beginner",
+      "category": "Beginner"
+    },
+    {
+      "title": "DevOps Beginner",
+      "url": "https://roadmap.sh/devops-beginner",
+      "category": "Beginner"
+    },
+    {
+      "title": "Git and GitHub Beginner",
+      "url": "https://roadmap.sh/git-github-beginner",
+      "category": "Beginner"
+    },
+    {
+      "title": "AWS",
+      "url": "https://roadmap.sh/aws-best-practices",
+      "category": "Best practices"
+    },
+    {
+      "title": "API Security",
+      "url": "https://roadmap.sh/api-security-best-practices",
+      "category": "Best practices"
+    },
+    {
+      "title": "Backend Performance",
+      "url": "https://roadmap.sh/backend-performance-best-practices",
+      "category": "Best practices"
+    },
+    {
+      "title": "Frontend Performance",
+      "url": "https://roadmap.sh/frontend-performance-best-practices",
+      "category": "Best practices"
+    },
+    {
+      "title": "Code Review",
+      "url": "https://roadmap.sh/code-review-best-practices",
+      "category": "Best practices"
+    }
+  ]
+}
