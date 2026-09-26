@@ -1,6 +1,6 @@
 import { readFile, mkdir, writeFile, rm } from 'node:fs/promises';
 
-const [home, about, atlas, diana, development, learning, journal, foundation, youth, techLounge, enigmas, enigmaArticle, enigmaStories, login, roadmaps, sharedCss, music, hero, detail, dianaImage, dianaCardsImage, developmentImage, techLoungeImage, techMacroImage, worker] = await Promise.all([
+const [home, about, atlas, diana, development, learning, journal, foundation, youth, techLounge, enigmas, enigmaArticle, enigmaStories, login, roadmaps, sharedCss, music, hero, detail, dianaImage, dianaCardsImage, developmentImage, techLoungeImage, techMacroImage, politicsImage, lawImage, academyImage, worker] = await Promise.all([
   readFile('src/home.html', 'utf8'),
   readFile('src/about.html', 'utf8'),
   readFile('src/atlas.html', 'utf8'),
@@ -25,13 +25,20 @@ const [home, about, atlas, diana, development, learning, journal, foundation, yo
   readFile('src/assets/development.png'),
   readFile('src/assets/tech-lounge.png'),
   readFile('src/assets/tech-macro.png'),
+  readFile('src/assets/enigmas-politics.png'),
+  readFile('src/assets/enigmas-law.png'),
+  readFile('src/assets/enigmas-academy.png'),
   readFile('src/worker.js', 'utf8'),
 ]);
 const catalog = JSON.parse(roadmaps);
 const stories = JSON.parse(enigmaStories);
-if (!Array.isArray(stories) || stories.length < 3 || new Set(stories.map(story => story.slug)).size !== stories.length || stories.some(story => !/^[a-z0-9-]+$/.test(story.slug))) throw new Error('Invalid Enigmas catalog');
+const sections = ['Politics', 'The Intelligence Desk', 'Law, Power & Institutions', 'Civilization Futures', 'The Reading Room'];
+if (!Array.isArray(stories) || stories.length < 3 || new Set(stories.map(story => story.slug)).size !== stories.length || stories.some(story => !/^[a-z0-9-]+$/.test(story.slug) || !sections.includes(story.section) || !Array.isArray(story.paragraphs) || story.paragraphs.length < 3)) throw new Error('Invalid Enigmas catalog');
 const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
-const storyCards = stories.map((story, index) => `<a class="story-card ${index === 0 ? 'story-lead' : ''}" href="/enigmas/${story.slug}"><img src="${escapeHtml(story.image)}" alt="${escapeHtml(story.alt)}" loading="${index === 0 ? 'eager' : 'lazy'}"><span class="story-meta">${escapeHtml(story.category)} <span>·</span> ${escapeHtml(story.read)}</span><h2>${escapeHtml(story.title)}</h2><p>${escapeHtml(story.dek)}</p><span class="read-link">Read the essay ↗</span></a>`);
+const card = (story, lead = false) => `<a class="story-card ${lead ? 'story-lead' : ''}" href="/enigmas/${story.slug}"><img src="${escapeHtml(story.image)}" alt="${escapeHtml(story.alt)}" loading="${lead ? 'eager' : 'lazy'}"><span class="story-meta">${escapeHtml(story.status)} <span>·</span> ${escapeHtml(story.read)}</span><h3>${escapeHtml(story.title)}</h3><p>${escapeHtml(story.dek)}</p><span class="read-link">Read the essay ↗</span></a>`;
+const sectionIds = {'Politics':'politics','The Intelligence Desk':'intelligence','Law, Power & Institutions':'law','Civilization Futures':'civilization','The Reading Room':'reading-room'};
+const sectionIntro = {'Politics':'The republic in its full light and shadow.','The Intelligence Desk':'How minds and machines reason together.','Law, Power & Institutions':'Rules, evidence, and a path to correction.','Civilization Futures':'Visions held to the discipline of feasibility.','The Reading Room':'The first essays that opened this conversation.'};
+const storySections = sections.map((section, index) => {const group=stories.filter(story=>story.section===section);return `<section class="editorial-section" id="${sectionIds[section]}"><div class="section-top"><div><span class="section-label">0${index+1} / Agentic@Enigmas</span><h2>${escapeHtml(section)}</h2><p>${escapeHtml(sectionIntro[section])}</p></div><ul class="section-index" aria-label="${escapeHtml(section)} stories">${group.map(story=>`<li><a href="/enigmas/${story.slug}">${escapeHtml(story.title)} <span aria-hidden="true">↗</span></a></li>`).join('')}</ul></div><div class="story-grid">${(index===0?group.slice(1):group).map(story=>card(story)).join('')}</div></section>`}).join('');
 const renderedStories = Object.fromEntries(stories.map(story => [story.slug, page(enigmaArticle)
   .replaceAll('/* ARTICLE_TITLE */', escapeHtml(story.title))
   .replaceAll('/* ARTICLE_DEK */', escapeHtml(story.dek))
@@ -64,7 +71,7 @@ const compiled = worker
   .replace('/* FOUNDATION_HTML */ null', JSON.stringify(page(foundation)))
   .replace('/* YOUTH_HTML */ null', JSON.stringify(page(youth)))
   .replace('/* TECH_LOUNGE_HTML */ null', JSON.stringify(page(techLounge)))
-  .replace('/* ENIGMAS_HTML */ null', JSON.stringify(page(enigmas).replace('<!-- LEAD_STORY -->', storyCards[0]).replace('<!-- SECOND_STORY -->', storyCards[1]).replace('<!-- MORE_STORIES -->', storyCards.slice(2).join(''))))
+  .replace('/* ENIGMAS_HTML */ null', JSON.stringify(page(enigmas).replace('<!-- LEAD_STORY -->', card(stories[0], true)).replace('<!-- STORY_SECTIONS -->', storySections)))
   .replace('/* ENIGMA_ARTICLES */ null', JSON.stringify(renderedStories))
   .replace('/* ATLAS_HTML */ null', JSON.stringify(page(atlas)))
   .replace('/* LOGIN_HTML */ null', JSON.stringify(login))
@@ -74,8 +81,11 @@ const compiled = worker
   .replace('/* DIANA_CARDS_IMAGE */ null', JSON.stringify(dianaCardsImage.toString('base64')))
   .replace('/* DEVELOPMENT_IMAGE */ null', JSON.stringify(developmentImage.toString('base64')))
   .replace('/* TECH_LOUNGE_IMAGE */ null', JSON.stringify(techLoungeImage.toString('base64')))
-  .replace('/* TECH_MACRO_IMAGE */ null', JSON.stringify(techMacroImage.toString('base64')));
-if (/\/\* (?:HOME_HTML|ABOUT_HTML|ATLAS_HTML|DIANA_HTML|DEVELOPMENT_HTML|LEARNING_HTML|JOURNAL_HTML|FOUNDATION_HTML|YOUTH_HTML|TECH_LOUNGE_HTML|ENIGMAS_HTML|ENIGMA_ARTICLES|LOGIN_HTML|HERO_IMAGE|DETAIL_IMAGE|DIANA_IMAGE|DIANA_CARDS_IMAGE|DEVELOPMENT_IMAGE|TECH_LOUNGE_IMAGE|TECH_MACRO_IMAGE) \*\//.test(compiled)) throw new Error('Build marker missing');
+  .replace('/* TECH_MACRO_IMAGE */ null', JSON.stringify(techMacroImage.toString('base64')))
+  .replace('/* ENIGMAS_POLITICS_IMAGE */ null', JSON.stringify(politicsImage.toString('base64')))
+  .replace('/* ENIGMAS_LAW_IMAGE */ null', JSON.stringify(lawImage.toString('base64')))
+  .replace('/* ENIGMAS_ACADEMY_IMAGE */ null', JSON.stringify(academyImage.toString('base64')));
+if (/\/\* (?:HOME_HTML|ABOUT_HTML|ATLAS_HTML|DIANA_HTML|DEVELOPMENT_HTML|LEARNING_HTML|JOURNAL_HTML|FOUNDATION_HTML|YOUTH_HTML|TECH_LOUNGE_HTML|ENIGMAS_HTML|ENIGMA_ARTICLES|LOGIN_HTML|HERO_IMAGE|DETAIL_IMAGE|DIANA_IMAGE|DIANA_CARDS_IMAGE|DEVELOPMENT_IMAGE|TECH_LOUNGE_IMAGE|TECH_MACRO_IMAGE|ENIGMAS_POLITICS_IMAGE|ENIGMAS_LAW_IMAGE|ENIGMAS_ACADEMY_IMAGE) \*\//.test(compiled)) throw new Error('Build marker missing');
 await rm('dist', { recursive: true, force: true });
 await mkdir('dist/server', { recursive: true });
 await writeFile('dist/server/index.js', compiled);
