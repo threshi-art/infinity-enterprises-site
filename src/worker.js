@@ -109,7 +109,8 @@ export default {
     if (path === '/media/development.png') return image('development');
     if (path === '/media/tech-lounge.png') return image('tech-lounge');
     if (path === '/media/tech-macro.png') return image('tech-macro');
-    if (!['/', '/about', '/atlas', '/diana', '/development', '/learning', '/journal', '/foundation', '/foundation/youth', '/tech-lounge'].includes(path)) return html('<h1>Page not found</h1>', 404);
-    return html(path === '/' ? homeHtml : path === '/about' ? aboutHtml : path === '/diana' ? dianaHtml : path === '/development' ? developmentHtml : path === '/learning' ? learningHtml : path === '/journal' ? journalHtml : path === '/foundation' ? foundationHtml : path === '/foundation/youth' ? youthHtml : path === '/tech-lounge' ? techLoungeHtml : atlasHtml);
+    if (path === '/diana' || path === '/atlas') return new Response(null, { status: 308, headers: headers({ location: path === '/diana' ? '/about/diana' : '/development/atlas' }) });
+    if (!['/', '/about', '/about/diana', '/development', '/development/atlas', '/learning', '/journal', '/foundation', '/foundation/youth', '/tech-lounge'].includes(path)) return html('<h1>Page not found</h1>', 404);
+    return html(path === '/' ? homeHtml : path === '/about' ? aboutHtml : path === '/about/diana' ? dianaHtml : path === '/development' ? developmentHtml : path === '/learning' ? learningHtml : path === '/journal' ? journalHtml : path === '/foundation' ? foundationHtml : path === '/foundation/youth' ? youthHtml : path === '/tech-lounge' ? techLoungeHtml : atlasHtml);
   },
 };
