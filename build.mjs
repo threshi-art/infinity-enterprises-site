@@ -1,6 +1,6 @@
 import { readFile, mkdir, writeFile, rm } from 'node:fs/promises';
 
-const [home, about, atlas, diana, development, learning, journal, foundation, youth, techLounge, enigmas, enigmaArticle, enigmaStories, login, roadmaps, sharedCss, music, hero, detail, dianaImage, dianaCardsImage, developmentImage, techLoungeImage, techMacroImage, politicsImage, lawImage, academyImage, worker] = await Promise.all([
+const [home, about, atlas, diana, development, learning, journal, foundation, youth, techLounge, enigmas, enigmaArticle, enigmaStories, login, admin, roadmaps, sharedCss, music, hero, detail, dianaImage, dianaCardsImage, developmentImage, techLoungeImage, techMacroImage, politicsImage, lawImage, academyImage, worker] = await Promise.all([
   readFile('src/home.html', 'utf8'),
   readFile('src/about.html', 'utf8'),
   readFile('src/atlas.html', 'utf8'),
@@ -15,6 +15,7 @@ const [home, about, atlas, diana, development, learning, journal, foundation, yo
   readFile('src/enigma-article.html', 'utf8'),
   readFile('src/enigmas.json', 'utf8'),
   readFile('src/login.html', 'utf8'),
+  readFile('src/admin.html', 'utf8'),
   readFile('src/roadmaps.json', 'utf8'),
   readFile('src/site.css', 'utf8'),
   readFile('src/music.js', 'utf8'),
@@ -52,6 +53,7 @@ if (catalog.items.some(item => !item.url.startsWith('https://roadmap.sh/'))) thr
 function page(source) {
   return source
     .replace('/* SHARED_CSS */', sharedCss)
+    .replace('</nav></details>', '<a href="/admin" class="child"><span>10</span>Admin / Employee</a></nav></details>')
     .replace('/* MUSIC_SCRIPT */', music)
     .replaceAll('__HERO_IMAGE__', '/media/hero.png')
     .replaceAll('__DETAIL_IMAGE__', '/media/detail.png')
@@ -75,6 +77,7 @@ const compiled = worker
   .replace('/* ENIGMA_ARTICLES */ null', JSON.stringify(renderedStories))
   .replace('/* ATLAS_HTML */ null', JSON.stringify(page(atlas)))
   .replace('/* LOGIN_HTML */ null', JSON.stringify(login))
+  .replace('/* ADMIN_HTML */ null', JSON.stringify(page(admin)))
   .replace('/* HERO_IMAGE */ null', JSON.stringify(hero.toString('base64')))
   .replace('/* DETAIL_IMAGE */ null', JSON.stringify(detail.toString('base64')))
   .replace('/* DIANA_IMAGE */ null', JSON.stringify(dianaImage.toString('base64')))
@@ -85,7 +88,7 @@ const compiled = worker
   .replace('/* ENIGMAS_POLITICS_IMAGE */ null', JSON.stringify(politicsImage.toString('base64')))
   .replace('/* ENIGMAS_LAW_IMAGE */ null', JSON.stringify(lawImage.toString('base64')))
   .replace('/* ENIGMAS_ACADEMY_IMAGE */ null', JSON.stringify(academyImage.toString('base64')));
-if (/\/\* (?:HOME_HTML|ABOUT_HTML|ATLAS_HTML|DIANA_HTML|DEVELOPMENT_HTML|LEARNING_HTML|JOURNAL_HTML|FOUNDATION_HTML|YOUTH_HTML|TECH_LOUNGE_HTML|ENIGMAS_HTML|ENIGMA_ARTICLES|LOGIN_HTML|HERO_IMAGE|DETAIL_IMAGE|DIANA_IMAGE|DIANA_CARDS_IMAGE|DEVELOPMENT_IMAGE|TECH_LOUNGE_IMAGE|TECH_MACRO_IMAGE|ENIGMAS_POLITICS_IMAGE|ENIGMAS_LAW_IMAGE|ENIGMAS_ACADEMY_IMAGE) \*\//.test(compiled)) throw new Error('Build marker missing');
+if (/\/\* (?:HOME_HTML|ABOUT_HTML|ATLAS_HTML|DIANA_HTML|DEVELOPMENT_HTML|LEARNING_HTML|JOURNAL_HTML|FOUNDATION_HTML|YOUTH_HTML|TECH_LOUNGE_HTML|ENIGMAS_HTML|ENIGMA_ARTICLES|LOGIN_HTML|ADMIN_HTML|HERO_IMAGE|DETAIL_IMAGE|DIANA_IMAGE|DIANA_CARDS_IMAGE|DEVELOPMENT_IMAGE|TECH_LOUNGE_IMAGE|TECH_MACRO_IMAGE|ENIGMAS_POLITICS_IMAGE|ENIGMAS_LAW_IMAGE|ENIGMAS_ACADEMY_IMAGE) \*\//.test(compiled)) throw new Error('Build marker missing');
 await rm('dist', { recursive: true, force: true });
 await mkdir('dist/server', { recursive: true });
 await writeFile('dist/server/index.js', compiled);
