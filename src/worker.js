@@ -18,6 +18,9 @@ const dianaCardsBase64 = /* DIANA_CARDS_IMAGE */ null;
 const developmentBase64 = /* DEVELOPMENT_IMAGE */ null;
 const techLoungeBase64 = /* TECH_LOUNGE_IMAGE */ null;
 const techMacroBase64 = /* TECH_MACRO_IMAGE */ null;
+const politicsBase64 = /* ENIGMAS_POLITICS_IMAGE */ null;
+const lawBase64 = /* ENIGMAS_LAW_IMAGE */ null;
+const academyBase64 = /* ENIGMAS_ACADEMY_IMAGE */ null;
 const encoder = new TextEncoder();
 const cookieName = 'atlas_session';
 const sessionHours = 12;
@@ -25,7 +28,7 @@ const decoded = new Map();
 
 function image(name) {
   if (!decoded.has(name)) {
-    const base64 = name === 'hero' ? heroBase64 : name === 'diana' ? dianaBase64 : name === 'diana-cards' ? dianaCardsBase64 : name === 'development' ? developmentBase64 : name === 'tech-lounge' ? techLoungeBase64 : name === 'tech-macro' ? techMacroBase64 : detailBase64;
+    const base64 = name === 'hero' ? heroBase64 : name === 'diana' ? dianaBase64 : name === 'diana-cards' ? dianaCardsBase64 : name === 'development' ? developmentBase64 : name === 'tech-lounge' ? techLoungeBase64 : name === 'tech-macro' ? techMacroBase64 : name === 'enigmas-politics' ? politicsBase64 : name === 'enigmas-law' ? lawBase64 : name === 'enigmas-academy' ? academyBase64 : detailBase64;
     decoded.set(name, Uint8Array.from(atob(base64), char => char.charCodeAt(0)));
   }
   return new Response(decoded.get(name), { headers: {
@@ -111,6 +114,9 @@ export default {
     if (path === '/media/development.png') return image('development');
     if (path === '/media/tech-lounge.png') return image('tech-lounge');
     if (path === '/media/tech-macro.png') return image('tech-macro');
+    if (path === '/media/enigmas-politics.png') return image('enigmas-politics');
+    if (path === '/media/enigmas-law.png') return image('enigmas-law');
+    if (path === '/media/enigmas-academy.png') return image('enigmas-academy');
     if (path === '/diana' || path === '/atlas') return new Response(null, { status: 308, headers: headers({ location: path === '/diana' ? '/about/diana' : '/development/atlas' }) });
     if (path.startsWith('/enigmas/')) return enigmaArticles[path.slice('/enigmas/'.length)] ? html(enigmaArticles[path.slice('/enigmas/'.length)]) : html('<h1>Page not found</h1>', 404);
     if (!['/', '/about', '/about/diana', '/development', '/development/atlas', '/learning', '/journal', '/foundation', '/foundation/youth', '/tech-lounge', '/enigmas'].includes(path)) return html('<h1>Page not found</h1>', 404);

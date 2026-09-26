@@ -1,5 +1,239 @@
 [
   {
+    "slug": "our-american-story",
+    "section": "Politics",
+    "category": "Politics",
+    "read": "3 min read",
+    "title": "Our American Story: The Good, the Bad, the Evil",
+    "dek": "A country is more than its promises, and more than its failures. The serious work is to face both.",
+    "image": "/media/enigmas-politics.png",
+    "alt": "A civic chamber at dusk with the Capitol visible through the windows",
+    "status": "Editorial essay",
+    "paragraphs": [
+      "America tells a story about liberty, self government, and the chance to build a life. It also carries stories of exclusion, violence, and power used without accountability. Neither account disappears because the other is true. A mature civic memory has to hold the whole record.",
+      "The good is real: institutions can be corrected, people can organize, and rights can grow through sustained argument and action. The bad is real too: a system can promise equal treatment while making access depend on money, geography, or who is believed. The evil begins when people knowingly exploit that gap and call it order.",
+      "This is an editorial lens, not a verdict on every event or every citizen. The practical question is what we do when a principle and a practice diverge. We can ask who bears the cost, what evidence would settle the dispute, who has power to repair the harm, and how the repair will be checked.",
+      "Patriotism without examination becomes performance. Cynicism without a plan becomes surrender. The American story remains open because its people can insist that institutions answer to the ideals they claim to serve."
+    ],
+    "related": null
+  },
+  {
+    "slug": "what-would-reform-cost",
+    "section": "Politics",
+    "category": "Politics",
+    "read": "3 min read",
+    "title": "What would national reform cost?",
+    "dek": "A reform agenda needs a ledger of assumptions before it deserves a victory speech.",
+    "image": "/media/development.png",
+    "alt": "Plans spread across a dark worktable overlooking city lights",
+    "status": "Concept / Costing needed",
+    "paragraphs": [
+      "A national reform blueprint can connect health coverage, fiscal choices, energy resilience, public technology, and accountability. Connecting the subjects is useful because choices in one domain change the costs and benefits in another. It is not yet a costed plan.",
+      "The first serious version would list each proposal, the population affected, the year it starts, the agency responsible, and the range of plausible costs. It would separate startup spending from continuing spending, and federal cost from state, household, and business effects.",
+      "A second ledger would record what could go wrong. A tariff may raise revenue while lifting prices. A new benefit may improve access while requiring new capacity. Energy reserves can strengthen resilience, but land, transmission, storage, and maintenance all have prices.",
+      "The point of a model is not to force one impressive total. It is to reveal the tradeoffs and let competing options be compared under the same assumptions. Until that work exists, the blueprint is a set of proposals worth testing, not a promise that the arithmetic already closes."
+    ],
+    "related": "/development"
+  },
+  {
+    "slug": "power-and-accountability",
+    "section": "Politics",
+    "category": "Politics",
+    "read": "3 min read",
+    "title": "Power, accountability, and the institutions we inherit",
+    "dek": "When authority expands, the path for correction must become clearer too.",
+    "image": "/media/enigmas-law.png",
+    "alt": "A legal research desk lit against a nighttime city",
+    "status": "Editorial framework",
+    "paragraphs": [
+      "Institutions inherit powers built for earlier crises and adapt them to new ones. That history can make authority feel natural even when its use changes. A careful public debate asks what the power authorizes today, what problem it solves, and what happens when it is misused.",
+      "Accountability is more than a promise to investigate later. It needs records, defined decision makers, accessible review, and a remedy that can matter to the person affected. A process that cannot reveal a mistake has little chance of correcting one.",
+      "The same standard should survive a change in who holds office. A shortcut that feels convenient under one administration can become a precedent under the next. That is why rules should be judged against opponents using them, not only allies.",
+      "The strongest institution is not one that never admits error. It is one whose design makes correction possible without requiring a scandal, a heroic insider, or extraordinary luck."
+    ],
+    "related": null
+  },
+  {
+    "slug": "seraphim-human-authority",
+    "section": "The Intelligence Desk",
+    "category": "The Intelligence Desk",
+    "read": "3 min read",
+    "title": "Seraphim and the question of human authority",
+    "dek": "What should an AI platform be permitted to decide, and where must a person remain in command?",
+    "image": "/media/tech-lounge.png",
+    "alt": "A vintage computer glowing in a dark technology lounge",
+    "status": "Active build / Architecture",
+    "paragraphs": [
+      "Seraphim is being developed as a governed AI platform rather than a single clever chat window. The proposed architecture separates a conversational surface, coordination, evidence work, memory, and actions. The most important boundary sits across them all: human authority.",
+      "A system can help gather information, frame alternatives, and produce drafts. Those capabilities do not automatically authorize it to publish a claim, contact another person, or make a consequential choice. Each step needs an explicit scope and an accountable owner.",
+      "The design question is operational. Which actions can proceed with routine review? Which require a fresh decision? What record should explain why a path was chosen? What happens when the evidence changes after the system has spoken?",
+      "Those questions are part of the build, not proof that the platform has solved them. The next convincing demonstration will show a complete workflow with its permissions, evidence, human review, and failure cases visible."
+    ],
+    "related": "/development"
+  },
+  {
+    "slug": "eiram-evidence-uncertainty",
+    "section": "The Intelligence Desk",
+    "category": "The Intelligence Desk",
+    "read": "3 min read",
+    "title": "EiRAM and evidence under uncertainty",
+    "dek": "A research engine should know the difference between a source, an inference, and a hypothesis.",
+    "image": "/media/tech-macro.png",
+    "alt": "A semiconductor wafer in amber and violet light",
+    "status": "Prototype / Research direction",
+    "paragraphs": [
+      "EiRAM is the evidence and analysis engine within the wider Seraphim vision. Its ambition is to make a line of reasoning inspectable: what was observed, what was inferred, what alternatives were considered, and which uncertainties remain.",
+      "A useful workflow would keep source material separate from the model’s interpretation of it. It would record where sources agree, where they conflict, and whether an apparent contradiction comes from dates, definitions, or missing context.",
+      "The engine should also make room for a competing explanation. A favored hypothesis becomes fragile when the process never asks what else could account for the same facts. The countercase need not be equally likely to be worth testing.",
+      "A phase one prototype and architecture work exist. Stronger predictive or operational claims need evaluation against real tasks, documented baselines, and human review. The measure is whether a reader can retrace the reasoning, not whether the output merely sounds decisive."
+    ],
+    "related": "/journal"
+  },
+  {
+    "slug": "noesis-chooses-to-reason",
+    "section": "The Intelligence Desk",
+    "category": "The Intelligence Desk",
+    "read": "3 min read",
+    "title": "NOESIS and how an agent chooses to reason",
+    "dek": "Before an answer, a system must decide what kind of thinking the question requires.",
+    "image": "/media/detail.png",
+    "alt": "Abstract architecture of glass and dark metal in warm light",
+    "status": "Architecture / In development",
+    "paragraphs": [
+      "A request for a calculation, a legal source check, and a reflective conversation should not be handled as though they are the same task. NOESIS is the proposed reasoning selection layer in the Seraphim architecture: it helps decide which method, tools, and checks belong to a question.",
+      "The key is to make that choice visible. A route may call for retrieval, computation, comparison of alternatives, or a question back to the user. If the system chooses poorly, the result can fail even when every sentence is fluent.",
+      "Routing should be tested on cases that look similar but demand different treatment. An ambiguous factual claim may need verification; a values conflict may need clarification; a high consequence action may need human approval.",
+      "This is an architectural direction, not a claim that an autonomous router is fully validated. The next useful artifact would show its decision rules, examples where it gets the choice wrong, and the path by which a person can correct it."
+    ],
+    "related": "/development"
+  },
+  {
+    "slug": "socrates-art-of-why",
+    "section": "The Intelligence Desk",
+    "category": "The Intelligence Desk",
+    "read": "3 min read",
+    "title": "Socrates’ and the art of asking why",
+    "dek": "A reflective interviewer can test assumptions without pretending to read minds.",
+    "image": "/media/enigmas-law.png",
+    "alt": "A research desk with books, notes and a brass lamp",
+    "status": "Reasoning prototype",
+    "paragraphs": [
+      "Socrates’ is a reflective interviewer designed to draw out unspoken assumptions. It asks questions before rushing to a conclusion, inviting a person or another agent to explain how a belief was formed and what would change it.",
+      "The design depends on restraint. Disagreement is not a diagnosis. A political position is not evidence of a psychological defect. The interviewer can examine a claim’s logic while leaving the speaker’s interior life to the speaker.",
+      "Good questions uncover hinges: a fact that needs checking, a definition being used in two ways, or a value that has not been stated. Bad questions can become repetitive, leading, or condescending. Both kinds need to be tested.",
+      "A reusable skill and a bot prompt exist. The next stage is comparative evaluation: which questions improve reasoning, which derail it, and when is silence more useful than another prompt?"
+    ],
+    "related": "/development/atlas"
+  },
+  {
+    "slug": "discovery-with-purpose",
+    "section": "Law, Power & Institutions",
+    "category": "Law, Power & Institutions",
+    "read": "3 min read",
+    "title": "Discovery with a purpose",
+    "dek": "The best request for information begins with the issue it can actually resolve.",
+    "image": "/media/enigmas-law.png",
+    "alt": "Casebooks and notes on an evening legal research desk",
+    "status": "Method note / Academic work",
+    "paragraphs": [
+      "Legal discovery can become a mountain of documents without becoming a clearer case. A stronger method starts with an issue: what fact matters, who may hold the information, and which request is proportionate to obtaining it?",
+      "For a medical record, the question might concern injury and causation. For employment records, it may concern authorization, supervision, or notice. Electronic records add questions about custodians, search terms, preservation, and chain of custody.",
+      "Every request creates obligations and possible objections. Relevance, privacy, burden, privilege, and timing should be considered before the request goes out, not only after an objection arrives. A useful review log connects each item back to the proposition it may support or weaken.",
+      "This is a public method distilled from academic work, not a description of a client matter. The aim is disciplined inquiry: collect what can answer a defined question, preserve context, and explain the limit of what the record proves."
+    ],
+    "related": "/journal"
+  },
+  {
+    "slug": "ai-accountability-across-systems",
+    "section": "Law, Power & Institutions",
+    "category": "Law, Power & Institutions",
+    "read": "3 min read",
+    "title": "AI accountability across systems",
+    "dek": "Who answers for an outcome when data, model, interface, and operator all played a part?",
+    "image": "/media/development.png",
+    "alt": "Plans and glass models on a dark studio table",
+    "status": "Analysis / Design question",
+    "paragraphs": [
+      "An AI result passes through several hands. Someone chooses the task. Someone selects data and tools. A model generates an output. An interface presents it. A person may rely on it. Accountability becomes difficult when each participant points to another layer.",
+      "A workable design names ownership at the decision points. Who can change a prompt or policy? Who monitors failures? Who can suspend a workflow? Who receives a challenge from an affected person, and who has authority to repair the result?",
+      "Logging alone does not answer those questions. A perfect record of a bad process is still a bad process. Review has to be meaningful, with enough context to see what the system did and enough power to change what happens next.",
+      "Different legal rules may apply in different settings, so this essay is a design frame rather than legal advice. The central test is simple: if a person is harmed, can the system identify an accountable human path to explanation and correction?"
+    ],
+    "related": null
+  },
+  {
+    "slug": "test-a-legal-claim",
+    "section": "Law, Power & Institutions",
+    "category": "Law, Power & Institutions",
+    "read": "3 min read",
+    "title": "How to test a legal claim before making it",
+    "dek": "The headline can wait while the rule, facts, and remedy are checked.",
+    "image": "/media/enigmas-law.png",
+    "alt": "A legal desk with open casebooks and written notes",
+    "status": "Research method / Academic work",
+    "paragraphs": [
+      "A legal claim sounds persuasive when it has a dramatic fact. It becomes useful when the relevant jurisdiction, rule, timing, and remedy are clear. Start with the narrow question the court would actually have to decide.",
+      "Then locate primary authority. Read the holding in its factual setting, check whether it remains good law, and ask whether a later case limits it. A quotation stripped from the case’s posture can look stronger than it is.",
+      "Apply the rule to the facts that can be supported. Separate facts in the record from assumptions and facts that still require discovery. State the strongest opposing reading, especially when it changes the outcome.",
+      "Finally ask what relief follows if the claim succeeds and what happens if it fails. This method does not guarantee an answer, but it makes an argument accountable to the law and the evidence rather than to its own rhetoric."
+    ],
+    "related": "/journal"
+  },
+  {
+    "slug": "aegis-awaiting-proof",
+    "section": "Civilization Futures",
+    "category": "Civilization Futures",
+    "read": "3 min read",
+    "title": "AEGIS as a concept awaiting proof",
+    "dek": "A systems architecture should be judged by what it can demonstrate, not what its name evokes.",
+    "image": "/media/tech-macro.png",
+    "alt": "Glowing silicon and circuitry in violet and amber",
+    "status": "Concept / Validation pending",
+    "paragraphs": [
+      "AEGIS is presently a concept package in systems design. An architecture baseline can be valuable: it puts components, interfaces, and intended behavior into a form that others can challenge. It is still a proposal until its claims meet evidence.",
+      "A responsible next step would define one narrow use case, its input conditions, success criteria, failure modes, and a baseline for comparison. This is where attractive diagrams face the discipline of a repeatable test.",
+      "Predictive performance and product behavior remain unproven. The site should not imply that a system is operational simply because its design has a name and a coherent picture.",
+      "The interesting question is which small demonstration would most efficiently reveal whether the concept has substance. Architecture earns trust one measured behavior at a time."
+    ],
+    "related": "/development"
+  },
+  {
+    "slug": "foundation-research-vision",
+    "section": "Civilization Futures",
+    "category": "Civilization Futures",
+    "read": "3 min read",
+    "title": "The Infinity Foundation’s research vision",
+    "dek": "Law, intelligent systems, and civilization studies belong in a conversation about public purpose.",
+    "image": "/media/enigmas-academy.png",
+    "alt": "A contemporary academic campus at dusk",
+    "status": "Concept / In formation",
+    "paragraphs": [
+      "The Infinity Foundation is a developing vision for research and education across law, artificial intelligence, and civilization studies. Its proposed youth work asks how care, opportunity, and rigorous learning might be connected rather than left in separate institutions.",
+      "The research agenda begins with questions, not programs that already exist. How should emerging technology be governed? What do societies teach the next generation about institutions and evidence? What forms of educational support can be evaluated rather than merely admired?",
+      "A charitable mission needs more than a compelling statement. Legal formation, independent governance, safeguarding, educational design, funding, and partners would all have to be established before a program could responsibly operate.",
+      "The proposed 501(c)(3) structure is an intention, not an IRS determination. The foundation is not presented here as an operating charity or as accepting donations. The purpose of this note is to make the vision and its unfinished work legible."
+    ],
+    "related": "/foundation"
+  },
+  {
+    "slug": "pacific-royal-academy-design",
+    "section": "Civilization Futures",
+    "category": "Civilization Futures",
+    "read": "3 min read",
+    "title": "Pacific Royal Academy as an educational design proposal",
+    "dek": "A bold campus vision must be tested against staffing, student welfare, and a real financial model.",
+    "image": "/media/enigmas-academy.png",
+    "alt": "Library and campus courtyard illuminated at blue hour",
+    "status": "Concept / Feasibility needed",
+    "paragraphs": [
+      "Pacific Royal Academy is a proposed STEM and arts boarding and day school, described in a design brief as a large campus with small classes, laboratories, arts and athletics facilities, and several ways for students to live and learn. It is a concept, not an operating school.",
+      "The brief pairs academic ambition with admissions, safety, boarding, counseling, and campus culture. Those elements cannot be evaluated separately. A small class cap implies a staffing model; boarding implies round the clock duty of care; a secure campus still needs proportional policies and an affirming student experience.",
+      "The proposed endowment and annual revenue figures are planning assumptions that require independent feasibility work. Capital costs, staffing counts, compensation, financial aid, operating reserves, legal duties, and governance would need a reconciled model before any claim of sustainability.",
+      "The right next artifact is not another grand rendering. It is a transparent model with enrollment scenarios, staffing ratios, safeguarding rules, and an educational case that can be challenged by experienced school leaders and the families it hopes to serve."
+    ],
+    "related": "/foundation/youth"
+  },
+  {
     "slug": "the-evidence-threshold",
     "category": "AI / Judgment",
     "read": "5 min read",
@@ -13,7 +247,9 @@
       "A useful agent should show the chain in layers. First, name the observation. Next, state the inference. Then expose the assumption that connects them. Finally, identify the missing observation most likely to reverse the conclusion. The format is simple, but it makes certainty expensive in exactly the right way.",
       "The hardest habit is to resist filling silence. If the source cannot settle a question, the system should say so plainly and offer a way to test it. This is not a failure of intelligence. It is the discipline that lets intelligence remain trustworthy when the stakes rise.",
       "Our editorial rule is modest: strong claims carry their own receipts; speculative claims wear their uncertainty where a reader can see it. A mind that can distinguish those two modes is more useful than one that always has the last word."
-    ]
+    ],
+    "section": "The Reading Room",
+    "status": "Original essay"
   },
   {
     "slug": "the-machine-that-asks-why",
@@ -29,7 +265,9 @@
       "That posture also has a boundary. An agent should not psychoanalyze disagreement or treat a person's conviction as evidence of a defect. It can test the structure of a claim without pretending to know the interior of the person making it. The distinction matters especially when the discussion is political, personal, or emotionally charged.",
       "Good questions create a path forward. They distinguish a fact to verify from a value to discuss, and a tradeoff to choose from an uncertainty to reduce. They leave the human with better control of the decision rather than a performance of machine authority.",
       "Perhaps the deepest use of an agent is not speed. Perhaps it is the brief, deliberate pause that prevents a confident wrong turn."
-    ]
+    ],
+    "section": "The Reading Room",
+    "status": "Original essay"
   },
   {
     "slug": "civilization-of-interfaces",
@@ -45,7 +283,9 @@
       "Systems thinking therefore needs two scales at once. The wide view maps incentives, dependencies, and resources. The close view follows one person through a complete journey and asks where the promise breaks. Neither scale can substitute for the other.",
       "The designer's task is not to make complexity vanish by hiding it. It is to place complexity where it can be handled, make decisions traceable, and give people a clear path when the normal path fails. That is as relevant to public technology as it is to AI, aviation, law, or education.",
       "A civilization is judged by the experiences its systems produce. Its most revealing architecture may be the quiet route between a person's question and an accountable answer."
-    ]
+    ],
+    "section": "The Reading Room",
+    "status": "Original essay"
   },
   {
     "slug": "when-the-model-says-i-dont-know",
@@ -61,6 +301,8 @@
       "A trustworthy response names the type of uncertainty and narrows it. 'I cannot verify this claim from the available material' is more useful than a vague hedge. So is 'the result depends on these two assumptions.' Both invite a targeted check instead of leaving the reader to guess what went wrong.",
       "The goal is not endless caution. Decisions still need to be made. The goal is calibrated action: move confidently where the evidence is strong, investigate where the gap is material, and mark a provisional choice as provisional.",
       "The phrase 'I don't know' can be the beginning of a better inquiry. In the right hands, it is not an ending at all."
-    ]
+    ],
+    "section": "The Reading Room",
+    "status": "Original essay"
   }
 ]
