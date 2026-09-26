@@ -1,6 +1,6 @@
 import { readFile, mkdir, writeFile, rm } from 'node:fs/promises';
 
-const [home, about, atlas, diana, development, learning, journal, foundation, youth, login, roadmaps, sharedCss, music, hero, detail, dianaImage, dianaCardsImage, developmentImage, worker] = await Promise.all([
+const [home, about, atlas, diana, development, learning, journal, foundation, youth, techLounge, login, roadmaps, sharedCss, music, hero, detail, dianaImage, dianaCardsImage, developmentImage, techLoungeImage, techMacroImage, worker] = await Promise.all([
   readFile('src/home.html', 'utf8'),
   readFile('src/about.html', 'utf8'),
   readFile('src/atlas.html', 'utf8'),
@@ -10,6 +10,7 @@ const [home, about, atlas, diana, development, learning, journal, foundation, yo
   readFile('src/journal.html', 'utf8'),
   readFile('src/foundation.html', 'utf8'),
   readFile('src/youth.html', 'utf8'),
+  readFile('src/tech-lounge.html', 'utf8'),
   readFile('src/login.html', 'utf8'),
   readFile('src/roadmaps.json', 'utf8'),
   readFile('src/site.css', 'utf8'),
@@ -19,6 +20,8 @@ const [home, about, atlas, diana, development, learning, journal, foundation, yo
   readFile('src/assets/diana.png'),
   readFile('src/assets/diana-cards.png'),
   readFile('src/assets/development.png'),
+  readFile('src/assets/tech-lounge.png'),
+  readFile('src/assets/tech-macro.png'),
   readFile('src/worker.js', 'utf8'),
 ]);
 const catalog = JSON.parse(roadmaps);
@@ -32,7 +35,9 @@ function page(source) {
     .replaceAll('__DETAIL_IMAGE__', '/media/detail.png')
     .replaceAll('__DIANA_IMAGE__', '/media/diana.png')
     .replaceAll('__DIANA_CARDS__', '/media/diana-cards.png')
-    .replaceAll('__DEVELOPMENT_IMAGE__', '/media/development.png');
+    .replaceAll('__DEVELOPMENT_IMAGE__', '/media/development.png')
+    .replaceAll('__TECH_LOUNGE_IMAGE__', '/media/tech-lounge.png')
+    .replaceAll('__TECH_MACRO_IMAGE__', '/media/tech-macro.png');
 }
 const compiled = worker
   .replace('/* HOME_HTML */ null', JSON.stringify(page(home)))
@@ -43,14 +48,17 @@ const compiled = worker
   .replace('/* JOURNAL_HTML */ null', JSON.stringify(page(journal)))
   .replace('/* FOUNDATION_HTML */ null', JSON.stringify(page(foundation)))
   .replace('/* YOUTH_HTML */ null', JSON.stringify(page(youth)))
+  .replace('/* TECH_LOUNGE_HTML */ null', JSON.stringify(page(techLounge)))
   .replace('/* ATLAS_HTML */ null', JSON.stringify(page(atlas)))
   .replace('/* LOGIN_HTML */ null', JSON.stringify(login))
   .replace('/* HERO_IMAGE */ null', JSON.stringify(hero.toString('base64')))
   .replace('/* DETAIL_IMAGE */ null', JSON.stringify(detail.toString('base64')))
   .replace('/* DIANA_IMAGE */ null', JSON.stringify(dianaImage.toString('base64')))
   .replace('/* DIANA_CARDS_IMAGE */ null', JSON.stringify(dianaCardsImage.toString('base64')))
-  .replace('/* DEVELOPMENT_IMAGE */ null', JSON.stringify(developmentImage.toString('base64')));
-if (/\/\* (?:HOME_HTML|ABOUT_HTML|ATLAS_HTML|DIANA_HTML|DEVELOPMENT_HTML|LEARNING_HTML|JOURNAL_HTML|FOUNDATION_HTML|YOUTH_HTML|LOGIN_HTML|HERO_IMAGE|DETAIL_IMAGE|DIANA_IMAGE|DIANA_CARDS_IMAGE|DEVELOPMENT_IMAGE) \*\//.test(compiled)) throw new Error('Build marker missing');
+  .replace('/* DEVELOPMENT_IMAGE */ null', JSON.stringify(developmentImage.toString('base64')))
+  .replace('/* TECH_LOUNGE_IMAGE */ null', JSON.stringify(techLoungeImage.toString('base64')))
+  .replace('/* TECH_MACRO_IMAGE */ null', JSON.stringify(techMacroImage.toString('base64')));
+if (/\/\* (?:HOME_HTML|ABOUT_HTML|ATLAS_HTML|DIANA_HTML|DEVELOPMENT_HTML|LEARNING_HTML|JOURNAL_HTML|FOUNDATION_HTML|YOUTH_HTML|TECH_LOUNGE_HTML|LOGIN_HTML|HERO_IMAGE|DETAIL_IMAGE|DIANA_IMAGE|DIANA_CARDS_IMAGE|DEVELOPMENT_IMAGE|TECH_LOUNGE_IMAGE|TECH_MACRO_IMAGE) \*\//.test(compiled)) throw new Error('Build marker missing');
 await rm('dist', { recursive: true, force: true });
 await mkdir('dist/server', { recursive: true });
 await writeFile('dist/server/index.js', compiled);
