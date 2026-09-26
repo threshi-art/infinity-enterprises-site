@@ -6,7 +6,7 @@ Live Site: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/
 
 ## Pages
 
-Home, About, Project Atlas, In Development, Research Journal, Learning Center, The Infinity Foundation, Helping Youth, and For Diana.
+Home, About, Project Atlas, In Development, Research Journal, Learning Center, The Infinity Foundation, Helping Youth, For Diana, and Tech@Lounge.
 
 ## Build
 
