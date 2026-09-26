@@ -1,0 +1,66 @@
+[
+  {
+    "slug": "the-evidence-threshold",
+    "category": "AI / Judgment",
+    "read": "5 min read",
+    "title": "The evidence threshold",
+    "dek": "An intelligent system can sound certain long before it has earned the right to be.",
+    "image": "/media/development.png",
+    "alt": "Plans and models spread across a dark studio overlooking city lights",
+    "paragraphs": [
+      "A convincing answer is not the same thing as a justified answer. Language models are exceptionally good at producing a sentence that feels complete. The work begins when we ask what supports it, what would change it, and how much confidence the evidence can actually bear.",
+      "Think of a claim as crossing a threshold. Below it sits a plausible interpretation. Above it sits a position that can survive inspection. The threshold changes with consequence: a recommendation for a book needs little; a claim about a person, a medical choice, or a public policy needs a much stronger chain of support.",
+      "A useful agent should show the chain in layers. First, name the observation. Next, state the inference. Then expose the assumption that connects them. Finally, identify the missing observation most likely to reverse the conclusion. The format is simple, but it makes certainty expensive in exactly the right way.",
+      "The hardest habit is to resist filling silence. If the source cannot settle a question, the system should say so plainly and offer a way to test it. This is not a failure of intelligence. It is the discipline that lets intelligence remain trustworthy when the stakes rise.",
+      "Our editorial rule is modest: strong claims carry their own receipts; speculative claims wear their uncertainty where a reader can see it. A mind that can distinguish those two modes is more useful than one that always has the last word."
+    ]
+  },
+  {
+    "slug": "the-machine-that-asks-why",
+    "category": "Agency / Reasoning",
+    "read": "4 min read",
+    "title": "The machine that asks why",
+    "dek": "The most useful agent in the room may be the one that slows the room down.",
+    "image": "/media/tech-lounge.png",
+    "alt": "A vintage computer glowing green in a dark technology lounge",
+    "paragraphs": [
+      "A system built to answer every question will eventually answer questions that should have been examined first. What is the user trying to achieve? Which facts are known? Which constraints belong to the task, and which are merely assumptions dressed as constraints?",
+      "A reflective agent has a different job. It listens for the hidden hinge in a decision and asks a question that makes the hinge visible. It does not need to be adversarial. A careful 'what would change your mind?' can reveal more than a page of fluent objections.",
+      "That posture also has a boundary. An agent should not psychoanalyze disagreement or treat a person's conviction as evidence of a defect. It can test the structure of a claim without pretending to know the interior of the person making it. The distinction matters especially when the discussion is political, personal, or emotionally charged.",
+      "Good questions create a path forward. They distinguish a fact to verify from a value to discuss, and a tradeoff to choose from an uncertainty to reduce. They leave the human with better control of the decision rather than a performance of machine authority.",
+      "Perhaps the deepest use of an agent is not speed. Perhaps it is the brief, deliberate pause that prevents a confident wrong turn."
+    ]
+  },
+  {
+    "slug": "civilization-of-interfaces",
+    "category": "Systems / Society",
+    "read": "5 min read",
+    "title": "A civilization of interfaces",
+    "dek": "Every grand system eventually meets a form, a handoff, and a human waiting for an answer.",
+    "image": "/media/detail.png",
+    "alt": "A sculptural meeting of glass, dark metal, and warm light",
+    "paragraphs": [
+      "We tend to describe civilization in monuments: laws, institutions, infrastructure, technologies. Yet a person usually encounters it through an interface. A clinic appointment. An application. A school entrance. A request for help that must travel through several hands before someone can act.",
+      "An interface reveals what a system values. If a rule is impossible to understand, the burden moves to the person least equipped to carry it. If responsibility disappears between departments, a well designed policy can still fail at the exact point where it becomes real.",
+      "Systems thinking therefore needs two scales at once. The wide view maps incentives, dependencies, and resources. The close view follows one person through a complete journey and asks where the promise breaks. Neither scale can substitute for the other.",
+      "The designer's task is not to make complexity vanish by hiding it. It is to place complexity where it can be handled, make decisions traceable, and give people a clear path when the normal path fails. That is as relevant to public technology as it is to AI, aviation, law, or education.",
+      "A civilization is judged by the experiences its systems produce. Its most revealing architecture may be the quiet route between a person's question and an accountable answer."
+    ]
+  },
+  {
+    "slug": "when-the-model-says-i-dont-know",
+    "category": "Intelligence / Trust",
+    "read": "4 min read",
+    "title": "When the model says 'I don't know'",
+    "dek": "The sentence that can protect a decision from a beautifully written mistake.",
+    "image": "/media/tech-macro.png",
+    "alt": "A glowing semiconductor wafer in amber and violet light",
+    "paragraphs": [
+      "Uncertainty is often treated as a flaw in an answer. In consequential work, it is frequently the most useful part. It tells us where a conclusion can fail, what evidence is still missing, and whether a decision is ready to travel outside the room.",
+      "There are several different kinds of not knowing. The information may exist but be unavailable. Sources may disagree. The question may have no single answer because it turns on values. Or a system may lack the ability to check its own calculation. Each case calls for a different next step.",
+      "A trustworthy response names the type of uncertainty and narrows it. 'I cannot verify this claim from the available material' is more useful than a vague hedge. So is 'the result depends on these two assumptions.' Both invite a targeted check instead of leaving the reader to guess what went wrong.",
+      "The goal is not endless caution. Decisions still need to be made. The goal is calibrated action: move confidently where the evidence is strong, investigate where the gap is material, and mark a provisional choice as provisional.",
+      "The phrase 'I don't know' can be the beginning of a better inquiry. In the right hands, it is not an ending at all."
+    ]
+  }
+]

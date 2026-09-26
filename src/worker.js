@@ -8,6 +8,8 @@ const journalHtml = /* JOURNAL_HTML */ null;
 const foundationHtml = /* FOUNDATION_HTML */ null;
 const youthHtml = /* YOUTH_HTML */ null;
 const techLoungeHtml = /* TECH_LOUNGE_HTML */ null;
+const enigmasHtml = /* ENIGMAS_HTML */ null;
+const enigmaArticles = /* ENIGMA_ARTICLES */ null;
 const loginTemplate = /* LOGIN_HTML */ null;
 const heroBase64 = /* HERO_IMAGE */ null;
 const detailBase64 = /* DETAIL_IMAGE */ null;
@@ -110,7 +112,8 @@ export default {
     if (path === '/media/tech-lounge.png') return image('tech-lounge');
     if (path === '/media/tech-macro.png') return image('tech-macro');
     if (path === '/diana' || path === '/atlas') return new Response(null, { status: 308, headers: headers({ location: path === '/diana' ? '/about/diana' : '/development/atlas' }) });
-    if (!['/', '/about', '/about/diana', '/development', '/development/atlas', '/learning', '/journal', '/foundation', '/foundation/youth', '/tech-lounge'].includes(path)) return html('<h1>Page not found</h1>', 404);
-    return html(path === '/' ? homeHtml : path === '/about' ? aboutHtml : path === '/about/diana' ? dianaHtml : path === '/development' ? developmentHtml : path === '/learning' ? learningHtml : path === '/journal' ? journalHtml : path === '/foundation' ? foundationHtml : path === '/foundation/youth' ? youthHtml : path === '/tech-lounge' ? techLoungeHtml : atlasHtml);
+    if (path.startsWith('/enigmas/')) return enigmaArticles[path.slice('/enigmas/'.length)] ? html(enigmaArticles[path.slice('/enigmas/'.length)]) : html('<h1>Page not found</h1>', 404);
+    if (!['/', '/about', '/about/diana', '/development', '/development/atlas', '/learning', '/journal', '/foundation', '/foundation/youth', '/tech-lounge', '/enigmas'].includes(path)) return html('<h1>Page not found</h1>', 404);
+    return html(path === '/' ? homeHtml : path === '/about' ? aboutHtml : path === '/about/diana' ? dianaHtml : path === '/development' ? developmentHtml : path === '/learning' ? learningHtml : path === '/journal' ? journalHtml : path === '/foundation' ? foundationHtml : path === '/foundation/youth' ? youthHtml : path === '/tech-lounge' ? techLoungeHtml : path === '/enigmas' ? enigmasHtml : atlasHtml);
   },
 };
