@@ -11,6 +11,7 @@ const techLoungeHtml = /* TECH_LOUNGE_HTML */ null;
 const enigmasHtml = /* ENIGMAS_HTML */ null;
 const enigmaArticles = /* ENIGMA_ARTICLES */ null;
 const loginTemplate = /* LOGIN_HTML */ null;
+const adminHtml = /* ADMIN_HTML */ null;
 const heroBase64 = /* HERO_IMAGE */ null;
 const detailBase64 = /* DETAIL_IMAGE */ null;
 const dianaBase64 = /* DIANA_IMAGE */ null;
@@ -22,7 +23,7 @@ const politicsBase64 = /* ENIGMAS_POLITICS_IMAGE */ null;
 const lawBase64 = /* ENIGMAS_LAW_IMAGE */ null;
 const academyBase64 = /* ENIGMAS_ACADEMY_IMAGE */ null;
 const encoder = new TextEncoder();
-const cookieName = 'atlas_session';
+const cookieName = 'infinity_staff_session';
 const sessionHours = 12;
 const decoded = new Map();
 
@@ -69,7 +70,7 @@ async function signature(secret, payload) {
 }
 
 function sessionCookie(request) {
-  const match = request.headers.get('cookie')?.match(/(?:^|;\s*)atlas_session=([^;]+)/);
+  const match = request.headers.get('cookie')?.match(/(?:^|;\s*)infinity_staff_session=([^;]+)/);
   return match?.[1] ?? '';
 }
 
@@ -86,29 +87,29 @@ async function authenticated(request, env) {
 
 export default {
   async fetch(request, env) {
-    if (!env.PIN_CODE || !env.SESSION_SECRET) return html('<h1>Site setup is incomplete</h1>', 503);
     const url = new URL(request.url);
     const path = url.pathname;
+    const adminPath = path === '/admin' || path === '/admin/unlock' || path === '/admin/lock';
+    if (adminPath && (!env.PIN_CODE || !env.SESSION_SECRET)) return html('<h1>Staff area is unavailable</h1>', 503);
     if (request.method === 'GET' && path === '/media/hero.png') return image('hero');
     if (request.method === 'GET' && path === '/media/detail.png') return image('detail');
-    if (request.method === 'POST' && path === '/unlock') {
+    if (request.method === 'POST' && path === '/admin/unlock') {
       if (request.headers.get('origin') && request.headers.get('origin') !== url.origin) return html('Invalid request', 403);
       if (!request.headers.get('content-type')?.startsWith('application/x-www-form-urlencoded')) return html('Invalid request', 400);
       const body = await request.text();
       if (body.length > 100) return html('Invalid request', 400);
       const pin = new URLSearchParams(body).get('pin') ?? '';
-      if (pin !== env.PIN_CODE && pin !== env.GUEST_PIN_CODE) return html(login('That PIN is incorrect. Try again.'), 401);
+      if (pin !== env.PIN_CODE) return html(login('That PIN is incorrect. Try again.'), 401);
       const expiry = String(Date.now() + sessionHours * 3600000);
       const nonce = Array.from(crypto.getRandomValues(new Uint8Array(16)), byte => byte.toString(16).padStart(2, '0')).join('');
       const mac = await signature(env.SESSION_SECRET, `${expiry}.${nonce}`);
-      return new Response(null, { status: 303, headers: headers({ location: '/', 'set-cookie': `${cookieName}=${expiry}.${nonce}.${mac}; Path=/; HttpOnly; Secure; SameSite=Strict` }) });
+      return new Response(null, { status: 303, headers: headers({ location: '/admin', 'set-cookie': `${cookieName}=${expiry}.${nonce}.${mac}; Path=/admin; HttpOnly; Secure; SameSite=Strict` }) });
     }
-    if (request.method === 'POST' && path === '/lock') {
-      return new Response(null, { status: 303, headers: headers({ location: '/', 'set-cookie': `${cookieName}=; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=0` }) });
+    if (request.method === 'POST' && path === '/admin/lock') {
+      return new Response(null, { status: 303, headers: headers({ location: '/admin', 'set-cookie': `${cookieName}=; Path=/admin; HttpOnly; Secure; SameSite=Strict; Max-Age=0` }) });
     }
     if (request.method !== 'GET' && request.method !== 'HEAD') return html('Method not allowed', 405);
-    const unlocked = await authenticated(request, env);
-    if (!unlocked) return html(login());
+    if (path === '/admin') return await authenticated(request, env) ? html(adminHtml) : html(login());
     if (path === '/media/diana.png') return image('diana');
     if (path === '/media/diana-cards.png') return image('diana-cards');
     if (path === '/media/development.png') return image('development');
