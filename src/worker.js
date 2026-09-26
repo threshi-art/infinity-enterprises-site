@@ -7,12 +7,15 @@ const learningHtml = /* LEARNING_HTML */ null;
 const journalHtml = /* JOURNAL_HTML */ null;
 const foundationHtml = /* FOUNDATION_HTML */ null;
 const youthHtml = /* YOUTH_HTML */ null;
+const techLoungeHtml = /* TECH_LOUNGE_HTML */ null;
 const loginTemplate = /* LOGIN_HTML */ null;
 const heroBase64 = /* HERO_IMAGE */ null;
 const detailBase64 = /* DETAIL_IMAGE */ null;
 const dianaBase64 = /* DIANA_IMAGE */ null;
 const dianaCardsBase64 = /* DIANA_CARDS_IMAGE */ null;
 const developmentBase64 = /* DEVELOPMENT_IMAGE */ null;
+const techLoungeBase64 = /* TECH_LOUNGE_IMAGE */ null;
+const techMacroBase64 = /* TECH_MACRO_IMAGE */ null;
 const encoder = new TextEncoder();
 const cookieName = 'atlas_session';
 const sessionHours = 12;
@@ -20,7 +23,7 @@ const decoded = new Map();
 
 function image(name) {
   if (!decoded.has(name)) {
-    const base64 = name === 'hero' ? heroBase64 : name === 'diana' ? dianaBase64 : name === 'diana-cards' ? dianaCardsBase64 : name === 'development' ? developmentBase64 : detailBase64;
+    const base64 = name === 'hero' ? heroBase64 : name === 'diana' ? dianaBase64 : name === 'diana-cards' ? dianaCardsBase64 : name === 'development' ? developmentBase64 : name === 'tech-lounge' ? techLoungeBase64 : name === 'tech-macro' ? techMacroBase64 : detailBase64;
     decoded.set(name, Uint8Array.from(atob(base64), char => char.charCodeAt(0)));
   }
   return new Response(decoded.get(name), { headers: {
@@ -104,7 +107,9 @@ export default {
     if (path === '/media/diana.png') return image('diana');
     if (path === '/media/diana-cards.png') return image('diana-cards');
     if (path === '/media/development.png') return image('development');
-    if (!['/', '/about', '/atlas', '/diana', '/development', '/learning', '/journal', '/foundation', '/foundation/youth'].includes(path)) return html('<h1>Page not found</h1>', 404);
-    return html(path === '/' ? homeHtml : path === '/about' ? aboutHtml : path === '/diana' ? dianaHtml : path === '/development' ? developmentHtml : path === '/learning' ? learningHtml : path === '/journal' ? journalHtml : path === '/foundation' ? foundationHtml : path === '/foundation/youth' ? youthHtml : atlasHtml);
+    if (path === '/media/tech-lounge.png') return image('tech-lounge');
+    if (path === '/media/tech-macro.png') return image('tech-macro');
+    if (!['/', '/about', '/atlas', '/diana', '/development', '/learning', '/journal', '/foundation', '/foundation/youth', '/tech-lounge'].includes(path)) return html('<h1>Page not found</h1>', 404);
+    return html(path === '/' ? homeHtml : path === '/about' ? aboutHtml : path === '/diana' ? dianaHtml : path === '/development' ? developmentHtml : path === '/learning' ? learningHtml : path === '/journal' ? journalHtml : path === '/foundation' ? foundationHtml : path === '/foundation/youth' ? youthHtml : path === '/tech-lounge' ? techLoungeHtml : atlasHtml);
   },
 };
