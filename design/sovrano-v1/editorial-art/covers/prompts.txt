@@ -1,0 +1,9 @@
+Common suffix for every prompt: "16:9 widescreen, photorealistic, cinematic lighting. One third of the frame (left or right) is calm and empty negative space for a title. No people, no faces, no logos, no brand names, no readable text or lettering, no numbers, no charts, no recognizable real landmarks or places."
+1 daily-desk: Newsroom at night, deep navy #0c1a2a with rust #c77c55 accents; empty editor's desk, brass desk lamp, stacked newspapers with blurred unreadable columns, window onto a rainy generic city at night.
+2 mercati: Private bank vault room, bottle-green lacquer walls #0f2620, brass safe-deposit doors, green leather ledger with fountain pen, a few plain unmarked gold bars, warm lamplight.
+3 moda: Bright gallery-quiet atelier, cream plaster walls #f4f1eb, oxblood silk gown #8a2a30 on slim black dress form, shears and ribbon on linen table, soft daylight.
+4 viaggi: Drone view of a sleek generic white motor yacht in a secluded cove, sea-glass turquoise water to deep teal #0f5663, pale sand, pine cliffs, bright late-morning sun; no hull markings.
+5 tavola: Close warm trattoria table on natural linen #f6ece0, terracotta #8a3f1c bowl of fresh pasta with basil, crusty bread, olive oil cruet, unlabeled red wine carafe, golden window light, shallow depth of field.
+6 sport: Empty moody boxing and martial-arts gym, charcoal #181b20, trophy-gold #e2b93b rim light on a hanging heavy bag (plain, no markings), chalk dust in the air.
+7 tech: Dark graphite #0d0f13 desk, closed generic laptop with no logo, mechanical keyboard with blank keycaps, cool signal-blue #7fcfe0 edge light, minimal, no screen content.
+8 reading-room: Lamplit private library, ink-dark plum #17121b, open leather-bound book with blurred unreadable pages, reading glasses, brass lamp, walls of books with plain spines, warm champagne light #cdb27a.
