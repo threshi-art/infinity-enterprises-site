@@ -27,6 +27,8 @@ The current mirror records Sites version 28 at source commit `c520fc35270cbadeed
 
 Do not commit runtime secrets, subscriber addresses, contact messages, or proprietary engineering documents. The staff area uses hosted secrets. The Foundation and Pacific Royal Academy are concept briefs, not claims of an operating institution. Music playback links to its original YouTube publisher.
 
+Read [AGENTS.md](AGENTS.md) before editing the shared site clone. For simultaneous work, each assistant uses a separate checkout and task branch, then coordinates through GitHub pull requests.
+
 ## OneDrive copy on Chris's Windows PC
 
 The Git clone is in `C:\Users\cyber\OneDrive\Documents\Projects\Websites\Infinity\infinity-enterprises-site`. The parent `Infinity` folder also contains other files, which stay untouched.
