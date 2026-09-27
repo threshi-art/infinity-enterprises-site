@@ -1,0 +1,25 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+*{margin:0;box-sizing:border-box}
+body{width:1080px;height:1920px;overflow:hidden;background:#3a1015;color:#f3ece0;font-family:'Bodoni Moda',serif;position:relative}
+.top{position:absolute;top:300px;left:0;right:0;text-align:center}
+.s{font-size:140px;font-weight:500;line-height:.9;white-space:nowrap}
+.g{font-size:74px;font-style:italic;color:#cdb27a;letter-spacing:.08em;margin-top:22px}
+.rule{height:1px;background:#cdb27a;margin:48px auto 0}
+.img{position:absolute;top:760px;left:150px;width:780px;height:820px;background:url(hero.png) center/cover}
+.frame{position:absolute;top:746px;left:136px;width:808px;height:848px;border:1px solid rgba(205,178,122,.6)}
+.foot{position:absolute;bottom:170px;left:0;right:0;text-align:center;font:600 22px/1 'Inter Tight',sans-serif;letter-spacing:.5em;padding-left:.5em;text-transform:uppercase;color:#cdb27a}
+.mock{position:absolute;right:18px;bottom:14px;font:600 13px/1 'Inter Tight',sans-serif;letter-spacing:.2em;color:rgba(255,255,255,.25);text-transform:uppercase}
+</style></head><body>
+<div class="top"><div class="s" id="s">SOVRANO</div><div class="g" id="g">Infinitum</div><div class="rule" id="r"></div></div>
+<div class="frame" id="f"></div><div class="img" id="i"></div>
+<div class="foot" id="ft">Issue 01 · Autumn 2026</div><div class="mock">Draft mockup</div>
+<script>
+const t=parseFloat(location.hash.slice(1)||0);
+const c=(a,b)=>Math.min(1,Math.max(0,(t-a)/(b-a)));const e=x=>1-Math.pow(1-x,3);
+const s=e(c(0.3,2.2));S=document.getElementById('s').style;S.opacity=s;S.letterSpacing=(0.3-0.18*s)+'em';S.paddingLeft=(0.3-0.18*s)+'em';
+const g=e(c(1.9,2.9));G=document.getElementById('g').style;G.opacity=g;G.transform='translateY('+(20*(1-g))+'px)';
+document.getElementById('r').style.width=(120*e(c(2.4,3.3)))+'px';
+const im=e(c(3.0,4.6));I=document.getElementById('i').style;I.clipPath='inset('+(50*(1-im))+'% 0 '+(50*(1-im))+'% 0)';I.backgroundSize=(100+8*(1-c(3.0,8)))+'%';
+document.getElementById('f').style.opacity=e(c(4.2,5.0));
+document.getElementById('ft').style.opacity=e(c(5.0,5.8));
+</script></body></html>
