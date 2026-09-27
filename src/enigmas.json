@@ -6,7 +6,7 @@
     "read": "3 min read",
     "title": "Our American Story: The Good, the Bad, the Evil",
     "dek": "A country is more than its promises, and more than its failures. The serious work is to face both.",
-    "image": "/media/enigmas-politics.png",
+    "image": "/media/enigmas-politics.jpg",
     "alt": "A civic chamber at dusk with the Capitol visible through the windows",
     "status": "Editorial essay",
     "paragraphs": [
@@ -24,7 +24,7 @@
     "read": "3 min read",
     "title": "What would national reform cost?",
     "dek": "A reform agenda needs a ledger of assumptions before it deserves a victory speech.",
-    "image": "/media/development.png",
+    "image": "/media/development.jpg",
     "alt": "Plans spread across a dark worktable overlooking city lights",
     "status": "Concept / Costing needed",
     "paragraphs": [
@@ -42,7 +42,7 @@
     "read": "3 min read",
     "title": "Power, accountability, and the institutions we inherit",
     "dek": "When authority expands, the path for correction must become clearer too.",
-    "image": "/media/enigmas-law.png",
+    "image": "/media/enigmas-law.jpg",
     "alt": "A legal research desk lit against a nighttime city",
     "status": "Editorial framework",
     "paragraphs": [
@@ -60,8 +60,8 @@
     "read": "3 min read",
     "title": "Seraphim and the question of human authority",
     "dek": "What should an AI platform be permitted to decide, and where must a person remain in command?",
-    "image": "/media/tech-lounge.png",
-    "alt": "A vintage computer glowing in a dark technology lounge",
+    "image": "/media/tech-lounge.jpg",
+    "alt": "A vintage computer and instrumentation in a dark technology lounge",
     "status": "Active build / Architecture",
     "paragraphs": [
       "Seraphim is being developed as a governed AI platform rather than a single clever chat window. The proposed architecture separates a conversational surface, coordination, evidence work, memory, and actions. The most important boundary sits across them all: human authority.",
@@ -78,8 +78,8 @@
     "read": "3 min read",
     "title": "EiRAM and evidence under uncertainty",
     "dek": "A research engine should know the difference between a source, an inference, and a hypothesis.",
-    "image": "/media/tech-macro.png",
-    "alt": "A semiconductor wafer in amber and violet light",
+    "image": "/media/research.jpg",
+    "alt": "A research room with archival papers and a brass armillary sphere",
     "status": "Prototype / Research direction",
     "paragraphs": [
       "EiRAM is the evidence and analysis engine within the wider Seraphim vision. Its ambition is to make a line of reasoning inspectable: what was observed, what was inferred, what alternatives were considered, and which uncertainties remain.",
@@ -96,8 +96,8 @@
     "read": "3 min read",
     "title": "NOESIS and how an agent chooses to reason",
     "dek": "Before an answer, a system must decide what kind of thinking the question requires.",
-    "image": "/media/detail.png",
-    "alt": "Abstract architecture of glass and dark metal in warm light",
+    "image": "/media/learning.jpg",
+    "alt": "A luminous corridor of learning and scientific diagrams",
     "status": "Architecture / In development",
     "paragraphs": [
       "A request for a calculation, a legal source check, and a reflective conversation should not be handled as though they are the same task. NOESIS is the proposed reasoning selection layer in the Seraphim architecture: it helps decide which method, tools, and checks belong to a question.",
@@ -114,8 +114,8 @@
     "read": "3 min read",
     "title": "Socrates’ and the art of asking why",
     "dek": "A reflective interviewer can test assumptions without pretending to read minds.",
-    "image": "/media/enigmas-law.png",
-    "alt": "A research desk with books, notes and a brass lamp",
+    "image": "/media/research.jpg",
+    "alt": "A contemplative research room with books and scientific instruments",
     "status": "Reasoning prototype",
     "paragraphs": [
       "Socrates’ is a reflective interviewer designed to draw out unspoken assumptions. It asks questions before rushing to a conclusion, inviting a person or another agent to explain how a belief was formed and what would change it.",
@@ -132,7 +132,7 @@
     "read": "3 min read",
     "title": "Discovery with a purpose",
     "dek": "The best request for information begins with the issue it can actually resolve.",
-    "image": "/media/enigmas-law.png",
+    "image": "/media/enigmas-law.jpg",
     "alt": "Casebooks and notes on an evening legal research desk",
     "status": "Method note / Academic work",
     "paragraphs": [
@@ -150,7 +150,7 @@
     "read": "3 min read",
     "title": "AI accountability across systems",
     "dek": "Who answers for an outcome when data, model, interface, and operator all played a part?",
-    "image": "/media/development.png",
+    "image": "/media/development.jpg",
     "alt": "Plans and glass models on a dark studio table",
     "status": "Analysis / Design question",
     "paragraphs": [
@@ -168,7 +168,7 @@
     "read": "3 min read",
     "title": "How to test a legal claim before making it",
     "dek": "The headline can wait while the rule, facts, and remedy are checked.",
-    "image": "/media/enigmas-law.png",
+    "image": "/media/enigmas-law.jpg",
     "alt": "A legal desk with open casebooks and written notes",
     "status": "Research method / Academic work",
     "paragraphs": [
@@ -186,7 +186,7 @@
     "read": "3 min read",
     "title": "AEGIS as a concept awaiting proof",
     "dek": "A systems architecture should be judged by what it can demonstrate, not what its name evokes.",
-    "image": "/media/tech-macro.png",
+    "image": "/media/tech-macro.jpg",
     "alt": "Glowing silicon and circuitry in violet and amber",
     "status": "Concept / Validation pending",
     "paragraphs": [
@@ -204,8 +204,8 @@
     "read": "3 min read",
     "title": "The Infinity Foundation’s research vision",
     "dek": "Law, intelligent systems, and civilization studies belong in a conversation about public purpose.",
-    "image": "/media/enigmas-academy.png",
-    "alt": "A contemporary academic campus at dusk",
+    "image": "/media/foundation.jpg",
+    "alt": "Illustrative civic learning campus at blue hour",
     "status": "Concept / In formation",
     "paragraphs": [
       "The Infinity Foundation is a developing vision for research and education across law, artificial intelligence, and civilization studies. Its proposed youth work asks how care, opportunity, and rigorous learning might be connected rather than left in separate institutions.",
@@ -222,8 +222,8 @@
     "read": "3 min read",
     "title": "Pacific Royal Academy as an educational design proposal",
     "dek": "A bold campus vision must be tested against staffing, student welfare, and a real financial model.",
-    "image": "/media/enigmas-academy.png",
-    "alt": "Library and campus courtyard illuminated at blue hour",
+    "image": "/media/youth.jpg",
+    "alt": "Illustrative studio with art, books, and a robotics prototype",
     "status": "Concept / Feasibility needed",
     "paragraphs": [
       "Pacific Royal Academy is a proposed STEM and arts boarding and day school, described in a design brief as a large campus with small classes, laboratories, arts and athletics facilities, and several ways for students to live and learn. It is a concept, not an operating school.",
@@ -239,8 +239,8 @@
     "read": "5 min read",
     "title": "The evidence threshold",
     "dek": "An intelligent system can sound certain long before it has earned the right to be.",
-    "image": "/media/development.png",
-    "alt": "Plans and models spread across a dark studio overlooking city lights",
+    "image": "/media/research.jpg",
+    "alt": "A research table with notes and instruments in a dark reading room",
     "paragraphs": [
       "A convincing answer is not the same thing as a justified answer. Language models are exceptionally good at producing a sentence that feels complete. The work begins when we ask what supports it, what would change it, and how much confidence the evidence can actually bear.",
       "Think of a claim as crossing a threshold. Below it sits a plausible interpretation. Above it sits a position that can survive inspection. The threshold changes with consequence: a recommendation for a book needs little; a claim about a person, a medical choice, or a public policy needs a much stronger chain of support.",
@@ -257,7 +257,7 @@
     "read": "4 min read",
     "title": "The machine that asks why",
     "dek": "The most useful agent in the room may be the one that slows the room down.",
-    "image": "/media/tech-lounge.png",
+    "image": "/media/tech-lounge.jpg",
     "alt": "A vintage computer glowing green in a dark technology lounge",
     "paragraphs": [
       "A system built to answer every question will eventually answer questions that should have been examined first. What is the user trying to achieve? Which facts are known? Which constraints belong to the task, and which are merely assumptions dressed as constraints?",
@@ -275,7 +275,7 @@
     "read": "5 min read",
     "title": "A civilization of interfaces",
     "dek": "Every grand system eventually meets a form, a handoff, and a human waiting for an answer.",
-    "image": "/media/detail.png",
+    "image": "/media/detail.jpg",
     "alt": "A sculptural meeting of glass, dark metal, and warm light",
     "paragraphs": [
       "We tend to describe civilization in monuments: laws, institutions, infrastructure, technologies. Yet a person usually encounters it through an interface. A clinic appointment. An application. A school entrance. A request for help that must travel through several hands before someone can act.",
@@ -293,8 +293,8 @@
     "read": "4 min read",
     "title": "When the model says 'I don't know'",
     "dek": "The sentence that can protect a decision from a beautifully written mistake.",
-    "image": "/media/tech-macro.png",
-    "alt": "A glowing semiconductor wafer in amber and violet light",
+    "image": "/media/learning.jpg",
+    "alt": "A quiet learning corridor with illuminated research displays",
     "paragraphs": [
       "Uncertainty is often treated as a flaw in an answer. In consequential work, it is frequently the most useful part. It tells us where a conclusion can fail, what evidence is still missing, and whether a decision is ready to travel outside the room.",
       "There are several different kinds of not knowing. The information may exist but be unavailable. Sources may disagree. The question may have no single answer because it turns on values. Or a system may lack the ability to check its own calculation. Each case calls for a different next step.",

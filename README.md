@@ -1,23 +1,28 @@
 # Infinity Enterprises website
 
-Source for the Infinity Enterprises portfolio and the Infinity Foundation concept pages.
+Source mirror for the [Infinity Enterprises publication](https://infinity-enterprises.infinity-ent-8507.chatgpt.site/).
 
-Live Site: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/
+## What is here
 
-## Pages
+The magazine covers The Daily Desk, Culture, MOTOR, Food, The Practice, Music, the Academic Journal, Tech Lounge, In Development, and About. Agentic@Enigmas is the Daily Desk opinion room. The existing Ether Room, FORM, MOTOR gallery, original essays, project ledger, learning paths, and foundation concepts remain in the source.
 
-Home, About, Project Atlas, In Development, Research Journal, Learning Center, The Infinity Foundation, Helping Youth, For Diana, and Tech@Lounge.
+The site runs as a Cloudflare compatible Worker on ChatGPT Sites. Its HTML, CSS, JavaScript, editorial catalogs, and original JPG illustrations are in `src/`. Older PNG assets remain in the repository for continuity, while the current build uses JPG assets. `build.mjs` generates `dist/server/index.js`. That generated file is deliberately not mirrored.
 
-## Build
+## Work locally
 
-Requires Node.js 20 or newer. Run `npm run build`. The build writes the Cloudflare Worker bundle to `dist/server/index.js` from the source pages and local image assets. The 94 item roadmap catalog is stored in `src/roadmaps.json`.
+Use Node.js 20 or newer:
 
-## Access and configuration
+```sh
+npm ci
+npm run build
+```
 
-The deployed Site uses runtime environment variables `PIN_CODE`, `GUEST_PIN_CODE`, and `SESSION_SECRET`. Their values are intentionally absent from this repository. The public Site remains behind its existing PIN screen. Do not commit PINs, session secrets, or user data.
+The result is `dist/server/index.js`, a Worker exporting `fetch(request, env)`. The database schema is in `db/schema.ts`, with generated migration files in `drizzle/`. Keep applied migrations immutable and create a new migration after schema changes.
 
-## Source and deployment
+## Publishing and collaboration
 
-This repository is a curated mirror of the ChatGPT Sites source. The live Site continues to deploy through its existing Sites source repository. A GitHub push alone does not publish the website. After editing and publishing the Site, mirror the source changes here and update `site-source.json` with the exact Sites source commit and version. Omit generated `dist/` output from GitHub; a clean build regenerates it.
+This GitHub repository is a source mirror for Cursor and other collaborators. A GitHub commit alone does not publish the live Site. The live version is built and deployed through the ChatGPT Sites project identified in `.openai/hosting.json`. After publishing, bring the resulting source changes and exact Sites version back to this mirror.
 
-The Foundation and Pacific Royal Academy pages are concept briefs. They do not assert completed charitable recognition, an operating school, or open residential care.
+The current mirror records Sites version 28 at source commit `c520fc35270cbadeeda7e5ab051266fa23927e93` in `site-source.json`.
+
+Do not commit runtime secrets, subscriber addresses, contact messages, or proprietary engineering documents. The staff area uses hosted secrets. The Foundation and Pacific Royal Academy are concept briefs, not claims of an operating institution. Music playback links to its original YouTube publisher.

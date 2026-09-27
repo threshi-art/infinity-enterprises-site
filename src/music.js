@@ -2,6 +2,15 @@
   const musicButton = document.getElementById('music-toggle');
   if (!musicButton) return;
   let sound;
+  function stopAmbience() {
+    if (!sound) return;
+    sound.master.gain.setTargetAtTime(0, sound.context.currentTime, 0.12);
+    musicButton.setAttribute('aria-pressed', 'false');
+    musicButton.textContent = 'Sound on';
+  }
+  window.addEventListener('infinity-audio-start', event => {
+    if (event.detail !== 'ambient') stopAmbience();
+  });
   function createAmbience() {
     const context = new (window.AudioContext || window.webkitAudioContext)();
     const master = context.createGain();
@@ -34,6 +43,7 @@
       const playing = musicButton.getAttribute('aria-pressed') === 'true';
       sound.master.gain.cancelScheduledValues(sound.context.currentTime);
       sound.master.gain.setTargetAtTime(playing ? 0 : 0.12, sound.context.currentTime, 0.25);
+      if (!playing) window.dispatchEvent(new CustomEvent('infinity-audio-start', {detail:'ambient'}));
       musicButton.setAttribute('aria-pressed', String(!playing));
       musicButton.textContent = playing ? 'Sound on' : 'Mute sound';
     } catch {
