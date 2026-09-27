@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Issue #45: Tavola Room (Desktop)</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      background: #f6ece0;
+      color: #2a1a12;
+      padding: 0;
+    }
+    .masthead {
+      background: #f6ece0;
+      border-bottom: 1px solid #8a3f1c;
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      font-size: 20px;
+      font-weight: 700;
+      color: #2a1a12;
+    }
+    .hero {
+      padding: 60px 40px;
+      text-align: center;
+      border-bottom: 1px solid rgba(138, 63, 28, 0.2);
+    }
+    .room-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      opacity: 0.6;
+      margin-bottom: 12px;
+    }
+    .page-title {
+      font-size: 56px;
+      font-weight: 700;
+      font-style: italic;
+      margin-bottom: 16px;
+      color: #8a3f1c;
+    }
+    .tagline {
+      font-size: 16px;
+      opacity: 0.8;
+    }
+    .content {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 40px;
+    }
+    .menu-card {
+      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid #8a3f1c;
+      border-radius: 4px;
+      padding: 40px;
+      margin-bottom: 32px;
+      box-shadow: 0 4px 12px rgba(42, 26, 18, 0.1);
+    }
+    .recipe-title {
+      font-size: 36px;
+      font-style: italic;
+      margin-bottom: 16px;
+      color: #8a3f1c;
+    }
+    .recipe-desc {
+      font-size: 16px;
+      line-height: 1.8;
+      opacity: 0.9;
+      margin-bottom: 20px;
+    }
+    .ingredient-label {
+      font-family: 'Brush Script MT', cursive;
+      font-size: 16px;
+      color: #8a3f1c;
+      margin-bottom: 12px;
+    }
+    .ingredient-list {
+      font-size: 14px;
+      line-height: 1.7;
+      opacity: 0.85;
+    }
+    .image-placeholder {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: linear-gradient(135deg, #d4b896 0%, #c4a886 100%);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: #8a3f1c;
+      margin-top: 24px;
+      border: 2px dashed #8a3f1c;
+    }
+    .paper-texture {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><filter id="noise"><feTurbulence baseFrequency="0.8" numOctaves="2"/></filter><rect width="200" height="200" filter="url(%23noise)" opacity="0.03"/></svg>');
+      pointer-events: none;
+      opacity: 0.6;
+    }
+    .specs {
+      background: rgba(138, 63, 28, 0.1);
+      border-left: 3px solid #8a3f1c;
+      padding: 24px;
+      font-size: 14px;
+      line-height: 1.7;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="paper-texture"></div>
+  
+  <div class="masthead">
+    <div class="logo">SOVRANO Infinitum</div>
+  </div>
+  
+  <div class="hero">
+    <div class="room-label">Trattoria</div>
+    <h1 class="page-title">TAVOLA</h1>
+    <p class="tagline">Slow and tactile</p>
+  </div>
+  
+  <div class="content" style="position: relative; z-index: 1;">
+    <div class="menu-card">
+      <h2 class="recipe-title">Placeholder Recipe Title</h2>
+      <p class="recipe-desc">
+        This is sample recipe description text for layout demonstration. Placeholder content showing how a Tavola menu card would appear. The warm, unhurried feel with handwritten labels and gentle fades distinguishes this room from Music and Tech.
+      </p>
+      <div class="ingredient-label">Ingredients</div>
+      <div class="ingredient-list">
+        • Sample ingredient one<br>
+        • Sample ingredient two<br>
+        • Sample ingredient three<br>
+        • Sample ingredient four
+      </div>
+      <div class="image-placeholder">
+        [Full-Page Food Photo Placeholder]
+      </div>
+    </div>
+    
+    <div class="menu-card">
+      <h2 class="recipe-title">Another Recipe Example</h2>
+      <p class="recipe-desc">
+        More placeholder recipe text to show the menu-card layout. All content here is for wireframe purposes only, showing the cream paper background, warm serif typography, and tactile aesthetic that defines the Tavola room.
+      </p>
+      <div class="ingredient-label">Preparation notes</div>
+      <div class="ingredient-list">
+        Sample preparation text goes here in the layout demonstration.
+      </div>
+    </div>
+    
+    <div class="specs">
+      <strong>Tavola Room Specifications (Issue #45):</strong><br>
+      • Layout: Menu-card layout, recipes set like a printed menu, food photos fill the page<br>
+      • Type: Warm old-style serif, handwritten-style face for short labels only (never body text)<br>
+      • Motion: Gentle fades, like steam rising<br>
+      • Texture: Paper grain<br>
+      • Sound: Plate clink and soft room chatter<br>
+      • Door: Slow warm fade<br>
+      • Must clearly differ from Music and Tech · Blurred-text test must pass · WCAG 2.2 AA required
+    </div>
+  </div>
+</body>
+</html>

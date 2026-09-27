@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Issue #32: Room Entry Transition Storyboard (Desktop)</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #1a1a1a;
+      color: #f4f1eb;
+      padding: 40px;
+    }
+    .container {
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+      color: #cdb27a;
+    }
+    .subtitle {
+      font-size: 14px;
+      color: #999;
+      margin-bottom: 40px;
+    }
+    .storyboard {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 60px;
+    }
+    .frame {
+      background: #2a2a2a;
+      border: 1px solid #444;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .frame-header {
+      background: #333;
+      padding: 12px;
+      border-bottom: 1px solid #444;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .frame-content {
+      height: 240px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .room-preview {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      text-align: center;
+      padding: 20px;
+    }
+    .nocturne { background: linear-gradient(135deg, #0c1a2a 0%, #1a2a3a 100%); }
+    .atelier { background: linear-gradient(135deg, #f4f1eb 0%, #e4e1db 100%); color: #1b1216; }
+    .circuit { background: linear-gradient(135deg, #0d0f13 0%, #1d1f23 100%); }
+    .trattoria { background: linear-gradient(135deg, #f6ece0 0%, #e6dcd0 100%); color: #2a1a12; }
+    
+    .transition-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+    }
+    .fade-overlay {
+      background: #000;
+      opacity: 0.5;
+    }
+    .wipe-overlay {
+      background: linear-gradient(90deg, #000 0%, #000 50%, transparent 50%);
+    }
+    .slide-overlay {
+      background: linear-gradient(90deg, transparent 0%, #0d0f13 40%, #0d0f13 100%);
+    }
+    
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+    }
+    .room-name {
+      font-size: 12px;
+      opacity: 0.7;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .reduced-motion-section {
+      margin-top: 40px;
+      padding-top: 40px;
+      border-top: 2px solid #444;
+    }
+    .reduced-motion-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Room Entry Transition Storyboard (Desktop ~1440px)</h1>
+    <p class="subtitle">Wireframe mockup · Placeholder content · Issue #32</p>
+    
+    <h2 style="font-size: 18px; margin-bottom: 20px; color: #cdb27a;">Standard Motion: Door Transitions</h2>
+    <div class="storyboard">
+      <div class="frame">
+        <div class="frame-header">Frame 1: The Daily Desk (Nocturne)</div>
+        <div class="frame-content">
+          <div class="room-preview nocturne">
+            <div class="section-title">THE DAILY DESK</div>
+            <div class="room-name">Nocturne</div>
+            <div style="margin-top: 20px; font-size: 12px;">Hard cut door →</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="frame">
+        <div class="frame-header">Frame 2: Cultura (Atelier) - Fade Entry</div>
+        <div class="frame-content">
+          <div class="room-preview atelier">
+            <div class="section-title">CULTURA</div>
+            <div class="room-name">Atelier</div>
+            <div style="margin-top: 20px; font-size: 12px;">Slow fade door</div>
+          </div>
+          <div class="transition-overlay fade-overlay"></div>
+        </div>
+      </div>
+      
+      <div class="frame">
+        <div class="frame-header">Frame 3: Cultura (Fully Faded In)</div>
+        <div class="frame-content">
+          <div class="room-preview atelier">
+            <div class="section-title">CULTURA</div>
+            <div class="room-name">Atelier</div>
+            <div style="margin-top: 20px; font-size: 12px;">Gallery at night</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="frame">
+        <div class="frame-header">Frame 4: Motore (Paddock) - Wipe Entry</div>
+        <div class="frame-content">
+          <div class="room-preview" style="background: #121316;">
+            <div class="section-title">MOTORE</div>
+            <div class="room-name">Paddock</div>
+            <div style="margin-top: 20px; font-size: 12px;">Sideways wipe door</div>
+          </div>
+          <div class="transition-overlay wipe-overlay"></div>
+        </div>
+      </div>
+      
+      <div class="frame">
+        <div class="frame-header">Frame 5: Tech (Circuit) - Snap Entry</div>
+        <div class="frame-content">
+          <div class="room-preview circuit">
+            <div class="section-title">TECH</div>
+            <div class="room-name">Circuit</div>
+            <div style="margin-top: 20px; font-size: 12px;">Instant cut door</div>
+          </div>
+          <div class="transition-overlay slide-overlay"></div>
+        </div>
+      </div>
+      
+      <div class="frame">
+        <div class="frame-header">Frame 6: Tavola (Trattoria)</div>
+        <div class="frame-content">
+          <div class="room-preview trattoria">
+            <div class="section-title">TAVOLA</div>
+            <div class="room-name">Trattoria</div>
+            <div style="margin-top: 20px; font-size: 12px;">Slow warm fade door</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="reduced-motion-section">
+      <h2 style="font-size: 18px; margin-bottom: 20px; color: #cdb27a;">Reduced Motion: Cross-Fade Only</h2>
+      <div class="reduced-motion-grid">
+        <div class="frame">
+          <div class="frame-header">Before Navigation (Any Room)</div>
+          <div class="frame-content">
+            <div class="room-preview nocturne">
+              <div class="section-title">CURRENT SECTION</div>
+              <div class="room-name">Any Theme</div>
+              <div style="margin-top: 20px; font-size: 12px;">prefers-reduced-motion: reduce</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="frame">
+          <div class="frame-header">After Navigation (Short Cross-Fade)</div>
+          <div class="frame-content">
+            <div class="room-preview atelier">
+              <div class="section-title">NEW SECTION</div>
+              <div class="room-name">Any Theme</div>
+              <div style="margin-top: 20px; font-size: 12px;">Simple cross-fade ≤300ms</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div style="margin-top: 40px; padding: 20px; background: #2a2a2a; border-left: 3px solid #c77c55; font-size: 12px; line-height: 1.6;">
+      <strong>Implementation Notes:</strong><br>
+      • Uses cross-document View Transitions with @view-transition { navigation: auto; }<br>
+      • Each room defines its door type in room spec<br>
+      • All transitions ≤600ms, never block reading or input<br>
+      • Reduced motion swaps all movement for short cross-fade or none<br>
+      • Focus lands on main heading after navigation
+    </div>
+  </div>
+</body>
+</html>
