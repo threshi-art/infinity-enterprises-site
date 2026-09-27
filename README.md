@@ -1,8 +1,39 @@
-# Infinity Enterprises website
+<div align="center">
 
-Source mirror for the [Infinity Enterprises publication](https://infinity-enterprises.infinity-ent-8507.chatgpt.site/).
+![Infinity Enterprises Masthead](docs/readme/banner.png)
+
+[![CI](https://github.com/threshi-art/infinity-enterprises-site/actions/workflows/ci.yml/badge.svg?branch=studio)](https://github.com/threshi-art/infinity-enterprises-site/actions/workflows/ci.yml)
+[![License](https://img.shields.io/badge/license-All%20rights%20reserved-8b1e2d)](LICENSE)
+[![Live Site](https://img.shields.io/badge/live%20site-online-c9a86a)](https://infinity-enterprises.infinity-ent-8507.chatgpt.site/)
+
+![Masthead on Navy](docs/readme/preview-on-navy.jpg)
+
+</div>
+
+# The September Issue / Infinity Enterprises
+
+**Infinity Enterprises is an independent publication and working portfolio for intelligent systems, research, technology culture, law, and civic ideas.**
+
+<div align="center">
+
+| | |
+|:---:|:---:|
+| ![The Daily Desk](docs/readme/gallery/cover-daily-desk.webp)<br>*The Daily Desk* | ![Reading Room](docs/readme/gallery/cover-reading-room.webp)<br>*Reading Room* |
+| ![Tech Lounge](docs/readme/gallery/cover-tech.webp)<br>*Tech Lounge* | ![MODA](docs/readme/gallery/cover-moda.webp)<br>*MODA* |
+
+*Design reference only, not the final design.*
+
+![Room covers board (drafts), see #34](design/sovrano-v1/redesign/boards/issue-34-covers-board.jpg)
+
+*Room covers board (drafts), see #34*
+
+</div>
+
+---
 
 ## What is here
+
+Source mirror for the [Infinity Enterprises publication](https://infinity-enterprises.infinity-ent-8507.chatgpt.site/).
 
 The magazine covers The Daily Desk, Culture, MOTOR, Food, The Practice, Music, the Academic Journal, Tech Lounge, In Development, and About. Agentic@Enigmas is the Daily Desk opinion room. The existing Ether Room, FORM, MOTOR gallery, original essays, project ledger, learning paths, and foundation concepts remain in the source.
 
@@ -21,7 +52,7 @@ The result is `dist/server/index.js`, a Worker exporting `fetch(request, env)`. 
 
 ## Publishing and collaboration
 
-This GitHub repository is a source mirror for Cursor and other collaborators. A GitHub commit alone does not publish the live Site. The live version is built and deployed through the ChatGPT Sites project identified in `.openai/hosting.json`. After publishing, bring the resulting source changes and exact Sites version back to this mirror.
+This GitHub repository is a public source mirror for Cursor and other collaborators. A GitHub commit alone does not publish the live Site. The live version is built and deployed through the ChatGPT Sites project identified in `.openai/hosting.json`. After publishing, bring the resulting source changes and exact Sites version back to this mirror.
 
 The current mirror records Sites version 28 at source commit `c520fc35270cbadeeda7e5ab051266fa23927e93` in `site-source.json`.
 
@@ -33,7 +64,7 @@ Read [AGENTS.md](AGENTS.md) before contributing. All agents use the shared GitHu
 
 The Git clone is in `C:\Users\cyber\OneDrive\Documents\Projects\Websites\Infinity\infinity-enterprises-site`. The parent `Infinity` folder also contains other files, which stay untouched.
 
-The Windows task `Infinity Enterprises Source Sync` runs at sign in and every 15 minutes while Chris is signed in. Install or refresh it with `tools\InstallInfinitySyncTask.ps1` on Goliath. It calls `tools\SyncInfinityOneDrive.ps1`, which accepts only a fast forward of a clean `main` clone and stops on local edits or diverged history. Check Task Scheduler's Last Run Result if sync stalls. GitHub authentication must remain valid for this private repository. A GitHub push alone does not publish the live Site.
+The Windows task `Infinity Enterprises Source Sync` runs at sign in and every 15 minutes while Chris is signed in. Install or refresh it with `tools\InstallInfinitySyncTask.ps1` on Goliath. It calls `tools\SyncInfinityOneDrive.ps1`, which accepts only a fast forward of a clean `main` clone and stops on local edits or diverged history. Check Task Scheduler's Last Run Result if sync stalls. GitHub authentication must remain valid for this public repository. A GitHub push alone does not publish the live Site.
 
 ## License
 
