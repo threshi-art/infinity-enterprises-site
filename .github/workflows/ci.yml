@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: [studio]
+  pull_request:
+    branches: [main, studio]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build worker
+        run: npm run build
+
+      - name: Verify build output
+        run: |
+          test -s dist/server/index.js
+          ls -lh dist/server/index.js
+
+      - name: Guard against committed build output or env files
+        run: |
+          if git ls-files --error-unmatch dist >/dev/null 2>&1 || git ls-files | grep -E '(^|/)\.env(\.local)?$'; then
+            echo "::error::dist/ or .env files are tracked in git (see AGENTS.md)"
+            exit 1
+          fi
