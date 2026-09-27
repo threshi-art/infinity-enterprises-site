@@ -9,9 +9,9 @@ Generated art by Ember for design reference. Drafts, not approved final design. 
 
 ## Draft room covers
 
-- `covers-draft/cover-cultura-draft.png` — 1280×720px, 209K — Culture room cover draft (JPEG format)
-- `covers-draft/cover-music-draft.png` — 1280×720px, 188K — Music room cover draft (JPEG format)
-- `covers-draft/cover-tech-v2-draft.png` — 1280×720px, 134K — Tech Lounge cover draft v2 (JPEG format)
+- `covers-draft/cover-cultura-draft.jpg` — 1280×720px, 209K — Culture room cover draft (JPEG)
+- `covers-draft/cover-music-draft.jpg` — 1280×720px, 188K — Music room cover draft (JPEG)
+- `covers-draft/cover-tech-v2-draft.jpg` — 1280×720px, 134K — Tech Lounge cover draft v2 (JPEG)
 
 ## Texture samples
 
