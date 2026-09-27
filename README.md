@@ -26,3 +26,15 @@ This GitHub repository is a source mirror for Cursor and other collaborators. A 
 The current mirror records Sites version 28 at source commit `c520fc35270cbadeeda7e5ab051266fa23927e93` in `site-source.json`.
 
 Do not commit runtime secrets, subscriber addresses, contact messages, or proprietary engineering documents. The staff area uses hosted secrets. The Foundation and Pacific Royal Academy are concept briefs, not claims of an operating institution. Music playback links to its original YouTube publisher.
+
+## OneDrive copy on Chris's Windows PC
+
+The requested folder is `C:\Users\cyber\OneDrive\Documents\Projects\Websites\Infinity`. It should be a Git clone of this repository so Cursor and other collaborators see the same source.
+
+For the first copy, run this in PowerShell when the destination is absent or empty:
+
+```powershell
+git clone https://github.com/threshi-art/infinity-enterprises-site.git "C:\Users\cyber\OneDrive\Documents\Projects\Websites\Infinity"
+```
+
+For later updates, run `tools\SyncInfinityOneDrive.ps1` from a clone of this repository. The helper fetches `main` and accepts only a fast forward. It stops when there are local edits or an unrelated folder, protecting collaborators' work. GitHub sign in may be required for this private repository.
