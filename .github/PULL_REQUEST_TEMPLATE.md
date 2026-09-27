@@ -12,6 +12,10 @@ What changed and why? Identify any pages or assets moved or removed. Confirm tha
 - Pages or interactions reviewed:
 - Conflicts and overlapping edits resolved:
 
+## Release authority
+
+Final reviewer and merger (Codex or Cursor):
+
 ## Publishing
 
 - [ ] Source change only; live Sites publication will follow separately
