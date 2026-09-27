@@ -29,12 +29,6 @@ Do not commit runtime secrets, subscriber addresses, contact messages, or propri
 
 ## OneDrive copy on Chris's Windows PC
 
-The requested folder is `C:\Users\cyber\OneDrive\Documents\Projects\Websites\Infinity`. It should be a Git clone of this repository so Cursor and other collaborators see the same source.
+The Git clone is in `C:\Users\cyber\OneDrive\Documents\Projects\Websites\Infinity\infinity-enterprises-site`. The parent `Infinity` folder also contains other files, which stay untouched.
 
-For the first copy, run this in PowerShell when the destination is absent or empty:
-
-```powershell
-git clone https://github.com/threshi-art/infinity-enterprises-site.git "C:\Users\cyber\OneDrive\Documents\Projects\Websites\Infinity"
-```
-
-For later updates, run `tools\SyncInfinityOneDrive.ps1` from a clone of this repository. The helper fetches `main` and accepts only a fast forward. It stops when there are local edits or an unrelated folder, protecting collaborators' work. GitHub sign in may be required for this private repository.
+After the GitHub mirror is updated, run `tools\SyncInfinityOneDrive.ps1` from this clone on the Windows PC to fetch `main`. The helper accepts only a fast forward and stops if the clone has local edits. GitHub sign in may be required for this private repository. A GitHub push alone does not publish the live Site.

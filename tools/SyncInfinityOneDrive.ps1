@@ -2,7 +2,7 @@
 # Stops before changing a folder with unrelated files or uncommitted edits.
 [CmdletBinding()]
 param(
-  [string]$Destination = 'C:\Users\cyber\OneDrive\Documents\Projects\Websites\Infinity'
+  [string]$Destination = 'C:\Users\cyber\OneDrive\Documents\Projects\Websites\Infinity\infinity-enterprises-site'
 )
 
 $ErrorActionPreference = 'Stop'
