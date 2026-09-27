@@ -34,3 +34,7 @@ Read [AGENTS.md](AGENTS.md) before contributing. All agents use the shared GitHu
 The Git clone is in `C:\Users\cyber\OneDrive\Documents\Projects\Websites\Infinity\infinity-enterprises-site`. The parent `Infinity` folder also contains other files, which stay untouched.
 
 The Windows task `Infinity Enterprises Source Sync` runs at sign in and every 15 minutes while Chris is signed in. Install or refresh it with `tools\InstallInfinitySyncTask.ps1` on Goliath. It calls `tools\SyncInfinityOneDrive.ps1`, which accepts only a fast forward of a clean `main` clone and stops on local edits or diverged history. Check Task Scheduler's Last Run Result if sync stalls. GitHub authentication must remain valid for this private repository. A GitHub push alone does not publish the live Site.
+
+## License
+
+All rights reserved. See [LICENSE](LICENSE). The code is visible for reference; it is not open source.

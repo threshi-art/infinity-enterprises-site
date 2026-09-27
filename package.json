@@ -1,6 +1,7 @@
 {
   "name": "infinity-enterprises-project-atlas",
   "private": true,
+  "license": "UNLICENSED",
   "type": "module",
   "scripts": {
     "build": "node build.mjs",
