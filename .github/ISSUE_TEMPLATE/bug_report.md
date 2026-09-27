@@ -1,21 +1,35 @@
 ---
 name: Bug report
-about: Report something broken or misleading on the site
+about: Record a site defect with evidence and a proposed repair
 title: "[Bug] "
 ---
 
-## Where
+## Issue
 
-Page URL and device or browser, if relevant.
+One sentence naming the defect and the affected page or behavior.
 
-## What happened
+## Description of problem
 
-Steps to reproduce and the actual result.
+What happened, what should happen, and how to reproduce it. Include the page URL, browser, viewport, or device when relevant.
 
-## Expected result
+## Root cause
 
-What should happen instead?
+State the verified cause and how it was established. If unknown, write "Unknown" and separate hypotheses from facts.
 
-## Evidence
+## Objective evidence
 
-Screenshot, console output, or related links. Do not include passwords or visitor data.
+Screenshots, console output, measured results, the source commit, and links. State what each item proves. Remove passwords and visitor data.
+
+## Proposed corrective action
+
+Describe the intended repair and its scope. This is a proposal; the PR must later record what was actually changed.
+
+## Acceptance criteria
+
+- [ ] Observable result that demonstrates the repair
+- [ ] Relevant regression check
+- [ ] Live publication check, if the issue concerns the public Site
+
+## Owner and handoff
+
+Working agent, dependencies, blocked work, and the next reviewer action.
