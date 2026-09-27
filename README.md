@@ -27,7 +27,7 @@ The current mirror records Sites version 28 at source commit `c520fc35270cbadeed
 
 Do not commit runtime secrets, subscriber addresses, contact messages, or proprietary engineering documents. The staff area uses hosted secrets. The Foundation and Pacific Royal Academy are concept briefs, not claims of an operating institution. Music playback links to its original YouTube publisher.
 
-Read [AGENTS.md](AGENTS.md) before contributing. All agents use the shared GitHub `studio` branch from separate local checkouts and coordinate work in issues. Codex reviews a release pull request from `studio` to `main`, then syncs the clean OneDrive copy.
+Read [AGENTS.md](AGENTS.md) before contributing. All agents use the shared GitHub `studio` branch from separate local checkouts and coordinate work in issues. Forge helps maintain issues, PRs, and the shared branch. Codex reviews and merges releases from `studio` to `main`, then syncs the clean OneDrive copy and handles live publication.
 
 ## OneDrive copy on Chris's Windows PC
 
