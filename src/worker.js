@@ -62,7 +62,7 @@ async function latestDispatch() {
     if (!response.ok) throw new Error('Source unavailable');
     const xml = (await response.text()).slice(0, 200000);
     const entries = [...xml.matchAll(/<item>([\s\S]*?)<\/item>/g)].slice(0, 3).map((match) => {
-      const field = tag => match[1].match(new RegExp('<' + tag + '(?: [^>]*)?>([\s\S]*?)<\/' + tag + '>'))?.[1] ?? '';
+      const field = tag => match[1].match(new RegExp(`<${tag}(?: [^>]*)?>([\\s\\S]*?)<\\/${tag}>`))?.[1] ?? '';
       const url = textFromXml(field('link'));
       if (!url.startsWith('https://github.blog/changelog/')) return null;
       const rawDate = field('pubDate'); const parsed = Date.parse(rawDate);
