@@ -33,7 +33,9 @@ This repository is public: strip emails, account names, tokens, IP addresses and
 
 ### Acceptance criteria
 
-[Observable visitor or editor outcomes, existing pages, assets, and behavior to preserve, and checks needed before issue closure, including live publication when applicable.]
+- [ ] Observable visitor or editor outcome
+- [ ] Existing pages, assets, and behavior to preserve
+- [ ] Checks needed before issue closure, including live publication when applicable
 
 ### Owner and handoff
 
