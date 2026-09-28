@@ -64,15 +64,22 @@ Privacy-friendly, cookieless page view tracking. Implementation: `src/page-views
 
 **Suspect days analysis:**
 
-Scripted posts can inflate counts. Use `scripts/suspect-days.mjs` to identify anomalous spikes. A day is flagged if it has ≥50 views and exceeds 3× the median of the previous 14 days that were either not flagged or manually cleared. Real growth can be preserved by adding verified days to `data/cleared-days.json` (a plain array of `YYYY-MM-DD` strings). The script requires at least 7 baseline days before flagging anything.
+Scripted posts can inflate counts. Use `scripts/suspect-days.mjs` to identify anomalous spikes. The script assigns each day one of four statuses:
+
+- **suspect**: ≥50 views and exceeds 3× the median of up to 14 recent usable days
+- **cleared**: manually verified and added to `data/cleared-days.json`
+- **ok**: checked and passed
+- **not_checked**: insufficient history (fewer than 7 usable days)
+
+Usable days are those with status `ok`, plus any day on the cleared list. Nothing gets checked until you review the first 7 days and add them to `data/cleared-days.json`. If the script finds no day with enough history, it prints `no baseline yet: clear the first 7 days`. Real growth can be preserved by clearing verified growth days.
 
 ```bash
 # Export daily views and analyze
-wrangler d1 execute <database> --command "SELECT day, COUNT(*) as views FROM page_views GROUP BY day ORDER BY day" --json > daily-views.json
+wrangler d1 execute <database> --remote --command "SELECT day, COUNT(*) as views FROM page_views GROUP BY day ORDER BY day" --json > daily-views.json
 node scripts/suspect-days.mjs daily-views.json
 
 # Or pipe directly
-wrangler d1 execute <database> --command "SELECT day, COUNT(*) as views FROM page_views GROUP BY day ORDER BY day" --json | node scripts/suspect-days.mjs --json
+wrangler d1 execute <database> --remote --command "SELECT day, COUNT(*) as views FROM page_views GROUP BY day ORDER BY day" --json | node scripts/suspect-days.mjs --json
 ```
 
 **Query examples:**
