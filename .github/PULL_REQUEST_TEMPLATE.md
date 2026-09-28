@@ -34,7 +34,7 @@ Record the exact head commit, then the build or automated check results with run
 - [ ] Tests added or updated, or N/A with a reason.
 - [ ] Screenshots and logs contain no personal details.
 - [ ] Reviewed by someone other than the author (link the review comment)
-- [ ] Every required check is green on the exact head commit, and the latest non-author review covers that commit with no open blocker or major findings
+- [ ] Every required check (Build, and Accessibility and Performance) is green on the exact head commit, and the latest non-author review covers that commit with no open blocker or major findings (minor findings may be deferred to a follow-up PR when the merge comment lists them)
 
 ### Final notes to reviewer
 
