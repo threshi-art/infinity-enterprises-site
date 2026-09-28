@@ -7,6 +7,10 @@ param(
   [string]$Destination
 )
 $ErrorActionPreference = 'Stop'
+# Strip trailing path separators so the value can be safely quoted in task arguments.
+# A trailing backslash would escape the closing quote on the Windows command line.
+$Destination = $Destination.TrimEnd('\', '/')
+if ($Destination -match '^[A-Za-z]:$') { throw "-Destination cannot be a drive root. Use a folder, e.g. D:\InfinitySite" }
 if (-not $RepositoryPath) { $RepositoryPath = Split-Path -Parent $PSScriptRoot }
 $taskName = 'Infinity Enterprises Source Sync'
 $syncPath = Join-Path $RepositoryPath 'tools\SyncInfinityOneDrive.ps1'
