@@ -279,4 +279,24 @@ test('Empty input prints no-data message', () => {
   const emptyWrangler = [{ results: [], success: true, meta: {} }];
   const normalized2 = normalizeInput(emptyWrangler);
   assert.equal(normalized2.length, 0, 'Empty wrangler results normalize to empty');
+  
+  // Verify the report message
+  const results = analyzeSuspectDays(normalized1);
+  const output = formatReport(results);
+  assert.equal(output.trim(), 'no data: 0 days in input', 'Empty input should produce exact no-data message');
+});
+
+test('Null input does not throw and prints no-data message', () => {
+  // null should be handled like empty input
+  const normalizedNull = normalizeInput(null);
+  assert.equal(normalizedNull.length, 0, 'Null normalizes to empty');
+  
+  // undefined should be handled like empty input
+  const normalizedUndefined = normalizeInput(undefined);
+  assert.equal(normalizedUndefined.length, 0, 'Undefined normalizes to empty');
+  
+  // Verify the report message for null
+  const resultsNull = analyzeSuspectDays(normalizedNull);
+  const outputNull = formatReport(resultsNull);
+  assert.equal(outputNull.trim(), 'no data: 0 days in input', 'Null input should produce exact no-data message');
 });
