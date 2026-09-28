@@ -122,6 +122,282 @@ async function startDevServer() {
   });
 }
 
+function rgbToLuminance(r, g, b) {
+  const [rs, gs, bs] = [r, g, b].map(c => {
+    const s = c / 255;
+    return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+  });
+  return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
+}
+
+async function measureNodeContrast(page, node, viewport) {
+  const selector = node.target[0];
+  const messageKey = node.any?.[0]?.data?.messageKey || null;
+  const message = node.any?.[0]?.message || '';
+  
+  let reason = messageKey || 'unknown';
+  if (!messageKey) {
+    if (message.includes('background image')) reason = 'bgImage';
+    else if (message.includes('gradient')) reason = 'bgGradient';
+    else if (message.includes('overlap')) reason = 'bgOverlap';
+    else if (message.includes('pseudo')) reason = 'pseudoContent';
+    else if (message) reason = 'other';
+  }
+  
+  try {
+    const elementData = await page.evaluate((sel) => {
+      const el = document.querySelector(sel);
+      if (!el) return null;
+      
+      const style = window.getComputedStyle(el);
+      const textContent = el.textContent.trim().substring(0, 100);
+      
+      const colorStr = style.color;
+      const match = colorStr.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/);
+      if (!match) return null;
+      
+      const [_, r, g, b, a] = match;
+      const alpha = a !== undefined ? parseFloat(a) : 1.0;
+      
+      const fontSize = parseFloat(style.fontSize);
+      const fontWeight = parseInt(style.fontWeight) || 400;
+      
+      const rect = el.getBoundingClientRect();
+      
+      return {
+        textContent,
+        r: parseInt(r),
+        g: parseInt(g),
+        b: parseInt(b),
+        alpha,
+        fontSize,
+        fontWeight,
+        rect: {
+          x: rect.x,
+          y: rect.y,
+          width: rect.width,
+          height: rect.height
+        }
+      };
+    }, selector);
+    
+    if (!elementData || !elementData.textContent) {
+      return {
+        textSnippet: '',
+        messageKey: reason,
+        status: 'could-not-measure',
+        error: 'Element not found or has no text'
+      };
+    }
+    
+    const isLargeText = elementData.fontSize >= 24 || 
+      (elementData.fontSize >= 18.66 && elementData.fontWeight >= 700);
+    const threshold = isLargeText ? 3.0 : 4.5;
+    
+    await page.evaluate(() => document.fonts.ready);
+    
+    await page.evaluate((sel) => {
+      const el = document.querySelector(sel);
+      if (!el) return;
+      el.scrollIntoView({ block: 'center', inline: 'center' });
+    }, selector);
+    
+    await page.waitForTimeout(100);
+    
+    const hideResult = await page.evaluate((sel) => {
+      const el = document.querySelector(sel);
+      if (!el) return { success: false };
+      
+      const allNodes = [el, ...el.querySelectorAll('*')];
+      const saved = allNodes.map(node => ({
+        color: node.style.color,
+        textFillColor: node.style.webkitTextFillColor,
+        textShadow: node.style.textShadow,
+        caretColor: node.style.caretColor
+      }));
+      
+      allNodes.forEach(node => {
+        node.style.color = 'transparent';
+        node.style.webkitTextFillColor = 'transparent';
+        node.style.textShadow = 'none';
+        node.style.caretColor = 'transparent';
+      });
+      
+      const before = window.getComputedStyle(el, '::before');
+      const after = window.getComputedStyle(el, '::after');
+      const hasPseudoText = (before.content && before.content !== 'none' && before.content !== '""') ||
+                            (after.content && after.content !== 'none' && after.content !== '""');
+      
+      if (hasPseudoText) {
+        const style = document.createElement('style');
+        style.id = 'contrast-measure-pseudo';
+        style.textContent = `
+          ${sel}::before, ${sel}::after {
+            color: transparent !important;
+            -webkit-text-fill-color: transparent !important;
+            text-shadow: none !important;
+          }
+        `;
+        document.head.appendChild(style);
+      }
+      
+      return { success: true, saved };
+    }, selector);
+    
+    if (!hideResult.success) {
+      return {
+        textSnippet: elementData.textContent,
+        messageKey: reason,
+        status: 'could-not-measure',
+        error: 'Could not hide text'
+      };
+    }
+    
+    const clip = {
+      x: Math.max(0, elementData.rect.x),
+      y: Math.max(0, elementData.rect.y),
+      width: Math.min(elementData.rect.width, viewport.width - Math.max(0, elementData.rect.x)),
+      height: Math.min(elementData.rect.height, viewport.height - Math.max(0, elementData.rect.y))
+    };
+    
+    if (clip.width <= 0 || clip.height <= 0) {
+      await page.evaluate(({ sel, saved }) => {
+        const style = document.getElementById('contrast-measure-pseudo');
+        if (style) style.remove();
+        
+        const el = document.querySelector(sel);
+        if (!el) return;
+        const allNodes = [el, ...el.querySelectorAll('*')];
+        allNodes.forEach((node, i) => {
+          if (saved[i]) {
+            node.style.color = saved[i].color;
+            node.style.webkitTextFillColor = saved[i].textFillColor;
+            node.style.textShadow = saved[i].textShadow;
+            node.style.caretColor = saved[i].caretColor;
+          }
+        });
+      }, { sel: selector, saved: hideResult.saved });
+      
+      return {
+        textSnippet: elementData.textContent,
+        messageKey: reason,
+        status: 'could-not-measure',
+        error: 'Element not visible'
+      };
+    }
+    
+    const screenshot = await page.screenshot({ clip, type: 'png' });
+    
+    await page.evaluate(({ sel, saved }) => {
+      const style = document.getElementById('contrast-measure-pseudo');
+      if (style) style.remove();
+      
+      const el = document.querySelector(sel);
+      if (!el) return;
+      const allNodes = [el, ...el.querySelectorAll('*')];
+      allNodes.forEach((node, i) => {
+        if (saved[i]) {
+          node.style.color = saved[i].color;
+          node.style.webkitTextFillColor = saved[i].textFillColor;
+          node.style.textShadow = saved[i].textShadow;
+          node.style.caretColor = saved[i].caretColor;
+        }
+      });
+    }, { sel: selector, saved: hideResult.saved });
+    
+    const { PNG } = await import('pngjs');
+    const png = PNG.sync.read(screenshot);
+    
+    const blurRadius = Math.max(1, Math.round(elementData.fontSize * 0.08));
+    const pixels = [];
+    
+    for (let y = 0; y < png.height; y++) {
+      for (let x = 0; x < png.width; x++) {
+        const idx = (png.width * y + x) << 2;
+        const r = png.data[idx];
+        const g = png.data[idx + 1];
+        const b = png.data[idx + 2];
+        pixels.push({ r, g, b, lum: rgbToLuminance(r, g, b) });
+      }
+    }
+    
+    if (pixels.length === 0) {
+      return {
+        textSnippet: elementData.textContent,
+        messageKey: reason,
+        status: 'could-not-measure',
+        error: 'No pixels captured'
+      };
+    }
+    
+    const blurred = [];
+    for (let y = 0; y < png.height; y++) {
+      for (let x = 0; x < png.width; x++) {
+        let sumR = 0, sumG = 0, sumB = 0, count = 0;
+        
+        for (let dy = -blurRadius; dy <= blurRadius; dy++) {
+          for (let dx = -blurRadius; dx <= blurRadius; dx++) {
+            const ny = y + dy;
+            const nx = x + dx;
+            if (ny >= 0 && ny < png.height && nx >= 0 && nx < png.width) {
+              const pixel = pixels[ny * png.width + nx];
+              sumR += pixel.r;
+              sumG += pixel.g;
+              sumB += pixel.b;
+              count++;
+            }
+          }
+        }
+        
+        const avgR = sumR / count;
+        const avgG = sumG / count;
+        const avgB = sumB / count;
+        blurred.push(rgbToLuminance(avgR, avgG, avgB));
+      }
+    }
+    
+    const sortedLum = blurred.slice().sort((a, b) => a - b);
+    const medianLum = sortedLum[Math.floor(sortedLum.length / 2)];
+    const textLum = rgbToLuminance(elementData.r, elementData.g, elementData.b);
+    
+    const isTextDark = textLum < medianLum;
+    const worstBgLum = isTextDark ? Math.max(...blurred) : Math.min(...blurred);
+    
+    const meanBgLum = blurred.reduce((sum, l) => sum + l, 0) / blurred.length;
+    const p95Index = Math.floor(blurred.length * 0.95);
+    const p95BgLum = sortedLum[p95Index];
+    
+    const L1 = Math.max(textLum, worstBgLum);
+    const L2 = Math.min(textLum, worstBgLum);
+    const contrastRatio = (L1 + 0.05) / (L2 + 0.05);
+    
+    const passes = contrastRatio >= threshold;
+    
+    return {
+      textSnippet: elementData.textContent,
+      messageKey: reason,
+      fontSize: elementData.fontSize,
+      fontWeight: elementData.fontWeight,
+      isLargeText,
+      threshold,
+      contrastRatio: parseFloat(contrastRatio.toFixed(2)),
+      meanBgLuminance: parseFloat(meanBgLum.toFixed(3)),
+      p95BgLuminance: parseFloat(p95BgLum.toFixed(3)),
+      textLuminance: parseFloat(textLum.toFixed(3)),
+      alpha: elementData.alpha,
+      status: passes ? 'pass' : 'fail'
+    };
+    
+  } catch (error) {
+    return {
+      textSnippet: '',
+      messageKey: reason,
+      status: 'could-not-measure',
+      error: error.message
+    };
+  }
+}
+
 async function measureRoute(browser, route, viewport, strict) {
   const context = await browser.newContext({
     viewport,
@@ -226,33 +502,8 @@ async function measureRoute(browser, route, viewport, strict) {
       };
       
       if (key === 'color-contrast') {
-        const textContent = await page.evaluate((selector) => {
-          try {
-            const el = document.querySelector(selector);
-            return el ? el.textContent.trim().substring(0, 100) : '';
-          } catch {
-            return '';
-          }
-        }, node.target[0]);
-        
-        nodeInfo.textSnippet = textContent;
-        
-        if (node.any && node.any.length > 0 && node.any[0].message) {
-          const message = node.any[0].message;
-          if (message.includes('background image')) {
-            nodeInfo.reason = 'bgImage';
-          } else if (message.includes('gradient')) {
-            nodeInfo.reason = 'bgGradient';
-          } else if (message.includes('overlap')) {
-            nodeInfo.reason = 'bgOverlap';
-          } else if (message.includes('pseudo')) {
-            nodeInfo.reason = 'pseudoContent';
-          } else {
-            nodeInfo.reason = 'other';
-          }
-        } else {
-          nodeInfo.reason = 'unknown';
-        }
+        const measurement = await measureNodeContrast(page, node, viewport);
+        Object.assign(nodeInfo, measurement);
       }
       
       incomplete[key].nodes.push(nodeInfo);
