@@ -1,0 +1,852 @@
+{
+  "date": "2026-09-28T02:16:19.559Z",
+  "results": [
+    {
+      "route": "/",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 1308974,
+      "cls": 0,
+      "overBudget": true,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 972520,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/about",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 384319,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/about",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 384319,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/about/diana",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 632459,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/about/diana",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 632459,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/about/standards",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 22680,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/about/standards",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 22680,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/blog",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 27233,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/blog",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 27233,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/contact",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 25432,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/contact",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 25432,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/culture",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 624965,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/culture",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 624965,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/daily-desk",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 631818,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/daily-desk",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 631818,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/development",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 1116806,
+      "cls": 0,
+      "overBudget": true,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/development",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 1116806,
+      "cls": 0,
+      "overBudget": true,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/development/atlas",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 1514205,
+      "cls": 0,
+      "overBudget": true,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/development/atlas",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 1514205,
+      "cls": 0,
+      "overBudget": true,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/enigmas",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 1112535,
+      "cls": 0,
+      "overBudget": true,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/enigmas",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 765870,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/enigmas/aegis-awaiting-proof",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 239924,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/enigmas/aegis-awaiting-proof",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 239924,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/enigmas/ai-accountability-across-systems",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 176612,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/enigmas/ai-accountability-across-systems",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 176612,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/enigmas/civilization-of-interfaces",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 139884,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/enigmas/civilization-of-interfaces",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 139884,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/enigmas/discovery-with-purpose",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 212442,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/enigmas/discovery-with-purpose",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 212442,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/enigmas/eiram-evidence-uncertainty",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 207353,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/enigmas/eiram-evidence-uncertainty",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 207353,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/enigmas/foundation-research-vision",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 256078,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/enigmas/foundation-research-vision",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 256078,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/enigmas/noesis-chooses-to-reason",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 193856,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/enigmas/noesis-chooses-to-reason",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 193856,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/enigmas/our-american-story",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 237814,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/enigmas/our-american-story",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 237814,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/enigmas/pacific-royal-academy-design",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 214646,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/enigmas/pacific-royal-academy-design",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 214646,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/enigmas/power-and-accountability",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 212473,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/enigmas/power-and-accountability",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 212473,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/enigmas/seraphim-human-authority",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 207507,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/enigmas/seraphim-human-authority",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 207507,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/enigmas/socrates-art-of-why",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 207161,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/enigmas/socrates-art-of-why",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 207161,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/enigmas/test-a-legal-claim",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 212338,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/enigmas/test-a-legal-claim",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 212338,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/enigmas/the-evidence-threshold",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 207660,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/enigmas/the-evidence-threshold",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 207660,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/enigmas/the-machine-that-asks-why",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 207631,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/enigmas/the-machine-that-asks-why",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 207631,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/enigmas/what-would-reform-cost",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 176670,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/enigmas/what-would-reform-cost",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 176670,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/enigmas/when-the-model-says-i-dont-know",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 194103,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/enigmas/when-the-model-says-i-dont-know",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 194103,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/ether",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 1105794,
+      "cls": 0,
+      "overBudget": true,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/ether",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 1105794,
+      "cls": 0,
+      "overBudget": true,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/food",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 292903,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/food",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 292903,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/form",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 1297880,
+      "cls": 0,
+      "overBudget": true,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/form",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 1297880,
+      "cls": 0,
+      "overBudget": true,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/foundation",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 1024818,
+      "cls": 0,
+      "overBudget": true,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/foundation",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 1024818,
+      "cls": 0,
+      "overBudget": true,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/foundation/youth",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 800216,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/foundation/youth",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 800216,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/inquiry",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 583934,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/inquiry",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 583934,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/issues",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 1299332,
+      "cls": 0,
+      "overBudget": true,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/issues",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 1149972,
+      "cls": 0,
+      "overBudget": true,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/journal",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 993319,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/journal",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 993319,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/learning",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 600484,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/learning",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 600484,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/motor",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 784108,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/motor",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 784108,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/music",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 874710,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/music",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 874710,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/partners",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 615827,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/partners",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 615827,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/practice",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 134753,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/practice",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 134753,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/privacy",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 25550,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/privacy",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 25550,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/reading-list",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 24262,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/reading-list",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 24262,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/search",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 32431,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/search",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 32431,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/subscribe",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 594629,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/subscribe",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 594629,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/support",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 728955,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/support",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 728955,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/tech-lounge",
+      "viewport": "1440x900",
+      "violations": {},
+      "totalBytes": 578270,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    },
+    {
+      "route": "/tech-lounge",
+      "viewport": "390x844",
+      "violations": {},
+      "totalBytes": 578270,
+      "cls": 0,
+      "overBudget": false,
+      "hasMotionWithReducedMotion": false
+    }
+  ],
+  "errors": []
+}
