@@ -6,9 +6,9 @@ Desktop preview boards use a **1600 × 900 (16:9)** frame. The phone studies rem
 
 | Direction | Desktop | Phone | Suggested use |
 |---|---|---|---|
-| A · Cinematic issue | [Preview](a-desktop.webp) | [Preview](a-phone.webp) | Home, current issue, major feature |
+| A · Cinematic feature | [Preview](a-desktop.webp) | [Preview](a-phone.webp) | Alternate hero for feature-led departments |
 | B · Gallery chapters | [Preview](b-desktop.webp) | [Preview](b-phone.webp) | Motor, travel, culture, image-led departments |
-| C · Reading room | [Preview](c-desktop.webp) | [Preview](c-phone.webp) | Reading Room, Daily Desk, Journal, Fin@Tech |
+| C · Reading and reporting | [Preview](c-desktop.webp) | [Preview](c-phone.webp) | Daily Desk, Academic Journal, essays and reporting |
 | Major Feature cover | [Preview](feature-desktop.webp) | [Preview](feature-phone.webp) | Home Current Issue centerpiece |
 
 The cover section borrows the editorial *scale* of a newsmagazine cover without borrowing another publication's mark or exact cover design. Its art, headline and frame are Infinity's own. It opens the Current Issue after the splash, then hands off to Editorial Picks.
@@ -17,10 +17,10 @@ The cover section borrows the editorial *scale* of a newsmagazine cover without 
 
 ## Which reference wins
 
-1. The actual existing page and its behavior are the preservation baseline: [`src/home.html`](../../src/home.html), [`src/ether.html`](../../src/ether.html), [`src/motor.html`](../../src/motor.html), [`src/form.html`](../../src/form.html), and existing article routes. The source mirror may lag the published Site; compare with the live route before replacing a visual treatment.
-2. The approved department map and routes are in [`docs/blueprint/NAVIGATION.md`](../../docs/blueprint/NAVIGATION.md). This guide describes layout, not a route migration.
+1. The actual existing page and its behavior are the preservation baseline: [`src/home.html`](../../src/home.html), [`src/ether.html`](../../src/ether.html), [`src/motor.html`](../../src/motor.html), [`src/form.html`](../../src/form.html), existing article routes, learning paths, foundation concepts, and the projects ledger. The source mirror may lag the published Site; compare with the live route before replacing a visual treatment.
+2. Check [`docs/blueprint/NAVIGATION.md`](../../docs/blueprint/NAVIGATION.md) against the recorded ten-section public map before integrating a page. This guide describes layout, not a route migration.
 3. This kit defines the visual grammar for new pages and review of changes. Its illustrated text and crops are examples, not approved editorial or final imagery.
-4. Where this kit conflicts with [`design/sovrano-v1/`](../sovrano-v1/) on **page composition or the masthead name**, this kit wins. The older pack's room colors, motifs, and other compatible visual work remain useful. The 14 department names and routes in #60 remain; its visible menu grouping is still a proposal for Forge to bring back for owner review. Do not silently adopt either the older nine Italian menu slots or an unapproved ten-slot draft.
+4. Where this kit conflicts with [`design/sovrano-v1/`](../sovrano-v1/) on **page composition or the masthead name**, this kit wins. The older pack's room colors, motifs, and other compatible visual work remain useful. The department examples below record the earlier #60 outline; they do not authorize public routes or menu labels. Check the recorded owner decision and current navigation blueprint before applying a composition.
 5. [`design/issue-mocks/`](../issue-mocks/) explores possible room directions. A mock is not permission to overwrite an existing page or change a locked journey. Resolve a conflict with the owner in the relevant issue.
 
 The A/B/C labels describe **composition families, not identical page layouts**. A room can vary its grid, typography, color, texture, motif, transition, and editorial pacing inside its family. Music, Tech@Lounge, and Food should remain unmistakably different even with their text blurred, as #35 requires. Do not flatten #31's room identities into one reusable card grid.
@@ -70,7 +70,9 @@ These are intentionally **not interchangeable department cards**. The image or s
 - **MOTOR `/motor`:** treat supercars and classics as objects of desire: detail → silhouette → full reveal → craft/history. Keep its charcoal, oxblood, and cream atmosphere. Racing can enter as a different pace. Avoid a showroom grid or a giant pasted car photo with little editorial direction.
 - **FORM:** preserve full-viewport martial arts and meditation imagery, nearly invisible but readable captions, discreet previous/next arrows, and optional ambient music. Pose, breath, energy, and purpose take precedence over combat instruction. Keep the route from Forge & Flow easy to find.
 
-## Department map
+## Historical department composition examples
+
+This table records the department outline in #60 as historical layout examples. The approved public map has ten sections: The Daily Desk, Culture, MOTOR, Food, The Practice, Music, Academic Journal, Tech Lounge, In Development, and About. Re-key the examples to that map during integration; do not create routes from the older table. The A/B/C composition families do not depend on the older names.
 
 The layouts are families, not rigid component inventories. The distinguishing column is what gives each page its own character. The first two features named in the owner outline are editorial slots, not instructions to invent stories.
 
