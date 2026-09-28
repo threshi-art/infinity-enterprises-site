@@ -2,7 +2,7 @@ import { readFile, mkdir, writeFile, rm } from 'node:fs/promises';
 import { createPublicationPages } from './src/publication-pages.mjs';
 import { departments, departmentHref } from './src/departments.mjs';
 
-const [home, about, standards, atlas, diana, development, learning, journal, foundation, youth, techLounge, ether, motor, form, enigmas, enigmaArticle, enigmaStories, projectsJson, editorialJson, login, admin, roadmaps, sharedCss, music, dispatchScript, splashCss, splashScript, etherScript, etherImages, motorScript, motorImages, formScript, formImages, hero, detail, dianaImage, dianaCardsImage, developmentImage, techLoungeImage, techMacroImage, politicsImage, lawImage, academyImage, researchImage, learningImage, foundationImage, youthImage, coverImage, feedsConfig, feedsScript, worker] = await Promise.all([
+const [home, about, standards, atlas, diana, development, learning, journal, foundation, youth, techLounge, ether, motor, form, enigmas, enigmaArticle, enigmaStories, projectsJson, editorialJson, login, admin, roadmaps, sharedCss, music, dispatchScript, splashCss, splashScript, etherScript, etherImages, motorScript, motorImages, formScript, formImages, hero, detail, dianaImage, dianaCardsImage, developmentImage, techLoungeImage, techMacroImage, politicsImage, lawImage, academyImage, researchImage, learningImage, foundationImage, youthImage, coverImage, feedsConfig, feedsScript, pageViewsScript, pvScript, worker] = await Promise.all([
   readFile('src/home.html', 'utf8'),
   readFile('src/about.html', 'utf8'),
   readFile('src/standards.html', 'utf8'),
@@ -53,6 +53,8 @@ const [home, about, standards, atlas, diana, development, learning, journal, fou
   readFile('src/assets/cover.jpg'),
   readFile('src/feeds.json', 'utf8'),
   readFile('src/feeds.js', 'utf8'),
+  readFile('src/page-views.js', 'utf8'),
+  readFile('src/pv.js', 'utf8'),
   readFile('src/worker.js', 'utf8'),
 ]);
 const catalog = JSON.parse(roadmaps);
@@ -132,9 +134,13 @@ function page(source, path = '/') {
     .replaceAll('__COVER_IMAGE__', '/media/cover.jpg')
     .replaceAll('__ENIGMAS_LAW_IMAGE__', '/media/enigmas-law.jpg')
     .replaceAll('__ENIGMAS_POLITICS_IMAGE__', '/media/enigmas-politics.jpg');
-  return source.includes('/* PUBLICATION_SCRIPT */') ? result : result.replace('</body>', `<script>${publicationScript}</script></body>`);
+  if (source.includes('/* PUBLICATION_SCRIPT */')) {
+    return result.replace('</body>', '<script src="/pv.js" defer></script></body>');
+  } else {
+    return result.replace('</body>', `<script>${publicationScript}</script><script src="/pv.js" defer></script></body>`);
+  }
 }
-const workerWithFeeds = feedsScript.replace('/* FEEDS_CONFIG */ null', feedsConfig) + '\n' + worker;
+const workerWithFeeds = feedsScript.replace('/* FEEDS_CONFIG */ null', feedsConfig) + '\n' + pageViewsScript + '\n' + worker;
 const compiled = workerWithFeeds
   .replace('/* HOME_HTML */ null', JSON.stringify(page(home, '/').replace('/* SPLASH_CSS */', splashCss).replace('/* SPLASH_SCRIPT */', splashScript)))
   .replace('/* ABOUT_HTML */ null', JSON.stringify(page(about, '/about')))
@@ -174,8 +180,9 @@ const compiled = workerWithFeeds
   .replace('/* FOOD_IMAGE */ null', JSON.stringify(foodImage.toString('base64')))
   .replace('/* ETHER_IMAGES */ null', JSON.stringify(etherImages.map(image => image.toString('base64'))))
   .replace('/* MOTOR_IMAGES */ null', JSON.stringify(motorImages.map(image => image.toString('base64'))))
-  .replace('/* FORM_IMAGES */ null', JSON.stringify(formImages.map(image => image.toString('base64'))));
-if (/\/\* (?:HOME_HTML|ABOUT_HTML|ATLAS_HTML|DIANA_HTML|DEVELOPMENT_HTML|LEARNING_HTML|JOURNAL_HTML|FOUNDATION_HTML|YOUTH_HTML|TECH_LOUNGE_HTML|ENIGMAS_HTML|ENIGMA_ARTICLES|LOGIN_HTML|ADMIN_HTML|HERO_IMAGE|DETAIL_IMAGE|DIANA_IMAGE|DIANA_CARDS_IMAGE|DEVELOPMENT_IMAGE|TECH_LOUNGE_IMAGE|TECH_MACRO_IMAGE|ENIGMAS_POLITICS_IMAGE|ENIGMAS_LAW_IMAGE|ENIGMAS_ACADEMY_IMAGE) \*\//.test(compiled)) throw new Error('Build marker missing');
+  .replace('/* FORM_IMAGES */ null', JSON.stringify(formImages.map(image => image.toString('base64'))))
+  .replace('/* PV_SCRIPT */ null', JSON.stringify(pvScript));
+if (/\/\* (?:HOME_HTML|ABOUT_HTML|ATLAS_HTML|DIANA_HTML|DEVELOPMENT_HTML|LEARNING_HTML|JOURNAL_HTML|FOUNDATION_HTML|YOUTH_HTML|TECH_LOUNGE_HTML|ENIGMAS_HTML|ENIGMA_ARTICLES|LOGIN_HTML|ADMIN_HTML|HERO_IMAGE|DETAIL_IMAGE|DIANA_IMAGE|DIANA_CARDS_IMAGE|DEVELOPMENT_IMAGE|TECH_LOUNGE_IMAGE|TECH_MACRO_IMAGE|ENIGMAS_POLITICS_IMAGE|ENIGMAS_LAW_IMAGE|ENIGMAS_ACADEMY_IMAGE|PV_SCRIPT) \*\//.test(compiled)) throw new Error('Build marker missing');
 await rm('dist', { recursive: true, force: true });
 await mkdir('dist/server', { recursive: true });
 await writeFile('dist/server/index.js', compiled);

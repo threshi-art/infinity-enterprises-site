@@ -32,3 +32,11 @@ export const feedSnapshots = sqliteTable('feed_snapshots', {
   lastAttemptAt: text('last_attempt_at').notNull(),
   lastError: text('last_error'),
 });
+
+export const pageViews = sqliteTable('page_views', {
+  id: text('id').primaryKey(),
+  path: text('path').notNull(),
+  day: text('day').notNull(),
+  referrerDomain: text('referrer_domain'),
+  createdAt: text('created_at').notNull(),
+});
