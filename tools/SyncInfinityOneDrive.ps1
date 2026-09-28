@@ -2,7 +2,8 @@
 # Stops before changing a folder with unrelated files or uncommitted edits.
 [CmdletBinding()]
 param(
-  [string]$Destination = (Join-Path $env:USERPROFILE 'OneDrive\Documents\Projects\Websites\Infinity\infinity-enterprises-site')
+  [Parameter(Mandatory=$true)]
+  [string]$Destination
 )
 
 $ErrorActionPreference = 'Stop'
