@@ -56,9 +56,11 @@ The result is `dist/server/index.js`, a Worker exporting `fetch(request, env)`. 
 
 ### Page view counter
 
-Privacy-friendly, cookieless page view tracking. Implementation: `src/page-views.js` (server logic), `src/pv.js` (client script). Respects Do Not Track and Global Privacy Control. Filters 13 bot patterns: bot, crawl, spider, slurp, preview, facebookexternalhit, headless, curl, wget, python, uptime, monitor, check. Stores only: normalized path, day (Pacific time), referrer domain (hostname only, same-site becomes null), timestamp. No IP addresses, cookies, full User-Agents, or query strings.
+Privacy-friendly, cookieless page view tracking. Implementation: `src/page-views.js` (server logic), `src/pv.js` (client script). Respects Do Not Track and Global Privacy Control. Filters 13 bot patterns: bot, crawl, spider, slurp, preview, facebookexternalhit, headless, curl, wget, python, uptime, monitor, check. Records only valid public page paths served by the worker. Includes a best-effort rate limit of approximately 300 inserts per minute per isolate (no IP or visitor identifier). Stores only: normalized path, day (Pacific time), referrer domain (hostname only, same-site becomes null), timestamp. No IP addresses, cookies, full User-Agents, or query strings.
 
 **Migration:** Apply [drizzle/0002_graceful_vision.sql](drizzle/0002_graceful_vision.sql) before release.
+
+**Limitations:** The counter can be inflated by scripted posts. The rate cap protects the database, not the numbers, and applies per server instance (best-effort, not a hard limit). Any traffic-based decision should first exclude suspect days using the query below.
 
 **Query examples:**
 
@@ -75,6 +77,21 @@ GROUP BY path ORDER BY views DESC LIMIT 20;
 SELECT referrer_domain, COUNT(*) as views FROM page_views 
 WHERE day >= date('now', '-7 days') AND referrer_domain IS NOT NULL
 GROUP BY referrer_domain ORDER BY views DESC;
+
+-- Suspect days (anomalous spikes)
+SELECT 
+  pv.day,
+  COUNT(*) as views,
+  ROUND(AVG(prev.view_count), 1) as avg_previous_14d
+FROM page_views pv
+JOIN (
+  SELECT day, COUNT(*) as view_count 
+  FROM page_views 
+  GROUP BY day
+) prev ON prev.day < pv.day AND prev.day >= date(pv.day, '-14 days')
+GROUP BY pv.day
+HAVING COUNT(*) >= 50 AND COUNT(*) > 3 * AVG(prev.view_count)
+ORDER BY pv.day DESC;
 ```
 
 **To disable:** Remove the script include from `build.mjs` page() function (line ~136) and optionally disable the `/api/pv` route in `src/worker.js`.

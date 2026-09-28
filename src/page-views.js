@@ -42,6 +42,26 @@ function getPacificDay(timestamp) {
   return formatter.format(new Date(timestamp));
 }
 
+const validPublicPaths = new Set(/* VALID_PUBLIC_PATHS */ null);
+
+let insertCount = 0;
+let resetTime = Date.now();
+const RATE_LIMIT = 300;
+const RATE_WINDOW = 60000;
+
+function checkRateLimit() {
+  const now = Date.now();
+  if (now - resetTime >= RATE_WINDOW) {
+    insertCount = 0;
+    resetTime = now;
+  }
+  if (insertCount >= RATE_LIMIT) {
+    return false;
+  }
+  insertCount++;
+  return true;
+}
+
 async function recordPageView(request, env) {
   if (!env.DB) {
     return new Response(null, { status: 204 });
@@ -65,6 +85,14 @@ async function recordPageView(request, env) {
 
   const path = normalizePath(body.path);
   if (path.startsWith('/admin') || path.startsWith('/login')) {
+    return new Response(null, { status: 204 });
+  }
+
+  if (!validPublicPaths.has(path)) {
+    return new Response(null, { status: 204 });
+  }
+
+  if (!checkRateLimit()) {
     return new Response(null, { status: 204 });
   }
 
