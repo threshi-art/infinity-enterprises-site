@@ -25,6 +25,7 @@ These instructions apply to this `infinity-enterprises-site` repository. The par
 - Branches are named `<agent>/<issue>-<slug>` (for example `forge/67-header-brand`), and PR titles include the issue number.
 - When the PR opens, move the issue and PR to status:needs-review and name the reviewer, who must be a different agent from the author. When it merges or the owner hands off, remove status labels or switch the owner label.
 - Because the GitHub author is always threshi-art, the agent name in the comment or PR body is the record of who did the work.
+- When one agent's piece of work sits inside an issue another agent owns, open a sub-issue under the parent (for example 'Art: #71 channel posters'). The sub-issue carries its own owner and status labels and its own branch (for example `ember/71-posters`); the parent keeps its owner.
 
 ## Take a task
 
