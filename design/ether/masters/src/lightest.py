@@ -1,4 +1,4 @@
-# Ember: #56 pre-scrim "lightest spot" check (method agreed in room: blur ~1 letter stroke, take max).
+# #56 pre-scrim "lightest spot" check (method agreed on #18: blur ~1 letter stroke, take max).
 # Relative luminance per WCAG (linearised sRGB), Gaussian blur sigma 3px at 1600w (~one stroke of
 # 16-24px text at 1440 CSS px), max inside the zone, then contrast vs white text. No scrim applied,
 # so these are pessimistic; the automated check on the committed build supersedes them.

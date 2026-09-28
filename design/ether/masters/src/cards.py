@@ -1,4 +1,4 @@
-# Ember: #56 mood cards, 800x800. Square 900x900 crop from a 1600x900 scene (x0 chosen per card),
+# #56 mood cards, 800x800. Square 900x900 crop from a 1600x900 scene (x0 chosen per card),
 # Lanczos to 800. Noir Jazz "Upcoming" is a procedural textless dark field (page supplies text).
 from PIL import Image, ImageFilter
 import numpy as np, json, os

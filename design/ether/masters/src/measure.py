@@ -1,4 +1,4 @@
-# Ember: #56 layout-rule check + contact sheet. Zone = left 58% x bottom 45%. Phone crop 506x900,
+# #56 layout-rule check + contact sheet. Zone = left 58% x bottom 45%. Phone crop 506x900,
 # text column = left 70% of crop; phone_x0 = centre crop if its column p95<=70, else rightmost that passes.
 from PIL import Image, ImageDraw
 import numpy as np, json, os
