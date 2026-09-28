@@ -37,6 +37,7 @@ const foodBase64 = /* FOOD_IMAGE */ null;
 const etherBase64 = /* ETHER_IMAGES */ null;
 const motorBase64 = /* MOTOR_IMAGES */ null;
 const formBase64 = /* FORM_IMAGES */ null;
+const pvScript = /* PV_SCRIPT */ null;
 const encoder = new TextEncoder();
 const cookieName = 'infinity_staff_session';
 const sessionHours = 12;
@@ -147,6 +148,12 @@ export default {
     const adminPath = path === '/admin' || path === '/admin/unlock' || path === '/admin/lock' || path === '/admin/inbox' || path === '/admin/subscribers';
     if (adminPath && (!env.PIN_CODE || !env.SESSION_SECRET)) return html('<h1>Staff area is unavailable</h1>', 503);
     if (request.method === 'GET' && path === '/api/dispatch') return latestDispatch();
+    if (request.method === 'GET' && path === '/api/feeds') {
+      const section = url.searchParams.get('section') || '';
+      return getFeeds(section, env);
+    }
+    if (request.method === 'POST' && path === '/api/pv') return recordPageView(request, env);
+    if (request.method === 'GET' && path === '/pv.js') return new Response(pvScript, { headers: {'content-type':'application/javascript; charset=utf-8','cache-control':'public, max-age=86400','x-content-type-options':'nosniff'} });
     if (request.method === 'GET' && path === '/feed.xml') return new Response(feedXml, { headers: {'content-type':'application/rss+xml; charset=utf-8','cache-control':'public, max-age=3600'} });
     if (request.method === 'POST' && path === '/api/subscribe') {
       const fields = await formValues(request);

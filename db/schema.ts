@@ -24,3 +24,19 @@ export const loginAttempts = sqliteTable('login_attempts', {
   blockedUntil: integer('blocked_until').notNull().default(0),
   updatedAt: integer('updated_at').notNull(),
 });
+
+export const feedSnapshots = sqliteTable('feed_snapshots', {
+  sourceId: text('source_id').primaryKey(),
+  itemsJson: text('items_json').notNull(),
+  fetchedAt: text('fetched_at'),
+  lastAttemptAt: text('last_attempt_at').notNull(),
+  lastError: text('last_error'),
+});
+
+export const pageViews = sqliteTable('page_views', {
+  id: text('id').primaryKey(),
+  path: text('path').notNull(),
+  day: text('day').notNull(),
+  referrerDomain: text('referrer_domain'),
+  createdAt: text('created_at').notNull(),
+});

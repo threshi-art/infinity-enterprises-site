@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [studio]
+    branches: [main, studio]
   pull_request:
     branches: [main, studio]
   workflow_dispatch:
@@ -34,6 +34,9 @@ jobs:
 
       - name: Build worker
         run: npm run build
+
+      - name: Run tests
+        run: npm test
 
       - name: Verify build output
         run: |

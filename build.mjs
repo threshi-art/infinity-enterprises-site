@@ -1,7 +1,8 @@
 import { readFile, mkdir, writeFile, rm } from 'node:fs/promises';
 import { createPublicationPages } from './src/publication-pages.mjs';
+import { departments, departmentHref } from './src/departments.mjs';
 
-const [home, about, standards, atlas, diana, development, learning, journal, foundation, youth, techLounge, ether, motor, form, enigmas, enigmaArticle, enigmaStories, projectsJson, editorialJson, login, admin, roadmaps, sharedCss, music, dispatchScript, splashCss, splashScript, etherScript, etherImages, motorScript, motorImages, formScript, formImages, hero, detail, dianaImage, dianaCardsImage, developmentImage, techLoungeImage, techMacroImage, politicsImage, lawImage, academyImage, researchImage, learningImage, foundationImage, youthImage, coverImage, worker] = await Promise.all([
+const [home, about, standards, atlas, diana, development, learning, journal, foundation, youth, techLounge, ether, motor, form, enigmas, enigmaArticle, enigmaStories, projectsJson, editorialJson, login, admin, roadmaps, sharedCss, music, dispatchScript, splashCss, splashScript, etherScript, etherImages, motorScript, motorImages, formScript, formImages, hero, detail, dianaImage, dianaCardsImage, developmentImage, techLoungeImage, techMacroImage, politicsImage, lawImage, academyImage, researchImage, learningImage, foundationImage, youthImage, coverImage, feedsConfig, feedsScript, pageViewsScript, pvScript, worker] = await Promise.all([
   readFile('src/home.html', 'utf8'),
   readFile('src/about.html', 'utf8'),
   readFile('src/standards.html', 'utf8'),
@@ -50,6 +51,10 @@ const [home, about, standards, atlas, diana, development, learning, journal, fou
   readFile('src/assets/foundation.jpg'),
   readFile('src/assets/youth.jpg'),
   readFile('src/assets/cover.jpg'),
+  readFile('src/feeds.json', 'utf8'),
+  readFile('src/feeds.js', 'utf8'),
+  readFile('src/page-views.js', 'utf8'),
+  readFile('src/pv.js', 'utf8'),
   readFile('src/worker.js', 'utf8'),
 ]);
 const catalog = JSON.parse(roadmaps);
@@ -94,10 +99,10 @@ function page(source, path = '/') {
   if (path === '/search') source = source.replace('<script>/* PUBLICATION_SCRIPT */</script>', `<script>window.infinityIndex=${JSON.stringify(searchRecords).replace(/</g,'\\u003c')};</script><script>/* PUBLICATION_SCRIPT */</script>`);
   const hasPublicationStyle = source.includes('/* PUBLICATION_CSS */');
   const hasPublicationFooter = source.includes('class="publication-links"');
-  const mainLinks = [['/daily-desk','01','The Daily Desk'],['/culture','02','Culture'],['/motor','03','MOTOR'],['/food','04','Food'],['/practice','05','The Practice'],['/music','06','Music'],['/inquiry','07','Academic Journal'],['/tech-lounge','08','Tech Lounge'],['/development','09','In Development'],['/about','10','About the Enterprise']];
-  const mainNav = '<span class="toc-label">Explore Infinity</span>' + mainLinks.map(([href,no,label]) => `<a href="${href}"><span>${no}</span>${label}</a>`).join('') + '<span class="toc-label toc-secondary">The publication</span>' + [['/blog','Agentic@Enigmas / Opinion'],['/issues','Issues'],['/search','Search'],['/reading-list','Reading list'],['/subscribe','The monthly letter'],['/partners','Partnerships'],['/support','Support'],['/contact','Contact'],['/about/standards','Editorial standards'],['/admin','Staff']].map(([href,label]) => `<a href="${href}" class="child">${label}</a>`).join('');
-  const roomBar = '<nav class="room-bar" aria-label="Main sections"><span>Explore the issue</span>' + mainLinks.map(([href,,label])=>`<a href="${href}"${path===href?' aria-current="page"':''}>${label}</a>`).join('') + '</nav>';
-  const homeIndex = `<section class="home-department-index" aria-labelledby="department-index-title"><span class="hub-meta">Infinity / The complete index</span><h2 id="department-index-title">Every room has a door.</h2><div>${mainLinks.map(([href,no,label])=>`<a href="${href}"><span>${no}</span>${label}<span aria-hidden="true">↗</span></a>`).join('')}</div><p>Find original stories and visual editions throughout the house. <a href="/issues">Open the issue archive ↗</a></p></section>`;
+  const mainLinks = departments.map((d,i)=>[departmentHref(d,i),String(i+1).padStart(2,'0'),d.name]);
+  const mainNav = '<span class="toc-label">Explore Infinity</span><a href="/departments">All departments</a>' + mainLinks.map(([href,no,label]) => `<a href="${href}"${path===href?' aria-current="page"':''}><span>${no}</span>${label}</a>`).join('') + '<span class="toc-label toc-secondary">The publication</span>' + [['/blog','Agentic@Enigmas / Opinion'],['/issues','Issues'],['/search','Search'],['/reading-list','Reading list'],['/subscribe','The monthly letter'],['/partners','Partnerships'],['/support','Support'],['/contact','Contact'],['/about/standards','Editorial standards'],['/admin','Staff']].map(([href,label]) => `<a href="${href}" class="child">${label}</a>`).join('');
+  const roomBar = '<nav class="room-bar" aria-label="Main sections"><span>Explore the issue</span>' + [['/departments','All departments'],['/daily-desk','The Daily Desk'],...departments.filter(d=>d.route && d.route !== '/').slice(0,5).map(d=>[d.route,d.name])].map(([href,label])=>`<a href="${href}"${path===href?' aria-current="page"':''}>${label}</a>`).join('') + '</nav>';
+  const homeIndex = `<section class="home-department-index" aria-labelledby="department-index-title"><span class="hub-meta">Infinity / The complete index</span><h2 id="department-index-title">Every room has a door.</h2><div>${mainLinks.map(([href,no,label])=>`<a href="${href}"><span>${no}</span>${label}<span aria-hidden="true">↗</span></a>`).join('')}</div><p>Find original stories and visual editions throughout the house. <a href="/departments">Explore all departments ↗</a></p></section>`;
   const title = source.match(/<title>([^<]+)<\/title>/)?.[1] || 'Infinity Enterprises';
   const description = source.match(/<meta name="description" content="([^"]*)"/)?.[1] || 'An independent publication.';
   const origin = 'https://infinity-enterprises.infinity-ent-8507.chatgpt.site';
@@ -129,9 +134,14 @@ function page(source, path = '/') {
     .replaceAll('__COVER_IMAGE__', '/media/cover.jpg')
     .replaceAll('__ENIGMAS_LAW_IMAGE__', '/media/enigmas-law.jpg')
     .replaceAll('__ENIGMAS_POLITICS_IMAGE__', '/media/enigmas-politics.jpg');
-  return source.includes('/* PUBLICATION_SCRIPT */') ? result : result.replace('</body>', `<script>${publicationScript}</script></body>`);
+  if (source.includes('/* PUBLICATION_SCRIPT */')) {
+    return result.replace('</body>', '<script src="/pv.js" defer></script></body>');
+  } else {
+    return result.replace('</body>', `<script>${publicationScript}</script><script src="/pv.js" defer></script></body>`);
+  }
 }
-const compiled = worker
+const workerWithFeeds = feedsScript.replace('/* FEEDS_CONFIG */ null', feedsConfig) + '\n' + pageViewsScript + '\n' + worker;
+const compiled = workerWithFeeds
   .replace('/* HOME_HTML */ null', JSON.stringify(page(home, '/').replace('/* SPLASH_CSS */', splashCss).replace('/* SPLASH_SCRIPT */', splashScript)))
   .replace('/* ABOUT_HTML */ null', JSON.stringify(page(about, '/about')))
   .replace('/* STANDARDS_HTML */ null', JSON.stringify(page(standards, '/about/standards')))
@@ -170,8 +180,16 @@ const compiled = worker
   .replace('/* FOOD_IMAGE */ null', JSON.stringify(foodImage.toString('base64')))
   .replace('/* ETHER_IMAGES */ null', JSON.stringify(etherImages.map(image => image.toString('base64'))))
   .replace('/* MOTOR_IMAGES */ null', JSON.stringify(motorImages.map(image => image.toString('base64'))))
-  .replace('/* FORM_IMAGES */ null', JSON.stringify(formImages.map(image => image.toString('base64'))));
-if (/\/\* (?:HOME_HTML|ABOUT_HTML|ATLAS_HTML|DIANA_HTML|DEVELOPMENT_HTML|LEARNING_HTML|JOURNAL_HTML|FOUNDATION_HTML|YOUTH_HTML|TECH_LOUNGE_HTML|ENIGMAS_HTML|ENIGMA_ARTICLES|LOGIN_HTML|ADMIN_HTML|HERO_IMAGE|DETAIL_IMAGE|DIANA_IMAGE|DIANA_CARDS_IMAGE|DEVELOPMENT_IMAGE|TECH_LOUNGE_IMAGE|TECH_MACRO_IMAGE|ENIGMAS_POLITICS_IMAGE|ENIGMAS_LAW_IMAGE|ENIGMAS_ACADEMY_IMAGE) \*\//.test(compiled)) throw new Error('Build marker missing');
+  .replace('/* FORM_IMAGES */ null', JSON.stringify(formImages.map(image => image.toString('base64'))))
+  .replace('/* PV_SCRIPT */ null', JSON.stringify(pvScript))
+  .replace('/* VALID_PUBLIC_PATHS */ null', JSON.stringify([
+    '/', '/about', '/about/standards', '/about/diana', '/development', '/development/atlas',
+    '/learning', '/journal', '/foundation', '/foundation/youth', '/tech-lounge', '/ether',
+    '/motor', '/form', '/enigmas',
+    ...Object.keys(publicationPages),
+    ...stories.map(story => '/enigmas/' + story.slug)
+  ]));
+if (/\/\* (?:HOME_HTML|ABOUT_HTML|ATLAS_HTML|DIANA_HTML|DEVELOPMENT_HTML|LEARNING_HTML|JOURNAL_HTML|FOUNDATION_HTML|YOUTH_HTML|TECH_LOUNGE_HTML|ENIGMAS_HTML|ENIGMA_ARTICLES|LOGIN_HTML|ADMIN_HTML|HERO_IMAGE|DETAIL_IMAGE|DIANA_IMAGE|DIANA_CARDS_IMAGE|DEVELOPMENT_IMAGE|TECH_LOUNGE_IMAGE|TECH_MACRO_IMAGE|ENIGMAS_POLITICS_IMAGE|ENIGMAS_LAW_IMAGE|ENIGMAS_ACADEMY_IMAGE|PV_SCRIPT|VALID_PUBLIC_PATHS) \*\//.test(compiled)) throw new Error('Build marker missing');
 await rm('dist', { recursive: true, force: true });
 await mkdir('dist/server', { recursive: true });
 await writeFile('dist/server/index.js', compiled);

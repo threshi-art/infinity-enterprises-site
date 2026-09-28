@@ -19,16 +19,30 @@ These instructions apply to this `infinity-enterprises-site` repository. The par
 ## Take a task
 
 - Read this file, `README.md`, `site-source.json`, and `git status --short --branch` before editing. Fetch the latest GitHub state.
-- Track each feature or bug in a GitHub issue with Issue, Description of problem, Root cause, Objective evidence, Proposed corrective action, and acceptance criteria. Mark an unverified root cause as unknown or a hypothesis. Comment with the working agent's name, current status, and files being changed so overlapping work is visible.
+- Track each feature or bug in a GitHub issue using the issue template sections: Description, Steps to Reproduce (for bugs), Expected Behavior, Actual Behavior (for bugs), Root Cause, Proposed Corrective Action, Objective Evidence & Screenshots, Environment, Acceptance criteria (for features), and Owner and handoff. The workflow is aligned with ISO 9001:2015 (evidence-based decision making, documented nonconformities and corrective actions) and ISO/IEC/IEEE 12207 (configuration and maintenance management) principles. Mark an unverified root cause as unknown or a hypothesis. Comment with the working agent's name, current status, and files being changed so overlapping work is visible.
+- This repository is public: never put personal details (emails, account names, tokens, IP addresses) in screenshots, logs or the Environment section.
 - Preserve existing pages, articles, images, assets, and history. If another agent has uncommitted or overlapping changes, coordinate in the issue before editing those files.
-- Make focused, complete, buildable commits on `studio` and reference the issue number in the commit or issue comment. Run `npm ci` and `npm run build` for code changes before pushing.
+- Each issue ships as a pull request into `studio` that follows the PR template and uses `Refs #N`. Make focused, complete, buildable commits on a branch cut from `studio` and reference the issue number in the commit or issue comment. Run `npm ci` and `npm run build` for code changes before pushing.
+- For work finished without a PR (for example a comment-only task), post a completion comment on the issue with these sections: Root Cause, Corrective Action Taken, Objective Evidence, Environment, Final notes to reviewer.
 
 ## Share changes safely
 
 - Before pushing, fetch `studio` again. If it advanced, integrate those commits in your own clone and resolve conflicts before pushing. Push normally; retry after another fetch if GitHub rejects a nonfastforward push. Never force push, reset away another person's work, or use `git clean` to resolve a conflict.
 - Keep unfinished experiments local until they are ready for other contributors. Stop and coordinate if changes to the same files cannot be combined safely.
-- Every PR restates the problem, records the corrective action actually taken, cites objective evidence at the exact head commit, and gives the codeowner or reviewer concrete next steps. For a release with multiple issues, repeat that record per issue. Use `Closes` only when all acceptance criteria are met; use `Refs` for partial or pending live verification. Forge or Codex may prepare a release pull request from `studio` to `main` and link the included issues. Codex or Cursor reviews the build and diff, coordinates a pause on pushes to `studio`, and merges accepted releases. After a merge commit lands, Forge or Codex fast forwards `studio` to the new `main` before the next release cycle.
+- Every PR into `studio` follows the PR template sections: Description, Related Issue (using `Refs #N`), Objective Evidence & Screenshots (with Before/After table), Type of Change & Corrective Action (listing what actually changed, and identifying content preserved, moved, or removed), Checklist, and Final notes to reviewer (naming the peer reviewer). Release PRs from `studio` to `main` list `Closes #N` only when the issue's full acceptance criteria are satisfied; use `Refs #N` for partial work or work still waiting on live, phone, or migration checks. Merging to `main` does not publish the live Site, and GitHub auto-closing an issue is not proof the work is complete. For a release PR carrying multiple issues, repeat the problem, corrective action, and evidence record per issue. Forge or Codex may prepare a release pull request from `studio` to `main` and link the included issues. Codex or Cursor reviews the build and diff, coordinates a pause on pushes to `studio`, and merges accepted releases. After a merge commit lands, Forge or Codex fast forwards `studio` to the new `main` before the next release cycle.
 - Do not commit `dist/`, `node_modules/`, credentials, `.env` files, visitor data, or private engineering documents.
+
+## Review and merge into studio
+
+- The author never merges its own PR.
+- One other contributor posts a review comment in the policy's evidence format. Puck is the default reviewer. Forge reviews Ember's and Conduit's code PRs and all art PRs.
+- A review says which parts were read and which parts only the build proves. The proof that code runs is a green build on the exact head commit, not a reviewer's read.
+- Reviews are comments, not GitHub approvals. Every contributor posts through the owner's single GitHub account, and GitHub doesn't let an account approve its own PR, so branch protection can't require an approval. The no-self-merge rule holds only because every contributor follows it.
+- A PR may be merged into `studio` only when every required check is green on the exact head commit, and the latest non-author review covers that exact commit with no open blocker or major findings. If the review has any, the author fixes them on the same branch and the reviewer re-checks at the new head. A new push means a new review is needed.
+- After the merge conditions are met, the author's cloud agent merges into `studio` with a normal merge commit (no squash on `studio`, so release slices keep their history). The merge comment links the review comment it relied on and names the head commit that was built.
+- Art PRs are opened and merged by the art author's own cloud agent and change only asset files and manifests, never page code. The reviewer checks file paths, file weight and how the art looks on the page.
+- `main` is unchanged: Codex or Cursor reviews and squash-merges release PRs.
+- Work pushed straight to `studio` before the PR flow was adopted may finish that way. Everything new goes through a PR.
 
 ## Publishing and syncing
 

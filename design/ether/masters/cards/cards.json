@@ -1,0 +1,22 @@
+{
+ "cosmic-funk": {
+  "source": "../ether-1.jpg",
+  "crop_x0_of_1600": 580
+ },
+ "late-night-soul": {
+  "source": "masters/late-night-soul-1.jpg",
+  "crop_x0_of_1600": 680
+ },
+ "mutant-groove": {
+  "source": "masters/mutant-groove-3.png",
+  "crop_x0_of_1600": 470
+ },
+ "spy-lounge": {
+  "source": "masters/spy-lounge-3.png",
+  "crop_x0_of_1600": 620
+ },
+ "noir-jazz-upcoming": {
+  "source": "procedural (src/cards.py, seed 56)",
+  "crop_x0_of_1600": null
+ }
+}

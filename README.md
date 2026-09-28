@@ -48,6 +48,59 @@ npm run build
 
 The result is `dist/server/index.js`, a Worker exporting `fetch(request, env)`. The database schema is in `db/schema.ts`, with generated migration files in `drizzle/`. Keep applied migrations immutable and create a new migration after schema changes.
 
+## Server features
+
+### RSS feed aggregator
+
+`GET /api/feeds?section=mercati` serves headline-only items from public agency RSS feeds (Federal Reserve, SEC, BEA, ECB). Implementation: `src/feeds.js`, `src/feeds.json`. See [drizzle/0001_magical_bullseye.sql](drizzle/0001_magical_bullseye.sql) for the feed snapshots table.
+
+### Page view counter
+
+Privacy-friendly, cookieless page view tracking. Implementation: `src/page-views.js` (server logic), `src/pv.js` (client script). Respects Do Not Track and Global Privacy Control. Filters 13 bot patterns: bot, crawl, spider, slurp, preview, facebookexternalhit, headless, curl, wget, python, uptime, monitor, check. Records only valid public page paths served by the worker. Stores only: normalized path, day (Pacific time), referrer domain (hostname only, same-site becomes null), timestamp. No IP addresses, cookies, full User-Agents, or query strings.
+
+**Migration:** Apply [drizzle/0002_graceful_vision.sql](drizzle/0002_graceful_vision.sql) before release.
+
+**Limitations:** The counter can be inflated by scripted posts. The per-instance rate cap (~300 inserts/minute per isolate) protects the database, not the numbers, and is best-effort, not a hard limit. Before making traffic-based decisions, check for suspect days using the script below.
+
+**Suspect days analysis:**
+
+Scripted posts can inflate counts. Use `scripts/suspect-days.mjs` to identify anomalous spikes. The script assigns each day one of four statuses:
+
+- **suspect**: ≥50 views and exceeds 3× the median of up to 14 recent usable days
+- **cleared**: manually verified and added to `data/cleared-days.json`
+- **ok**: checked and passed
+- **not_checked**: insufficient history (fewer than 7 usable days)
+
+Usable days are those with status `ok`, plus any day on the cleared list. Nothing gets checked until you review the first 7 days and add them to `data/cleared-days.json`. If the script finds no day with enough history, it prints `no baseline yet: clear the first 7 days`. Real growth can be preserved by clearing verified growth days.
+
+```bash
+# Export daily views and analyze
+wrangler d1 execute <database> --remote --command "SELECT day, COUNT(*) as views FROM page_views GROUP BY day ORDER BY day" --json > daily-views.json
+node scripts/suspect-days.mjs daily-views.json
+
+# Or pipe directly
+wrangler d1 execute <database> --remote --command "SELECT day, COUNT(*) as views FROM page_views GROUP BY day ORDER BY day" --json | node scripts/suspect-days.mjs --json
+```
+
+**Query examples:**
+
+```sql
+-- Daily views (for suspect-days analysis)
+SELECT day, COUNT(*) as views FROM page_views GROUP BY day ORDER BY day;
+
+-- Top pages (last 30 days)
+SELECT path, COUNT(*) as views FROM page_views 
+WHERE day >= date('now', '-30 days') 
+GROUP BY path ORDER BY views DESC LIMIT 20;
+
+-- Referrer sources (last 7 days)
+SELECT referrer_domain, COUNT(*) as views FROM page_views 
+WHERE day >= date('now', '-7 days') AND referrer_domain IS NOT NULL
+GROUP BY referrer_domain ORDER BY views DESC;
+```
+
+**To disable:** Remove the script include from `build.mjs` page() function (line ~136) and optionally disable the `/api/pv` route in `src/worker.js`.
+
 ## Publishing and collaboration
 
 This GitHub repository is a public source mirror for Cursor and other collaborators. A GitHub commit alone does not publish the live Site. The live version is built and deployed through the ChatGPT Sites project identified in `.openai/hosting.json`. After publishing, bring the resulting source changes and exact Sites version back to this mirror.

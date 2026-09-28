@@ -8,6 +8,20 @@
       "when": 1790477080914,
       "tag": "0000_strong_kat_farrell",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1790565976550,
+      "tag": "0001_magical_bullseye",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1790576696490,
+      "tag": "0002_graceful_vision",
+      "breakpoints": true
     }
   ]
 }
