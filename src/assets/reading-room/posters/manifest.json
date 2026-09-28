@@ -1,0 +1,54 @@
+{
+  "purpose": "Tap-to-load poster cards shown in place of the YouTube player for commentary videos on the Reading Room Ukraine desk (issue #71, sub-issue #84). The page loads the privacy-enhanced player only after a tap.",
+  "source": "Drawn in code (gradient fields, grain, play mark and type) by an AI assistant for Infinity Enterprises. No photos, channel logos, profile pictures or faces.",
+  "fonts": "Bodoni Moda and Inter, both SIL Open Font License 1.1",
+  "palette": {
+    "background": "#0e0d12",
+    "name": "#f4efe6",
+    "kicker_and_rule": "#d8c39a",
+    "labels": "#cfc8bd"
+  },
+  "contrast_note": "Measured against the 90th-percentile background luminance of the left 55% of each card, where all text sits. Worst case across the four files: name #f4efe6 12.8:1, labels #cfc8bd 8.8:1, kicker #d8c39a 8.5:1 (WCAG AA needs 4.5:1).",
+  "files": [
+    {
+      "file": "jake-broe-desktop.webp",
+      "channel": "Jake Broe",
+      "use": "desktop card, 16:9",
+      "width": 1280,
+      "height": 720,
+      "format": "WebP (lossy, quality 86)",
+      "bytes": 24780,
+      "alt": "Poster for Jake Broe's commentary video on YouTube: the channel name in serif type over a dark blue and violet gradient, with a play button."
+    },
+    {
+      "file": "jake-broe-phone.webp",
+      "channel": "Jake Broe",
+      "use": "phone card, 16:9",
+      "width": 640,
+      "height": 360,
+      "format": "WebP (lossy, quality 86)",
+      "bytes": 11162,
+      "alt": "Poster for Jake Broe's commentary video on YouTube: the channel name in serif type over a dark blue and violet gradient, with a play button."
+    },
+    {
+      "file": "preston-stewart-desktop.webp",
+      "channel": "Preston Stewart",
+      "use": "desktop card, 16:9",
+      "width": 1280,
+      "height": 720,
+      "format": "WebP (lossy, quality 86)",
+      "bytes": 26836,
+      "alt": "Poster for Preston Stewart's commentary video on YouTube: the channel name in serif type over a dark wine and amber gradient, with a play button."
+    },
+    {
+      "file": "preston-stewart-phone.webp",
+      "channel": "Preston Stewart",
+      "use": "phone card, 16:9",
+      "width": 640,
+      "height": 360,
+      "format": "WebP (lossy, quality 86)",
+      "bytes": 11986,
+      "alt": "Poster for Preston Stewart's commentary video on YouTube: the channel name in serif type over a dark wine and amber gradient, with a play button."
+    }
+  ]
+}
