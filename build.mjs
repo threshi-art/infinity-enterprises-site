@@ -72,7 +72,13 @@ const feedOrigin = 'https://infinity-enterprises.infinity-ent-8507.chatgpt.site'
 if (!Array.isArray(projects) || projects.length < 10 || projects.some(project => !['AI','Software','Civic','Research'].includes(project.field) || !['feature','products','prototypes','ideas'].includes(project.group))) throw new Error('Invalid project catalog');
 const sections = ['Politics', 'The Intelligence Desk', 'Law, Power & Institutions', 'Civilization Futures', 'The Reading Room'];
 if (!Array.isArray(stories) || stories.length < 3 || new Set(stories.map(story => story.slug)).size !== stories.length || stories.some(story => !/^[a-z0-9-]+$/.test(story.slug) || !sections.includes(story.section) || !Array.isArray(story.paragraphs) || story.paragraphs.length < 3)) throw new Error('Invalid Enigmas catalog');
-if (!Array.isArray(osintSources) || osintSources.length !== 53) throw new Error('Invalid OSINT sources catalog');
+const requiredFields = ['name', 'url', 'category', 'description', 'terms', 'reliability'];
+if (!Array.isArray(osintSources) || osintSources.length === 0) throw new Error('OSINT sources catalog is empty');
+for (const entry of osintSources) {
+  for (const field of requiredFields) {
+    if (!entry[field]) throw new Error(`OSINT entry "${entry.name || 'unknown'}" is missing required field: ${field}`);
+  }
+}
 const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const feedXml = `<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Infinity Enterprises</title><link>${feedOrigin}/issues</link><description>Original essays and new issues from Infinity Enterprises.</description><language>en-us</language>${stories.map(story=>`<item><title>${escapeHtml(story.title)}</title><link>${feedOrigin}/enigmas/${story.slug}</link><guid isPermaLink="true">${feedOrigin}/enigmas/${story.slug}</guid><description>${escapeHtml(story.dek)}</description></item>`).join('')}</channel></rss>`;
 const projectLink = project => project.link ? `<a class="project-link" href="${escapeHtml(project.link)}">Read the related work ↗</a>` : '<span class="project-link muted">Public demonstration in preparation</span>';

@@ -37,7 +37,7 @@
     "category": "Global events & news monitoring",
     "description": "Real-time global earthquake locations and magnitudes as GeoJSON/ATOM feeds.",
     "terms": "U.S. public domain; credit requested.",
-    "reliability": "Primary authoritative source; automatic solutions revised after review; near-real-time feeds."
+    "reliability": "Primary authoritative source; automatic solutions revised after review; near-real-time feeds, cadence varies by feed."
   },
   {
     "name": "WHO Disease Outbreak News",
@@ -357,7 +357,7 @@
     "category": "Cyber threat intelligence",
     "description": "Enriched CVE records with CVSS scores and CPE data.",
     "terms": "Public information; API users must show non-endorsement notice.",
-    "reliability": "Primary; enrichment can lag CVE publication."
+    "reliability": "Primary enriched source. Enrichment may lag CVE publication."
   },
   {
     "name": "CVE Program",
