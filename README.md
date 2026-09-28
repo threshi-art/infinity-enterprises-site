@@ -56,17 +56,30 @@ The result is `dist/server/index.js`, a Worker exporting `fetch(request, env)`. 
 
 ### Page view counter
 
-Privacy-friendly, cookieless page view tracking. Implementation: `src/page-views.js` (server logic), `src/pv.js` (client script). Respects Do Not Track and Global Privacy Control. Filters 13 bot patterns: bot, crawl, spider, slurp, preview, facebookexternalhit, headless, curl, wget, python, uptime, monitor, check. Records only valid public page paths served by the worker. Includes a best-effort rate limit of approximately 300 inserts per minute per isolate (no IP or visitor identifier). Stores only: normalized path, day (Pacific time), referrer domain (hostname only, same-site becomes null), timestamp. No IP addresses, cookies, full User-Agents, or query strings.
+Privacy-friendly, cookieless page view tracking. Implementation: `src/page-views.js` (server logic), `src/pv.js` (client script). Respects Do Not Track and Global Privacy Control. Filters 13 bot patterns: bot, crawl, spider, slurp, preview, facebookexternalhit, headless, curl, wget, python, uptime, monitor, check. Records only valid public page paths served by the worker. Stores only: normalized path, day (Pacific time), referrer domain (hostname only, same-site becomes null), timestamp. No IP addresses, cookies, full User-Agents, or query strings.
 
 **Migration:** Apply [drizzle/0002_graceful_vision.sql](drizzle/0002_graceful_vision.sql) before release.
 
-**Limitations:** The counter can be inflated by scripted posts. The rate cap protects the database, not the numbers, and applies per server instance (best-effort, not a hard limit). Any traffic-based decision should first exclude suspect days using the query below.
+**Limitations:** The counter can be inflated by scripted posts. The per-instance rate cap (~300 inserts/minute per isolate) protects the database, not the numbers, and is best-effort, not a hard limit. Before making traffic-based decisions, check for suspect days using the script below.
+
+**Suspect days analysis:**
+
+Scripted posts can inflate counts. Use `scripts/suspect-days.mjs` to identify anomalous spikes. A day is flagged if it has ≥50 views and exceeds 3× the median of the previous 14 days that were either not flagged or manually cleared. Real growth can be preserved by adding verified days to `data/cleared-days.json` (a plain array of `YYYY-MM-DD` strings). The script requires at least 7 baseline days before flagging anything.
+
+```bash
+# Export daily views and analyze
+wrangler d1 execute <database> --command "SELECT day, COUNT(*) as views FROM page_views GROUP BY day ORDER BY day" --json > daily-views.json
+node scripts/suspect-days.mjs daily-views.json
+
+# Or pipe directly
+wrangler d1 execute <database> --command "SELECT day, COUNT(*) as views FROM page_views GROUP BY day ORDER BY day" --json | node scripts/suspect-days.mjs --json
+```
 
 **Query examples:**
 
 ```sql
--- Views per day
-SELECT day, COUNT(*) as views FROM page_views GROUP BY day ORDER BY day DESC;
+-- Daily views (for suspect-days analysis)
+SELECT day, COUNT(*) as views FROM page_views GROUP BY day ORDER BY day;
 
 -- Top pages (last 30 days)
 SELECT path, COUNT(*) as views FROM page_views 
@@ -77,41 +90,6 @@ GROUP BY path ORDER BY views DESC LIMIT 20;
 SELECT referrer_domain, COUNT(*) as views FROM page_views 
 WHERE day >= date('now', '-7 days') AND referrer_domain IS NOT NULL
 GROUP BY referrer_domain ORDER BY views DESC;
-
--- Suspect days (anomalous spikes)
--- Flags days with >=50 views that exceed 3x the median of the previous 14 days.
--- Uses median (not average) so multi-day fake traffic cannot raise its own baseline.
-WITH daily_counts AS (
-  SELECT day, COUNT(*) as view_count
-  FROM page_views
-  GROUP BY day
-),
-ranked_previous AS (
-  SELECT 
-    curr.day as current_day,
-    curr.view_count as current_count,
-    prev.view_count as prev_count,
-    ROW_NUMBER() OVER (
-      PARTITION BY curr.day 
-      ORDER BY prev.view_count
-    ) as rn,
-    COUNT(*) OVER (PARTITION BY curr.day) as total
-  FROM daily_counts curr
-  JOIN daily_counts prev 
-    ON prev.day < curr.day 
-    AND prev.day >= date(curr.day, '-14 days')
-)
-SELECT 
-  current_day as day,
-  current_count as views,
-  AVG(prev_count) as median_previous_14d
-FROM ranked_previous
-WHERE rn IN ((total + 1) / 2, (total + 2) / 2)
-GROUP BY current_day, current_count
-HAVING current_count >= 50
-  AND AVG(prev_count) IS NOT NULL
-  AND current_count > 3 * AVG(prev_count)
-ORDER BY current_day DESC;
 ```
 
 **To disable:** Remove the script include from `build.mjs` page() function (line ~136) and optionally disable the `/api/pv` route in `src/worker.js`.
