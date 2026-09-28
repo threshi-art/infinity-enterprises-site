@@ -15,7 +15,7 @@ function cleanTitle(text) {
     .replace(/&apos;|&#39;/g, "'")
     .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)))
     .replace(/&#x([0-9a-fA-F]+);/g, (_, hex) => String.fromCharCode(parseInt(hex, 16)));
-  return decoded.replace(/\s+/g, ' ').trim().slice(0, 180);
+  return decoded.replace(/\s+/g, ' ').trim();
 }
 
 function extractText(xmlSegment, tagName) {
@@ -71,6 +71,7 @@ function parseEntries(xml, config) {
     if (!titleRaw || !linkRaw) continue;
 
     const title = cleanTitle(titleRaw);
+    if (title.length > 1000) continue;
     const url = normalizeUrl(linkRaw, config.allowHosts);
     const published = parseDate(dateRaw);
 
@@ -81,7 +82,7 @@ function parseEntries(xml, config) {
     items.push({ title, url, published });
   }
 
-  return items;
+  return items.slice(0, 5);
 }
 
 test('cleanTitle strips HTML tags', () => {
@@ -108,10 +109,17 @@ test('cleanTitle collapses whitespace', () => {
   assert.equal(result, 'Multiple spaces and newlines');
 });
 
-test('cleanTitle truncates to 180 chars', () => {
-  const input = 'a'.repeat(200);
+test('cleanTitle does not truncate titles', () => {
+  const input = 'a'.repeat(250);
   const result = cleanTitle(input);
-  assert.equal(result.length, 180);
+  assert.equal(result.length, 250);
+});
+
+test('cleanTitle preserves 250-character titles unchanged', () => {
+  const longTitle = 'a'.repeat(250);
+  const result = cleanTitle(longTitle);
+  assert.equal(result.length, 250);
+  assert.equal(result, longTitle);
 });
 
 test('extractText extracts content from XML tag', () => {
@@ -353,6 +361,29 @@ test('parseEntries handles ECB double slashes', () => {
   assert.equal(items[0].url, 'https://www.ecb.europa.eu/press/pr/date/2026/html/ecb.pr260916.en.html');
 });
 
+test('parseEntries drops titles over 1000 characters', () => {
+  const longTitle = 'a'.repeat(1001);
+  const rss = `<?xml version="1.0"?>
+<rss version="2.0">
+  <channel>
+    <item>
+      <title>${longTitle}</title>
+      <link>https://www.federalreserve.gov/1</link>
+      <pubDate>Mon, 16 Sep 2026 18:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Valid Title</title>
+      <link>https://www.federalreserve.gov/2</link>
+      <pubDate>Mon, 15 Sep 2026 18:00:00 GMT</pubDate>
+    </item>
+  </channel>
+</rss>`;
+  const config = feedsConfig.find(c => c.id === 'fed-monetary');
+  const items = parseEntries(rss, config);
+  assert.equal(items.length, 1);
+  assert.equal(items[0].title, 'Valid Title');
+});
+
 test('feedsConfig has correct structure', () => {
   assert.ok(Array.isArray(feedsConfig));
   assert.ok(feedsConfig.length > 0);
@@ -377,4 +408,27 @@ test('feedsConfig sources match requirements', () => {
   assert.ok(ids.includes('sec-press'));
   assert.ok(ids.includes('bea-news'));
   assert.ok(ids.includes('ecb-press'));
+});
+
+test('parseEntries returns at most 5 items per source', () => {
+  const items = [];
+  for (let i = 1; i <= 10; i++) {
+    items.push(`
+    <item>
+      <title>Item ${i}</title>
+      <link>https://www.federalreserve.gov/${i}</link>
+      <pubDate>Mon, ${16 - i} Sep 2026 18:00:00 GMT</pubDate>
+    </item>`);
+  }
+  const rss = `<?xml version="1.0"?>
+<rss version="2.0">
+  <channel>
+    ${items.join('')}
+  </channel>
+</rss>`;
+  const config = feedsConfig.find(c => c.id === 'fed-monetary');
+  const result = parseEntries(rss, config);
+  assert.equal(result.length, 5);
+  assert.equal(result[0].title, 'Item 1');
+  assert.equal(result[4].title, 'Item 5');
 });

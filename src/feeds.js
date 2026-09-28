@@ -10,7 +10,7 @@ function cleanTitle(text) {
     .replace(/&apos;|&#39;/g, "'")
     .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)))
     .replace(/&#x([0-9a-fA-F]+);/g, (_, hex) => String.fromCharCode(parseInt(hex, 16)));
-  return decoded.replace(/\s+/g, ' ').trim().slice(0, 180);
+  return decoded.replace(/\s+/g, ' ').trim();
 }
 
 function extractText(xmlSegment, tagName) {
@@ -66,6 +66,7 @@ function parseEntries(xml, config) {
     if (!titleRaw || !linkRaw) continue;
 
     const title = cleanTitle(titleRaw);
+    if (title.length > 1000) continue;
     const url = normalizeUrl(linkRaw, config.allowHosts);
     const published = parseDate(dateRaw);
 
@@ -76,7 +77,7 @@ function parseEntries(xml, config) {
     items.push({ title, url, published });
   }
 
-  return items;
+  return items.slice(0, 5);
 }
 
 async function fetchFeed(config, secContactEmail, db) {
@@ -91,7 +92,7 @@ async function fetchFeed(config, secContactEmail, db) {
   if (config.id === 'sec-press' && !secContactEmail) {
     sourceResult.disabled = 'missing contact';
     const snapshot = db ? await getSnapshot(db, config.id) : null;
-    return { sourceResult, items: snapshot?.items || [] };
+    return { sourceResult, items: snapshot?.items.slice(0, 5) || [] };
   }
 
   let snapshot = null;
@@ -102,7 +103,7 @@ async function fetchFeed(config, secContactEmail, db) {
       if (age < 30 * 60 * 1000) {
         sourceResult.fetchedAt = snapshot.fetchedAt;
         sourceResult.stale = false;
-        return { sourceResult, items: snapshot.items };
+        return { sourceResult, items: snapshot.items.slice(0, 5) };
       }
     }
   }
@@ -132,7 +133,7 @@ async function fetchFeed(config, secContactEmail, db) {
       sourceResult.fetchedAt = now;
       sourceResult.stale = false;
       if (db) await saveSnapshot(db, config.id, items, now, null);
-      return { sourceResult, items: items.slice(0, 5) };
+      return { sourceResult, items };
     } else {
       throw new Error('No valid items');
     }
@@ -141,7 +142,7 @@ async function fetchFeed(config, secContactEmail, db) {
       sourceResult.fetchedAt = snapshot.fetchedAt;
       sourceResult.stale = true;
       if (db) await updateAttempt(db, config.id, error.message);
-      return { sourceResult, items: snapshot.items };
+      return { sourceResult, items: snapshot.items.slice(0, 5) };
     } else {
       if (db) await updateAttempt(db, config.id, error.message);
       return { sourceResult, items: [] };
