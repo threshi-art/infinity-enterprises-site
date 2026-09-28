@@ -116,3 +116,44 @@ The previous attempt incorrectly identified links INSIDE `.room-bar` and `.dept-
 Fixed mobile horizontal overflow by adding `overflow-wrap: anywhere` to large display headings in `.hub-hero h1` (publication.css) and `.masthead h1` (enigmas.html). This allows long unbreakable words to wrap within the viewport on mobile devices.
 
 Refs #9
+
+## Follow-up: Preventing Mid-Word Breaks (Commit c072975 → TBD)
+
+The initial fix (c072975) successfully eliminated horizontal overflow but caused visible mid-word breaks in the masthead: "Agentic@Enigm / as" on /enigmas and "Agentic@Enig / mas." on /blog.
+
+### Changes Made
+
+1. **Added `<wbr>` tags** for natural break points:
+   - `/enigmas`: Changed `<h1>Agentic@<em>Enigmas</em></h1>` to `<h1>Agentic@<wbr><em>Enigmas</em></h1>`
+   - `/blog`: Modified `shell()` function in `src/publication-pages.mjs` to insert `<wbr>` after "@" in "Agentic@Enigmas"
+
+2. **Reduced minimum font sizes** to prevent word breaking:
+   - `.masthead h1`: Changed from `clamp(4.1rem, 10vw, 10rem)` to `clamp(3rem, 10vw, 10rem)`
+   - `.masthead h1` at 660px breakpoint: Changed from `clamp(3.5rem, 16vw, 5.5rem)` to `clamp(2.8rem, 16vw, 5.5rem)`
+   - `.hub-hero h1`: Changed from `clamp(3.9rem, 9vw, 9.5rem)` to `clamp(3rem, 9vw, 9.5rem)`
+
+3. **Kept `overflow-wrap: anywhere`** as a safety net
+
+### Verification Results
+
+**ScrollWidth tests at 320px, 360px, 390px, 430px:**
+- All 48 sitemap routes: `scrollWidth === clientWidth` ✓
+
+**Word wrapping tests:**
+- `/enigmas .masthead h1`: No words wrapped at any tested width ✓
+- `/blog .hub-hero h1`: No words wrapped at any tested width ✓
+- Verified using Range.getClientRects() - all words have exactly 1 rect
+
+**Desktop 1440px consistency:**
+- `/enigmas`: fontSize 144px, bounding box 1376×127px (unchanged)
+- `/blog`: fontSize 129.6px, bounding box 1100×123px (unchanged)
+
+### Note on Earlier 408px Measurements
+
+The original issue description mentioned "most other pages and all articles 408px" at 390px. This measurement was taken without mobile emulation (`isMobile: false`), which renders a desktop scrollbar. The desktop layout uses `100vw` elements that include the scrollbar width (~18px), causing the apparent overflow. With proper mobile emulation (`isMobile: true, hasTouch: true`), those pages already passed at 390px in the initial measurement and were not affected by this fix.
+
+### Evidence
+
+Screenshots were captured at 320px and 390px for /enigmas and /blog during verification, showing natural line breaks after the '@' symbol. All 48 sitemap routes were tested with mobile emulation (`isMobile: true, hasTouch: true`) to ensure scrollWidth === clientWidth at all tested widths.
+
+All headings now break at "Agentic@" / "Enigmas" instead of mid-word, preserving the design intent while maintaining no horizontal overflow.
