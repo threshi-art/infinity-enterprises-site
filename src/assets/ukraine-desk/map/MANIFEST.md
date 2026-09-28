@@ -30,6 +30,8 @@ y = (north - lat) / (north - south) * H
 
 The corners map to (0,0), (1000,0), (0,690) and (1000,690), and the centre maps to (500,345). Kyiv (30.52 E, 50.45 N) maps to (460.54, 166.41). A point outside the box has no position on this map. Ukraine, including Crimea, spans 22.13–40.16 E and 44.38–52.37 N, so it sits inside the box without clipping. All geometry is clipped to the box.
 
+These attributes are the only copy of the box and the `viewBox`. Placement code must read them from this file and never keep a second copy in config or JS. An `<img>` tag or a CSS background hides the attributes from page scripts, so code that reads them must inline the SVG or fetch it and parse it. Markers belong in `viewBox` units, inside the SVG's own coordinate system, not in CSS pixels. The read-back test works the height out from the attributes and compares it with the `viewBox` to within 0.01, so a change to one without the other fails the test.
+
 ## Source and license
 
 - **Data:** Natural Earth, **version 5.1.2** (tag `v5.1.2` of `nvkelso/natural-earth-vector`, commit `f1890d9f152c896d250a77557a5751a93d494776`), 1:10m scale. **Public domain** (https://www.naturalearthdata.com/about/terms-of-use/). No attribution is required, and the SVG comment credits it anyway.

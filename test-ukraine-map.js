@@ -19,10 +19,6 @@ test('Ukraine desk base map asset', () => {
     return match ? match[1] : null;
   };
   
-  // Assert viewBox
-  const viewBox = getAttr('viewBox');
-  assert.strictEqual(viewBox, '0 0 1000 690.00', 'viewBox should be exactly "0 0 1000 690.00"');
-  
   // Assert projection
   const projection = getAttr('data-projection');
   assert.strictEqual(projection, 'equirectangular', 'data-projection should be "equirectangular"');
@@ -44,13 +40,20 @@ test('Ukraine desk base map asset', () => {
   const expectedCenterLat = (south + north) / 2;
   assert.strictEqual(centerLat, expectedCenterLat, 'center-lat should equal (south + north) / 2');
   
-  // Assert W/H ratio matches projection formula
-  const W = 1000;
-  const H = 690.00;
-  const expectedRatio = (east - west) * Math.cos(centerLat * Math.PI / 180) / (north - south);
-  const actualRatio = W / H;
-  assert.ok(Math.abs(actualRatio - expectedRatio) < 0.001, 
-    `W/H ratio should match projection formula (expected ${expectedRatio}, got ${actualRatio})`);
+  // Parse viewBox and validate dimensions
+  const viewBox = getAttr('viewBox');
+  const viewBoxParts = viewBox.split(/\s+/).map(parseFloat);
+  assert.strictEqual(viewBoxParts.length, 4, 'viewBox should have 4 numbers');
+  
+  const [minX, minY, W, H] = viewBoxParts;
+  assert.strictEqual(minX, 0, 'viewBox min-x should be 0');
+  assert.strictEqual(minY, 0, 'viewBox min-y should be 0');
+  assert.ok(W > 0, 'viewBox width should be greater than 0');
+  
+  // Compute expected height from data attributes
+  const H_expected = W * (north - south) / ((east - west) * Math.cos(centerLat * Math.PI / 180));
+  assert.ok(Math.abs(H_expected - H) <= 0.01, 
+    `viewBox height should match computed value within 0.01 (expected ${H_expected}, got ${H})`);
   
   // Test corner projections
   const projectX = (lon) => (lon - west) / (east - west) * W;
