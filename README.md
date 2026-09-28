@@ -35,6 +35,8 @@ Source mirror for the [Infinity Enterprises publication](https://infinity-enterp
 
 The magazine covers The Daily Desk, Culture, MOTOR, Food, The Practice, Music, the Academic Journal, Tech Lounge, In Development, and About. Agentic@Enigmas is the Daily Desk opinion room. The existing Ether Room, FORM, MOTOR gallery, original essays, project ledger, learning paths, and foundation concepts remain in the source.
 
+The [product plan](docs/PRODUCT-PLAN.md) explains the audience, editorial promise, room identities, content evidence, staged delivery, and release gates. It records the current ten section map as the working public map and marks Chris's later Reading Room and Daily Desk hierarchy discussion as an open decision on #60. It is guidance for future work, not a route or live site change.
+
 The site runs as a Cloudflare compatible Worker on ChatGPT Sites. Its HTML, CSS, JavaScript, editorial catalogs, and original JPG illustrations are in `src/`. Older PNG assets remain in the repository for continuity, while the current build uses JPG assets. `build.mjs` generates `dist/server/index.js`. That generated file is deliberately not mirrored.
 
 ## Work locally
