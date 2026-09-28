@@ -7,8 +7,12 @@ export function normalizeInput(data) {
   // - Bare array: [{day, views}]
   // - Wrangler array: [{results: [{day, views}], success: true, meta: {...}}]
   // - Object: {results: [{day, views}]}
+  // - null/undefined: treated as empty
   let dailyViews;
-  if (Array.isArray(data)) {
+  if (data == null) {
+    // null or undefined
+    dailyViews = [];
+  } else if (Array.isArray(data)) {
     if (data.length > 0 && data[0].results) {
       // Wrangler format: [{results: [...]}]
       dailyViews = data[0].results;
@@ -31,6 +35,11 @@ export function normalizeInput(data) {
 }
 
 export function formatReport(results) {
+  // Handle completely empty input (no days at all)
+  if (results.length === 0) {
+    return 'no data: 0 days in input\n';
+  }
+  
   const suspect = results.filter(r => r.status === 'suspect');
   const cleared = results.filter(r => r.status === 'cleared');
   const notChecked = results.filter(r => r.status === 'not_checked');
@@ -217,12 +226,6 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
 function processInput(input, clearedDays) {
   const data = JSON.parse(input);
   const dailyViews = normalizeInput(data);
-  
-  if (dailyViews.length === 0) {
-    console.log('no data: 0 days in input');
-    return;
-  }
-  
   const results = analyzeSuspectDays(dailyViews, clearedDays);
   const output = formatReport(results);
   process.stdout.write(output);
