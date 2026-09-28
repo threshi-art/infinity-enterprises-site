@@ -1,0 +1,426 @@
+[
+  {
+    "name": "GDELT Project",
+    "url": "https://www.gdeltproject.org/",
+    "category": "Global events & news monitoring",
+    "description": "Machine-coded index of worldwide online news coverage, searchable by keyword, place, theme and tone.",
+    "terms": "Free for any use incl. commercial; must cite GDELT + link.",
+    "reliability": "Aggregated/automated (not verified reporting); English and Western-media heavy; titles normalized; updates every 15 min."
+  },
+  {
+    "name": "Wikipedia Portal: Current events",
+    "url": "https://en.wikipedia.org/wiki/Portal:Current_events",
+    "category": "Global events & news monitoring",
+    "description": "Daily volunteer-written summary of notable world events, each linked to cited news reports.",
+    "terms": "CC BY-SA 4.0: attribution + licence notice; share-alike on adaptations.",
+    "reliability": "Secondary (summarizes press); editorial selection bias toward English-language coverage; updated daily."
+  },
+  {
+    "name": "ReliefWeb",
+    "url": "https://reliefweb.int/",
+    "category": "Global events & news monitoring",
+    "description": "Humanitarian reports, maps and situation updates from UN agencies, NGOs and governments.",
+    "terms": "Site content for personal, non-commercial use; link only.",
+    "reliability": "Curated aggregator of primary humanitarian documents; strong on crises, thin on non-humanitarian news; updated continuously."
+  },
+  {
+    "name": "GDACS",
+    "url": "https://www.gdacs.org/",
+    "category": "Global events & news monitoring",
+    "description": "Automated alerts and impact estimates for earthquakes, tsunamis, cyclones, floods and volcanoes.",
+    "terms": "Own terms page 404; footer links European Commission legal notice (CC BY 4.0 for EU-owned content) - site-specific licence not confirmed.",
+    "reliability": "Primary automated alert system (JRC/UN); early model estimates can be revised; near-real-time."
+  },
+  {
+    "name": "USGS Earthquake Hazards Program",
+    "url": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/",
+    "category": "Global events & news monitoring",
+    "description": "Real-time global earthquake locations and magnitudes as GeoJSON/ATOM feeds.",
+    "terms": "U.S. public domain; credit requested.",
+    "reliability": "Primary authoritative source; automatic solutions revised after review; near-real-time feeds, cadence varies by feed."
+  },
+  {
+    "name": "WHO Disease Outbreak News",
+    "url": "https://www.who.int/emergencies/disease-outbreak-news",
+    "category": "Global events & news monitoring",
+    "description": "WHO's official notices on confirmed or potential acute public-health events.",
+    "terms": "WHO publications CC BY-NC-SA 3.0 IGO - link only, no commercial reuse of text.",
+    "reliability": "Primary (member-state reported); published after verification so can lag events; irregular cadence."
+  },
+  {
+    "name": "ACLED",
+    "url": "https://acleddata.com/",
+    "category": "Conflict & crisis data",
+    "description": "Coded dataset of political violence and protest events worldwide.",
+    "terms": "Restrictive EULA: commercial entities need a corporate licence; no scraping; outputs must be transformative.",
+    "reliability": "Primary coded dataset from media/local partners; reporting-density bias; weekly updates."
+  },
+  {
+    "name": "UCDP",
+    "url": "https://ucdp.uu.se/",
+    "category": "Conflict & crisis data",
+    "description": "Academic datasets on organized violence, battle deaths and conflict actors since 1946.",
+    "terms": "CC BY 4.0 with citation of listed publications.",
+    "reliability": "Primary academic coding with strict inclusion rules; annual releases plus monthly candidate events."
+  },
+  {
+    "name": "HDX",
+    "url": "https://data.humdata.org/",
+    "category": "Conflict & crisis data",
+    "description": "Open platform hosting humanitarian datasets (population, displacement, infrastructure) from many organizations.",
+    "terms": "Licence set per dataset by contributor; users must follow it; no personal data allowed.",
+    "reliability": "Aggregator of third-party datasets; quality and freshness vary by contributor."
+  },
+  {
+    "name": "International Crisis Group - CrisisWatch",
+    "url": "https://www.crisisgroup.org/crisiswatch",
+    "category": "Conflict & crisis data",
+    "description": "Monthly conflict tracker rating deterioration/improvement in ~70 situations.",
+    "terms": "UNVERIFIED - terms page behind Cloudflare verification.",
+    "reliability": "Expert analytical NGO (secondary assessment, not raw data); monthly."
+  },
+  {
+    "name": "OFAC Sanctions List Service",
+    "url": "https://ofac.treasury.gov/sanctions-list-service",
+    "category": "Sanctions & watchlists",
+    "description": "U.S. Treasury's official sanctions lists in downloadable formats.",
+    "terms": "Treasury-specific copyright statement not located; U.S. government work (17 U.S.C. §105) - inference.",
+    "reliability": "Primary legal source; updated whenever designations change."
+  },
+  {
+    "name": "UN Security Council Consolidated List",
+    "url": "https://main.un.org/securitycouncil/en/content/un-sc-consolidated-list",
+    "category": "Sanctions & watchlists",
+    "description": "All individuals and entities under UN Security Council sanctions measures.",
+    "terms": "un.org terms: personal non-commercial; link only.",
+    "reliability": "Primary legal source; updated on committee decisions."
+  },
+  {
+    "name": "EU Financial Sanctions consolidated list",
+    "url": "https://data.europa.eu/data/datasets/consolidated-list-of-persons-groups-and-entities-subject-to-eu-financial-sanctions?locale=en",
+    "category": "Sanctions & watchlists",
+    "description": "The EU's consolidated list of persons and entities subject to financial sanctions.",
+    "terms": "data.europa.eu editorial content CC BY 4.0; the dataset's own licence line was not captured.",
+    "reliability": "Primary (DG FISMA); updated on new Council acts."
+  },
+  {
+    "name": "EU Sanctions Map",
+    "url": "https://www.sanctionsmap.eu/",
+    "category": "Sanctions & watchlists",
+    "description": "Interactive map of EU restrictive measures by country and regime with legal acts.",
+    "terms": "Disclaimer/terms text not captured.",
+    "reliability": "Official EU tool but not the legally binding text (Official Journal is)."
+  },
+  {
+    "name": "UK Sanctions List",
+    "url": "https://www.gov.uk/government/publications/the-uk-sanctions-list",
+    "category": "Sanctions & watchlists",
+    "description": "UK government's list of designated persons, entities and ships.",
+    "terms": "GOV.UK content under Open Government Licence v3.0.",
+    "reliability": "Primary legal source; updated on designation changes."
+  },
+  {
+    "name": "US Consolidated Screening List",
+    "url": "https://www.trade.gov/consolidated-screening-list",
+    "category": "Sanctions & watchlists",
+    "description": "Combined export-screening lists from Commerce, State and Treasury.",
+    "terms": "Intended for public use and dissemination.",
+    "reliability": "Aggregation of official lists; check source list for legal effect; updated daily per ITA (unverified)."
+  },
+  {
+    "name": "OpenSanctions",
+    "url": "https://www.opensanctions.org/",
+    "category": "Sanctions & watchlists",
+    "description": "Consolidated, deduplicated sanctions, PEP and watchlist data from many official sources.",
+    "terms": "CC BY-NC 4.0 - commercial use needs a licence.",
+    "reliability": "Aggregated from primary lists; entity matching may merge/split records; frequent updates."
+  },
+  {
+    "name": "World Bank - Debarred & ineligible firms",
+    "url": "https://www.worldbank.org/en/projects-operations/procurement/debarred-firms",
+    "category": "Sanctions & watchlists",
+    "description": "Firms and individuals barred from World Bank-financed contracts.",
+    "terms": "World Bank site: informational, non-commercial unless stated.",
+    "reliability": "Primary institutional list; covers WB sanctions (and cross-debarments) only."
+  },
+  {
+    "name": "SEC EDGAR",
+    "url": "https://www.sec.gov/edgar/search/",
+    "category": "Corporate registries & filings",
+    "description": "U.S. public-company filings (10-K, 8-K, ownership, etc.) with full-text search.",
+    "terms": "Public information; may be copied/distributed; cite SEC.",
+    "reliability": "Primary filings (company-submitted, not audited by SEC); real-time."
+  },
+  {
+    "name": "OpenCorporates",
+    "url": "https://opencorporates.com/",
+    "category": "Corporate registries & filings",
+    "description": "Largest open database of companies aggregated from official registers worldwide.",
+    "terms": "ODbL: attribution 'from OpenCorporates' hyperlink; share-alike if combined.",
+    "reliability": "Aggregator of registries; freshness depends on each registry; contains officer names."
+  },
+  {
+    "name": "UK Companies House",
+    "url": "https://find-and-update.company-information.service.gov.uk/",
+    "category": "Corporate registries & filings",
+    "description": "Official register of UK companies, officers, filings and persons with significant control.",
+    "terms": "Public data free of charge; officer personal data - handle responsibly.",
+    "reliability": "Primary register; filings are self-reported and largely unverified; daily updates."
+  },
+  {
+    "name": "GLEIF - Global LEI Index",
+    "url": "https://www.gleif.org/en/lei-data/lei-search-2-0",
+    "category": "Corporate registries & filings",
+    "description": "Legal Entity Identifiers with reference and parent-ownership data.",
+    "terms": "CC0.",
+    "reliability": "Primary (issuer-validated); only entities that obtained an LEI; daily."
+  },
+  {
+    "name": "Data.gov (US)",
+    "url": "https://data.gov/",
+    "category": "Government open data",
+    "description": "Catalog of U.S. federal (and some state/local) open datasets.",
+    "terms": "Federal data generally free/unrestricted; non-federal datasets vary.",
+    "reliability": "Catalog/aggregator; quality varies by agency; links may rot."
+  },
+  {
+    "name": "data.europa.eu",
+    "url": "https://data.europa.eu/",
+    "category": "Government open data",
+    "description": "EU institutions' and member states' open datasets in one catalog.",
+    "terms": "Editorial content CC BY 4.0 (Decision 2011/833/EU); dataset licences vary.",
+    "reliability": "Catalog/aggregator; metadata quality varies."
+  },
+  {
+    "name": "data.gov.uk",
+    "url": "https://www.data.gov.uk/",
+    "category": "Government open data",
+    "description": "UK government's catalog of published datasets.",
+    "terms": "OGL v3.0 except where stated.",
+    "reliability": "Catalog; some entries link to stale or moved data."
+  },
+  {
+    "name": "World Bank Open Data",
+    "url": "https://data.worldbank.org/",
+    "category": "Government open data",
+    "description": "Development indicators (economy, health, population) for all countries.",
+    "terms": "CC BY 4.0 unless labelled; mandatory attribution format.",
+    "reliability": "Compiled from national statistics; lags of 1-2 years common."
+  },
+  {
+    "name": "Global Fishing Watch",
+    "url": "https://globalfishingwatch.org/map",
+    "category": "Aviation & maritime tracking",
+    "description": "Map and datasets of apparent fishing and vessel activity from AIS and satellite data.",
+    "terms": "CC BY-NC 4.0 - non-commercial only.",
+    "reliability": "Model-derived activity (AIS gaps, dark vessels); near-real-time with delays."
+  },
+  {
+    "name": "Copernicus Data Space Ecosystem",
+    "url": "https://dataspace.copernicus.eu/",
+    "category": "Satellite & earth observation",
+    "description": "Access to Sentinel satellite imagery and browser-based viewing.",
+    "terms": "Sentinel data free, full and open under the Sentinel legal notice; other portal content non-commercial.",
+    "reliability": "Primary satellite data; resolution 10 m+; revisit several days; clouds."
+  },
+  {
+    "name": "NASA FIRMS",
+    "url": "https://firms.modaps.eosdis.nasa.gov/",
+    "category": "Satellite & earth observation",
+    "description": "Near-real-time active fire and thermal anomaly detections from MODIS/VIIRS.",
+    "terms": "NASA Earthdata: CC0 unless marked; no endorsement.",
+    "reliability": "Primary satellite detections; false positives (industrial heat); ~3 h latency."
+  },
+  {
+    "name": "NASA Worldview",
+    "url": "https://worldview.earthdata.nasa.gov/",
+    "category": "Satellite & earth observation",
+    "description": "Browser for daily global satellite imagery layers.",
+    "terms": "Same Earthdata policy (CC0 unless marked; no endorsement).",
+    "reliability": "Primary imagery; coarse resolution for most layers; daily."
+  },
+  {
+    "name": "USGS EarthExplorer",
+    "url": "https://earthexplorer.usgs.gov/",
+    "category": "Satellite & earth observation",
+    "description": "Search and download Landsat and other USGS earth-observation archives.",
+    "terms": "USGS public domain; credit requested.",
+    "reliability": "Primary archive; Landsat 30 m, 16-day revisit."
+  },
+  {
+    "name": "ICANN Lookup",
+    "url": "https://lookup.icann.org/en",
+    "category": "Internet infrastructure",
+    "description": "Registration data lookup for domain names via RDAP.",
+    "terms": "Lookup-specific terms not captured; ICANN ToS grants no IP licence. Many registrant fields redacted.",
+    "reliability": "Primary registry/registrar data; privacy redactions limit registrant info."
+  },
+  {
+    "name": "crt.sh",
+    "url": "https://crt.sh/",
+    "category": "Internet infrastructure",
+    "description": "Searches public Certificate Transparency logs for TLS certificates issued to domains.",
+    "terms": "No terms page found - only copyright notice.",
+    "reliability": "Primary CT log data; occasional downtime/timeouts."
+  },
+  {
+    "name": "RIPEstat",
+    "url": "https://stat.ripe.net/",
+    "category": "Internet infrastructure",
+    "description": "Routing, prefix, ASN and registration statistics from the RIPE NCC.",
+    "terms": "Network analysis/research; no commercial repackaging without written permission.",
+    "reliability": "Primary RIR + RIS routing data; near-real-time."
+  },
+  {
+    "name": "Hurricane Electric BGP Toolkit",
+    "url": "https://bgp.he.net/",
+    "category": "Internet infrastructure",
+    "description": "Looks up ASNs, prefixes, peers and routing relationships.",
+    "terms": "No terms page found.",
+    "reliability": "Vantage point of one network; updated continually."
+  },
+  {
+    "name": "PeeringDB",
+    "url": "https://www.peeringdb.com/",
+    "category": "Internet infrastructure",
+    "description": "Interconnection database of networks, exchanges and facilities.",
+    "terms": "Operational/research use only; no reproduction or commercial application.",
+    "reliability": "Self-reported by networks; accuracy varies."
+  },
+  {
+    "name": "Internet Archive Wayback Machine",
+    "url": "https://web.archive.org/",
+    "category": "Archives",
+    "description": "Historical snapshots of web pages; also 'Save Page Now'.",
+    "terms": "Primary ToS page JS-only (not read); access policy page quoted.",
+    "reliability": "Primary archive; gaps for robots-excluded or removed sites."
+  },
+  {
+    "name": "IFCN Code of Principles signatories",
+    "url": "https://ifcncodeofprinciples.poynter.org/signatories",
+    "category": "Fact-checking & verification",
+    "description": "Directory of fact-checking organizations vetted against the IFCN code.",
+    "terms": "Directory; no reuse licence captured.",
+    "reliability": "Vetted directory; renewal status changes over time."
+  },
+  {
+    "name": "InVID-WeVerify verification plugin",
+    "url": "https://www.invid-project.eu/tools-and-services/invid-verification-plugin/",
+    "category": "Fact-checking & verification",
+    "description": "Browser extension for video/image verification (keyframes, reverse search, metadata).",
+    "terms": "Free tool; licence terms not captured.",
+    "reliability": "Tool, not a source; results need human judgment."
+  },
+  {
+    "name": "Google Fact Check Explorer",
+    "url": "https://toolbox.google.com/factcheck/explorer",
+    "category": "Fact-checking & verification",
+    "description": "Searches ClaimReview-tagged fact-checks from publishers worldwide.",
+    "terms": "Google Terms of Service apply.",
+    "reliability": "Aggregator of publisher fact-checks; only ClaimReview-tagged items."
+  },
+  {
+    "name": "EUvsDisinfo",
+    "url": "https://euvsdisinfo.eu/",
+    "category": "Fact-checking & verification",
+    "description": "EU database and analysis of pro-Kremlin disinformation cases.",
+    "terms": "Reuse licence not found; disclaimer says not an official EU position.",
+    "reliability": "Government-run (EU) project with narrow focus; state source - note perspective."
+  },
+  {
+    "name": "Duke Reporters' Lab fact-checking database",
+    "url": "https://reporterslab.org/fact-checking/",
+    "category": "Fact-checking & verification",
+    "description": "Global map/database of active fact-checking projects.",
+    "terms": "No reuse licence captured.",
+    "reliability": "Academic census of fact-checkers; update cadence not verified."
+  },
+  {
+    "name": "EDMO",
+    "url": "https://edmo.eu/",
+    "category": "Fact-checking & verification",
+    "description": "EU hub linking fact-checkers and researchers on disinformation.",
+    "terms": "UNVERIFIED - page did not render (202/empty).",
+    "reliability": "EU-funded network; European focus."
+  },
+  {
+    "name": "CISA Known Exploited Vulnerabilities Catalog",
+    "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+    "category": "Cyber threat intelligence",
+    "description": "U.S. government list of vulnerabilities confirmed exploited in the wild.",
+    "terms": "CC0.",
+    "reliability": "Primary; only CVEs with evidence of exploitation; updated as entries are added."
+  },
+  {
+    "name": "NIST National Vulnerability Database",
+    "url": "https://nvd.nist.gov/",
+    "category": "Cyber threat intelligence",
+    "description": "Enriched CVE records with CVSS scores and CPE data.",
+    "terms": "Public information; API users must show non-endorsement notice.",
+    "reliability": "Primary enriched source. Enrichment may lag CVE publication."
+  },
+  {
+    "name": "CVE Program",
+    "url": "https://www.cve.org/",
+    "category": "Cyber threat intelligence",
+    "description": "Authoritative catalog of CVE identifiers and descriptions.",
+    "terms": "Perpetual royalty-free licence; reproduce MITRE copyright and licence.",
+    "reliability": "Primary identifiers; descriptions vary in depth."
+  },
+  {
+    "name": "MITRE ATT&CK",
+    "url": "https://attack.mitre.org/",
+    "category": "Cyber threat intelligence",
+    "description": "Knowledge base of adversary tactics and techniques.",
+    "terms": "Royalty-free licence incl. commercial; reproduce copyright + licence.",
+    "reliability": "Curated framework (not a live feed); versioned releases."
+  },
+  {
+    "name": "FIRST EPSS",
+    "url": "https://www.first.org/epss/",
+    "category": "Cyber threat intelligence",
+    "description": "Daily probability scores that a CVE will be exploited.",
+    "terms": "Free; attribution requested.",
+    "reliability": "Model-based estimate (not ground truth); daily."
+  },
+  {
+    "name": "Bellingcat Online Investigations Toolkit",
+    "url": "https://bellingcat.gitbook.io/toolkit",
+    "category": "Research toolkits & guides",
+    "description": "Categorized, annotated directory of open-source investigation tools.",
+    "terms": "Inclusion is not endorsement.",
+    "reliability": "Curated secondary directory; tool status changes."
+  },
+  {
+    "name": "GIJN Resource Center",
+    "url": "https://gijn.org/resource-center/",
+    "category": "Research toolkits & guides",
+    "description": "Guides and tipsheets for investigative journalists.",
+    "terms": "CC BY-NC 4.0 - link, don't republish commercially.",
+    "reliability": "Practitioner guidance; updated regularly."
+  },
+  {
+    "name": "Verification Handbook",
+    "url": "https://datajournalism.com/read/handbook/verification-3",
+    "category": "Research toolkits & guides",
+    "description": "Practitioner handbook on verifying digital content and disinformation.",
+    "terms": "Licence not captured.",
+    "reliability": "Edited handbook (2020); some tool references dated."
+  },
+  {
+    "name": "Berkeley Protocol on Digital Open Source Investigations",
+    "url": "https://www.ohchr.org/en/publications/policy-and-methodological-publications/berkeley-protocol-digital-open-source",
+    "category": "Research toolkits & guides",
+    "description": "UN/Berkeley standards for legally sound online open-source investigation.",
+    "terms": "Reuse terms not captured (UN publication).",
+    "reliability": "Methodology standard; static publication."
+  },
+  {
+    "name": "Amnesty Citizen Evidence Lab",
+    "url": "https://citizenevidence.org/",
+    "category": "Research toolkits & guides",
+    "description": "Amnesty's methods and case studies for digital human-rights investigations.",
+    "terms": "Reuse terms not captured.",
+    "reliability": "NGO methods resource; advocacy organization (note perspective)."
+  }
+]
