@@ -1,3 +1,4 @@
+// Screenshot tool for visual comparison of contrast fixes before and after
 import { chromium } from 'playwright';
 import { mkdir, access } from 'fs/promises';
 import { spawn } from 'child_process';
