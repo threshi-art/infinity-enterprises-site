@@ -147,6 +147,10 @@ export default {
     const adminPath = path === '/admin' || path === '/admin/unlock' || path === '/admin/lock' || path === '/admin/inbox' || path === '/admin/subscribers';
     if (adminPath && (!env.PIN_CODE || !env.SESSION_SECRET)) return html('<h1>Staff area is unavailable</h1>', 503);
     if (request.method === 'GET' && path === '/api/dispatch') return latestDispatch();
+    if (request.method === 'GET' && path === '/api/feeds') {
+      const section = url.searchParams.get('section') || '';
+      return getFeeds(section, env);
+    }
     if (request.method === 'GET' && path === '/feed.xml') return new Response(feedXml, { headers: {'content-type':'application/rss+xml; charset=utf-8','cache-control':'public, max-age=3600'} });
     if (request.method === 'POST' && path === '/api/subscribe') {
       const fields = await formValues(request);
