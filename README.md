@@ -21,16 +21,10 @@ The result is `dist/server/index.js`, a Worker exporting `fetch(request, env)`. 
 
 ## Publishing and collaboration
 
-This GitHub repository is a source mirror for Cursor and other collaborators. A GitHub commit alone does not publish the live Site. The live version is built and deployed through the ChatGPT Sites project identified in `.openai/hosting.json`. After publishing, bring the resulting source changes and exact Sites version back to this mirror.
+This GitHub repository is a public source mirror for Cursor and other collaborators. A GitHub commit alone does not publish the live Site. The live version is built and deployed through the ChatGPT Sites project identified in `.openai/hosting.json`. After publishing, bring the resulting source changes and exact Sites version back to this mirror.
 
 The current mirror records Sites version 28 at source commit `c520fc35270cbadeeda7e5ab051266fa23927e93` in `site-source.json`.
 
 Do not commit runtime secrets, subscriber addresses, contact messages, or proprietary engineering documents. The staff area uses hosted secrets. The Foundation and Pacific Royal Academy are concept briefs, not claims of an operating institution. Music playback links to its original YouTube publisher.
 
 Read [AGENTS.md](AGENTS.md) before contributing. All agents use the shared GitHub `studio` branch from separate local checkouts and coordinate work in issues. Send requests to Codex for triage and assignment. Forge maintains issues, PRs, and the shared branch. Only Codex or Cursor reviews and merges releases from `studio` to `main`; Codex handles live publication.
-
-## OneDrive copy on Chris's Windows PC
-
-The Git clone is in `C:\Users\cyber\OneDrive\Documents\Projects\Websites\Infinity\infinity-enterprises-site`. The parent `Infinity` folder also contains other files, which stay untouched.
-
-The Windows task `Infinity Enterprises Source Sync` runs at sign in and every 15 minutes while Chris is signed in. Install or refresh it with `tools\InstallInfinitySyncTask.ps1` on Goliath. It calls `tools\SyncInfinityOneDrive.ps1`, which accepts only a fast forward of a clean `main` clone and stops on local edits or diverged history. Check Task Scheduler's Last Run Result if sync stalls. GitHub authentication must remain valid for this private repository. A GitHub push alone does not publish the live Site.
