@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food - SOVRANO@Infini</title>
+  
+  <!-- Google Fonts (SIL OFL 1.1) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@700&family=Inter+Tight:wght@400;500;600&family=Cormorant+Garamond:wght@600;700&family=EB+Garamond:wght@400;500&family=Caveat:wght@600&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="shell.css">
+  
+  <style>
+    /* Food Room (formerly Tavola) - Warm, slow, tactile: cream paper, menu cards, handwritten labels */
+    body {
+      background: #f6ece0;
+      color: #2a1a12;
+      font-family: 'EB Garamond', serif;
+      font-size: 17px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    
+    .room-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      position: relative;
+    }
+    
+    /* Paper grain texture overlay */
+    .paper-texture {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="300"%3E%3Cfilter id="paper"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" /%3E%3CfeColorMatrix type="saturate" values="0.1" /%3E%3C/filter%3E%3Crect width="300" height="300" filter="url(%23paper)" opacity="0.05" /%3E%3C/svg%3E');
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.6;
+    }
+    
+    .room-hero {
+      background: linear-gradient(135deg, #f6ece0 0%, #f0e6da 100%);
+      padding: 60px 40px;
+      position: relative;
+      border-bottom: 2px solid #8a3f1c;
+    }
+    
+    .room-label {
+      font-family: 'Caveat', cursive;
+      font-size: 16px;
+      color: #5e4a3c;
+      margin-bottom: 8px;
+    }
+    
+    .room-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 72px;
+      font-weight: 700;
+      color: #8a3f1c;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+    
+    .room-tagline {
+      font-family: 'EB Garamond', serif;
+      font-size: 20px;
+      font-weight: 400;
+      color: #5e4a3c;
+      font-style: italic;
+    }
+    
+    .room-content {
+      padding: 60px 40px;
+    }
+    
+    /* Menu card layout */
+    .menu-card {
+      background: #fffaf2;
+      border: 1px solid #8a3f1c;
+      border-radius: 2px;
+      padding: 40px;
+      margin-bottom: 48px;
+      box-shadow: 0 4px 12px rgba(42, 26, 18, 0.08);
+      position: relative;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    
+    @media (prefers-reduced-motion: reduce) {
+      .menu-card {
+        transition: none;
+      }
+    }
+    
+    .menu-card:hover {
+      opacity: 0.95;
+    }
+    
+    .recipe-label {
+      font-family: 'Caveat', cursive;
+      font-size: 18px;
+      color: #4a5226;
+      margin-bottom: 12px;
+    }
+    
+    .recipe-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 42px;
+      font-weight: 700;
+      color: #8a3f1c;
+      margin-bottom: 20px;
+      line-height: 1.2;
+      font-style: italic;
+    }
+    
+    .recipe-byline {
+      margin-bottom: 24px;
+      color: #5e4a3c;
+      font-size: 14px;
+    }
+    
+    .recipe-description {
+      font-size: 18px;
+      line-height: 1.8;
+      color: #2a1a12;
+      margin-bottom: 24px;
+    }
+    
+    .recipe-description::first-letter {
+      font-size: 64px;
+      font-weight: 600;
+      line-height: 1;
+      float: left;
+      margin: 4px 12px 0 0;
+      color: #8a3f1c;
+      font-family: 'Cormorant Garamond', serif;
+    }
+    
+    /* Art slot for food photography */
+    .art-slot {
+      width: 100%;
+      height: 500px;
+      background: linear-gradient(135deg, #d4b896 0%, #c4a886 100%);
+      border-radius: 2px;
+      margin: 32px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px dashed #8a3f1c;
+      position: relative;
+    }
+    
+    .art-slot-label {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: #5e4a3c;
+      text-align: center;
+      padding: 20px;
+      background: rgba(246, 236, 224, 0.9);
+      border-radius: 4px;
+    }
+    
+    .ingredients-note {
+      font-family: 'Caveat', cursive;
+      font-size: 20px;
+      color: #4a5226;
+      margin-top: 20px;
+      padding-left: 16px;
+      border-left: 3px solid #4a5226;
+    }
+    
+    /* Section headers */
+    .section-header {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 48px;
+      font-weight: 700;
+      color: #8a3f1c;
+      margin-bottom: 32px;
+      letter-spacing: 0.5px;
+    }
+    
+    /* Featured recipe with full-bleed image */
+    .featured-recipe {
+      margin-bottom: 80px;
+    }
+    
+    .featured-art-slot {
+      width: 100%;
+      height: 600px;
+      background: linear-gradient(135deg, #d4b896 0%, #c4a886 100%);
+      border-radius: 2px;
+      margin-bottom: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #8a3f1c;
+    }
+    
+    .featured-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    /* Room spec display */
+    .room-spec {
+      background: rgba(138, 63, 28, 0.05);
+      border-left: 4px solid #8a3f1c;
+      padding: 28px;
+      margin-top: 60px;
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 13px;
+      line-height: 1.9;
+      color: #5e4a3c;
+    }
+    
+    .room-spec strong {
+      color: #8a3f1c;
+      font-weight: 600;
+    }
+    
+    /* Sound control */
+    .sound-control {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      z-index: 100;
+    }
+    
+    .sound-toggle {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: #2a1a12;
+      background: #fffaf2;
+      border: 2px solid #8a3f1c;
+      padding: 12px 20px;
+      border-radius: 24px;
+      cursor: pointer;
+      min-width: 44px;
+      min-height: 44px;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(42, 26, 18, 0.12);
+    }
+    
+    @media (prefers-reduced-motion: reduce) {
+      .sound-toggle {
+        transition: none;
+      }
+    }
+    
+    .sound-toggle:hover {
+      background: #f6ece0;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(42, 26, 18, 0.16);
+    }
+    
+    @media (prefers-reduced-motion: reduce) {
+      .sound-toggle:hover {
+        transform: none;
+      }
+    }
+    
+    .sound-toggle:focus {
+      outline: 2px solid #8a3f1c;
+      outline-offset: 3px;
+    }
+    
+    .sound-toggle[aria-pressed="true"] {
+      background: #8a3f1c;
+      color: #fffaf2;
+    }
+    
+    /* Mobile responsive */
+    @media (max-width: 768px) {
+      .room-hero {
+        padding: 40px 24px;
+      }
+      
+      .room-title {
+        font-size: 48px;
+      }
+      
+      .room-content {
+        padding: 40px 24px;
+      }
+      
+      .menu-card {
+        padding: 24px;
+      }
+      
+      .recipe-title {
+        font-size: 32px;
+      }
+      
+      .recipe-description {
+        font-size: 16px;
+      }
+      
+      .art-slot,
+      .featured-art-slot {
+        height: 300px;
+      }
+      
+      .sound-control {
+        bottom: 20px;
+        right: 20px;
+      }
+    }
+    
+    /* Entry transition (door) - slow warm fade like steam */
+    @keyframes door-entry {
+      from {
+        opacity: 0;
+        filter: blur(2px);
+      }
+      to {
+        opacity: 1;
+        filter: blur(0);
+      }
+    }
+    
+    .room-container {
+      animation: door-entry 0.8s ease-out;
+    }
+    
+    @media (prefers-reduced-motion: reduce) {
+      .room-container {
+        animation: door-entry 0.25s ease-out;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="paper-texture"></div>
+  
+  <!-- Shared masthead -->
+  <header class="masthead">
+    <div class="masthead-wordmark">SOVRANO@Infini</div>
+    <div class="masthead-subline">an Infinity Enterprises publication</div>
+  </header>
+  
+  <!-- Shared navigation -->
+  <nav class="nav">
+    <ul class="nav-list">
+      <li><a href="#" class="nav-link">Daily Desk</a></li>
+      <li><a href="#" class="nav-link">Music</a></li>
+      <li><a href="#" class="nav-link">Tech@Lounge</a></li>
+      <li><a href="#" class="nav-link">Food</a></li>
+      <li><a href="#" class="nav-link">Culture</a></li>
+      <li><a href="#" class="nav-link">MODA</a></li>
+      <li><a href="#" class="nav-link">MOTOR</a></li>
+      <li><button class="nav-menu-button" aria-label="Open departments menu">Departments</button></li>
+    </ul>
+  </nav>
+  
+  <div class="room-container">
+    <!-- Room hero -->
+    <section class="room-hero">
+      <div class="room-label">Trattoria</div>
+      <h1 class="room-title">Food</h1>
+      <p class="room-tagline">Slow and tactile</p>
+    </section>
+    
+    <!-- Room content -->
+    <main class="room-content">
+      <!-- Featured recipe with full-bleed image -->
+      <article class="featured-recipe">
+        <div class="featured-art-slot">
+          <div class="art-slot-label">art slot (Ember)<br><span class="placeholder-tag">PLACEHOLDER</span></div>
+        </div>
+        <div class="featured-content">
+          <div class="recipe-label">seasonal / placeholder</div>
+          <h2 class="recipe-title">
+            Placeholder Recipe Title<span class="placeholder-tag">PLACEHOLDER</span>
+          </h2>
+          <div class="byline recipe-byline">
+            By Placeholder Chef <span class="placeholder-tag">PLACEHOLDER</span> · Photo: Placeholder Credit
+          </div>
+          <div class="recipe-description">
+            This is placeholder recipe description text demonstrating the Food room layout with warm old-style serif typography, menu-card aesthetic, and paper grain texture. No real recipe content. Sample text showing gentle fades, handwritten-style labels for short notes only, and full-bleed food photography areas. Warm, unhurried, tactile feel reminiscent of printed menu cards.
+          </div>
+          <div class="ingredients-note">
+            Sample ingredients note (placeholder) <span class="placeholder-tag">PLACEHOLDER</span>
+          </div>
+        </div>
+      </article>
+      
+      <!-- Menu cards section -->
+      <section>
+        <h2 class="section-header">More Recipes <span class="placeholder-tag">PLACEHOLDER</span></h2>
+        
+        <article class="menu-card">
+          <div class="recipe-label">placeholder category</div>
+          <h3 class="recipe-title">Sample Menu Card Recipe<span class="placeholder-tag">PLACEHOLDER</span></h3>
+          <div class="byline recipe-byline">
+            By Sample Author <span class="placeholder-tag">PLACEHOLDER</span>
+          </div>
+          <p class="recipe-description">
+            Another placeholder recipe description showing menu card layout. This demonstrates how multiple recipe items would stack on the page. Content is for design review only, not real editorial. Shows warm serif typography and handwritten label style.
+          </p>
+          <div class="art-slot">
+            <div class="art-slot-label">art slot (Ember)<br><span class="placeholder-tag">PLACEHOLDER</span></div>
+          </div>
+          <div class="ingredients-note">
+            More sample notes text <span class="placeholder-tag">PLACEHOLDER</span>
+          </div>
+        </article>
+        
+        <article class="menu-card">
+          <div class="recipe-label">another placeholder</div>
+          <h3 class="recipe-title">Another Placeholder Title<span class="placeholder-tag">PLACEHOLDER</span></h3>
+          <div class="byline recipe-byline">
+            By Placeholder Name <span class="placeholder-tag">PLACEHOLDER</span>
+          </div>
+          <p class="recipe-description">
+            Third menu card with placeholder text for layout demonstration. Shows gentle spacing and warm color palette on cream paper background. No real recipes or cooking instructions provided.
+          </p>
+          <div class="ingredients-note">
+            Sample ingredient list placeholder <span class="placeholder-tag">PLACEHOLDER</span>
+          </div>
+        </article>
+      </section>
+      
+      <!-- Room specification -->
+      <div class="room-spec">
+        <strong>Motion:</strong> Gentle fades like steam (opacity/transform transitions 0.4s ease); menu cards fade subtly on hover (removed with prefers-reduced-motion).<br>
+        <strong>Texture:</strong> Paper grain overlay (SVG fractal noise, fixed position, warm tint).<br>
+        <strong>Sound:</strong> Off by default. Opt-in toggle for plate clink and soft ambient chatter (no audio file loaded in this mock).<br>
+        <strong>Door:</strong> Slow warm fade entry transition (0.8s ease-out with slight blur, reduced to 0.25s with prefers-reduced-motion).<br>
+        <strong>Type:</strong> Cormorant Garamond (display) + EB Garamond (body) + Caveat (short labels only), all SIL OFL 1.1 via Google Fonts.<br>
+        <strong>Layout:</strong> Menu-card style with full-bleed food photography areas; warm serif for headlines and body, handwritten Caveat only for category labels and short ingredient notes (never body text).
+      </div>
+    </main>
+  </div>
+  
+  <!-- Sound control (off by default) -->
+  <div class="sound-control">
+    <button class="sound-toggle" aria-pressed="false" aria-label="Toggle sound">
+      Sound: off
+    </button>
+  </div>
+</body>
+</html>

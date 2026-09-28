@@ -1,0 +1,183 @@
+/* Shared masthead, navigation, byline, and focus system for all three rooms */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Masthead system (shared across all rooms) */
+.masthead {
+  background: #0e0d12;
+  padding: 24px 40px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.masthead-wordmark {
+  font-family: 'Bodoni Moda', serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #f4efe6;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.masthead-subline {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  color: #d8c39a;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Navigation (shared) */
+.nav {
+  background: #0e0d12;
+  padding: 16px 40px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.nav-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  list-style: none;
+  align-items: center;
+}
+
+.nav-link {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #cfc8bd;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  padding: 8px 12px;
+  border-radius: 2px;
+}
+
+.nav-link:hover {
+  color: #f4efe6;
+}
+
+.nav-link:focus {
+  outline: 2px solid #f1ad79;
+  outline-offset: 3px;
+  color: #f4efe6;
+}
+
+.nav-menu-button {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #cfc8bd;
+  background: transparent;
+  border: 1px solid #cfc8bd;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-left: auto;
+}
+
+.nav-menu-button:hover {
+  background: rgba(207, 200, 189, 0.1);
+  color: #f4efe6;
+  border-color: #f4efe6;
+}
+
+.nav-menu-button:focus {
+  outline: 2px solid #f1ad79;
+  outline-offset: 3px;
+}
+
+/* Byline and credit system (shared) */
+.byline {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.7;
+}
+
+.credit {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 10px;
+  font-style: italic;
+  opacity: 0.6;
+  margin-top: 4px;
+}
+
+/* Focus ring system (shared, amber) */
+a:focus,
+button:focus,
+[tabindex]:focus {
+  outline: 2px solid #f1ad79;
+  outline-offset: 3px;
+}
+
+/* Placeholder tag styling */
+.placeholder-tag {
+  display: inline-block;
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 6px;
+  border-radius: 2px;
+  background: rgba(241, 173, 121, 0.2);
+  color: #f1ad79;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .masthead {
+    padding: 20px 24px;
+  }
+  
+  .masthead-wordmark {
+    font-size: 24px;
+  }
+  
+  .masthead-subline {
+    font-size: 10px;
+  }
+  
+  .nav {
+    padding: 12px 24px;
+  }
+  
+  .nav-list {
+    gap: 16px;
+  }
+  
+  .nav-link {
+    font-size: 12px;
+    padding: 10px 12px;
+  }
+  
+  .nav-menu-button {
+    font-size: 12px;
+    padding: 10px 14px;
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+/* Ensure all interactive elements meet 44x44px minimum on mobile */
+@media (max-width: 768px) {
+  .nav-link,
+  button,
+  a {
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
