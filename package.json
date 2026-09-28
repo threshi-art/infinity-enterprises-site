@@ -6,7 +6,7 @@
   "scripts": {
     "build": "node build.mjs",
     "db:generate": "drizzle-kit generate",
-    "test": "node --test test-feeds.js test-feeds-integration.js test-page-views.js test-smoke.js test-suspect-days.js"
+    "test": "node --test test-feeds.js test-feeds-integration.js test-page-views.js test-smoke.js test-suspect-days.js test-ukraine-map.js"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
