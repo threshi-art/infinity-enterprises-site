@@ -1,7 +1,7 @@
 import { readFile, mkdir, writeFile, rm } from 'node:fs/promises';
 import { createPublicationPages } from './src/publication-pages.mjs';
 
-const [home, about, standards, atlas, diana, development, learning, journal, foundation, youth, techLounge, ether, motor, form, enigmas, enigmaArticle, enigmaStories, projectsJson, editorialJson, login, admin, roadmaps, sharedCss, music, dispatchScript, splashCss, splashScript, etherScript, etherImages, motorScript, motorImages, formScript, formImages, hero, detail, dianaImage, dianaCardsImage, developmentImage, techLoungeImage, techMacroImage, politicsImage, lawImage, academyImage, researchImage, learningImage, foundationImage, youthImage, coverImage, worker] = await Promise.all([
+const [home, about, standards, atlas, diana, development, learning, journal, foundation, youth, techLounge, ether, motor, form, enigmas, enigmaArticle, enigmaStories, projectsJson, editorialJson, login, admin, roadmaps, sharedCss, music, dispatchScript, splashCss, splashScript, etherScript, etherImages, motorScript, motorImages, formScript, formImages, hero, detail, dianaImage, dianaCardsImage, developmentImage, techLoungeImage, techMacroImage, politicsImage, lawImage, academyImage, researchImage, learningImage, foundationImage, youthImage, coverImage, feedsConfig, feedsScript, worker] = await Promise.all([
   readFile('src/home.html', 'utf8'),
   readFile('src/about.html', 'utf8'),
   readFile('src/standards.html', 'utf8'),
@@ -50,6 +50,8 @@ const [home, about, standards, atlas, diana, development, learning, journal, fou
   readFile('src/assets/foundation.jpg'),
   readFile('src/assets/youth.jpg'),
   readFile('src/assets/cover.jpg'),
+  readFile('src/feeds.json', 'utf8'),
+  readFile('src/feeds.js', 'utf8'),
   readFile('src/worker.js', 'utf8'),
 ]);
 const catalog = JSON.parse(roadmaps);
@@ -131,7 +133,8 @@ function page(source, path = '/') {
     .replaceAll('__ENIGMAS_POLITICS_IMAGE__', '/media/enigmas-politics.jpg');
   return source.includes('/* PUBLICATION_SCRIPT */') ? result : result.replace('</body>', `<script>${publicationScript}</script></body>`);
 }
-const compiled = worker
+const workerWithFeeds = feedsScript.replace('/* FEEDS_CONFIG */ null', feedsConfig) + '\n' + worker;
+const compiled = workerWithFeeds
   .replace('/* HOME_HTML */ null', JSON.stringify(page(home, '/').replace('/* SPLASH_CSS */', splashCss).replace('/* SPLASH_SCRIPT */', splashScript)))
   .replace('/* ABOUT_HTML */ null', JSON.stringify(page(about, '/about')))
   .replace('/* STANDARDS_HTML */ null', JSON.stringify(page(standards, '/about/standards')))

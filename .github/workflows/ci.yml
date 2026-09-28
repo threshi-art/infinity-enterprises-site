@@ -35,6 +35,9 @@ jobs:
       - name: Build worker
         run: npm run build
 
+      - name: Run tests
+        run: npm test
+
       - name: Verify build output
         run: |
           test -s dist/server/index.js

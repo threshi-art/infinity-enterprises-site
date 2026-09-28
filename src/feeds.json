@@ -1,0 +1,67 @@
+[
+  {
+    "id": "fed-monetary",
+    "name": "Federal Reserve Board",
+    "url": "https://www.federalreserve.gov/feeds/press_monetary.xml",
+    "section": "mercati",
+    "allowHosts": ["www.federalreserve.gov"],
+    "terms": {
+      "url": "https://www.federalreserve.gov/disclaimer.htm",
+      "note": "Public domain; cite the Board; link only, no framing; no seal",
+      "checked": "2026-09-27",
+      "by": "Puck"
+    }
+  },
+  {
+    "id": "fed-speeches",
+    "name": "Federal Reserve Board",
+    "url": "https://www.federalreserve.gov/feeds/speeches.xml",
+    "section": "mercati",
+    "allowHosts": ["www.federalreserve.gov"],
+    "terms": {
+      "url": "https://www.federalreserve.gov/disclaimer.htm",
+      "note": "Public domain; cite the Board; link only, no framing; no seal",
+      "checked": "2026-09-27",
+      "by": "Puck"
+    }
+  },
+  {
+    "id": "sec-press",
+    "name": "U.S. SEC",
+    "url": "https://www.sec.gov/news/pressreleases.rss",
+    "section": "mercati",
+    "allowHosts": ["www.sec.gov"],
+    "terms": {
+      "url": "https://www.sec.gov/about/privacy-information",
+      "note": "Free to copy; cite SEC; no logos; fetcher must send User-Agent with org name and real contact email; max 10 req/sec",
+      "checked": "2026-09-27",
+      "by": "Puck"
+    }
+  },
+  {
+    "id": "bea-news",
+    "name": "U.S. BEA",
+    "url": "https://www.bea.gov/news/rss",
+    "section": "mercati",
+    "allowHosts": ["www.bea.gov", "apps.bea.gov"],
+    "terms": {
+      "url": "https://www.bea.gov/help/guidelines-for-citing-bea",
+      "note": "US government work (17 U.S.C. 105); cite BEA; link directly; no implied endorsement",
+      "checked": "2026-09-27",
+      "by": "Puck"
+    }
+  },
+  {
+    "id": "ecb-press",
+    "name": "European Central Bank",
+    "url": "https://www.ecb.europa.eu/rss/press.html",
+    "section": "mercati",
+    "allowHosts": ["www.ecb.europa.eu"],
+    "terms": {
+      "url": "https://www.ecb.europa.eu/services/using-our-site/disclaimer/html/index.en.html",
+      "note": "Reproduce accurately and cite ECB; no framing; if behind paywall, tell readers it's free at ECB",
+      "checked": "2026-09-27",
+      "by": "Puck"
+    }
+  }
+]
