@@ -3,3 +3,5 @@ node_modules/
 .sites-runtime/
 .env
 .env.local
+a11y-report.json
+a11y-report.md
