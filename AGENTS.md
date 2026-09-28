@@ -33,4 +33,4 @@ These instructions apply to this `infinity-enterprises-site` repository. The par
 ## Publishing and syncing
 
 - A GitHub merge does not publish the live ChatGPT Site. Codex publishes through the Sites project. Forge may prepare the resulting GitHub mirror update only after verifying the exact published Sites version and source commit; Codex or Cursor reviews the record before release.
-- On Goliath, the Windows task `Infinity Enterprises Source Sync` runs `tools\SyncInfinityOneDrive.ps1` at sign in and every 15 minutes while Chris is signed in. `tools\InstallInfinitySyncTask.ps1` installs or updates the task. The helper updates the clean `main` clone only by fast forward. If it stops for local edits, authentication, or diverged history, inspect the work; do not bypass its checks.
+- The publishing machine runs its own copy of the sync script from outside the repo. The helper updates the clean `main` clone only by fast forward. If it stops for local edits, authentication, or diverged history, inspect the work; do not bypass its checks.
