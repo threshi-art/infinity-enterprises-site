@@ -84,14 +84,21 @@ test('getPacificDay returns YYYY-MM-DD format', () => {
 });
 
 test('getPacificDay handles Pacific timezone correctly', () => {
-  const utcMidnight = Date.UTC(2026, 8, 28, 8, 0, 0);
+  const utcMidnight = Date.UTC(2026, 8, 28, 7, 0, 0);
   const day = getPacificDay(utcMidnight);
   assert.equal(day, '2026-09-28');
 });
 
-test('getPacificDay handles date boundary', () => {
-  const beforeMidnight = Date.UTC(2026, 8, 28, 7, 59, 0);
-  const afterMidnight = Date.UTC(2026, 8, 28, 8, 1, 0);
+test('getPacificDay handles summer date boundary (PDT, UTC-7)', () => {
+  const beforeMidnight = Date.UTC(2026, 8, 28, 6, 59, 0);
+  const afterMidnight = Date.UTC(2026, 8, 28, 7, 1, 0);
   assert.equal(getPacificDay(beforeMidnight), '2026-09-27');
   assert.equal(getPacificDay(afterMidnight), '2026-09-28');
+});
+
+test('getPacificDay handles winter date boundary (PST, UTC-8)', () => {
+  const beforeMidnight = Date.UTC(2026, 0, 15, 7, 59, 0);
+  const afterMidnight = Date.UTC(2026, 0, 15, 8, 1, 0);
+  assert.equal(getPacificDay(beforeMidnight), '2026-01-14');
+  assert.equal(getPacificDay(afterMidnight), '2026-01-15');
 });

@@ -33,14 +33,13 @@ function extractDomain(url) {
 }
 
 function getPacificDay(timestamp) {
-  const date = new Date(timestamp);
-  const pacificOffset = -8 * 60;
-  const utcTime = date.getTime() + (date.getTimezoneOffset() * 60000);
-  const pacificTime = new Date(utcTime + (pacificOffset * 60000));
-  const year = pacificTime.getUTCFullYear();
-  const month = String(pacificTime.getUTCMonth() + 1).padStart(2, '0');
-  const day = String(pacificTime.getUTCDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
+  const formatter = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/Los_Angeles',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  });
+  return formatter.format(new Date(timestamp));
 }
 
 async function recordPageView(request, env) {
