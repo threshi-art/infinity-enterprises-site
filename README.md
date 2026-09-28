@@ -56,7 +56,7 @@ The result is `dist/server/index.js`, a Worker exporting `fetch(request, env)`. 
 
 ### Page view counter
 
-Privacy-friendly, cookieless page view tracking. Implementation: `src/page-views.js` (server logic), `src/pv.js` (client script). Respects Do Not Track and Global Privacy Control. Filters 13 bot patterns: bot, crawl, spider, slurp, preview, facebookexternalhit, headless, curl, wget, python, uptime, monitor, check. Stores only: normalized path, day (Pacific time), referrer domain (hostname only, same-site becomes null), timestamp. No IP addresses, cookies, full User-Agents, or query strings.
+Privacy-friendly, cookieless page view tracking. Implementation: `src/page-views.js` (server logic), `src/pv.js` (client script). Respects Do Not Track and Global Privacy Control. Filters 13 bot patterns: bot, crawl, spider, slurp, preview, facebookexternalhit, headless, curl, wget, python, uptime, monitor, check. Records only valid public page paths served by the worker. Includes a best-effort rate limit of approximately 300 inserts per minute per isolate (no IP or visitor identifier). Stores only: normalized path, day (Pacific time), referrer domain (hostname only, same-site becomes null), timestamp. No IP addresses, cookies, full User-Agents, or query strings.
 
 **Migration:** Apply [drizzle/0002_graceful_vision.sql](drizzle/0002_graceful_vision.sql) before release.
 

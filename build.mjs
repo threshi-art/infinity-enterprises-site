@@ -181,8 +181,15 @@ const compiled = workerWithFeeds
   .replace('/* ETHER_IMAGES */ null', JSON.stringify(etherImages.map(image => image.toString('base64'))))
   .replace('/* MOTOR_IMAGES */ null', JSON.stringify(motorImages.map(image => image.toString('base64'))))
   .replace('/* FORM_IMAGES */ null', JSON.stringify(formImages.map(image => image.toString('base64'))))
-  .replace('/* PV_SCRIPT */ null', JSON.stringify(pvScript));
-if (/\/\* (?:HOME_HTML|ABOUT_HTML|ATLAS_HTML|DIANA_HTML|DEVELOPMENT_HTML|LEARNING_HTML|JOURNAL_HTML|FOUNDATION_HTML|YOUTH_HTML|TECH_LOUNGE_HTML|ENIGMAS_HTML|ENIGMA_ARTICLES|LOGIN_HTML|ADMIN_HTML|HERO_IMAGE|DETAIL_IMAGE|DIANA_IMAGE|DIANA_CARDS_IMAGE|DEVELOPMENT_IMAGE|TECH_LOUNGE_IMAGE|TECH_MACRO_IMAGE|ENIGMAS_POLITICS_IMAGE|ENIGMAS_LAW_IMAGE|ENIGMAS_ACADEMY_IMAGE|PV_SCRIPT) \*\//.test(compiled)) throw new Error('Build marker missing');
+  .replace('/* PV_SCRIPT */ null', JSON.stringify(pvScript))
+  .replace('/* VALID_PUBLIC_PATHS */ null', JSON.stringify([
+    '/', '/about', '/about/standards', '/about/diana', '/development', '/development/atlas',
+    '/learning', '/journal', '/foundation', '/foundation/youth', '/tech-lounge', '/ether',
+    '/motor', '/form', '/enigmas',
+    ...Object.keys(publicationPages),
+    ...stories.map(story => '/enigmas/' + story.slug)
+  ]));
+if (/\/\* (?:HOME_HTML|ABOUT_HTML|ATLAS_HTML|DIANA_HTML|DEVELOPMENT_HTML|LEARNING_HTML|JOURNAL_HTML|FOUNDATION_HTML|YOUTH_HTML|TECH_LOUNGE_HTML|ENIGMAS_HTML|ENIGMA_ARTICLES|LOGIN_HTML|ADMIN_HTML|HERO_IMAGE|DETAIL_IMAGE|DIANA_IMAGE|DIANA_CARDS_IMAGE|DEVELOPMENT_IMAGE|TECH_LOUNGE_IMAGE|TECH_MACRO_IMAGE|ENIGMAS_POLITICS_IMAGE|ENIGMAS_LAW_IMAGE|ENIGMAS_ACADEMY_IMAGE|PV_SCRIPT|VALID_PUBLIC_PATHS) \*\//.test(compiled)) throw new Error('Build marker missing');
 await rm('dist', { recursive: true, force: true });
 await mkdir('dist/server', { recursive: true });
 await writeFile('dist/server/index.js', compiled);
