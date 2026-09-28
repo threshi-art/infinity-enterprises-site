@@ -1,5 +1,79 @@
 import { readFileSync } from 'node:fs';
-import { pathToFileURL } from 'node:url';
+import { pathToFileURL, fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
+
+export function normalizeInput(data) {
+  // Normalize input format:
+  // - Bare array: [{day, views}]
+  // - Wrangler array: [{results: [{day, views}], success: true, meta: {...}}]
+  // - Object: {results: [{day, views}]}
+  let dailyViews;
+  if (Array.isArray(data)) {
+    if (data.length > 0 && data[0].results) {
+      // Wrangler format: [{results: [...]}]
+      dailyViews = data[0].results;
+    } else {
+      // Bare array
+      dailyViews = data;
+    }
+  } else if (data.results) {
+    // Object with results key
+    dailyViews = data.results;
+  } else {
+    dailyViews = [];
+  }
+  
+  // Coerce views to Number
+  return dailyViews.map(row => ({
+    day: row.day,
+    views: Number(row.views)
+  }));
+}
+
+export function formatReport(results) {
+  const suspect = results.filter(r => r.status === 'suspect');
+  const cleared = results.filter(r => r.status === 'cleared');
+  const notChecked = results.filter(r => r.status === 'not_checked');
+  const ok = results.filter(r => r.status === 'ok');
+  
+  // Check if no day has enough history
+  const hasBaseline = ok.length > 0 || suspect.length > 0;
+  
+  let output = '';
+  
+  if (!hasBaseline && notChecked.length > 0) {
+    output += 'no baseline yet: clear the first 7 days\n';
+  }
+  
+  if (suspect.length > 0) {
+    output += 'Suspect days:\n';
+    output += '============\n';
+    for (const entry of suspect) {
+      output += `${entry.day}: ${entry.views} views (baseline: ${entry.baseline.toFixed(1)})\n`;
+    }
+    output += `\nTotal: ${suspect.length} suspect day(s)\n`;
+  } else if (hasBaseline) {
+    output += 'No suspect days found.\n';
+  }
+  
+  if (cleared.length > 0) {
+    output += '\nCleared days:\n';
+    output += '=============\n';
+    for (const entry of cleared) {
+      output += `${entry.day}: ${entry.views} views (manually verified)\n`;
+    }
+  }
+  
+  if (notChecked.length > 0) {
+    output += '\nNot checked (insufficient baseline):\n';
+    output += '====================================\n';
+    for (const entry of notChecked) {
+      output += `${entry.day}: ${entry.views} views\n`;
+    }
+  }
+  
+  return output;
+}
 
 export function analyzeSuspectDays(dailyViews, clearedDays = []) {
   const cleared = new Set(clearedDays);
@@ -93,13 +167,34 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   
   // Load cleared days
   if (clearedFile) {
-    const clearedData = readFileSync(clearedFile, 'utf8');
-    clearedDays = JSON.parse(clearedData);
-  } else {
+    // User-specified file: resolve relative to cwd
     try {
-      const clearedData = readFileSync('data/cleared-days.json', 'utf8');
+      const clearedData = readFileSync(clearedFile, 'utf8');
       clearedDays = JSON.parse(clearedData);
-    } catch {}
+    } catch (err) {
+      console.error(`Error reading cleared file ${clearedFile}: ${err.message}`);
+      process.exit(1);
+    }
+  } else {
+    // Default file: resolve relative to repo root
+    try {
+      const scriptPath = fileURLToPath(import.meta.url);
+      const repoRoot = join(dirname(scriptPath), '..');
+      const defaultPath = join(repoRoot, 'data', 'cleared-days.json');
+      const clearedData = readFileSync(defaultPath, 'utf8');
+      try {
+        clearedDays = JSON.parse(clearedData);
+      } catch (parseErr) {
+        console.error(`Error parsing ${defaultPath}: ${parseErr.message}`);
+        process.exit(1);
+      }
+    } catch (err) {
+      // Default file missing is OK, treat as empty array
+      if (err.code !== 'ENOENT') {
+        console.error(`Error reading default cleared-days.json: ${err.message}`);
+        process.exit(1);
+      }
+    }
   }
   
   // Read daily views
@@ -121,71 +216,14 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
 
 function processInput(input, clearedDays) {
   const data = JSON.parse(input);
+  const dailyViews = normalizeInput(data);
   
-  // Normalize input format:
-  // - Bare array: [{day, views}]
-  // - Wrangler array: [{results: [{day, views}], success: true, meta: {...}}]
-  // - Object: {results: [{day, views}]}
-  let dailyViews;
-  if (Array.isArray(data)) {
-    if (data.length > 0 && data[0].results) {
-      // Wrangler format: [{results: [...]}]
-      dailyViews = data[0].results;
-    } else {
-      // Bare array
-      dailyViews = data;
-    }
-  } else if (data.results) {
-    // Object with results key
-    dailyViews = data.results;
-  } else {
-    dailyViews = [];
+  if (dailyViews.length === 0) {
+    console.log('no data: 0 days in input');
+    return;
   }
-  
-  // Coerce views to Number
-  dailyViews = dailyViews.map(row => ({
-    day: row.day,
-    views: Number(row.views)
-  }));
   
   const results = analyzeSuspectDays(dailyViews, clearedDays);
-  
-  const suspect = results.filter(r => r.status === 'suspect');
-  const cleared = results.filter(r => r.status === 'cleared');
-  const notChecked = results.filter(r => r.status === 'not_checked');
-  const ok = results.filter(r => r.status === 'ok');
-  
-  // Check if no day has enough history
-  const hasBaseline = ok.length > 0 || suspect.length > 0;
-  
-  if (!hasBaseline && notChecked.length > 0) {
-    console.log('no baseline yet: clear the first 7 days');
-  }
-  
-  if (suspect.length > 0) {
-    console.log('Suspect days:');
-    console.log('============');
-    for (const entry of suspect) {
-      console.log(`${entry.day}: ${entry.views} views (baseline: ${entry.baseline.toFixed(1)})`);
-    }
-    console.log(`\nTotal: ${suspect.length} suspect day(s)`);
-  } else if (hasBaseline) {
-    console.log('No suspect days found.');
-  }
-  
-  if (cleared.length > 0) {
-    console.log('\nCleared days:');
-    console.log('=============');
-    for (const entry of cleared) {
-      console.log(`${entry.day}: ${entry.views} views (manually verified)`);
-    }
-  }
-  
-  if (notChecked.length > 0) {
-    console.log('\nNot checked (insufficient baseline):');
-    console.log('====================================');
-    for (const entry of notChecked) {
-      console.log(`${entry.day}: ${entry.views} views`);
-    }
-  }
+  const output = formatReport(results);
+  process.stdout.write(output);
 }
