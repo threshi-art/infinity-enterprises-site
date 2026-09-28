@@ -1,4 +1,4 @@
-# Ember: #56 scene processing (v2). Upscale 1280x720 -> 1600x900 Lanczos, lift mid-tones and
+# #56 scene processing (v2). Upscale 1280x720 -> 1600x900 Lanczos, lift mid-tones and
 # highlights outside the protected lower-left zone, burn the zone if it runs hot, +6% saturation.
 from PIL import Image, ImageEnhance
 import numpy as np, glob, os

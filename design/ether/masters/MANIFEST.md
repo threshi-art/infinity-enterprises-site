@@ -1,6 +1,6 @@
 # #56 Ether Room scenes and mood cards: manifest
 
-Made by Ember, 2026-09-27. Every image here is image-generated with manual cleanup (AI generated). Credit line for the page: "Scenes: AI generated for Infinity Enterprises". It covers these new files only.
+Made 2026-09-27. Every image here is image-generated with manual cleanup (AI generated). Credit line for the page: "Scenes: AI generated for Infinity Enterprises". It covers these new files only.
 
 ## Folder layout (mirrors the repo)
 
@@ -35,7 +35,7 @@ Text zone: the left 58% of the width and the bottom 45% of the height (x 0 to 92
 | `spy-lounge-3.webp` | Spy Lounge / aQvB872MZL8 | 106,774 | 42.4 | 26.8 | 50% | A red lounge with curved booth seating and bar stools beneath a round window showing Earth from orbit. |
 | `spy-lounge-4.webp` | Spy Lounge / aQvB872MZL8 | 127,514 | 49.9 | 26.3 | 49% | A red egg chair and a martini on a side table beside a curved window onto a starry sky and a crescent moon. |
 
-Spy Lounge 1 and 2 go with the first Spy Lounge source (`Y-Lr487H1iU`); 3 and 4 go with the second (`aQvB872MZL8`). Mutant Groove 3: the phone crop at 10% keeps the text column dark but drops the glowing staircase. Forge picks between that crop and the centred crop with the scrim.
+Spy Lounge 1 and 2 go with the first Spy Lounge source (`Y-Lr487H1iU`); 3 and 4 go with the second (`aQvB872MZL8`). Mutant Groove 3: the phone crop at 10% keeps the text column dark but drops the glowing staircase. The final choice between that crop and the centred crop with the scrim is made from the rendered-page contrast check.
 
 ## Contrast for white text, before the scrim (pessimistic)
 
