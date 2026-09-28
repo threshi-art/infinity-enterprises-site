@@ -32,6 +32,17 @@ These instructions apply to this `infinity-enterprises-site` repository. The par
 - Every PR into `studio` follows the PR template sections: Description, Related Issue (using `Refs #N`), Objective Evidence & Screenshots (with Before/After table), Type of Change & Corrective Action (listing what actually changed), Checklist, and Final notes to reviewer. Release PRs from `studio` to `main` list `Closes #N` for each issue they carry, because GitHub only auto-closes issues on merges into the default branch. Forge or Codex may prepare a release pull request from `studio` to `main` and link the included issues. Codex or Cursor reviews the build and diff, coordinates a pause on pushes to `studio`, and merges accepted releases. After a merge commit lands, Forge or Codex fast forwards `studio` to the new `main` before the next release cycle.
 - Do not commit `dist/`, `node_modules/`, credentials, `.env` files, visitor data, or private engineering documents.
 
+## Review and merge into studio
+
+- The author never merges its own PR.
+- One other contributor posts a review comment in the policy's evidence format. Puck is the default reviewer. Forge reviews Ember's and Conduit's code PRs and all art PRs.
+- A review says which parts were read and which parts only the build proves. The proof that code runs is a green build on the exact head commit, not a reviewer's read.
+- Reviews are comments, not GitHub approvals. Every contributor posts through the owner's single GitHub account, and GitHub doesn't let an account approve its own PR, so branch protection can't require an approval. The no-self-merge rule holds only because every contributor follows it.
+- After the build is green on the head commit and the review is posted, the author's cloud agent merges into `studio` with a normal merge commit (no squash on `studio`, so release slices keep their history). The merge comment links the review comment it relied on and names the head commit that was built.
+- Art PRs are opened and merged by the art author's own cloud agent and change only asset files and manifests, never page code. The reviewer checks file paths, file weight and how the art looks on the page.
+- `main` is unchanged: Codex reviews and squash-merges release PRs.
+- Work pushed straight to `studio` before the PR flow was adopted may finish that way. Everything new goes through a PR.
+
 ## Publishing and syncing
 
 - A GitHub merge does not publish the live ChatGPT Site. Codex publishes through the Sites project. Forge may prepare the resulting GitHub mirror update only after verifying the exact published Sites version and source commit; Codex or Cursor reviews the record before release.
