@@ -5,7 +5,29 @@ title: '[Room] '
 labels: room
 ---
 
-## Accessibility and Performance Checklist
+### Description
+
+[What gap or need does this room address? Who encounters the limitation, and what is the desired experience?]
+
+### Root Cause
+
+[Why does the current site not satisfy this need? If unknown, say so and label any hypothesis.]
+
+### Proposed Corrective Action
+
+[What will be built, and how will it meet the accessibility checklist?]
+
+### Objective Evidence & Screenshots
+
+[What measurement, user feedback, or editorial need supports this?]
+
+This repository is public: strip emails, account names, tokens, IP addresses and any personal details from screenshots and logs.
+
+### Acceptance criteria
+
+[Specific, measurable criteria for completion.]
+
+### Accessibility and Performance Checklist
 
 Before closing this room issue, verify:
 
@@ -20,26 +42,6 @@ Before closing this room issue, verify:
 - [ ] Under 1 MB transferred on first load with sound off
 - [ ] No layout shift from textures or fonts
 
-## Description of problem
+### Owner and handoff
 
-<!-- What gap or need does this room address? -->
-
-## Root cause
-
-<!-- Why does the current site not satisfy this need? -->
-
-## Objective evidence
-
-<!-- What measurement, user feedback, or editorial need supports this? -->
-
-## Proposed corrective action
-
-<!-- What will be built, and how will it meet the accessibility checklist? -->
-
-## Acceptance criteria
-
-<!-- Specific, measurable criteria for completion -->
-
-## Owner and handoff
-
-Owner: **[Name]**. Status: not started.
+Owner: **[Name]**. Status: not started. Files expected to change: [list]. Next person needs: [handoff details].
