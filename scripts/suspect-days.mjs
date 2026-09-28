@@ -226,12 +226,6 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
 function processInput(input, clearedDays) {
   const data = JSON.parse(input);
   const dailyViews = normalizeInput(data);
-  
-  if (dailyViews.length === 0) {
-    console.log('no data: 0 days in input');
-    return;
-  }
-  
   const results = analyzeSuspectDays(dailyViews, clearedDays);
   const output = formatReport(results);
   process.stdout.write(output);
