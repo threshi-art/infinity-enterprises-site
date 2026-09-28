@@ -55,18 +55,18 @@ w, h = 1600, 900
 save('a-desktop.svg', w, h, [
     rect(0, 0, w, h, '#f4f1eb'), mast(w),
     image('cover.jpg', 0, 76, w, 590), rect(0, 76, w, 590, 'url(#side)'),
-    label('A  /  THE CINEMATIC ISSUE', 72, 128, '#efb28b'),
-    label('THE CURRENT ISSUE  •  COVER STORY', 72, 242, '#efb28b'),
+    label('A  /  CINEMATIC FEATURE PATTERN', 72, 128, '#efb28b'),
+    label('DEPARTMENT FEATURE  •  VISUAL OPENING', 72, 242, '#efb28b'),
     title(['Ideas worth', 'staying for.'], 72, 337, 91, '#fff', 93),
     paragraph(['One arresting opening. Then a magazine that unfolds',
                'by editorial importance, not identical cards.'], 74, 520, '#f4f1eb', 23, 32),
-    label('ENTER THE ISSUE  ↗', 74, 624, '#fff'),
+    label('ENTER THE STORY  ↗', 74, 624, '#fff'),
     label('SELECTED BY THE EDITORS', 72, 710),
     title(['Editorial Picks'], 72, 763, 50, '#102638'),
     image('hero.jpg', 72, 786, 872, 114), image('food.jpg', 968, 786, 560, 114),
 ])
 w, h = 390, 900
-save('a-phone.svg', w, h, [rect(0, 0, w, h, '#f4f1eb'), mast(w), image('cover.jpg', 0, 76, w, 555, 'xMidYMid'), rect(0, 76, w, 555, 'url(#shade)'), label('A  /  CINEMATIC ISSUE', 22, 113, '#efb28b', 10), label('CURRENT ISSUE', 22, 388, '#efb28b', 10), title(['Ideas worth', 'staying for.'], 22, 451, 48, '#fff', 53), paragraph(['One story opens the issue.', 'The rest unfolds by rank.'], 22, 555, '#fff', 17, 25), label('ENTER THE ISSUE  ↗', 22, 612, '#fff', 10), label('SELECTED BY THE EDITORS', 22, 690, '#8a4526', 10), title(['Editorial Picks'], 22, 731, 31, '#102638'), image('hero.jpg', 22, 752, 346, 131)])
+save('a-phone.svg', w, h, [rect(0, 0, w, h, '#f4f1eb'), mast(w), image('cover.jpg', 0, 76, w, 555, 'xMidYMid'), rect(0, 76, w, 555, 'url(#shade)'), label('A  /  CINEMATIC FEATURE', 22, 113, '#efb28b', 10), label('DEPARTMENT FEATURE', 22, 388, '#efb28b', 10), title(['Ideas worth', 'staying for.'], 22, 451, 48, '#fff', 53), paragraph(['One story opens the room.', 'The rest unfolds by rank.'], 22, 555, '#fff', 17, 25), label('ENTER THE STORY  ↗', 22, 612, '#fff', 10), label('SELECTED BY THE EDITORS', 22, 690, '#8a4526', 10), title(['Editorial Picks'], 22, 731, 31, '#102638'), image('hero.jpg', 22, 752, 346, 131)])
 
 # Major Feature: a portrait magazine cover and adjacent editorial introduction.
 # This is the lead section after the opening, not a replacement for an article.
@@ -78,7 +78,7 @@ save('feature-desktop.svg', w, h, [
     image('cover.jpg', 86, 170, 542, 672, 'xMidYMid'),
     rect(86, 170, 542, 672, 'url(#shade)'),
     title(['SOVRANO', 'INFINITUM'], 116, 234, 50, '#fff', 51, tracking=-.7),
-    label('AN INFINITY ENTERPRISES PUBLICATION', 116, 279, '#f4f1eb', 10),
+    label('AN INFINITY ENTERPRISES PUBLICATION', 116, 312, '#f4f1eb', 10),
     label('THE SEPTEMBER ISSUE', 116, 672, '#efb28b'),
     title(['Who governs', 'the reasoning?'], 116, 742, 43, '#fff', 48),
     label('01  /  THE MAJOR FEATURE', 728, 269, '#8a4526'),
@@ -129,7 +129,7 @@ w, h = 1600, 900
 save('c-desktop.svg', w, h, [
     rect(0, 0, w, h, '#f1ede5'), mast(w),
     image('research.jpg', 860, 76, 740, 545), rect(0, 76, 870, 545, '#f1ede5'),
-    label('C  /  THE READING ROOM', 72, 130, '#8a4526'),
+    label('C  /  READING AND REPORTING', 72, 130, '#8a4526'),
     label('SELECTED WORK  •  REPORTING / ESSAYS', 72, 230, '#8a4526'),
     title(['Follow the', 'question.'], 72, 334, 88, '#122737', 94),
     paragraph(['A quieter space for ideas and evidence.', 'Sources, authorship and dates stay visible.'],
@@ -144,5 +144,5 @@ save('c-desktop.svg', w, h, [
     title(['A point', 'of view.'], 1180, 785, 44, '#122737', 48),
 ])
 w, h = 390, 900
-save('c-phone.svg', w, h, [rect(0, 0, w, h, '#f1ede5'), mast(w), image('research.jpg', 0, 76, w, 285), label('C  /  THE READING ROOM', 22, 115, '#fff', 10), label('REPORTING  /  ESSAYS', 22, 407, '#8a4526', 10), title(['Follow the', 'question.'], 22, 468, 49, '#122737', 52), paragraph(['A calmer page for evidence,', 'ideas and carefully labeled', 'opinion.'], 22, 574, '#334b59', 18, 25), label('BROWSE THE DESK  ↗', 22, 678, '#8a4526', 10), rect(22, 714, 346, 2, '#ad7350'), label('LEAD STORY / REPORTING', 22, 746, '#8a4526', 10), title(['What the record', 'shows.'], 22, 802, 31, '#122737', 34)])
+save('c-phone.svg', w, h, [rect(0, 0, w, h, '#f1ede5'), mast(w), image('research.jpg', 0, 76, w, 285), label('C  /  READING AND REPORTING', 22, 115, '#fff', 10), label('REPORTING  /  ESSAYS', 22, 407, '#8a4526', 10), title(['Follow the', 'question.'], 22, 468, 49, '#122737', 52), paragraph(['A calmer page for evidence,', 'ideas and carefully labeled', 'opinion.'], 22, 574, '#334b59', 18, 25), label('BROWSE THE DESK  ↗', 22, 678, '#8a4526', 10), rect(22, 714, 346, 2, '#ad7350'), label('LEAD STORY / REPORTING', 22, 746, '#8a4526', 10), title(['What the record', 'shows.'], 22, 802, 31, '#122737', 34)])
 print('Rendered 8 self-contained SVG visual studies.')
