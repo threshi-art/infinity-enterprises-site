@@ -1,4 +1,4 @@
-# Ember: #56 v3 lift for the two darkest scenes (MG1, SL4). Starts from the v2 master, lifts
+# #56 v3 lift for the two darkest scenes (MG1, SL4). Starts from the v2 master, lifts
 # mid-tones outside the protected lower-left zone only (same feathered mask as process.py).
 from PIL import Image, ImageEnhance, ImageFilter
 import numpy as np, sys
