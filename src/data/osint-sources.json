@@ -76,7 +76,7 @@
     "url": "https://www.crisisgroup.org/crisiswatch",
     "category": "Conflict & crisis data",
     "description": "Monthly conflict tracker rating deterioration/improvement in ~70 situations.",
-    "terms": "UNVERIFIED - terms page behind Cloudflare verification.",
+    "terms": "Terms page could not be read when checked on September 27, 2026. Read the provider's terms before reusing its data.",
     "reliability": "Expert analytical NGO (secondary assessment, not raw data); monthly."
   },
   {
@@ -340,7 +340,7 @@
     "url": "https://edmo.eu/",
     "category": "Fact-checking & verification",
     "description": "EU hub linking fact-checkers and researchers on disinformation.",
-    "terms": "UNVERIFIED - page did not render (202/empty).",
+    "terms": "Terms page could not be read when checked on September 27, 2026. Read the provider's terms before reusing its data.",
     "reliability": "EU-funded network; European focus."
   },
   {
