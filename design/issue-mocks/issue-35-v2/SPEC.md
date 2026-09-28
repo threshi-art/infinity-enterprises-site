@@ -17,7 +17,8 @@ Static design mocks for three SOVRANO@Infini rooms: Music, Tech@Lounge, and Food
 ### Navigation
 - **Font:** Inter Tight 500 (13px, SIL OFL 1.1, Google Fonts)
 - **Colors:** Links #cfc8bd, hover/focus #f4efe6
-- **Links shown:** Daily Desk, Music, Tech@Lounge, Food, Culture, MODA, MOTOR, plus "Departments" menu button
+- **Links shown (primary bar per NAVIGATION.md #60):** Home, The Daily Desk, Culture, Motor, Food, Music, In Development, About, plus "Departments" menu button
+- **Current page marked:** `aria-current="page"` on the active department link (Music and Food pages) or Departments button (Tech@Lounge, not in primary bar)
 - **Mobile:** All nav links and buttons ≥44×44px tap targets
 
 ### Byline & Credits
@@ -36,6 +37,8 @@ Static design mocks for three SOVRANO@Infini rooms: Music, Tech@Lounge, and Food
 ---
 
 ## Room 1: Music
+
+**Note:** Per #60 NAVIGATION.md, Music is a top-level department (not a sub-room of Culture). The eyebrow label reads "Department" to reflect this.
 
 ### Typography
 - **Display:** Big Shoulders Display 800 (SIL OFL 1.1, Google Fonts)
@@ -72,12 +75,15 @@ Static design mocks for three SOVRANO@Infini rooms: Music, Tech@Lounge, and Food
 
 ### Sound
 - **Behavior:** Off by default. Visible toggle button (≥44px, "Sound: off", aria-pressed=false)
+- **Position:** Fixed top-right (top: 16px desktop / 12px phone, right: 40px desktop / 24px phone) to avoid overlapping hero art
 - **Intended audio (not loaded in mock):** Vinyl crackle loop
 - **Opt-in:** User must click toggle; sound never autoplays
 
 ---
 
 ## Room 2: Tech@Lounge
+
+**Note:** Per #60 NAVIGATION.md, Tech@Lounge is not in the primary navigation bar. Its page marks the "Departments" button as current via `aria-current="page"` on the button. The eyebrow label reads "Department" (English, per #60 naming; Italian "Circuit" removed from public labels).
 
 ### Typography
 - **Headlines:** Space Grotesk 700 (SIL OFL 1.1, Google Fonts)
@@ -116,12 +122,15 @@ Static design mocks for three SOVRANO@Infini rooms: Music, Tech@Lounge, and Food
 
 ### Sound
 - **Behavior:** Off by default. Visible toggle (≥44px, "Sound: off", monospace)
+- **Position:** Fixed top-right (top: 16px desktop / 12px phone, right: 40px desktop / 24px phone) to avoid overlapping content
 - **Intended audio (not loaded in mock):** Cursor blip, element snap clicks
 - **Opt-in:** User must enable; no autoplay
 
 ---
 
 ## Room 3: Food
+
+**Note:** Per #60 RECONCILIATION.md, the department name is **Food** (English), not "Tavola" or "Trattoria" (Italian room IDs removed from public labels per #60 naming). The eyebrow label reads "Department."
 
 ### Typography
 - **Display:** Cormorant Garamond 600/700 (SIL OFL 1.1, Google Fonts)
@@ -158,6 +167,7 @@ Static design mocks for three SOVRANO@Infini rooms: Music, Tech@Lounge, and Food
 
 ### Sound
 - **Behavior:** Off by default. Visible toggle (≥44px, "Sound: off", rounded pill button)
+- **Position:** Fixed top-right (top: 16px desktop / 12px phone, right: 40px desktop / 24px phone) to avoid overlapping content
 - **Intended audio (not loaded in mock):** Plate clink, soft ambient chatter
 - **Opt-in:** User must enable; no autoplay
 
