@@ -9,6 +9,10 @@ labels: room
 
 [What gap or need does this room address? Who encounters the limitation, and what is the desired experience?]
 
+### Root Cause
+
+[Why does the current site not satisfy this need? If unknown, say so and label any hypothesis.]
+
 ### Proposed Corrective Action
 
 [What will be built, and how will it meet the accessibility checklist?]
