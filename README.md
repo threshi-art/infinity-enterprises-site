@@ -79,19 +79,39 @@ WHERE day >= date('now', '-7 days') AND referrer_domain IS NOT NULL
 GROUP BY referrer_domain ORDER BY views DESC;
 
 -- Suspect days (anomalous spikes)
-SELECT 
-  pv.day,
-  COUNT(*) as views,
-  ROUND(AVG(prev.view_count), 1) as avg_previous_14d
-FROM page_views pv
-JOIN (
-  SELECT day, COUNT(*) as view_count 
-  FROM page_views 
+-- Flags days with >=50 views that exceed 3x the median of the previous 14 days.
+-- Uses median (not average) so multi-day fake traffic cannot raise its own baseline.
+WITH daily_counts AS (
+  SELECT day, COUNT(*) as view_count
+  FROM page_views
   GROUP BY day
-) prev ON prev.day < pv.day AND prev.day >= date(pv.day, '-14 days')
-GROUP BY pv.day
-HAVING COUNT(*) >= 50 AND COUNT(*) > 3 * AVG(prev.view_count)
-ORDER BY pv.day DESC;
+),
+ranked_previous AS (
+  SELECT 
+    curr.day as current_day,
+    curr.view_count as current_count,
+    prev.view_count as prev_count,
+    ROW_NUMBER() OVER (
+      PARTITION BY curr.day 
+      ORDER BY prev.view_count
+    ) as rn,
+    COUNT(*) OVER (PARTITION BY curr.day) as total
+  FROM daily_counts curr
+  JOIN daily_counts prev 
+    ON prev.day < curr.day 
+    AND prev.day >= date(curr.day, '-14 days')
+)
+SELECT 
+  current_day as day,
+  current_count as views,
+  AVG(prev_count) as median_previous_14d
+FROM ranked_previous
+WHERE rn IN ((total + 1) / 2, (total + 2) / 2)
+GROUP BY current_day, current_count
+HAVING current_count >= 50
+  AND AVG(prev_count) IS NOT NULL
+  AND current_count > 3 * AVG(prev_count)
+ORDER BY current_day DESC;
 ```
 
 **To disable:** Remove the script include from `build.mjs` page() function (line ~136) and optionally disable the `/api/pv` route in `src/worker.js`.
