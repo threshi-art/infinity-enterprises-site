@@ -184,79 +184,9 @@ async function measureRoute(browser, route, viewport, strict) {
       violations[key] = {
         impact: violation.impact || 'minor',
         count: 0,
-        nodes: [],
       };
     }
     violations[key].count += violation.nodes.length;
-    
-    for (const node of violation.nodes) {
-      const nodeInfo = {
-        target: node.target.join(' '),
-        html: node.html,
-      };
-      
-      if (key === 'color-contrast' && node.any && node.any.length > 0 && node.any[0].data) {
-        const data = node.any[0].data;
-        nodeInfo.fgColor = data.fgColor || null;
-        nodeInfo.bgColor = data.bgColor || null;
-        nodeInfo.contrastRatio = data.contrastRatio || null;
-        nodeInfo.fontSize = data.fontSize || null;
-        nodeInfo.fontWeight = data.fontWeight || null;
-      }
-      
-      violations[key].nodes.push(nodeInfo);
-    }
-  }
-
-  const incomplete = {};
-  for (const item of axeResults.incomplete) {
-    const key = item.id;
-    if (!incomplete[key]) {
-      incomplete[key] = {
-        count: 0,
-        nodes: [],
-      };
-    }
-    incomplete[key].count += item.nodes.length;
-    
-    for (const node of item.nodes) {
-      const nodeInfo = {
-        target: node.target.join(' '),
-        html: node.html.substring(0, 150),
-      };
-      
-      if (key === 'color-contrast') {
-        const textContent = await page.evaluate((selector) => {
-          try {
-            const el = document.querySelector(selector);
-            return el ? el.textContent.trim().substring(0, 100) : '';
-          } catch {
-            return '';
-          }
-        }, node.target[0]);
-        
-        nodeInfo.textSnippet = textContent;
-        
-        if (node.any && node.any.length > 0 && node.any[0].message) {
-          const message = node.any[0].message;
-          if (message.includes('background image')) {
-            nodeInfo.reason = 'bgImage';
-          } else if (message.includes('gradient')) {
-            nodeInfo.reason = 'bgGradient';
-          } else if (message.includes('overlap')) {
-            nodeInfo.reason = 'bgOverlap';
-          } else if (message.includes('pseudo')) {
-            nodeInfo.reason = 'pseudoContent';
-          } else {
-            nodeInfo.reason = 'other';
-          }
-        } else {
-          nodeInfo.reason = 'unknown';
-        }
-      }
-      
-      incomplete[key].nodes.push(nodeInfo);
-    }
   }
 
   await context.close();
@@ -289,7 +219,6 @@ async function measureRoute(browser, route, viewport, strict) {
     route,
     viewport: viewport.name,
     violations,
-    incomplete,
     totalBytes,
     cls,
     overBudget,
