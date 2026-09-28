@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { analyzeSuspectDays } from './scripts/suspect-days.mjs';
+import { analyzeSuspectDays, normalizeInput, formatReport } from './scripts/suspect-days.mjs';
 
 test('14-day fake run: clear first 7 normal, all run days suspect', () => {
   const dailyViews = [];
@@ -208,25 +208,12 @@ test('Wrangler format: parses array with results wrapper', () => {
     meta: { duration: 0.123 }
   }];
   
-  // Process through the normalization logic
-  const data = wranglerOutput;
-  let dailyViews;
-  if (Array.isArray(data)) {
-    if (data.length > 0 && data[0].results) {
-      dailyViews = data[0].results;
-    } else {
-      dailyViews = data;
-    }
-  } else if (data.results) {
-    dailyViews = data.results;
-  } else {
-    dailyViews = [];
-  }
+  // Use the real exported normalizeInput function
+  const dailyViews = normalizeInput(wranglerOutput);
   
-  dailyViews = dailyViews.map(row => ({
-    day: row.day,
-    views: Number(row.views)
-  }));
+  assert.equal(dailyViews.length, 8, 'Should parse 8 days');
+  assert.equal(dailyViews[0].day, '2026-09-01', 'Should have correct first day');
+  assert.equal(dailyViews[7].views, 2000, 'Should coerce views to Number');
   
   // Clear first 7 days to establish baseline
   const clearedDays = [
@@ -240,4 +227,56 @@ test('Wrangler format: parses array with results wrapper', () => {
   assert.equal(suspect.length, 1, 'Should have one suspect day');
   assert.equal(suspect[0].day, '2026-09-08', 'Should flag the spike day');
   assert.equal(suspect[0].views, 2000, 'Should have correct views count');
+});
+
+test('formatReport includes no-baseline message for uncleared, not for cleared', () => {
+  const dailyViews = [];
+  
+  // 20 normal days at 100 views
+  for (let i = 0; i < 20; i++) {
+    dailyViews.push({
+      day: `2026-09-${String(i + 1).padStart(2, '0')}`,
+      views: 100
+    });
+  }
+  
+  dailyViews.push({ day: '2026-09-21', views: 2000 });
+  
+  // Without cleared days: should include no-baseline message
+  const resultsUncleared = analyzeSuspectDays(dailyViews);
+  const outputUncleared = formatReport(resultsUncleared);
+  
+  assert.ok(
+    outputUncleared.includes('no baseline yet: clear the first 7 days'),
+    'Should include no-baseline message when nothing is cleared'
+  );
+  
+  // With first 7 cleared: should NOT include no-baseline message
+  const clearedDays = [
+    '2026-09-01', '2026-09-02', '2026-09-03', '2026-09-04',
+    '2026-09-05', '2026-09-06', '2026-09-07'
+  ];
+  const resultsCleared = analyzeSuspectDays(dailyViews, clearedDays);
+  const outputCleared = formatReport(resultsCleared);
+  
+  assert.ok(
+    !outputCleared.includes('no baseline yet'),
+    'Should NOT include no-baseline message once first 7 are cleared'
+  );
+  assert.ok(
+    outputCleared.includes('Suspect days:'),
+    'Should include suspect days section'
+  );
+});
+
+test('Empty input prints no-data message', () => {
+  // Empty array
+  const emptyArray = [];
+  const normalized1 = normalizeInput(emptyArray);
+  assert.equal(normalized1.length, 0, 'Empty array normalizes to empty');
+  
+  // Wrangler format with empty results
+  const emptyWrangler = [{ results: [], success: true, meta: {} }];
+  const normalized2 = normalizeInput(emptyWrangler);
+  assert.equal(normalized2.length, 0, 'Empty wrangler results normalize to empty');
 });
