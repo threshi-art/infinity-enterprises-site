@@ -77,4 +77,8 @@ test('Ukraine desk base map asset', () => {
   // Assert aria-hidden="true"
   const ariaHidden = getAttr('aria-hidden');
   assert.strictEqual(ariaHidden, 'true', 'root should have aria-hidden="true"');
+  
+  // Assert preserveAspectRatio
+  const preserveAspectRatio = getAttr('preserveAspectRatio');
+  assert.strictEqual(preserveAspectRatio, 'xMidYMid meet', 'root should have preserveAspectRatio="xMidYMid meet"');
 });
