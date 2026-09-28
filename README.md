@@ -4,7 +4,7 @@
 
 [![CI](https://github.com/threshi-art/infinity-enterprises-site/actions/workflows/ci.yml/badge.svg?branch=studio)](https://github.com/threshi-art/infinity-enterprises-site/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-All%20rights%20reserved-8b1e2d)](LICENSE)
-[![Live Site](https://img.shields.io/badge/live%20site-online-c9a86a)](https://infinity-enterprises.infinity-ent-8507.chatgpt.site/)
+[![Live Site](https://img.shields.io/website?url=https%3A%2F%2Finfinity-enterprises.infinity-ent-8507.chatgpt.site%2F&label=live%20site&up_message=online&down_message=down&up_color=c9a86a&down_color=critical)](https://infinity-enterprises.infinity-ent-8507.chatgpt.site/)
 
 </div>
 
