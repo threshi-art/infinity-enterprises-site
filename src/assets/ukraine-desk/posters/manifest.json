@@ -1,0 +1,50 @@
+{
+  "purpose": "Text-free poster backgrounds shown in place of the YouTube player for commentary videos on the Ukraine desk (issue #71, sub-issue #84). The page sets the channel name, a 'Commentary' label and the play button as live HTML over the dark left side, then loads the privacy-enhanced player only after a tap.",
+  "source": "Drawn in code (soft gradient fields and grain) by an AI assistant for Infinity Enterprises. No text, photos, channel logos, profile pictures or faces.",
+  "alt": "Decorative. Use alt=\"\"; the channel name and play button are HTML text.",
+  "text_zone": "Left 55% of each card stays near-black (background luminance at or below 0.022, 90th percentile) so ivory #f4efe6 text measures at least 12.8:1 and #cfc8bd labels at least 8.8:1 there.",
+  "palette": {
+    "background": "#0e0d12",
+    "suggested_name_text": "#f4efe6",
+    "suggested_label_text": "#cfc8bd",
+    "suggested_accent": "#d8c39a"
+  },
+  "files": [
+    {
+      "file": "jake-broe-desktop.webp",
+      "channel": "Jake Broe",
+      "use": "desktop card, 16:9",
+      "width": 1280,
+      "height": 720,
+      "format": "WebP (lossy, quality 86)",
+      "bytes": 11030
+    },
+    {
+      "file": "jake-broe-phone.webp",
+      "channel": "Jake Broe",
+      "use": "phone card, 16:9",
+      "width": 640,
+      "height": 360,
+      "format": "WebP (lossy, quality 86)",
+      "bytes": 3524
+    },
+    {
+      "file": "preston-stewart-desktop.webp",
+      "channel": "Preston Stewart",
+      "use": "desktop card, 16:9",
+      "width": 1280,
+      "height": 720,
+      "format": "WebP (lossy, quality 86)",
+      "bytes": 13970
+    },
+    {
+      "file": "preston-stewart-phone.webp",
+      "channel": "Preston Stewart",
+      "use": "phone card, 16:9",
+      "width": 640,
+      "height": 360,
+      "format": "WebP (lossy, quality 86)",
+      "bytes": 3540
+    }
+  ]
+}
