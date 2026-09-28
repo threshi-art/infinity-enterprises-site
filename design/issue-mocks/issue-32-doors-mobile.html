@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Issue #32: Room Entry Transition Storyboard (Mobile)</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #1a1a1a;
+      color: #f4f1eb;
+      padding: 20px;
+      width: 390px;
+    }
+    h1 {
+      font-size: 18px;
+      margin-bottom: 8px;
+      color: #cdb27a;
+    }
+    .subtitle {
+      font-size: 11px;
+      color: #999;
+      margin-bottom: 24px;
+    }
+    .storyboard {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .frame {
+      background: #2a2a2a;
+      border: 1px solid #444;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .frame-header {
+      background: #333;
+      padding: 8px;
+      border-bottom: 1px solid #444;
+      font-size: 10px;
+      font-weight: 600;
+    }
+    .frame-content {
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .room-preview {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      text-align: center;
+      padding: 16px;
+    }
+    .nocturne { background: linear-gradient(135deg, #0c1a2a 0%, #1a2a3a 100%); }
+    .atelier { background: linear-gradient(135deg, #f4f1eb 0%, #e4e1db 100%); color: #1b1216; }
+    .circuit { background: linear-gradient(135deg, #0d0f13 0%, #1d1f23 100%); }
+    
+    .transition-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+    }
+    .fade-overlay {
+      background: #000;
+      opacity: 0.5;
+    }
+    
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      letter-spacing: 0.5px;
+    }
+    .room-name {
+      font-size: 10px;
+      opacity: 0.7;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .reduced-motion-section {
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 2px solid #444;
+    }
+    
+    h2 {
+      font-size: 14px;
+      margin-bottom: 16px;
+      color: #cdb27a;
+    }
+    
+    .note {
+      margin-top: 24px;
+      padding: 12px;
+      background: #2a2a2a;
+      border-left: 3px solid #c77c55;
+      font-size: 10px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <h1>Room Entry Transitions (Mobile ~390px)</h1>
+  <p class="subtitle">Wireframe mockup · Placeholder content · Issue #32</p>
+  
+  <h2>Standard Motion</h2>
+  <div class="storyboard">
+    <div class="frame">
+      <div class="frame-header">Frame 1: Daily Desk (Hard Cut)</div>
+      <div class="frame-content">
+        <div class="room-preview nocturne">
+          <div class="section-title">THE DAILY DESK</div>
+          <div class="room-name">Nocturne</div>
+          <div style="margin-top: 16px; font-size: 10px;">Hard cut door →</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="frame">
+      <div class="frame-header">Frame 2: Cultura (Slow Fade)</div>
+      <div class="frame-content">
+        <div class="room-preview atelier">
+          <div class="section-title">CULTURA</div>
+          <div class="room-name">Atelier</div>
+          <div style="margin-top: 16px; font-size: 10px;">Fade door</div>
+        </div>
+        <div class="transition-overlay fade-overlay"></div>
+      </div>
+    </div>
+    
+    <div class="frame">
+      <div class="frame-header">Frame 3: Tech (Instant Cut)</div>
+      <div class="frame-content">
+        <div class="room-preview circuit">
+          <div class="section-title">TECH</div>
+          <div class="room-name">Circuit</div>
+          <div style="margin-top: 16px; font-size: 10px;">Instant cut door</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="reduced-motion-section">
+    <h2>Reduced Motion</h2>
+    <div class="storyboard">
+      <div class="frame">
+        <div class="frame-header">Before (Any Room)</div>
+        <div class="frame-content">
+          <div class="room-preview nocturne">
+            <div class="section-title">CURRENT</div>
+            <div class="room-name">Any Theme</div>
+            <div style="margin-top: 16px; font-size: 10px;">prefers-reduced-motion</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="frame">
+        <div class="frame-header">After (Short Cross-Fade)</div>
+        <div class="frame-content">
+          <div class="room-preview atelier">
+            <div class="section-title">NEW</div>
+            <div class="room-name">Any Theme</div>
+            <div style="margin-top: 16px; font-size: 10px;">≤300ms fade only</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="note">
+    <strong>Mobile Notes:</strong><br>
+    • Same View Transition API<br>
+    • Touch-optimized timing<br>
+    • Reduced motion respected<br>
+    • Focus management on navigation
+  </div>
+</body>
+</html>

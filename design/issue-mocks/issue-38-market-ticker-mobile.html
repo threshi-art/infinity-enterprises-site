@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Issue #38: Market Ticker (Mobile)</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #1a1a1a;
+      color: #f4f1eb;
+      padding: 16px;
+      width: 390px;
+    }
+    h1 {
+      font-size: 16px;
+      margin-bottom: 6px;
+      color: #cdb27a;
+    }
+    .subtitle {
+      font-size: 10px;
+      color: #999;
+      margin-bottom: 20px;
+    }
+    
+    .ticker-section {
+      background: #0c1a2a;
+      border: 1px solid #c77c55;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .ticker-header {
+      background: #1a2a3a;
+      padding: 10px 12px;
+      border-bottom: 1px solid #c77c55;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .ticker-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #c77c55;
+      flex: 1;
+    }
+    .sample-badge {
+      background: #c77c55;
+      color: #0c1a2a;
+      padding: 3px 8px;
+      border-radius: 8px;
+      font-size: 9px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .ticker-content {
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .ticker-item {
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(199, 124, 85, 0.2);
+    }
+    .ticker-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .headline-text {
+      font-size: 12px;
+      line-height: 1.4;
+      color: #f4f1eb;
+      margin-bottom: 4px;
+    }
+    .headline-meta {
+      font-size: 10px;
+      opacity: 0.6;
+    }
+    
+    .mercati-section {
+      background: #0f2620;
+      border: 1px solid #cdb27a;
+      border-radius: 6px;
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+    .sample-data-notice {
+      background: #3a2a1a;
+      border: 2px solid #c77c55;
+      border-radius: 4px;
+      padding: 10px;
+      text-align: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: #c77c55;
+      margin-bottom: 12px;
+    }
+    .mercati-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: #cdb27a;
+      text-align: center;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .stat-card {
+      background: #1a3a30;
+      border: 1px solid #cdb27a;
+      border-radius: 4px;
+      padding: 12px;
+      text-align: center;
+    }
+    .stat-label {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      opacity: 0.7;
+      margin-bottom: 6px;
+    }
+    .stat-value {
+      font-size: 18px;
+      font-weight: 700;
+      font-family: 'Courier New', monospace;
+      margin-bottom: 4px;
+    }
+    .stat-value.up {
+      color: #4ade80;
+    }
+    .stat-value.down {
+      color: #ef4444;
+    }
+    .stat-change {
+      font-size: 10px;
+      font-family: 'Courier New', monospace;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+    }
+    .stat-change.up {
+      color: #4ade80;
+    }
+    .stat-change.down {
+      color: #ef4444;
+    }
+    .arrow {
+      font-size: 10px;
+      font-weight: 700;
+    }
+    .disclaimer {
+      text-align: center;
+      font-size: 9px;
+      opacity: 0.7;
+      font-style: italic;
+      margin-top: 12px;
+      line-height: 1.4;
+    }
+    
+    .specs {
+      background: #2a2a2a;
+      border-left: 3px solid #cdb27a;
+      padding: 12px;
+      font-size: 10px;
+      line-height: 1.6;
+    }
+    .specs strong {
+      color: #cdb27a;
+    }
+  </style>
+</head>
+<body>
+  <h1>Ticker & Mercati (Mobile ~390px)</h1>
+  <p class="subtitle">Wireframe · Sample data only · Issue #38</p>
+  
+  <div class="ticker-section">
+    <div class="ticker-header">
+      <div class="ticker-title">Daily Desk</div>
+      <div class="sample-badge">SAMPLE</div>
+    </div>
+    <div class="ticker-content">
+      <div class="ticker-item">
+        <div class="headline-text">Placeholder headline about news event</div>
+        <div class="headline-meta">Reuters · 12 min ago</div>
+      </div>
+      <div class="ticker-item">
+        <div class="headline-text">Another sample news headline</div>
+        <div class="headline-meta">AP News · 45 min ago</div>
+      </div>
+      <div class="ticker-item">
+        <div class="headline-text">Third placeholder headline</div>
+        <div class="headline-meta">Bloomberg · 1 hour ago</div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="mercati-section">
+    <div class="sample-data-notice">
+      ⚠️ SAMPLE DATA ONLY<br>NOT REAL FIGURES ⚠️
+    </div>
+    
+    <div class="mercati-title">MERCATI</div>
+    
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">S&P 500</div>
+        <div class="stat-value up">4,521.32</div>
+        <div class="stat-change up">
+          <span class="arrow">▲</span>
+          <span>+42.15</span>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-label">Dow Jones</div>
+        <div class="stat-value down">35,124.09</div>
+        <div class="stat-change down">
+          <span class="arrow">▼</span>
+          <span>−231.56</span>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-label">NASDAQ</div>
+        <div class="stat-value up">14,032.81</div>
+        <div class="stat-change up">
+          <span class="arrow">▲</span>
+          <span>+128.43</span>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-label">EUR/USD</div>
+        <div class="stat-value up">1.0842</div>
+        <div class="stat-change up">
+          <span class="arrow">▲</span>
+          <span>+0.0023</span>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-label">BTC/USD</div>
+        <div class="stat-value down">27,342</div>
+        <div class="stat-change down">
+          <span class="arrow">▼</span>
+          <span>−542</span>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-label">Gold</div>
+        <div class="stat-value up">1,924.50</div>
+        <div class="stat-change up">
+          <span class="arrow">▲</span>
+          <span>+12.30</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="disclaimer">
+      Not investment advice.<br>Sample data only.
+    </div>
+  </div>
+  
+  <div class="specs">
+    <strong>Mobile specs:</strong><br>
+    • Sign + arrow + color for up/down<br>
+    • Sample-data label required<br>
+    • Falls back to last good data<br>
+    • Touch targets ≥24×24px
+  </div>
+</body>
+</html>

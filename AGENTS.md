@@ -19,7 +19,7 @@ These instructions apply to this `infinity-enterprises-site` repository. The par
 ## Take a task
 
 - Read this file, `README.md`, `site-source.json`, and `git status --short --branch` before editing. Fetch the latest GitHub state.
-- Track each feature or bug in a GitHub issue with a goal and acceptance criteria. Comment with the working agent's name, current status, and files being changed so overlapping work is visible.
+- Track each feature or bug in a GitHub issue with Issue, Description of problem, Root cause, Objective evidence, Proposed corrective action, and acceptance criteria. Mark an unverified root cause as unknown or a hypothesis. Comment with the working agent's name, current status, and files being changed so overlapping work is visible.
 - Preserve existing pages, articles, images, assets, and history. If another agent has uncommitted or overlapping changes, coordinate in the issue before editing those files.
 - Make focused, complete, buildable commits on `studio` and reference the issue number in the commit or issue comment. Run `npm ci` and `npm run build` for code changes before pushing.
 
@@ -27,7 +27,7 @@ These instructions apply to this `infinity-enterprises-site` repository. The par
 
 - Before pushing, fetch `studio` again. If it advanced, integrate those commits in your own clone and resolve conflicts before pushing. Push normally; retry after another fetch if GitHub rejects a nonfastforward push. Never force push, reset away another person's work, or use `git clean` to resolve a conflict.
 - Keep unfinished experiments local until they are ready for other contributors. Stop and coordinate if changes to the same files cannot be combined safely.
-- Forge or Codex may prepare a release pull request from `studio` to `main` and link the included issues. Codex or Cursor reviews the build and diff, coordinates a pause on pushes to `studio`, and merges accepted releases. After a merge commit lands, Forge or Codex fast forwards `studio` to the new `main` before the next release cycle.
+- Every PR restates the problem, records the corrective action actually taken, cites objective evidence at the exact head commit, and gives the codeowner or reviewer concrete next steps. For a release with multiple issues, repeat that record per issue. Use `Closes` only when all acceptance criteria are met; use `Refs` for partial or pending live verification. Forge or Codex may prepare a release pull request from `studio` to `main` and link the included issues. Codex or Cursor reviews the build and diff, coordinates a pause on pushes to `studio`, and merges accepted releases. After a merge commit lands, Forge or Codex fast forwards `studio` to the new `main` before the next release cycle.
 - Do not commit `dist/`, `node_modules/`, credentials, `.env` files, visitor data, or private engineering documents.
 
 ## Publishing and syncing

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Issue #38: Market Ticker (Desktop)</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #1a1a1a;
+      color: #f4f1eb;
+      padding: 40px;
+    }
+    .container {
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+      color: #cdb27a;
+    }
+    .subtitle {
+      font-size: 14px;
+      color: #999;
+      margin-bottom: 40px;
+    }
+    
+    .ticker-section {
+      background: #0c1a2a;
+      border: 1px solid #c77c55;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 40px;
+    }
+    .ticker-header {
+      background: #1a2a3a;
+      padding: 12px 20px;
+      border-bottom: 1px solid #c77c55;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .ticker-title {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #c77c55;
+    }
+    .sample-badge {
+      background: #c77c55;
+      color: #0c1a2a;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .ticker-content {
+      padding: 16px 20px;
+      display: flex;
+      gap: 40px;
+      overflow-x: auto;
+    }
+    .ticker-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 200px;
+    }
+    .headline-text {
+      font-size: 13px;
+      line-height: 1.4;
+      color: #f4f1eb;
+    }
+    .headline-meta {
+      font-size: 11px;
+      opacity: 0.6;
+    }
+    
+    .mercati-section {
+      background: #0f2620;
+      border: 1px solid #cdb27a;
+      border-radius: 8px;
+      padding: 32px;
+      margin-bottom: 40px;
+    }
+    .mercati-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      color: #cdb27a;
+      text-align: center;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: #1a3a30;
+      border: 1px solid #cdb27a;
+      border-radius: 6px;
+      padding: 16px;
+      text-align: center;
+    }
+    .stat-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      opacity: 0.7;
+      margin-bottom: 8px;
+    }
+    .stat-value {
+      font-size: 28px;
+      font-weight: 700;
+      font-family: 'Courier New', monospace;
+      margin-bottom: 4px;
+    }
+    .stat-value.up {
+      color: #4ade80;
+    }
+    .stat-value.down {
+      color: #ef4444;
+    }
+    .stat-change {
+      font-size: 13px;
+      font-family: 'Courier New', monospace;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+    .stat-change.up {
+      color: #4ade80;
+    }
+    .stat-change.down {
+      color: #ef4444;
+    }
+    .arrow {
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .sample-data-notice {
+      background: #3a2a1a;
+      border: 2px solid #c77c55;
+      border-radius: 6px;
+      padding: 16px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: #c77c55;
+      margin-bottom: 16px;
+    }
+    .disclaimer {
+      text-align: center;
+      font-size: 12px;
+      opacity: 0.7;
+      font-style: italic;
+      margin-top: 16px;
+    }
+    
+    .specs {
+      background: #2a2a2a;
+      border-left: 3px solid #cdb27a;
+      padding: 20px;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+    .specs strong {
+      color: #cdb27a;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Daily Desk Ticker & Mercati Numbers (Desktop ~1440px)</h1>
+    <p class="subtitle">Wireframe mockup · Sample data only · Issue #38</p>
+    
+    <div class="ticker-section">
+      <div class="ticker-header">
+        <div class="ticker-title">THE DAILY DESK · Breaking Headlines</div>
+        <div class="sample-badge">SAMPLE DATA</div>
+      </div>
+      <div class="ticker-content">
+        <div class="ticker-item">
+          <div class="headline-text">Placeholder headline about world event goes here</div>
+          <div class="headline-meta">Reuters · 12 min ago</div>
+        </div>
+        <div class="ticker-item">
+          <div class="headline-text">Another sample news headline for ticker display</div>
+          <div class="headline-meta">AP News · 45 min ago</div>
+        </div>
+        <div class="ticker-item">
+          <div class="headline-text">Third placeholder headline showing ticker layout</div>
+          <div class="headline-meta">Bloomberg · 1 hour ago</div>
+        </div>
+        <div class="ticker-item">
+          <div class="headline-text">Fourth sample headline for demonstration purposes</div>
+          <div class="headline-meta">Financial Times · 2 hours ago</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="mercati-section">
+      <div class="sample-data-notice">
+        ⚠️ SAMPLE DATA ONLY · NOT REAL MARKET FIGURES ⚠️
+      </div>
+      
+      <div class="mercati-title">MERCATI · Market Overview</div>
+      
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">S&P 500</div>
+          <div class="stat-value up">4,521.32</div>
+          <div class="stat-change up">
+            <span class="arrow">▲</span>
+            <span>+42.15</span>
+            <span>(+0.94%)</span>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-label">Dow Jones</div>
+          <div class="stat-value down">35,124.09</div>
+          <div class="stat-change down">
+            <span class="arrow">▼</span>
+            <span>−231.56</span>
+            <span>(−0.66%)</span>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-label">NASDAQ</div>
+          <div class="stat-value up">14,032.81</div>
+          <div class="stat-change up">
+            <span class="arrow">▲</span>
+            <span>+128.43</span>
+            <span>(+0.92%)</span>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-label">FTSE 100</div>
+          <div class="stat-value down">7,456.23</div>
+          <div class="stat-change down">
+            <span class="arrow">▼</span>
+            <span>−18.91</span>
+            <span>(−0.25%)</span>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-label">EUR/USD</div>
+          <div class="stat-value up">1.0842</div>
+          <div class="stat-change up">
+            <span class="arrow">▲</span>
+            <span>+0.0023</span>
+            <span>(+0.21%)</span>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-label">Gold (oz)</div>
+          <div class="stat-value up">1,924.50</div>
+          <div class="stat-change up">
+            <span class="arrow">▲</span>
+            <span>+12.30</span>
+            <span>(+0.64%)</span>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-label">BTC/USD</div>
+          <div class="stat-value down">27,342.18</div>
+          <div class="stat-change down">
+            <span class="arrow">▼</span>
+            <span>−542.09</span>
+            <span>(−1.94%)</span>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-label">Oil (Brent)</div>
+          <div class="stat-value up">84.23</div>
+          <div class="stat-change up">
+            <span class="arrow">▲</span>
+            <span>+0.78</span>
+            <span>(+0.93%)</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="disclaimer">
+        Not investment advice. All figures above are sample data for layout demonstration only.
+      </div>
+    </div>
+    
+    <div class="specs">
+      <strong>Implementation Requirements:</strong><br>
+      • Ticker: Free news feed headlines (terms checked), with link + credit to source<br>
+      • Mercati: Licensed market data API once owner picks one, OR sample-data label on every figure<br>
+      • Up/down shown with sign (+ or −), arrow (▲ or ▼), and color — never color alone<br>
+      • "Not investment advice" on all Mercati pages<br>
+      • Falls back to last good data when feed is down (tested)<br>
+      • API keys in Worker secret store, never in repo<br>
+      • Depends on #10 (outside feed fix) being complete first
+    </div>
+  </div>
+</body>
+</html>

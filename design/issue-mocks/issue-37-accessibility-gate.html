@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Issue #37: Accessibility & Performance Gate</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #1a1a1a;
+      color: #f4f1eb;
+      padding: 40px;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+      color: #cdb27a;
+    }
+    .subtitle {
+      font-size: 14px;
+      color: #999;
+      margin-bottom: 40px;
+    }
+    .gate-panel {
+      background: #2a2a2a;
+      border: 2px solid #444;
+      border-radius: 8px;
+      padding: 32px;
+    }
+    .gate-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      color: #cdb27a;
+      text-align: center;
+      padding-bottom: 16px;
+      border-bottom: 2px solid #444;
+    }
+    .category {
+      margin-bottom: 32px;
+    }
+    .category-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: #c77c55;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .checklist {
+      list-style: none;
+    }
+    .checklist li {
+      padding: 12px 0;
+      border-bottom: 1px solid #333;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .checklist li:last-child {
+      border-bottom: none;
+    }
+    .checkbox {
+      width: 20px;
+      height: 20px;
+      border: 2px solid #cdb27a;
+      border-radius: 3px;
+      flex-shrink: 0;
+      margin-top: 2px;
+      background: #1a1a1a;
+    }
+    .checkbox.checked {
+      background: #cdb27a;
+      position: relative;
+    }
+    .checkbox.checked::after {
+      content: '✓';
+      position: absolute;
+      top: -2px;
+      left: 3px;
+      color: #1a1a1a;
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .check-label {
+      flex: 1;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .check-label strong {
+      color: #f4f1eb;
+      font-weight: 600;
+    }
+    .check-detail {
+      font-size: 12px;
+      opacity: 0.7;
+      margin-top: 4px;
+    }
+    .gate-footer {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 2px solid #444;
+      text-align: center;
+      font-size: 14px;
+      color: #999;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 8px 16px;
+      background: #3a2a1a;
+      border: 1px solid #c77c55;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #c77c55;
+      margin-top: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Accessibility & Performance Gate for All Rooms</h1>
+    <p class="subtitle">Wireframe mockup · Issue #37 · Every room must pass before closing</p>
+    
+    <div class="gate-panel">
+      <div class="gate-title">
+        ✓ Room Checklist Gate
+      </div>
+      
+      <div class="category">
+        <div class="category-title">Accessibility (WCAG 2.2 A/AA)</div>
+        <ul class="checklist">
+          <li>
+            <div class="checkbox"></div>
+            <div class="check-label">
+              <strong>axe-core zero violations</strong><br>
+              <span class="check-detail">Run at 1440px and 390px on room index and one article page</span>
+            </div>
+          </li>
+          <li>
+            <div class="checkbox"></div>
+            <div class="check-label">
+              <strong>All text/background pairs pass AA contrast</strong><br>
+              <span class="check-detail">4.5:1 for normal text, 3:1 for large text (18px+ or 14px+ bold)</span>
+            </div>
+          </li>
+          <li>
+            <div class="checkbox"></div>
+            <div class="check-label">
+              <strong>Color never the only signal</strong><br>
+              <span class="check-detail">E.g. Mercati up/down has sign + arrow, not just green/red</span>
+            </div>
+          </li>
+          <li>
+            <div class="checkbox"></div>
+            <div class="check-label">
+              <strong>Keyboard navigation works</strong><br>
+              <span class="check-detail">Through menu, room content, and article with visible focus ring</span>
+            </div>
+          </li>
+          <li>
+            <div class="checkbox"></div>
+            <div class="check-label">
+              <strong>Visible focus indicators</strong><br>
+              <span class="check-detail">2px solid outline on all interactive elements, meets 3:1 contrast</span>
+            </div>
+          </li>
+          <li>
+            <div class="checkbox"></div>
+            <div class="check-label">
+              <strong>Touch targets at least 24×24px</strong><br>
+              <span class="check-detail">WCAG 2.5.8 Target Size (Minimum) on mobile</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+      
+      <div class="category">
+        <div class="category-title">Motion & Sound</div>
+        <ul class="checklist">
+          <li>
+            <div class="checkbox"></div>
+            <div class="check-label">
+              <strong>prefers-reduced-motion removes all movement</strong><br>
+              <span class="check-detail">Test with browser/OS setting, verify no parallax, pulse, tilt, etc.</span>
+            </div>
+          </li>
+          <li>
+            <div class="checkbox"></div>
+            <div class="check-label">
+              <strong>Sound off by default</strong><br>
+              <span class="check-detail">Nothing plays until visitor enables it, choice saved across pages</span>
+            </div>
+          </li>
+          <li>
+            <div class="checkbox"></div>
+            <div class="check-label">
+              <strong>No flashing more than 3 times per second</strong><br>
+              <span class="check-detail">WCAG 2.3.1 Three Flashes (e.g. Sport door flash)</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+      
+      <div class="category">
+        <div class="category-title">Performance</div>
+        <ul class="checklist">
+          <li>
+            <div class="checkbox"></div>
+            <div class="check-label">
+              <strong>Page weight under 1 MB on first load</strong><br>
+              <span class="check-detail">Transferred size with sound off, measured in DevTools Network tab</span>
+            </div>
+          </li>
+          <li>
+            <div class="checkbox"></div>
+            <div class="check-label">
+              <strong>No layout shift from textures or fonts</strong><br>
+              <span class="check-detail">CLS near zero, fonts preloaded or have fallback metrics</span>
+            </div>
+          </li>
+          <li>
+            <div class="checkbox"></div>
+            <div class="check-label">
+              <strong>Audio files not downloaded until enabled</strong><br>
+              <span class="check-detail">Check Network tab, no .m4a/.mp3 requests while sound is off</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+      
+      <div class="category">
+        <div class="category-title">Build & Code Quality</div>
+        <ul class="checklist">
+          <li>
+            <div class="checkbox"></div>
+            <div class="check-label">
+              <strong>npm ci && npm run build pass</strong><br>
+              <span class="check-detail">No TypeScript errors, no build failures</span>
+            </div>
+          </li>
+          <li>
+            <div class="checkbox"></div>
+            <div class="check-label">
+              <strong>Screenshots attached to issue</strong><br>
+              <span class="check-detail">Desktop 1440px and mobile 390px for room index and one article</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+      
+      <div class="gate-footer">
+        Every room issue (#39-#48) must pass this gate before closing.<br>
+        Add axe run to CI if practical (#24).<br><br>
+        <span class="status-badge">GATE CRITERIA · NOT APPROVED DESIGN</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

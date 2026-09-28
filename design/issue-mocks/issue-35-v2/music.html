@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Music Room - SOVRANO@Infini</title>
+  
+  <!-- Google Fonts (SIL OFL 1.1) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@700&family=Inter+Tight:wght@400;500;600&family=Big+Shoulders+Display:wght@800&family=Newsreader:wght@400;600&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="shell.css">
+  
+  <style>
+    /* Music Room - Ether Room aesthetic: warm red/purple stage light, album-sleeve grid, film grain */
+    body {
+      background: #0b0816;
+      color: #f5ecf2;
+      font-family: 'Newsreader', serif;
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    
+    .room-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      position: relative;
+    }
+    
+    /* Film grain texture overlay */
+    .grain-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="300"%3E%3Cfilter id="noise"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" /%3E%3CfeColorMatrix type="saturate" values="0" /%3E%3C/filter%3E%3Crect width="300" height="300" filter="url(%23noise)" opacity="0.08" /%3E%3C/svg%3E');
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.35;
+    }
+    
+    .room-hero {
+      background: linear-gradient(135deg, #1a1024 0%, #0b0816 100%);
+      padding: 60px 40px;
+      position: relative;
+      border-bottom: 1px solid rgba(195, 162, 255, 0.2);
+    }
+    
+    .room-label {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #c9b6cf;
+      margin-bottom: 12px;
+    }
+    
+    .room-title {
+      font-family: 'Big Shoulders Display', sans-serif;
+      font-size: 72px;
+      font-weight: 800;
+      color: #ff7a6b;
+      letter-spacing: -1px;
+      margin-bottom: 8px;
+      animation: gentle-pulse 3s ease-in-out infinite;
+    }
+    
+    @keyframes gentle-pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.92; }
+    }
+    
+    @media (prefers-reduced-motion: reduce) {
+      .room-title {
+        animation: none;
+      }
+    }
+    
+    .room-tagline {
+      font-family: 'Newsreader', serif;
+      font-size: 18px;
+      font-weight: 400;
+      color: #c9b6cf;
+      font-style: italic;
+    }
+    
+    .room-content {
+      padding: 60px 40px;
+    }
+    
+    /* Feature article with art slot */
+    .feature-article {
+      margin-bottom: 80px;
+      position: relative;
+    }
+    
+    .art-slot {
+      width: 100%;
+      height: 500px;
+      background: linear-gradient(135deg, #2a1520 0%, #1a0a0f 100%);
+      border-radius: 4px;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .art-slot-label {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: #c9b6cf;
+      text-align: center;
+      padding: 20px;
+      background: rgba(10, 8, 30, 0.63);
+      border-radius: 4px;
+    }
+    
+    .feature-headline {
+      font-family: 'Big Shoulders Display', sans-serif;
+      font-size: 48px;
+      font-weight: 800;
+      color: #f5ecf2;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      letter-spacing: -0.5px;
+    }
+    
+    .feature-byline {
+      margin-bottom: 24px;
+      color: #c9b6cf;
+    }
+    
+    .feature-text {
+      font-size: 18px;
+      line-height: 1.8;
+      color: #f5ecf2;
+      max-width: 720px;
+    }
+    
+    .feature-text::first-letter {
+      font-size: 72px;
+      font-weight: 600;
+      line-height: 1;
+      float: left;
+      margin: 0 12px 0 0;
+      color: #c3a2ff;
+    }
+    
+    /* Album grid section */
+    .section-header {
+      font-family: 'Big Shoulders Display', sans-serif;
+      font-size: 36px;
+      font-weight: 800;
+      color: #c3a2ff;
+      margin-bottom: 32px;
+      letter-spacing: -0.5px;
+    }
+    
+    .album-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 32px;
+      margin-bottom: 80px;
+    }
+    
+    .album-card {
+      background: #1a1024;
+      border-radius: 4px;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+      border: 1px solid rgba(195, 162, 255, 0.15);
+    }
+    
+    .album-card:hover,
+    .album-card:focus-within {
+      transform: scale(1.02) rotate(1deg);
+    }
+    
+    @media (prefers-reduced-motion: reduce) {
+      .album-card:hover,
+      .album-card:focus-within {
+        transform: none;
+      }
+    }
+    
+    .album-cover {
+      width: 100%;
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, #4a2a3f 0%, #3a1a2f 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid rgba(195, 162, 255, 0.2);
+    }
+    
+    .album-cover-label {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: #c9b6cf;
+      text-align: center;
+      padding: 20px;
+    }
+    
+    .album-info {
+      padding: 20px;
+    }
+    
+    .album-title {
+      font-family: 'Big Shoulders Display', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      color: #f5ecf2;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+    
+    .album-artist {
+      font-family: 'Newsreader', serif;
+      font-size: 14px;
+      color: #c9b6cf;
+      font-style: italic;
+    }
+    
+    /* Sound control */
+    .sound-control {
+      position: fixed;
+      top: 16px;
+      right: 40px;
+      z-index: 100;
+    }
+    
+    .sound-toggle {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: #f5ecf2;
+      background: #1a1024;
+      border: 1px solid #c3a2ff;
+      padding: 12px 20px;
+      border-radius: 24px;
+      cursor: pointer;
+      min-width: 44px;
+      min-height: 44px;
+      transition: all 0.2s ease;
+    }
+    
+    .sound-toggle:hover {
+      background: #2a1535;
+      border-color: #ff7a6b;
+    }
+    
+    .sound-toggle:focus {
+      outline: 2px solid #f1ad79;
+      outline-offset: 3px;
+    }
+    
+    .sound-toggle[aria-pressed="true"] {
+      background: #2a1535;
+      border-color: #c3a2ff;
+      color: #c3a2ff;
+    }
+    
+    /* Room spec display */
+    .room-spec {
+      background: rgba(26, 16, 36, 0.5);
+      border-left: 3px solid #c3a2ff;
+      padding: 24px;
+      margin-top: 60px;
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 13px;
+      line-height: 1.8;
+      color: #c9b6cf;
+    }
+    
+    .room-spec strong {
+      color: #ff7a6b;
+      font-weight: 600;
+    }
+    
+    /* Mobile responsive */
+    @media (max-width: 768px) {
+      .room-hero {
+        padding: 40px 24px;
+      }
+      
+      .room-title {
+        font-size: 48px;
+      }
+      
+      .room-content {
+        padding: 40px 24px;
+      }
+      
+      .feature-headline {
+        font-size: 32px;
+      }
+      
+      .feature-text {
+        font-size: 16px;
+      }
+      
+      .album-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 16px;
+      }
+      
+      .sound-control {
+        top: 12px;
+        right: 24px;
+      }
+    }
+    
+    /* Entry transition (door) - needle-drop fade */
+    @keyframes door-entry {
+      from {
+        opacity: 0;
+        filter: blur(4px);
+      }
+      to {
+        opacity: 1;
+        filter: blur(0);
+      }
+    }
+    
+    .room-container {
+      animation: door-entry 0.6s ease-out;
+    }
+    
+    @media (prefers-reduced-motion: reduce) {
+      .room-container {
+        animation: door-entry 0.2s ease-out;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="grain-overlay"></div>
+  
+  <!-- Shared masthead -->
+  <header class="masthead">
+    <div class="masthead-wordmark">SOVRANO@Infini</div>
+    <div class="masthead-subline">an Infinity Enterprises publication</div>
+  </header>
+  
+  <!-- Shared navigation -->
+  <nav class="nav">
+    <ul class="nav-list">
+      <li><a href="#" class="nav-link">Home</a></li>
+      <li><a href="#" class="nav-link">The Daily Desk</a></li>
+      <li><a href="#" class="nav-link">Culture</a></li>
+      <li><a href="#" class="nav-link">Motor</a></li>
+      <li><a href="#" class="nav-link">Food</a></li>
+      <li><a href="#" class="nav-link" aria-current="page">Music</a></li>
+      <li><a href="#" class="nav-link">In Development</a></li>
+      <li><a href="#" class="nav-link">About</a></li>
+      <li><button class="nav-menu-button" aria-label="Open departments menu">Departments</button></li>
+    </ul>
+  </nav>
+  
+  <div class="room-container">
+    <!-- Room hero -->
+    <section class="room-hero">
+      <div class="room-label">Department</div>
+      <h1 class="room-title">MUSIC</h1>
+      <p class="room-tagline">Listening room at night</p>
+    </section>
+    
+    <!-- Room content -->
+    <main class="room-content">
+      <!-- Feature article -->
+      <article class="feature-article">
+        <div class="art-slot">
+          <div class="art-slot-label">art slot (Ember)<br><span class="placeholder-tag">PLACEHOLDER</span></div>
+        </div>
+        <h2 class="feature-headline">
+          Placeholder Feature Headline About Music<span class="placeholder-tag">PLACEHOLDER</span>
+        </h2>
+        <div class="byline feature-byline">
+          By Placeholder Author <span class="placeholder-tag">PLACEHOLDER</span> · <span class="credit">Photo credit placeholder</span>
+        </div>
+        <div class="feature-text">
+          <p>This is placeholder article text demonstrating the Music room layout and typography system. No real editorial content. This shows how a feature article would appear with the warm red/purple stage lighting aesthetic, heavy display typeface, and film grain texture. Sample content only for design review purposes.</p>
+          <p>Additional placeholder paragraph to show text flow and spacing. The layout inherits from the Ether Room page design with the established ink color family and amber focus ring system.</p>
+        </div>
+      </article>
+      
+      <!-- Album grid section -->
+      <section>
+        <h2 class="section-header">Recent Releases <span class="placeholder-tag">PLACEHOLDER</span></h2>
+        <div class="album-grid">
+          <article class="album-card" tabindex="0">
+            <div class="album-cover">
+              <div class="album-cover-label">art slot (Ember)<br><span class="placeholder-tag">PLACEHOLDER</span></div>
+            </div>
+            <div class="album-info">
+              <h3 class="album-title">Placeholder Album Title</h3>
+              <p class="album-artist">Placeholder Artist Name <span class="placeholder-tag">PLACEHOLDER</span></p>
+            </div>
+          </article>
+          
+          <article class="album-card" tabindex="0">
+            <div class="album-cover">
+              <div class="album-cover-label">art slot (Ember)<br><span class="placeholder-tag">PLACEHOLDER</span></div>
+            </div>
+            <div class="album-info">
+              <h3 class="album-title">Sample Album Name</h3>
+              <p class="album-artist">Sample Artist <span class="placeholder-tag">PLACEHOLDER</span></p>
+            </div>
+          </article>
+          
+          <article class="album-card" tabindex="0">
+            <div class="album-cover">
+              <div class="album-cover-label">art slot (Ember)<br><span class="placeholder-tag">PLACEHOLDER</span></div>
+            </div>
+            <div class="album-info">
+              <h3 class="album-title">Placeholder Release</h3>
+              <p class="album-artist">Placeholder Band <span class="placeholder-tag">PLACEHOLDER</span></p>
+            </div>
+          </article>
+          
+          <article class="album-card" tabindex="0">
+            <div class="album-cover">
+              <div class="album-cover-label">art slot (Ember)<br><span class="placeholder-tag">PLACEHOLDER</span></div>
+            </div>
+            <div class="album-info">
+              <h3 class="album-title">Another Sample Album</h3>
+              <p class="album-artist">Another Sample Artist <span class="placeholder-tag">PLACEHOLDER</span></p>
+            </div>
+          </article>
+          
+          <article class="album-card" tabindex="0">
+            <div class="album-cover">
+              <div class="album-cover-label">art slot (Ember)<br><span class="placeholder-tag">PLACEHOLDER</span></div>
+            </div>
+            <div class="album-info">
+              <h3 class="album-title">Placeholder Music Title</h3>
+              <p class="album-artist">Placeholder Performer <span class="placeholder-tag">PLACEHOLDER</span></p>
+            </div>
+          </article>
+          
+          <article class="album-card" tabindex="0">
+            <div class="album-cover">
+              <div class="album-cover-label">art slot (Ember)<br><span class="placeholder-tag">PLACEHOLDER</span></div>
+            </div>
+            <div class="album-info">
+              <h3 class="album-title">Sample Recording</h3>
+              <p class="album-artist">Sample Musician <span class="placeholder-tag">PLACEHOLDER</span></p>
+            </div>
+          </article>
+        </div>
+      </section>
+      
+      <!-- Room specification -->
+      <div class="room-spec">
+        <strong>Motion:</strong> Album covers tilt slightly on hover and focus (transform scale + rotate); title pulses gently with animation (removed with prefers-reduced-motion).<br>
+        <strong>Texture:</strong> Film grain overlay (SVG noise filter, fixed position).<br>
+        <strong>Sound:</strong> Off by default. Opt-in toggle for vinyl crackle loop (no audio file loaded in this mock).<br>
+        <strong>Door:</strong> Needle-drop fade entry transition (0.6s ease-out, reduced to 0.2s with prefers-reduced-motion).<br>
+        <strong>Type:</strong> Big Shoulders Display (heavy) + Newsreader (body), both SIL OFL 1.1 via Google Fonts.
+      </div>
+    </main>
+  </div>
+  
+  <!-- Sound control (off by default) -->
+  <div class="sound-control">
+    <button class="sound-toggle" aria-pressed="false" aria-label="Toggle sound">
+      Sound: off
+    </button>
+  </div>
+</body>
+</html>

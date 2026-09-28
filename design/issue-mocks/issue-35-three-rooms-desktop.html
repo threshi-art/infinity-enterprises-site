@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Issue #35: Three Room Comparison (Desktop)</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #1a1a1a;
+      color: #f4f1eb;
+      padding: 40px;
+    }
+    .container {
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+      color: #cdb27a;
+      letter-spacing: -0.5px;
+    }
+    .subtitle {
+      font-size: 14px;
+      color: #999;
+      margin-bottom: 48px;
+    }
+    .rooms-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      margin-bottom: 40px;
+    }
+    .room-preview {
+      background: #2a2a2a;
+      border: 2px solid #444;
+      border-radius: 8px;
+      overflow: hidden;
+      min-height: 600px;
+    }
+    .room-header {
+      padding: 24px;
+      border-bottom: 1px solid #444;
+    }
+    .room-theme-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0.6;
+      margin-bottom: 8px;
+    }
+    .room-title {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 4px;
+    }
+    .room-tagline {
+      font-size: 13px;
+      opacity: 0.8;
+    }
+    .room-content {
+      padding: 24px;
+    }
+    
+    /* Music Room - Warm red/purple stage light */
+    .music-room .room-header {
+      background: linear-gradient(135deg, #1a0a0f 0%, #2a1520 100%);
+      color: #f4e8ed;
+    }
+    .music-room .room-content {
+      background: linear-gradient(135deg, #1a0a0f 0%, #150a15 100%);
+      color: #f4e8ed;
+    }
+    .music-room .album-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .album-cover {
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, #4a2a3f 0%, #3a1a2f 100%);
+      border: 1px solid rgba(244, 232, 237, 0.2);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      text-align: center;
+      padding: 16px;
+      opacity: 0.9;
+      transition: transform 0.3s ease;
+    }
+    .album-cover:hover {
+      transform: scale(1.05) rotateZ(2deg);
+    }
+    .music-room .feature-title {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      line-height: 1.2;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.85; }
+    }
+    .music-room .grain {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3"/></filter><rect width="100" height="100" filter="url(%23n)" opacity="0.05"/></svg>');
+      pointer-events: none;
+      opacity: 0.3;
+    }
+    
+    /* Tech Room - Cold, exact, dark glass and cyan */
+    .tech-room .room-header {
+      background: linear-gradient(135deg, #0d0f13 0%, #1a1c20 100%);
+      color: #e8ecef;
+      border-bottom: 1px solid #7fcfe0;
+    }
+    .tech-room .room-content {
+      background: #0d0f13;
+      color: #e8ecef;
+      position: relative;
+    }
+    .tech-room .grid-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: linear-gradient(rgba(127, 207, 224, 0.1) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(127, 207, 224, 0.1) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+    .tech-room .article-card {
+      background: rgba(26, 28, 32, 0.8);
+      border: 1px solid #7fcfe0;
+      padding: 16px;
+      margin-bottom: 12px;
+      position: relative;
+      z-index: 1;
+    }
+    .tech-room .article-meta {
+      font-family: 'Courier New', monospace;
+      font-size: 10px;
+      color: #7fcfe0;
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+    }
+    .tech-room .article-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #e8ecef;
+    }
+    .tech-room .cursor-blink {
+      display: inline-block;
+      width: 8px;
+      height: 16px;
+      background: #7fcfe0;
+      margin-left: 4px;
+      animation: blink 1s steps(1) infinite;
+    }
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+    .tech-room .scanlines {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(transparent 50%, rgba(0, 0, 0, 0.1) 50%);
+      background-size: 100% 4px;
+      pointer-events: none;
+      opacity: 0.3;
+    }
+    
+    /* Tavola Room - Warm, slow, tactile, paper */
+    .tavola-room .room-header {
+      background: linear-gradient(135deg, #f6ece0 0%, #f0e6da 100%);
+      color: #2a1a12;
+    }
+    .tavola-room .room-content {
+      background: #f6ece0;
+      color: #2a1a12;
+      position: relative;
+    }
+    .tavola-room .paper-texture {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><filter id="noise"><feTurbulence baseFrequency="0.8" numOctaves="2"/></filter><rect width="200" height="200" filter="url(%23noise)" opacity="0.03"/></svg>');
+      pointer-events: none;
+    }
+    .tavola-room .menu-card {
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid #8a3f1c;
+      border-radius: 2px;
+      padding: 20px;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 2px 8px rgba(42, 26, 18, 0.1);
+    }
+    .tavola-room .recipe-title {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 22px;
+      font-style: italic;
+      margin-bottom: 8px;
+      color: #8a3f1c;
+    }
+    .tavola-room .recipe-desc {
+      font-size: 14px;
+      line-height: 1.6;
+      opacity: 0.85;
+    }
+    .tavola-room .ingredient-label {
+      font-family: 'Brush Script MT', cursive;
+      font-size: 13px;
+      color: #8a3f1c;
+      margin-top: 12px;
+    }
+    .tavola-room .image-placeholder {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: linear-gradient(135deg, #d4b896 0%, #c4a886 100%);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: #8a3f1c;
+      margin-top: 16px;
+      border: 1px dashed #8a3f1c;
+    }
+    
+    .comparison-note {
+      margin-top: 40px;
+      padding: 24px;
+      background: #2a2a2a;
+      border-left: 4px solid #c77c55;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    .comparison-note strong {
+      color: #cdb27a;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Three Room Comparison: Music, Tech, Tavola (Desktop ~1440px)</h1>
+    <p class="subtitle">Wireframe mockup · Placeholder content only · Issue #35 · These must feel completely different</p>
+    
+    <div class="rooms-grid">
+      <!-- MUSIC ROOM -->
+      <div class="room-preview music-room">
+        <div class="room-header">
+          <div class="room-theme-label">Sub-room of Cultura</div>
+          <div class="room-title">MUSIC</div>
+          <div class="room-tagline">Listening room at night</div>
+        </div>
+        <div class="room-content" style="position: relative;">
+          <div class="grain"></div>
+          <div style="position: relative; z-index: 1;">
+            <div class="feature-title">
+              Placeholder Headline<br>
+              About Music Feature
+            </div>
+            <p style="font-size: 13px; line-height: 1.6; opacity: 0.85; margin-bottom: 20px;">
+              Placeholder article description text. This is sample content only, not real editorial. The layout shows how music articles would appear.
+            </p>
+            
+            <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; opacity: 0.7;">
+              Recent Releases
+            </div>
+            <div class="album-grid">
+              <div class="album-cover">Album Cover<br>Placeholder</div>
+              <div class="album-cover">Album Cover<br>Placeholder</div>
+              <div class="album-cover">Album Cover<br>Placeholder</div>
+              <div class="album-cover">Album Cover<br>Placeholder</div>
+              <div class="album-cover">Album Cover<br>Placeholder</div>
+              <div class="album-cover">Album Cover<br>Placeholder</div>
+            </div>
+            
+            <div style="margin-top: 24px; padding: 16px; background: rgba(74, 42, 63, 0.3); border-left: 2px solid rgba(244, 232, 237, 0.5); font-size: 12px; line-height: 1.5;">
+              <strong>Motion:</strong> Covers tilt on hover/focus, title pulses gently on beat<br>
+              <strong>Texture:</strong> Film grain<br>
+              <strong>Sound:</strong> Vinyl crackle loop<br>
+              <strong>Door:</strong> Needle-drop fade
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- TECH ROOM -->
+      <div class="room-preview tech-room">
+        <div class="room-header">
+          <div class="room-theme-label">Circuit</div>
+          <div class="room-title">TECH<span class="cursor-blink"></span></div>
+          <div class="room-tagline">Cold and exact</div>
+        </div>
+        <div class="room-content" style="position: relative;">
+          <div class="grid-overlay"></div>
+          <div class="scanlines"></div>
+          <div style="position: relative; z-index: 1;">
+            <div class="article-card">
+              <div class="article-meta">[GADGETS] 2026.09.27 14:32:00 UTC</div>
+              <div class="article-title">Placeholder Tech Headline Goes Here</div>
+              <div style="font-size: 12px; opacity: 0.7;">Sample article description text for layout purposes only. Not real content.</div>
+            </div>
+            
+            <div class="article-card">
+              <div class="article-meta">[AI REVOLUTION] 2026.09.26 09:15:43 UTC</div>
+              <div class="article-title">Another Placeholder Tech Story Title</div>
+              <div style="font-size: 12px; opacity: 0.7;">More placeholder text to show card layout. This is wireframe content.</div>
+            </div>
+            
+            <div class="article-card">
+              <div class="article-meta">[SECURITY] 2026.09.25 18:44:12 UTC</div>
+              <div class="article-title">Third Sample Headline for Layout</div>
+              <div style="font-size: 12px; opacity: 0.7;">Additional placeholder description text. No real editorial content here.</div>
+            </div>
+            
+            <div style="margin-top: 20px; padding: 14px; background: rgba(127, 207, 224, 0.1); border: 1px solid #7fcfe0; font-size: 11px; font-family: 'Courier New', monospace; line-height: 1.6;">
+              <strong style="color: #7fcfe0;">SYSTEM_INFO:</strong><br>
+              • Motion: Elements snap, no easing<br>
+              • Texture: Scanlines (subtle)<br>
+              • Sound: Cursor blip<br>
+              • Door: Instant cut + sweep<br>
+              • Grid: Visible, modular, precise
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- TAVOLA ROOM -->
+      <div class="room-preview tavola-room">
+        <div class="room-header">
+          <div class="room-theme-label">Trattoria</div>
+          <div class="room-title">TAVOLA</div>
+          <div class="room-tagline">Slow and tactile</div>
+        </div>
+        <div class="room-content" style="position: relative;">
+          <div class="paper-texture"></div>
+          <div style="position: relative; z-index: 1;">
+            <div class="menu-card">
+              <div class="recipe-title">Placeholder Recipe Title</div>
+              <div class="recipe-desc">
+                This is sample recipe description text. Placeholder content showing how a Tavola article would be laid out on the page. Warm, unhurried, tactile feel.
+              </div>
+              <div class="ingredient-label">Sample ingredients note</div>
+              <div class="image-placeholder">
+                [Food Photo Placeholder]<br>
+                Full-page image goes here
+              </div>
+            </div>
+            
+            <div class="menu-card">
+              <div class="recipe-title">Another Sample Recipe</div>
+              <div class="recipe-desc">
+                More placeholder text for a second menu card. Shows how multiple items stack. Content is for layout demonstration only.
+              </div>
+              <div class="ingredient-label">More sample text</div>
+            </div>
+            
+            <div style="margin-top: 20px; padding: 16px; background: rgba(138, 63, 28, 0.1); border-left: 3px solid #8a3f1c; font-size: 12px; line-height: 1.6;">
+              <strong>Motion:</strong> Gentle fades, like steam<br>
+              <strong>Texture:</strong> Paper grain<br>
+              <strong>Sound:</strong> Plate clink, soft chatter<br>
+              <strong>Door:</strong> Slow warm fade<br>
+              <strong>Type:</strong> Warm serif + handwritten labels
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="comparison-note">
+      <strong>Blurred-Text Test:</strong> With text blurred, each room must still be recognizable by its layout, motion, color, texture, and structure alone.<br><br>
+      
+      <strong>Music</strong> = Dark, warm red/purple stage light, album-sleeve grid, covers tilt, pulsing titles, film grain, vinyl crackle.<br>
+      <strong>Tech</strong> = Cold dark glass, hard cyan grid lines, monospace metadata, elements snap with no easing, scanlines, cursor blip.<br>
+      <strong>Tavola</strong> = Cream paper, menu cards, handwritten labels, full-page food photos, gentle fades, paper texture, plate clink.<br><br>
+      
+      <strong>Owner approval required before building any room code.</strong> All content above is placeholder for layout demonstration only. No approved design. WCAG 2.2 AA contrast required for all final text/background pairs.
+    </div>
+  </div>
+</body>
+</html>
