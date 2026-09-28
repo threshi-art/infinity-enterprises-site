@@ -1,17 +1,20 @@
 # Accessibility and Performance Baseline
 
 **Date:** 2026-09-28  
-**Commit:** f8c9c459bf321f15c6236a6b3ec10ab0fea6af79  
+**Commit:** 00c8b744731734f5c31a48c59c5e600b8de77422  
 **Tool:** tools/a11y-gate.mjs
 
-This baseline records the current state of accessibility and performance across all routes before systematic remediation. The gate runs in report-only mode in CI and will be used to track progress as violations are addressed.
+**Before (#18, #11, #37):** 220 serious color-contrast violations at commit 00c8b74.  
+**After fixes:** 0 serious violations.
+
+This baseline records the state after systematic color-contrast remediation. All 220 serious `color-contrast` findings have been resolved by adding shared color tokens and updating page templates.
 
 ## Summary
 
 - **Routes tested:** 47
 - **Viewports:** 1440x900, 390x844
 - **Critical violations:** 0
-- **Serious violations:** 220
+- **Serious violations:** 0
 - **Moderate violations:** 0
 - **Minor violations:** 0
 

@@ -184,9 +184,28 @@ async function measureRoute(browser, route, viewport, strict) {
       violations[key] = {
         impact: violation.impact || 'minor',
         count: 0,
+        nodes: [],
       };
     }
     violations[key].count += violation.nodes.length;
+    
+    for (const node of violation.nodes) {
+      const nodeInfo = {
+        target: node.target.join(' '),
+        html: node.html,
+      };
+      
+      if (key === 'color-contrast' && node.any && node.any.length > 0 && node.any[0].data) {
+        const data = node.any[0].data;
+        nodeInfo.fgColor = data.fgColor || null;
+        nodeInfo.bgColor = data.bgColor || null;
+        nodeInfo.contrastRatio = data.contrastRatio || null;
+        nodeInfo.fontSize = data.fontSize || null;
+        nodeInfo.fontWeight = data.fontWeight || null;
+      }
+      
+      violations[key].nodes.push(nodeInfo);
+    }
   }
 
   await context.close();
