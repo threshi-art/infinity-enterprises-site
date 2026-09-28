@@ -14,6 +14,7 @@ const motorHtml = /* MOTOR_HTML */ null;
 const formHtml = /* FORM_HTML */ null;
 const enigmasHtml = /* ENIGMAS_HTML */ null;
 const enigmaArticles = /* ENIGMA_ARTICLES */ null;
+const osintHtml = /* OSINT_HTML */ null;
 const publicationPages = /* PUBLICATION_PAGES */ null;
 const feedXml = /* FEED_XML */ null;
 const loginTemplate = /* LOGIN_HTML */ null;
@@ -266,7 +267,7 @@ export default {
     if (path === '/diana' || path === '/atlas') return new Response(null, { status: 308, headers: headers({ location: path === '/diana' ? '/about/diana' : '/development/atlas' }) });
     if (path.startsWith('/enigmas/')) return enigmaArticles[path.slice('/enigmas/'.length)] ? html(enigmaArticles[path.slice('/enigmas/'.length)]) : html('<h1>Page not found</h1>', 404);
     if (publicationPages[path]) return html(publicationPages[path]);
-    if (!['/', '/about', '/about/standards', '/about/diana', '/development', '/development/atlas', '/learning', '/journal', '/foundation', '/foundation/youth', '/tech-lounge', '/ether', '/motor', '/form', '/enigmas'].includes(path)) return html('<h1>Page not found</h1>', 404);
-    return html(path === '/' ? homeHtml : path === '/about' ? aboutHtml : path === '/about/standards' ? standardsHtml : path === '/about/diana' ? dianaHtml : path === '/development' ? developmentHtml : path === '/learning' ? learningHtml : path === '/journal' ? journalHtml : path === '/foundation' ? foundationHtml : path === '/foundation/youth' ? youthHtml : path === '/tech-lounge' ? techLoungeHtml : path === '/ether' ? etherHtml : path === '/motor' ? motorHtml : path === '/form' ? formHtml : path === '/enigmas' ? enigmasHtml : atlasHtml);
+    if (!['/', '/about', '/about/standards', '/about/diana', '/development', '/development/atlas', '/learning', '/journal', '/foundation', '/foundation/youth', '/tech-lounge', '/ether', '/motor', '/form', '/enigmas', '/osint'].includes(path)) return html('<h1>Page not found</h1>', 404);
+    return html(path === '/' ? homeHtml : path === '/about' ? aboutHtml : path === '/about/standards' ? standardsHtml : path === '/about/diana' ? dianaHtml : path === '/development' ? developmentHtml : path === '/learning' ? learningHtml : path === '/journal' ? journalHtml : path === '/foundation' ? foundationHtml : path === '/foundation/youth' ? youthHtml : path === '/tech-lounge' ? techLoungeHtml : path === '/ether' ? etherHtml : path === '/motor' ? motorHtml : path === '/form' ? formHtml : path === '/enigmas' ? enigmasHtml : path === '/osint' ? osintHtml : atlasHtml);
   },
 };
