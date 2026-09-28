@@ -1,6 +1,6 @@
 # Infinity page layout templates
 
-**Status:** owner selected the combined system in issue #76: A for the front page, B for visual departments, and C for reading and research, with a dedicated Major Feature cover section. This is not a live page or a replacement for an approved room. Open [reference.html](reference.html) in a browser to see the responsive layouts. Its images are existing repository assets; illustrative copy is marked as such.
+**Status:** owner selected the combined system in issue #76: A for the front page, B for visual departments, and C for reading and research, with a dedicated Major Feature cover section. Chris selected **SOVRANO INFINITUM** for the masthead. This is not a live page or a replacement for an approved room. Open [reference.html](reference.html) in a browser to see the responsive layouts. Its images are existing repository assets; illustrative copy is marked as such.
 
 Desktop preview boards use a **1600 × 900 (16:9)** frame. The phone studies remain 390 × 900 portrait. These are viewports into scrolling pages, not fixed page heights.
 
@@ -13,12 +13,17 @@ Desktop preview boards use a **1600 × 900 (16:9)** frame. The phone studies rem
 
 The cover section borrows the editorial *scale* of a newsmagazine cover without borrowing another publication's mark or exact cover design. Its art, headline and frame are Infinity's own. It opens the Current Issue after the splash, then hands off to Editorial Picks.
 
+**How to read the studies:** each board illustrates a layout pattern, not another consecutive section of one page. On `/`, the Major Feature **replaces A's hero band**, so `cover.jpg` appears once before Editorial Picks. A's image-led hero remains a possible opening for a feature-led department. B uses MOTOR art to illustrate a gallery chapter; the existing `/motor` experience is governed by D. The HTML study demonstrates responsive flow and controls, while the boards show the approved composition. If their example copy differs, follow the flow here and verify final editorial text in its own issue.
+
 ## Which reference wins
 
 1. The actual existing page and its behavior are the preservation baseline: [`src/home.html`](../../src/home.html), [`src/ether.html`](../../src/ether.html), [`src/motor.html`](../../src/motor.html), [`src/form.html`](../../src/form.html), and existing article routes. The source mirror may lag the published Site; compare with the live route before replacing a visual treatment.
 2. The approved department map and routes are in [`docs/blueprint/NAVIGATION.md`](../../docs/blueprint/NAVIGATION.md). This guide describes layout, not a route migration.
 3. This kit defines the visual grammar for new pages and review of changes. Its illustrated text and crops are examples, not approved editorial or final imagery.
-4. [`design/issue-mocks/`](../issue-mocks/) explores possible room directions. A mock is not permission to overwrite an existing page or change a locked journey. Resolve a conflict with the owner in the relevant issue.
+4. Where this kit conflicts with [`design/sovrano-v1/`](../sovrano-v1/) on **page composition or the masthead name**, this kit wins. The older pack's room colors, motifs, and other compatible visual work remain useful. The 14 department names and routes in #60 remain; its visible menu grouping is still a proposal for Forge to bring back for owner review. Do not silently adopt either the older nine Italian menu slots or an unapproved ten-slot draft.
+5. [`design/issue-mocks/`](../issue-mocks/) explores possible room directions. A mock is not permission to overwrite an existing page or change a locked journey. Resolve a conflict with the owner in the relevant issue.
+
+The A/B/C labels describe **composition families, not identical page layouts**. A room can vary its grid, typography, color, texture, motif, transition, and editorial pacing inside its family. Music, Tech@Lounge, and Food should remain unmistakably different even with their text blurred, as #35 requires. Do not flatten #31's room identities into one reusable card grid.
 
 ## The house style
 
@@ -34,6 +39,8 @@ Think of a cinematic magazine: **a single arresting opening, then an editorial s
 | Controls | Legible at rest, high contrast on focus; sound off until chosen; visible controls over immersive images | `src/site.css`, `src/ether.html`, `src/form.html` |
 
 Do not turn every department into the same three-card grid. Do not paste a photo above a title as the entire composition. Do not make every piece of text faint: quiet captions still need readable contrast. Motion serves an entrance or transition, then yields to reading. Reduced-motion visitors get the content without a blocking animation. A cinematic splash is skippable, and never hides navigation.
+
+Use dark rust `#8a4526` for small text on paper; `#c77c55` is an accent and fails small-text contrast on `#f4f1eb`. Treat the previews as composition studies, not a pixel-perfect type specification. The smallest visible label in a new page should be at least 10 CSS px, with readable contrast and larger text where practical.
 
 ## Page flows
 
@@ -69,7 +76,7 @@ The layouts are families, not rigid component inventories. The distinguishing co
 
 | Department | Template | Distinguishing treatment and entry sequence |
 |---|---|---|
-| Home / Current Issue | A + Major Feature | Splash, flagship cover and story, Editorial Picks, Culture/Motor/Food windows |
+| Home / Current Issue | Major Feature, then A's editorial rhythm | Splash, flagship cover and story, Editorial Picks, Culture/Motor/Food windows; do not repeat A's sample hero |
 | Fin@Tech | C with B opening | Market theater with timestamped data and source notes; analysis distinct from prices and promotion |
 | The Reading Room | C | A quiet doorway to Outside Signals, Editorial Picks, Agentic@Enigmas, Daily Desk |
 | Culture | B | Fashion, art, screen and nightlife as scene changes, with prominent feature photography |
@@ -89,3 +96,7 @@ The layouts are families, not rigid component inventories. The distinguishing co
 Attach a 1440px desktop and 390px phone capture to any page pull request. In the description, identify the template family, the existing route used as the baseline, the visual reason for deviations, and what happens to its images, links, editorial content, sound, keyboard flow, and reduced motion. Test the actual first viewport, one middle transition, and the exit on both sizes. Check a quiet caption over the brightest and darkest image positions. Verify every source/date/credit claim independently; this kit contains no reporting.
 
 Before changing Ether, MOTOR, or FORM, compare the proposed page side by side with its current published experience and cite the relevant issue. Keep every existing asset and route until an explicit replacement is approved. If a proposed room mock conflicts with this preservation rule, raise it in the issue rather than silently swapping the aesthetic.
+
+## Reproducing the preview boards
+
+Run `python design/page-templates/render_studies.py` from a checkout with the current `src/assets/` files. It writes self-contained SVG studies beside this guide. To reproduce the committed WebP previews, export each SVG with Inkscape at its declared page size, then convert to WebP with ImageMagick quality 72. For example: `inkscape design/page-templates/a-desktop.svg --export-filename=/tmp/a-desktop.png` and `convert /tmp/a-desktop.png -quality 72 design/page-templates/a-desktop.webp`. The SVGs and intermediate PNGs are generation outputs, not committed assets.
