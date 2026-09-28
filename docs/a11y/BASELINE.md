@@ -1,7 +1,7 @@
 # Accessibility and Performance Baseline
 
 **Date:** 2026-09-28
-**Commit:** bf5065071e895120dd106bd59fa15c8e39bc9594
+**Commit:** 878861fd3b4b0bf2ede17fcafad3da852f8e0838
 **Tool:** tools/a11y-gate.mjs
 
 **Before (#18, #11, #37):** 220 serious color-contrast violations at commit 00c8b74.
@@ -146,161 +146,105 @@ No violations found.
 
 No animations continued running with `prefers-reduced-motion: reduce` enabled. The site respects user motion preferences.
 
-## Needs Manual Review (color-contrast incomplete)
+## Measured Contrast over Images and Gradients
 
-axe-core could not automatically determine contrast for 513 text elements (text over images, gradients, pseudo-elements). These require manual inspection.
+**Summary:** 432 pass, 9 fail, 72 could not measure.
+
+axe-core flagged 513 text elements as having indeterminate contrast (text over images, gradients, overlapping backgrounds, pseudo-elements). The gate now measures these automatically:
+
+1. Read computed text color, font-size, and font-weight. Determine threshold (3.0 for large text ≥24px or ≥18.66px@700+, 4.5 otherwise).
+2. Hide the text (`color: transparent`, disable text-shadow, handle pseudo-elements) without changing layout. Wait for fonts and images to load, disable animations.
+3. Screenshot the element bounding box clipped to viewport.
+4. Blur the screenshot by `max(1, round(fontSize * 0.08))` CSS pixels to approximate one stroke width. Find the worst-case background luminance (lightest spot for dark text, darkest for light text, determined by comparing text luminance against median background).
+5. Calculate contrast ratio `(L1 + 0.05) / (L2 + 0.05)` using text color and worst-case background. Record pass/fail, ratio, threshold, mean and 95th-percentile background luminance.
+
+**Limitations:** Text-shadow is ignored. Video and animated backgrounds are measured on one frame only. Some elements may not be measurable (out of viewport, no text content, stack overflow on deeply nested DOM).
 
 ### Count by Route
 
-| Route | 1440x900 | 390x844 |
-|-------|----------|----------|
-| / | 10 | 10 |
-| /about | 2 | 2 |
-| /about/diana | 5 | 5 |
-| /blog | 0 | 5 |
-| /daily-desk | 0 | 2 |
-| /development | 5 | 5 |
-| /development/atlas | 130 | 130 |
-| /enigmas | 0 | 1 |
-| /ether | 28 | 28 |
-| /food | 4 | 7 |
-| /form | 11 | 9 |
-| /foundation | 5 | 5 |
-| /foundation/youth | 8 | 8 |
-| /inquiry | 0 | 4 |
-| /journal | 5 | 9 |
-| /learning | 6 | 6 |
-| /motor | 13 | 13 |
-| /music | 4 | 8 |
-| /practice | 0 | 4 |
-| /tech-lounge | 7 | 9 |
+| Route | 1440x900 Pass | 1440x900 Fail | 390x844 Pass | 390x844 Fail |
+|-------|---------------|---------------|--------------|---------------|
+| / | 4 | 0 | 10 | 0 |
+| /about | 1 | 0 | 2 | 0 |
+| /about/diana | 4 | 0 | 5 | 0 |
+| /blog | 0 | 0 | 1 | 0 |
+| /development | 4 | 0 | 5 | 0 |
+| /development/atlas | 128 | 0 | 128 | 0 |
+| /enigmas | 0 | 0 | 1 | 0 |
+| /ether | 19 | 4 | 28 | 0 |
+| /food | 3 | 0 | 4 | 2 |
+| /form | 11 | 0 | 9 | 0 |
+| /foundation | 4 | 0 | 5 | 0 |
+| /foundation/youth | 3 | 0 | 4 | 0 |
+| /inquiry | 0 | 0 | 1 | 0 |
+| /journal | 4 | 0 | 5 | 0 |
+| /learning | 5 | 0 | 6 | 0 |
+| /motor | 4 | 0 | 6 | 1 |
+| /music | 3 | 0 | 4 | 2 |
+| /practice | 0 | 0 | 1 | 0 |
+| /tech-lounge | 5 | 0 | 5 | 0 |
 
-### Elements by Route
+### All Failures
 
-**/** (10 at 1440x900):
-- `.splash-kicker` [bgGradient] - "Infinity Enterprises · September 2026"
-- `.splash-kicker > span` [other] - "·"
-- `.splash-orbit` [other] - "∞"
-- `.splash-wordmark` [bgOverlap] - "INFINITY"
-- `.splash-edition` [bgOverlap] - "INTELLIGENCE / RESEARCH / CULTURE"
-  ...and 5 more
+**/ether** [1440x900]
+- Selector: `#cosmic-groove > .scene-content > div:nth-child(1) > .scene-actions > button`
+- Text: "Play this movement ↗"
+- Contrast ratio: **1.1** vs threshold **4.5** (normal text, 12.8px @ 850)
+- Reason: pseudoContent
 
-**/about** (2 at 1440x900):
-- `.about-hero-inner > .kicker` [pseudoContent] - "02 / About"
-- `h1` [pseudoContent] - "Thought intostructure."
+**/ether** [1440x900]
+- Selector: `#dancing-stars > .scene-content > div:nth-child(1) > .scene-actions > button`
+- Text: "Play this movement ↗"
+- Contrast ratio: **1.1** vs threshold **4.5** (normal text, 12.8px @ 850)
+- Reason: pseudoContent
 
-**/about/diana** (5 at 1440x900):
-- `.cue[href$="about"]` [pseudoContent] - "← About the Enterprise"
-- `.diana-hero-content > .kicker` [pseudoContent] - "Infinity Enterprises / For my mother"
-- `#diana-title` [pseudoContent] - "Diana."
-- `.diana-hero-content > p` [pseudoContent] - "A name carried through ancient stories. A life tha..."
-- `.cue[href$="#name"]` [pseudoContent] - "Read her story ↓"
+**/ether** [1440x900]
+- Selector: `#crossing-nebula > .scene-content > div:nth-child(1) > .scene-actions > button`
+- Text: "Play this movement ↗"
+- Contrast ratio: **1.09** vs threshold **4.5** (normal text, 12.8px @ 850)
+- Reason: pseudoContent
 
-**/blog** (0 at 1440x900):
+**/ether** [1440x900]
+- Selector: `#cosmic-coast > .scene-content > div:nth-child(1) > .scene-actions > button`
+- Text: "Play this movement ↗"
+- Contrast ratio: **1.1** vs threshold **4.5** (normal text, 12.8px @ 850)
+- Reason: pseudoContent
 
-**/daily-desk** (0 at 1440x900):
+**/food** [390x844]
+- Selector: `.hub-meta`
+- Text: "The food desk / Opening edition"
+- Contrast ratio: **3.44** vs threshold **4.5** (normal text, 11.84px @ 800)
+- Reason: pseudoContent
 
-**/development** (5 at 1440x900):
-- `.hero-copy > .kicker` [pseudoContent] - "Infinity Enterprises / The working issue"
-- `#page-title` [pseudoContent] - "Work inmotion."
-- `em` [pseudoContent] - "motion."
-- `.hero-copy > p` [pseudoContent] - "Some ideas are already running. Some are being tes..."
-- `.hero-link` [pseudoContent] - "Explore the projects ↓"
+**/food** [390x844]
+- Selector: `a[href$="#food-departments"]`
+- Text: "Explore the departments ↓"
+- Contrast ratio: **1.16** vs threshold **4.5** (normal text, 13.44px @ 800)
+- Reason: pseudoContent
 
-**/development/atlas** (130 at 1440x900):
-- `article[data-field="AI"]:nth-child(1) > .card-top > .index` [bgGradient] - "01"
-- `article[data-field="AI"]:nth-child(1) > .card-top > .stage` [bgGradient] - "Active build"
-- `article[data-field="AI"]:nth-child(1) > h3` [bgGradient] - "Seraphim & EiRAM"
-- `article[data-field="AI"]:nth-child(1) > .desc` [bgGradient] - "A governed AI platform and evidence analysis engin..."
-- `article[data-field="AI"]:nth-child(1) > .card-bottom > .discipline` [bgGradient] - "AI systems architecture"
-  ...and 125 more
+**/motor** [390x844]
+- Selector: `#future > .feature-copy > p`
+- Text: "A supercar makes the improbable tangible. The body is a proposition: what if every surface had a rea"
+- Contrast ratio: **1.35** vs threshold **4.5** (normal text, 17.6px @ 400)
+- Reason: pseudoContent
 
-**/enigmas** (0 at 1440x900):
+**/music** [390x844]
+- Selector: `.hub-meta`
+- Text: "The listening desk / Opening edition"
+- Contrast ratio: **3.47** vs threshold **4.5** (normal text, 11.84px @ 800)
+- Reason: pseudoContent
 
-**/ether** (28 at 1440x900):
-- `#cosmic-groove > .scene-content > div:nth-child(1) > .scene-no` [pseudoContent] - "01 / Arrival · 00:00"
-- `#cosmic-groove > .scene-content > div:nth-child(1) > h2` [pseudoContent] - "CosmicGroove"
-- `#cosmic-groove > .scene-content > div:nth-child(1) > p` [pseudoContent] - "Warm bass, slow orbit. The door opens somewhere be..."
-- `#cosmic-groove > .scene-content > div:nth-child(1) > .scene-actions > button` [pseudoContent] - "Play this movement ↗"
-- `#cosmic-groove > .scene-content > div:nth-child(1) > .scene-actions > a[target="_blank"][rel="noopener noreferrer"]` [pseudoContent] - "Open on YouTube ↗"
-  ...and 23 more
+**/music** [390x844]
+- Selector: `.hub-banner > div > a[href$="ether"]`
+- Text: "Enter the Ether Room ↗"
+- Contrast ratio: **1.16** vs threshold **4.5** (normal text, 13.44px @ 800)
+- Reason: pseudoContent
 
-**/food** (4 at 1440x900):
-- `.hub-meta` [pseudoContent] - "The food desk / Opening edition"
-- `div > h2` [pseudoContent] - "A table is a world."
-- `div > p` [pseudoContent] - "Every plate has a history. Every good recipe begin..."
-- `a[href$="#food-departments"]` [pseudoContent] - "Explore the departments ↓"
+### Could Not Measure
 
-**/form** (11 at 1440x900):
-- `strong` [other] - "FORM"
-- `.identity > span` [other] - "Martial arts / A visual meditation"
-- `#music-toggle` [other] - "Sound on"
-- `a` [other] - "Exit ↗"
-- `.overline` [other] - "01 / The practice"
-  ...and 6 more
-
-**/foundation** (5 at 1440x900):
-- `.hero-content > .eyebrow` [pseudoContent] - "Infinity Enterprises / A charitable vision"
-- `#title` [pseudoContent] - "The InfinityFoundation."
-- `em` [pseudoContent] - "Foundation."
-- `.hero-content > p` [pseudoContent] - "Research that asks harder questions. Education tha..."
-- `small` [pseudoContent] - "Proposed nonprofit initiative / In development"
-
-**/foundation/youth** (8 at 1440x900):
-- `.hero-copy > .eyebrow` [pseudoContent] - "The Infinity Foundation / Helping Youth"
-- `#page-title` [pseudoContent] - "A futureworth giving."
-- `em` [pseudoContent] - "worth giving."
-- `.hero-copy > p` [pseudoContent] - "Care for children who need stability. An academy b..."
-- `#academy > .wrap > .eyebrow` [pseudoContent] - "02 / The academic center"
-  ...and 3 more
-
-**/inquiry** (0 at 1440x900):
-
-**/journal** (5 at 1440x900):
-- `.mast-row > div:nth-child(1) > .eyebrow` [bgGradient] - "Infinity Enterprises / Research Journal"
-- `#journal-title` [bgGradient] - "Ideas underexamination."
-- `em` [bgGradient] - "examination."
-- `.mast-note` [bgGradient] - "Volume 01 / Working notesResearch highlights from ..."
-- `strong` [bgGradient] - "Volume 01 / Working notes"
-
-**/learning** (6 at 1440x900):
-- `.mast-inner > div:nth-child(1) > .eyebrow` [pseudoContent] - "Infinity Enterprises / Learning Center"
-- `#title` [pseudoContent] - "Learn thenext language."
-- `em` [pseudoContent] - "next language."
-- `.mast-inner > div:nth-child(1) > p` [pseudoContent] - "Process, Tools, and Skills for an Agentic World."
-- `.edition` [pseudoContent] - "A working referenceFollow a method. Learn the tool..."
-  ...and 1 more
-
-**/motor** (13 at 1440x900):
-- `.hero-copy > .label` [pseudoContent] - "Infinity Enterprises / Automotive edition 01"
-- `#motor-title` [pseudoContent] - "Objects of motionMOTOR"
-- `#motor-title > span` [pseudoContent] - "Objects of motion"
-- `.hero-bottom > p` [pseudoContent] - "Some machines take us places. Others make us want ..."
-- `a[href$="#opening"]` [pseudoContent] - "Enter the exhibition ↓"
-  ...and 8 more
-
-**/music** (4 at 1440x900):
-- `.hub-meta` [pseudoContent] - "The listening desk / Opening edition"
-- `div > h2` [pseudoContent] - "Follow the frequency."
-- `.hub-banner > div > p` [pseudoContent] - "Scroll through image, rhythm, and atmosphere in th..."
-- `.hub-banner > div > a[href$="ether"]` [pseudoContent] - "Enter the Ether Room ↗"
-
-**/practice** (0 at 1440x900):
-
-**/tech-lounge** (7 at 1440x900):
-- `.shell > .micro` [pseudoContent] - "Infinity Enterprises / Tech culture"
-- `#lounge-title` [pseudoContent] - "Tech@Lounge."
-- `.cover > .shell > p` [pseudoContent] - "A room for the machines, ideas, and strange future..."
-- `.jump` [pseudoContent] - "Enter the lounge ↓"
-- `.issue-strip > span:nth-child(1)` [pseudoContent] - "Volume 01 / After hours"
-  ...and 2 more
-
-### Common Reasons
-
-- **bgGradient**: 283 instances
-- **pseudoContent**: 173 instances
-- **other**: 54 instances
-- **bgOverlap**: 3 instances
+72 elements could not be measured automatically. Common reasons:
+- **Element not visible**: 60 instances
+- **Maximum call stack size exceeded**: 12 instances
 
 ## Measurement Notes
 
