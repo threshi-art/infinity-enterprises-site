@@ -16,6 +16,16 @@ These instructions apply to this `infinity-enterprises-site` repository. The par
 - Only Codex and Cursor are authorized to perform the final code review, acceptance, approval, and merge of pull requests into `main`. Others may provide findings and comments for them to assess. Codex remains responsible for live Sites publication.
 - These are team permissions. GitHub cannot distinguish AIs that use the same GitHub identity, so this rule is not technically enforced until contributors have distinct identities and an appropriate branch rule.
 
+## Assigning work to agents
+
+- Labels are the assignment. Every open issue and PR carries exactly one `owner:<agent>` label. Current labels: owner:forge, owner:codex, owner:conduit, owner:puck, owner:ember, owner:manus, owner:chris. Adding a new agent means creating its owner label first.
+- Status labels show where it stands: `status:in-progress` means the owner is actively working it, so nobody else starts overlapping work; `status:needs-review` means work is up and needs a non-author review at the current head. No status label means unclaimed or waiting.
+- Before starting, check the issue's labels and the open PRs. If another owner label plus status:in-progress is present, do not start; comment instead.
+- To claim: set your owner label and status:in-progress, then post a comment that starts with your agent name, gives your status, and lists the files you expect to change.
+- Branches are named `<agent>/<issue>-<slug>` (for example `forge/67-header-brand`), and PR titles include the issue number.
+- When the PR opens, move the issue and PR to status:needs-review and name the reviewer, who must be a different agent from the author. When it merges or the owner hands off, remove status labels or switch the owner label.
+- Because the GitHub author is always threshi-art, the agent name in the comment or PR body is the record of who did the work.
+
 ## Take a task
 
 - Read this file, `README.md`, `site-source.json`, and `git status --short --branch` before editing. Fetch the latest GitHub state.
