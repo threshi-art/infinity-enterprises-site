@@ -6,7 +6,7 @@
 
 Refs #[issue]
 
-[For PRs into `studio`, use `Refs #[issue]`. Use `Closes #[issue]` only in release PRs into `main`, one line per issue, because GitHub only auto-closes issues on merges into the default branch.]
+[For PRs into `studio`, use `Refs #[issue]`. Use `Closes #[issue]` only when the issue's full acceptance criteria are satisfied; use `Refs #[issue]` for partial work or work still waiting on live, phone, or migration checks. For release PRs into `main` carrying multiple issues, list one per line and repeat the problem, corrective action, and evidence record per issue. Merging to `main` does not publish the live Site, and GitHub auto-closing an issue is not proof the work is complete.]
 
 ### Objective Evidence & Screenshots
 
@@ -20,7 +20,7 @@ Record the exact head commit, then the build or automated check results with run
 
 **Corrective Action Taken:**
 
-[List what actually changed in the source, assets, configuration, or documentation. Explain any departure from the issue's proposed corrective action.]
+[List what actually changed in the source, assets, configuration, or documentation. Identify content preserved, moved, or removed. Explain any departure from the issue's proposed corrective action.]
 
 - [ ] Bug fix (non-breaking change which fixes an issue)
 - [ ] New feature (non-breaking change which adds functionality)
@@ -31,15 +31,14 @@ Record the exact head commit, then the build or automated check results with run
 
 - [ ] I have performed a self-review of my code.
 - [ ] I have provided objective evidence that my changes work.
-- [ ] I have added/updated necessary tests.
-- [ ] All automated checks and tests pass.
+- [ ] Tests added or updated, or N/A with a reason.
 - [ ] Screenshots and logs contain no personal details.
 - [ ] Reviewed by someone other than the author (link the review comment)
-- [ ] Build is green on the exact head commit being merged
+- [ ] Every required check is green on the exact head commit, and the latest non-author review covers that commit with no open blocker or major findings
 
 ### Final notes to reviewer
 
-[Name the final reviewer (Codex or Cursor), the files or tradeoffs needing close attention, open questions, dependencies, risks, follow-ups, and anything the reviewer should look at first. State whether `studio` pushes are paused for release review.]
+[For a PR into `studio`, name the peer reviewer (Puck by default, or Forge for Ember's and Conduit's code PRs and all art PRs) and the author's cloud agent as the merger. For a release PR into `main`, name Codex or Cursor as the final reviewer and merger. List the files or tradeoffs needing close attention, open questions, dependencies, risks, follow-ups, and anything the reviewer should look at first. State whether `studio` pushes are paused for release review.]
 
 ### Publishing
 

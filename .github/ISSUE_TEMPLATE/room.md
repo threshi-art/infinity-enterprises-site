@@ -44,6 +44,4 @@ Before closing this room issue, verify:
 
 ### Owner and handoff
 
-[Who is working on it, the files expected to change, and what the next person needs.]
-
-Owner: **[Name]**. Status: not started.
+Owner: **[Name]**. Status: not started. Files expected to change: [list]. Next person needs: [handoff details].
