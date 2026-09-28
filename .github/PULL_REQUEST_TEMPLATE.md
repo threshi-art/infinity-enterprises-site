@@ -34,6 +34,8 @@ Record the exact head commit, then the build or automated check results with run
 - [ ] I have added/updated necessary tests.
 - [ ] All automated checks and tests pass.
 - [ ] Screenshots and logs contain no personal details.
+- [ ] Reviewed by someone other than the author (link the review comment)
+- [ ] Build is green on the exact head commit being merged
 
 ### Final notes to reviewer
 
