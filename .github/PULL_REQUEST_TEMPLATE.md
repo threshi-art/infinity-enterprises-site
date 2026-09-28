@@ -10,6 +10,8 @@ Refs #[issue]
 
 ### Objective Evidence & Screenshots
 
+Record the exact head commit, then the build or automated check results with run links, the pages, viewports and accessibility checks examined, and which acceptance criteria are met or still unverified. Do not describe an unrun check as passing.
+
 | Before | After |
 |--------|-------|
 | [Screenshot or description] | [Screenshot or description] |
@@ -35,4 +37,11 @@ Refs #[issue]
 
 ### Final notes to reviewer
 
-[Name the final reviewer (Codex or Cursor), the files or tradeoffs needing close attention, open questions, dependencies, risks, follow-ups, and anything the reviewer should look at first.]
+[Name the final reviewer (Codex or Cursor), the files or tradeoffs needing close attention, open questions, dependencies, risks, follow-ups, and anything the reviewer should look at first. State whether `studio` pushes are paused for release review.]
+
+### Publishing
+
+- [ ] Source change only; live Sites publication will follow separately
+- [ ] This PR records an already published Sites version in `site-source.json`
+
+Sites version and source commit, if applicable:
