@@ -23,13 +23,13 @@ def image(name, x, y, w, h, focus='xMidYMid'):
     return f'<image xlink:href="{art(name)}" x="{x}" y="{y}" width="{w}" height="{h}" preserveAspectRatio="{focus} slice"/>'
 
 
-def label(value, x, y, color='#c77c55', size=13):
+def label(value, x, y, color='#8a4526', size=13):
     return f'<text x="{x}" y="{y}" font-family="Arial,sans-serif" font-size="{size}" font-weight="700" letter-spacing="2.2" fill="{color}">{escape(value.upper())}</text>'
 
 
-def title(lines, x, y, size, color, step=None):
+def title(lines, x, y, size, color, step=None, tracking=-3):
     step = step or size * .99
-    return ''.join(f'<text x="{x}" y="{y + i * step}" font-family="Georgia,serif" font-size="{size}" letter-spacing="-3" fill="{color}">{escape(line)}</text>' for i, line in enumerate(lines))
+    return ''.join(f'<text x="{x}" y="{y + i * step}" font-family="Georgia,serif" font-size="{size}" letter-spacing="{tracking}" fill="{color}">{escape(line)}</text>' for i, line in enumerate(lines))
 
 
 def paragraph(lines, x, y, color, size=20, step=29):
@@ -37,9 +37,11 @@ def paragraph(lines, x, y, color, size=20, step=29):
 
 
 def mast(w):
-    right = w - 48
+    right = w - 48 if w > 600 else w - 22
     subline = 'An Infinity Enterprises publication' if w > 600 else 'Infinity Enterprises'
-    return rect(0, 0, w, 76, '#08101a') + title(['SOVRANO@Infini'], 48 if w > 600 else 22, 40, 28 if w > 600 else 21, '#f4f1eb') + label(subline, 48 if w > 600 else 22, 60, '#d8c39a', 8) + f'<rect x="{right - (150 if w > 600 else 91)}" y="22" width="{130 if w > 600 else 76}" height="37" rx="18" fill="none" stroke="#f4f1eb"/>' + label('Contents', right - (132 if w > 600 else 80), 46, '#f4f1eb', 10 if w > 600 else 8)
+    button_x = right - (150 if w > 600 else 116)
+    button_width = 130 if w > 600 else 116
+    return rect(0, 0, w, 76, '#08101a') + title(['SOVRANO INFINITUM'], 48 if w > 600 else 22, 40, 27 if w > 600 else 19, '#f4f1eb', tracking=-.5) + label(subline, 48 if w > 600 else 22, 60, '#d8c39a', 10) + f'<rect x="{button_x}" y="22" width="{button_width}" height="37" rx="18" fill="none" stroke="#f4f1eb"/>' + label('Contents', button_x + 19, 46, '#f4f1eb', 10)
 
 
 def save(name, w, h, parts):
@@ -64,7 +66,7 @@ save('a-desktop.svg', w, h, [
     image('hero.jpg', 72, 786, 872, 114), image('food.jpg', 968, 786, 560, 114),
 ])
 w, h = 390, 900
-save('a-phone.svg', w, h, [rect(0, 0, w, h, '#f4f1eb'), mast(w), image('cover.jpg', 0, 76, w, 555, 'xMidYMid'), rect(0, 76, w, 555, 'url(#shade)'), label('A  /  CINEMATIC ISSUE', 22, 113, '#efb28b', 10), label('CURRENT ISSUE', 22, 388, '#efb28b', 10), title(['Ideas worth', 'staying for.'], 22, 451, 48, '#fff', 53), paragraph(['One story opens the issue.', 'The rest unfolds by rank.'], 22, 555, '#fff', 17, 25), label('ENTER THE ISSUE  ↗', 22, 612, '#fff', 10), label('EDITORIAL PICKS', 22, 690, '#8a4526', 10), title(['Stories to stay for'], 22, 731, 31, '#102638'), image('hero.jpg', 22, 752, 346, 131)])
+save('a-phone.svg', w, h, [rect(0, 0, w, h, '#f4f1eb'), mast(w), image('cover.jpg', 0, 76, w, 555, 'xMidYMid'), rect(0, 76, w, 555, 'url(#shade)'), label('A  /  CINEMATIC ISSUE', 22, 113, '#efb28b', 10), label('CURRENT ISSUE', 22, 388, '#efb28b', 10), title(['Ideas worth', 'staying for.'], 22, 451, 48, '#fff', 53), paragraph(['One story opens the issue.', 'The rest unfolds by rank.'], 22, 555, '#fff', 17, 25), label('ENTER THE ISSUE  ↗', 22, 612, '#fff', 10), label('SELECTED BY THE EDITORS', 22, 690, '#8a4526', 10), title(['Editorial Picks'], 22, 731, 31, '#102638'), image('hero.jpg', 22, 752, 346, 131)])
 
 # Major Feature: a portrait magazine cover and adjacent editorial introduction.
 # This is the lead section after the opening, not a replacement for an article.
@@ -75,11 +77,11 @@ save('feature-desktop.svg', w, h, [
     rect(72, 156, 570, 700, '#9b542f'),
     image('cover.jpg', 86, 170, 542, 672, 'xMidYMid'),
     rect(86, 170, 542, 672, 'url(#shade)'),
-    title(['SOVRANO'], 116, 250, 68, '#fff'),
+    title(['SOVRANO', 'INFINITUM'], 116, 234, 50, '#fff', 51, tracking=-.7),
     label('AN INFINITY ENTERPRISES PUBLICATION', 116, 279, '#f4f1eb', 10),
     label('THE SEPTEMBER ISSUE', 116, 672, '#efb28b'),
     title(['Who governs', 'the reasoning?'], 116, 742, 43, '#fff', 48),
-    label('01  /  THE FEATURE', 728, 269, '#8a4526'),
+    label('01  /  THE MAJOR FEATURE', 728, 269, '#8a4526'),
     title(['A cover story', 'with a point', 'of view.'], 728, 365, 75, '#102638', 81),
     paragraph(['The cover arrests the eye. The introduction opens',
                'the argument. The full story earns its own page.'], 732, 647, '#4a5962', 24, 36),
@@ -90,16 +92,18 @@ w, h = 390, 900
 save('feature-phone.svg', w, h, [
     rect(0, 0, w, h, '#f4f1eb'), mast(w),
     label('THE CURRENT ISSUE  /  MAJOR FEATURE', 22, 113, '#8a4526', 10),
-    rect(22, 138, 346, 503, '#9b542f'),
-    image('cover.jpg', 31, 147, 328, 485, 'xMidYMid'),
-    rect(31, 147, 328, 485, 'url(#shade)'),
-    title(['SOVRANO'], 47, 206, 38, '#fff'),
-    label('INFINITY ENTERPRISES', 47, 229, '#fff', 8),
-    label('THE SEPTEMBER ISSUE', 47, 526, '#efb28b', 9),
-    title(['Who governs', 'the reasoning?'], 47, 575, 29, '#fff', 33),
-    label('01  /  THE FEATURE', 22, 691, '#8a4526', 10),
-    title(['A cover story', 'with a point', 'of view.'], 22, 744, 35, '#102638', 39),
-    label('READ THE FEATURE  ↗', 22, 882, '#8a4526', 10),
+    rect(22, 138, 346, 430, '#9b542f'),
+    image('cover.jpg', 31, 147, 328, 412, 'xMidYMid'),
+    rect(31, 147, 328, 412, 'url(#shade)'),
+    title(['SOVRANO', 'INFINITUM'], 47, 191, 29, '#fff', 31, tracking=-.5),
+    label('INFINITY ENTERPRISES', 47, 246, '#fff', 10),
+    label('THE SEPTEMBER ISSUE', 47, 468, '#efb28b', 10),
+    title(['Who governs', 'the reasoning?'], 47, 507, 28, '#fff', 31),
+    label('01  /  THE MAJOR FEATURE', 22, 602, '#8a4526', 10),
+    title(['A cover story with', 'a point of view.'], 22, 649, 32, '#102638', 35),
+    paragraph(['The cover opens the question.', 'The story carries it forward.'], 22, 747, '#4a5962', 16, 22),
+    rect(22, 812, 265, 52, '#102638'),
+    label('READ THE FEATURE  ↗', 44, 844, '#fff', 10),
 ])
 
 # B: dark gallery progression.
@@ -108,7 +112,7 @@ save('b-desktop.svg', w, h, [
     rect(0, 0, w, h, '#10151a'), mast(w),
     rect(0, 76, 690, 555, '#10151a'), image('motor-1.jpg', 690, 76, 910, 555),
     rect(690, 76, 235, 555, 'url(#side)'),
-    label('B  /  GALLERY CHAPTERS', 72, 128, '#efb28b'),
+    label('B  /  GALLERY PATTERN WITH MOTOR ART', 72, 128, '#efb28b'),
     label('MOTOR  •  OBJECTS OF MOTION', 72, 235, '#efb28b'),
     title(['First, the', 'feeling.'], 72, 340, 86, '#fff', 92),
     paragraph(['Detail. Silhouette. Then the reveal.', 'Each scroll changes what you know.'], 72, 520, '#d2c8c1', 22),
@@ -118,7 +122,7 @@ save('b-desktop.svg', w, h, [
     title(['Built to be', 'looked at.'], 855, 772, 54, '#fff', 58),
 ])
 w, h = 390, 900
-save('b-phone.svg', w, h, [rect(0, 0, w, h, '#10151a'), mast(w), image('motor-1.jpg', 0, 76, w, 365, 'xMidYMid'), rect(0, 325, w, 116, 'url(#shade)'), label('B  /  GALLERY CHAPTERS', 22, 115, '#fff', 10), label('MOTOR  •  OBJECTS OF MOTION', 22, 493, '#efb28b', 10), title(['First, the', 'feeling.'], 22, 555, 53, '#fff', 56), paragraph(['Detail. Silhouette. Reveal.'], 22, 659, '#d2c8c1', 17), label('EXPLORE THE STORY  ↘', 22, 700, '#fff', 10), image('motor-2.jpg', 0, 735, w, 165)])
+save('b-phone.svg', w, h, [rect(0, 0, w, h, '#10151a'), mast(w), image('motor-1.jpg', 0, 76, w, 365, 'xMidYMid'), rect(0, 325, w, 116, 'url(#shade)'), label('B  /  MOTOR ART STUDY', 22, 115, '#fff', 10), label('MOTOR  •  OBJECTS OF MOTION', 22, 493, '#efb28b', 10), title(['First, the', 'feeling.'], 22, 555, 53, '#fff', 56), paragraph(['Detail. Silhouette. Reveal.'], 22, 659, '#d2c8c1', 17), label('EXPLORE THE STORY  ↘', 22, 700, '#fff', 10), image('motor-2.jpg', 0, 735, w, 165)])
 
 # C: paper reading environment.
 w, h = 1600, 900
