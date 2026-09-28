@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Issue #50: Pet Photo Submission Flow</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #1a1a1a;
+      color: #f4f1eb;
+      padding: 40px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+      color: #cdb27a;
+    }
+    .subtitle {
+      font-size: 14px;
+      color: #999;
+      margin-bottom: 40px;
+    }
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+    .flow-step {
+      background: #2a2a2a;
+      border: 1px solid #444;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .step-header {
+      background: #333;
+      padding: 16px;
+      border-bottom: 1px solid #444;
+      font-size: 14px;
+      font-weight: 700;
+      color: #cdb27a;
+    }
+    .step-content {
+      padding: 24px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #f4f1eb;
+    }
+    .input {
+      width: 100%;
+      padding: 10px 12px;
+      background: #1a1a1a;
+      border: 1px solid #555;
+      border-radius: 4px;
+      color: #f4f1eb;
+      font-size: 14px;
+    }
+    .file-input {
+      padding: 20px;
+      background: #1a1a1a;
+      border: 2px dashed #555;
+      border-radius: 4px;
+      text-align: center;
+      font-size: 13px;
+      color: #999;
+      cursor: pointer;
+    }
+    .checkbox-group {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .checkbox {
+      width: 20px;
+      height: 20px;
+      border: 2px solid #cdb27a;
+      border-radius: 3px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .checkbox-label {
+      font-size: 12px;
+      line-height: 1.5;
+      opacity: 0.9;
+    }
+    .button {
+      width: 100%;
+      padding: 12px 24px;
+      background: #cdb27a;
+      border: none;
+      border-radius: 4px;
+      color: #1a1a1a;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    .button.secondary {
+      background: #444;
+      color: #f4f1eb;
+    }
+    .notice {
+      background: #3a2a1a;
+      border-left: 3px solid #c77c55;
+      padding: 16px;
+      font-size: 12px;
+      line-height: 1.6;
+      margin-top: 16px;
+    }
+    .review-queue {
+      background: #2a2a2a;
+      border: 1px solid #444;
+      border-radius: 6px;
+      padding: 16px;
+      margin-bottom: 12px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .thumbnail {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #444 0%, #333 100%);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: #999;
+      flex-shrink: 0;
+    }
+    .review-info {
+      flex: 1;
+    }
+    .pet-name {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .review-meta {
+      font-size: 12px;
+      opacity: 0.7;
+      margin-bottom: 12px;
+    }
+    .review-actions {
+      display: flex;
+      gap: 8px;
+    }
+    .btn-small {
+      padding: 6px 12px;
+      font-size: 12px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .btn-approve {
+      background: #4ade80;
+      color: #1a1a1a;
+    }
+    .btn-reject {
+      background: #ef4444;
+      color: #f4f1eb;
+    }
+    
+    .specs {
+      background: #2a2a2a;
+      border-left: 3px solid #cdb27a;
+      padding: 24px;
+      font-size: 13px;
+      line-height: 1.7;
+      margin-top: 40px;
+    }
+    .specs strong {
+      color: #cdb27a;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Pet Photo Submission Flow: Form, Consent, Review Queue</h1>
+    <p class="subtitle">Wireframe mockup · Sample layout only · Issue #50</p>
+    
+    <div class="flow-grid">
+      <!-- Step 1: Submission Form -->
+      <div class="flow-step">
+        <div class="step-header">Step 1: Submission Form</div>
+        <div class="step-content">
+          <div class="form-group">
+            <label class="label">Pet's Name *</label>
+            <input type="text" class="input" placeholder="Enter pet's name">
+          </div>
+          
+          <div class="form-group">
+            <label class="label">Photo *</label>
+            <div class="file-input">
+              📷 Click to upload photo<br>
+              <span style="font-size: 11px;">JPG, PNG max 5MB</span>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="label">Caption (Optional)</label>
+            <input type="text" class="input" placeholder="Brief caption">
+          </div>
+          
+          <button class="button">Continue to Consent →</button>
+          
+          <div class="notice">
+            <strong>Privacy:</strong> We never publish owner names, emails or locations. Photo metadata is stripped before storage.
+          </div>
+        </div>
+      </div>
+      
+      <!-- Step 2: Consent -->
+      <div class="flow-step">
+        <div class="step-header">Step 2: Consent Required</div>
+        <div class="step-content">
+          <div class="checkbox-group">
+            <div class="checkbox"></div>
+            <div class="checkbox-label">
+              <strong>I confirm that:</strong><br>
+              • I own this photo or have permission to submit it<br>
+              • I consent to publication in the Tempo Libero pets gallery<br>
+              • The photo does not reveal my location or personal information<br>
+              • I understand photos may be edited and labeled as such
+            </div>
+          </div>
+          
+          <button class="button">Submit for Review</button>
+          <button class="button secondary">Cancel</button>
+          
+          <div class="notice">
+            <strong>What happens next:</strong> Your submission goes to our review queue. Nothing is published until manually approved by staff. You can request removal at any time.
+          </div>
+        </div>
+      </div>
+      
+      <!-- Step 3: Staff Review Queue -->
+      <div class="flow-step">
+        <div class="step-header">Step 3: Staff Review Queue</div>
+        <div class="step-content">
+          <div class="review-queue">
+            <div class="thumbnail">[Photo<br>Preview]</div>
+            <div class="review-info">
+              <div class="pet-name">Sample Pet Name</div>
+              <div class="review-meta">
+                Submitted 2 hours ago<br>
+                Metadata stripped ✓<br>
+                Caption: "Sample caption text"
+              </div>
+              <div class="review-actions">
+                <button class="btn-small btn-approve">Approve</button>
+                <button class="btn-small btn-reject">Reject</button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="review-queue">
+            <div class="thumbnail">[Photo<br>Preview]</div>
+            <div class="review-info">
+              <div class="pet-name">Another Pet Name</div>
+              <div class="review-meta">
+                Submitted 4 hours ago<br>
+                Metadata stripped ✓<br>
+                No caption
+              </div>
+              <div class="review-actions">
+                <button class="btn-small btn-approve">Approve</button>
+                <button class="btn-small btn-reject">Reject</button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="notice">
+            <strong>Staff only:</strong> Manual approval required. Check for inappropriate content, verify no personal info visible, confirm metadata stripped.
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="specs">
+      <strong>Pets Gallery Submission Requirements (Issue #50):</strong><br>
+      • Form accepts photo, pet name, optional caption + required consent checkbox<br>
+      • Never publish owner names, emails, locations<br>
+      • Upload strips photo metadata (GPS, camera info) before storing<br>
+      • Photos go to private storage first, nothing visible until staff approves<br>
+      • Manual approval step in review queue<br>
+      • File type/size limits enforced (e.g. JPG/PNG, max 5MB)<br>
+      • Rate limiting and spam protection on form (same approach as #14)<br>
+      • Any AI-edited photo labeled as edited<br>
+      • Readers can request removal<br>
+      • Display lives in #44 (Tempo Libero)<br>
+      • Owner picks: who approves, where photos stored (cost stated before setup)<br>
+      • No secrets in repo
+    </div>
+  </div>
+</body>
+</html>

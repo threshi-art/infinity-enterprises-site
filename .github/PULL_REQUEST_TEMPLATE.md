@@ -1,20 +1,27 @@
 ## Related issues
 
-List the issues included in this release, using `Closes #123` for work that is complete.
+Link every issue included. Use `Closes #123` only when the evidence here satisfies its full acceptance criteria. Use `Refs #123` when a live check, publication, or other work remains.
 
-## Release scope
+## Description of problem restated
 
-What changed and why? Identify any pages or assets moved or removed. Confirm that pushes to `studio` are paused during review.
+For each related issue, restate the observed problem and scope. If this release includes several issues, identify each number and repeat the next three sections for each one.
 
-## Verification
+## Corrective action taken
 
-- Build or checks run:
-- Pages or interactions reviewed:
-- Conflicts and overlapping edits resolved:
+List what actually changed in the source, assets, configuration, or documentation. Explain any departure from the issue's proposed corrective action. Identify content preserved, moved, or removed, and any overlapping edits resolved.
 
-## Release authority
+## Objective evidence
 
-Final reviewer and merger (Codex or Cursor):
+Record the exact head commit and the results a reviewer can reproduce:
+
+- Build or automated checks, with run links and results:
+- Pages, interactions, viewports, or accessibility checks examined:
+- Before and after observations or measurements:
+- Acceptance criteria met and criteria still unverified:
+
+## Final notes to codeowner or reviewer on next steps
+
+Name the final reviewer (Codex or Cursor), the files or tradeoffs needing close attention, open questions, dependencies, and the exact next action. State whether `studio` pushes are paused for release review. Do not describe an unrun check as passing.
 
 ## Publishing
 
