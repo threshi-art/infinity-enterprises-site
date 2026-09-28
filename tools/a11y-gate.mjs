@@ -208,6 +208,57 @@ async function measureRoute(browser, route, viewport, strict) {
     }
   }
 
+  const incomplete = {};
+  for (const item of axeResults.incomplete) {
+    const key = item.id;
+    if (!incomplete[key]) {
+      incomplete[key] = {
+        count: 0,
+        nodes: [],
+      };
+    }
+    incomplete[key].count += item.nodes.length;
+    
+    for (const node of item.nodes) {
+      const nodeInfo = {
+        target: node.target.join(' '),
+        html: node.html.substring(0, 150),
+      };
+      
+      if (key === 'color-contrast') {
+        const textContent = await page.evaluate((selector) => {
+          try {
+            const el = document.querySelector(selector);
+            return el ? el.textContent.trim().substring(0, 100) : '';
+          } catch {
+            return '';
+          }
+        }, node.target[0]);
+        
+        nodeInfo.textSnippet = textContent;
+        
+        if (node.any && node.any.length > 0 && node.any[0].message) {
+          const message = node.any[0].message;
+          if (message.includes('background image')) {
+            nodeInfo.reason = 'bgImage';
+          } else if (message.includes('gradient')) {
+            nodeInfo.reason = 'bgGradient';
+          } else if (message.includes('overlap')) {
+            nodeInfo.reason = 'bgOverlap';
+          } else if (message.includes('pseudo')) {
+            nodeInfo.reason = 'pseudoContent';
+          } else {
+            nodeInfo.reason = 'other';
+          }
+        } else {
+          nodeInfo.reason = 'unknown';
+        }
+      }
+      
+      incomplete[key].nodes.push(nodeInfo);
+    }
+  }
+
   await context.close();
 
   const totalBytes = transferredBytes.reduce((sum, val) => sum + val, 0);
@@ -238,6 +289,7 @@ async function measureRoute(browser, route, viewport, strict) {
     route,
     viewport: viewport.name,
     violations,
+    incomplete,
     totalBytes,
     cls,
     overBudget,
