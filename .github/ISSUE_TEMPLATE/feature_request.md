@@ -31,8 +31,6 @@ This repository is public: strip emails, account names, tokens, IP addresses and
 - **OS and Version:** [e.g. macOS 14.1 / Windows 11 / Ubuntu 22.04]
 - **Browser/Node/App Version:** [e.g. Chrome 120 / Node.js v20 / App v1.2]
 
-This repository is public: strip emails, account names, tokens, IP addresses and any personal details from screenshots and logs.
-
 ### Acceptance criteria
 
 [Observable visitor or editor outcomes, existing pages, assets, and behavior to preserve, and checks needed before issue closure, including live publication when applicable.]
