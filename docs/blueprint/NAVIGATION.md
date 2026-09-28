@@ -23,18 +23,20 @@ The full editorial map, organized for discoverability:
 
 1. **Home / Current Issue** — Cinematic splash (skippable), cover story, Editorial Picks
 2. **Fin@Tech** — Financial technology desk (new, flat route: `/fintech`)
-3. **The Reading Room** — Outside Signals, Editorial Picks, Agentic@Enigmas, The Daily Desk (Breaking, World, U.S., Business, Science, OSINT / Tradecraft), Academic Journal, Learning Center
-4. **Culture** — Fashion, art, screen, nightlife; currently includes Tech@Lounge as a subsection
-5. **Travel & Leisure** — Travel, yachting, Pets gallery
-6. **Motor** — Supercars, classics, racing (visual gallery and future editorial desks)
-7. **Food** — Recipes, chef spotlight, food science, drinks, restaurant radar, nutrition
-8. **Forge & Flow** — Training, recovery, meditation, martial arts, sport; includes FORM
-9. **Music** — Ether Room, artist profiles, album reviews, production, underground spotlight
-10. **Academic Journal** — Research papers, case studies, policy analysis, peer commentary, data and methods
-11. **Tech@Lounge** — Gadgets, AI & robotics, software, cybersecurity, future tech, developer corner
-12. **In Development** — AI studio, project ledger (Atlas), systems in progress
-13. **About the Enterprise** — Purpose, editorial standards, Foundation concepts
-14. **Legal / Utility** — Privacy, contact, subscribe, partners, support
+3. **The Reading Room** — Outside Signals, Editorial Picks, Agentic@Enigmas, The Daily Desk (Breaking, World, U.S., Business, Science, OSINT / Tradecraft)
+4. **Culture** — Fashion, art, screen, nightlife
+5. **Travel & Leisure** — Travel, yachting, exotic places
+6. **Pets** — Curated reader pet portraits and gallery
+7. **Motor** — Supercars, classics, racing (visual gallery and future editorial desks)
+8. **Food** — Recipes, chef spotlight, food science, drinks, restaurant radar, nutrition
+9. **Forge & Flow** — Training, recovery, meditation, martial arts, sport; includes FORM
+10. **Music** — Ether Room, artist profiles, album reviews, production, underground spotlight
+11. **Academic Journal** — Research papers, case studies, policy analysis, peer commentary, data and methods
+12. **Tech@Lounge** — Gadgets, AI & robotics, software, cybersecurity, future tech, developer corner
+13. **In Development** — AI studio, project ledger (Atlas), systems in progress
+14. **About the Enterprise** — Purpose, editorial standards, Foundation concepts
+
+Privacy, contact, subscribe, partners, and support remain utility links outside the editorial departments.
 
 ### Navigation Approach: Hybrid Model
 
@@ -54,7 +56,7 @@ The full editorial map, organized for discoverability:
 
 Departments with many subsections (The Reading Room, Music, Food, Forge & Flow) provide internal navigation on their landing pages:
 
-- **The Reading Room** landing links to Outside Signals, Agentic@Enigmas, The Daily Desk, Academic Journal, and Learning Center
+- **The Reading Room** landing links to Outside Signals, Agentic@Enigmas, and The Daily Desk; Academic Journal remains a separate top-level department
 - **Music** landing links to Ether Room, artist profiles, and editorial desks
 - **Food** and **Forge & Flow** use the existing `departments()` layout from `src/publication-pages.mjs`
 
@@ -67,6 +69,7 @@ Departments with many subsections (The Reading Room, Music, Food, Forge & Flow) 
 | The Reading Room | `/enigmas`, `/journal`, `/learning` | `/reading-room` (hub), subsections stay | New hub page; existing routes preserved via links |
 | Culture | `/culture` | `/culture` | Preserve |
 | Travel & Leisure | None | `/travel` | New flat route; Pets at `/pets` |
+| Pets | None | `/pets` | New top-level gallery, separate from Travel & Leisure |
 | Motor | `/motor` | `/motor` | Preserve |
 | Food | `/food` | `/food` | Preserve |
 | Forge & Flow | `/practice` | `/practice` | Preserve; menu label may say "Forge & Flow" |
@@ -101,17 +104,11 @@ The #60 map makes **Music** a top-level department that houses the Ether Room. E
 
 ### Sport vs Forge & Flow
 
-Issue #29 originally called the department "Sport." The #60 map calls it **Forge & Flow** (training, recovery, meditation, martial arts, sport). The menu label is an open decision for Chris:
-
-- Option A: "Forge & Flow"
-- Option B: "Sport (Forge & Flow)"
-- Option C: "The Practice"
-
-The current route `/practice` already exists and can accommodate any final label.
+Issue #29 originally called the department "Sport." The #60 map calls it **Forge & Flow** (training, recovery, meditation, martial arts, sport). The existing route stays `/practice`; the page may retain its earlier “The Practice” title as the room evolves.
 
 ### OSINT & Tradecraft Placement
 
-Issue #29 proposed OSINT & Tradecraft as a Daily Desk subsection. The #60 map lists it under The Daily Desk. An alternative placement under The Reading Room remains an open decision for Chris. The navigation should accommodate both options.
+Issue #29 proposed OSINT & Tradecraft as a Daily Desk subsection. The #60 map places the Daily Desk within The Reading Room, with OSINT & Tradecraft under that desk.
 
 ### All Departments Index
 
@@ -146,7 +143,7 @@ The footer remains consistent across all pages:
 - **Flat routes only for new pages** (constraint: Worker does not support new nested routes)
 - **Accessibility:** Keyboard, screen reader, reduced motion, contrast, touch targets
 - **Preserve existing routes:** All current pages remain accessible; redirects or links where names change
-- **Open decisions for Chris:** Final masthead identity, Sport vs Forge & Flow label, OSINT & Tradecraft placement
+- **Open decision for Chris:** Final masthead identity
 
 ---
 
