@@ -1,31 +1,38 @@
-## Related issues
+### Description
 
-Link every issue included. Use `Closes #123` only when the evidence here satisfies its full acceptance criteria. Use `Refs #123` when a live check, publication, or other work remains.
+[Describe the changes in this pull request.]
 
-## Description of problem restated
+### Related Issue
 
-For each related issue, restate the observed problem and scope. If this release includes several issues, identify each number and repeat the next three sections for each one.
+Refs #[issue]
 
-## Corrective action taken
+[For PRs into `studio`, use `Refs #[issue]`. Use `Closes #[issue]` only in release PRs into `main`, one line per issue, because GitHub only auto-closes issues on merges into the default branch.]
 
-List what actually changed in the source, assets, configuration, or documentation. Explain any departure from the issue's proposed corrective action. Identify content preserved, moved, or removed, and any overlapping edits resolved.
+### Objective Evidence & Screenshots
 
-## Objective evidence
+| Before | After |
+|--------|-------|
+| [Screenshot or description] | [Screenshot or description] |
 
-Record the exact head commit and the results a reviewer can reproduce:
+### Type of Change & Corrective Action
 
-- Build or automated checks, with run links and results:
-- Pages, interactions, viewports, or accessibility checks examined:
-- Before and after observations or measurements:
-- Acceptance criteria met and criteria still unverified:
+**Corrective Action Taken:**
 
-## Final notes to codeowner or reviewer on next steps
+[List what actually changed in the source, assets, configuration, or documentation. Explain any departure from the issue's proposed corrective action.]
 
-Name the final reviewer (Codex or Cursor), the files or tradeoffs needing close attention, open questions, dependencies, and the exact next action. State whether `studio` pushes are paused for release review. Do not describe an unrun check as passing.
+- [ ] Bug fix (non-breaking change which fixes an issue)
+- [ ] New feature (non-breaking change which adds functionality)
+- [ ] Breaking change (fix or feature that causes existing functionality to change)
+- [ ] Documentation update
 
-## Publishing
+### Checklist
 
-- [ ] Source change only; live Sites publication will follow separately
-- [ ] This PR records an already published Sites version in `site-source.json`
+- [ ] I have performed a self-review of my code.
+- [ ] I have provided objective evidence that my changes work.
+- [ ] I have added/updated necessary tests.
+- [ ] All automated checks and tests pass.
+- [ ] Screenshots and logs contain no personal details.
 
-Sites version and source commit, if applicable:
+### Final notes to reviewer
+
+[Name the final reviewer (Codex or Cursor), the files or tradeoffs needing close attention, open questions, dependencies, risks, follow-ups, and anything the reviewer should look at first.]
