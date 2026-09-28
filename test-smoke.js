@@ -132,3 +132,39 @@ test('GET /about (runtime-served page) contains pv.js script tag exactly once', 
   assert.equal(matches.length, 1, 'pv.js should appear exactly once');
   assert.ok(html.includes('<script src="/pv.js" defer></script>'));
 });
+
+test('POST /api/pv with invalid path returns 204 without storing', async () => {
+  resetInserts();
+  const request = new Request('https://example.com/api/pv', {
+    method: 'POST',
+    headers: {
+      'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+      'content-type': 'application/json'
+    },
+    body: JSON.stringify({ path: '/zzz-not-a-page', ref: '' })
+  });
+  
+  const response = await worker.default.fetch(request, mockEnv);
+  
+  assert.equal(response.status, 204);
+  assert.equal(mockEnv.DB._inserts.length, 0);
+});
+
+test('POST /api/pv with valid real page path stores the view', async () => {
+  resetInserts();
+  const request = new Request('https://example.com/api/pv', {
+    method: 'POST',
+    headers: {
+      'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+      'content-type': 'application/json'
+    },
+    body: JSON.stringify({ path: '/learning', ref: '' })
+  });
+  
+  const response = await worker.default.fetch(request, mockEnv);
+  
+  assert.equal(response.status, 204);
+  assert.equal(mockEnv.DB._inserts.length, 1);
+  const [id, path] = mockEnv.DB._inserts[0];
+  assert.equal(path, '/learning');
+});
