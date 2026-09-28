@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tech@Lounge - SOVRANO@Infini</title>
+  
+  <!-- Google Fonts (SIL OFL 1.1) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@700&family=Inter+Tight:wght@400;500;600&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="shell.css">
+  
+  <style>
+    /* Tech@Lounge - Cold and exact: dark glass, hard cyan grid, monospace, scanlines */
+    body {
+      background: #0d0f13;
+      color: #e8ecef;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    
+    .room-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      position: relative;
+    }
+    
+    /* Grid overlay (visible grid lines) */
+    .grid-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(rgba(127, 207, 224, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(127, 207, 224, 0.08) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 1;
+    }
+    
+    /* Scanline texture overlay */
+    .scanline-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.03) 2px,
+        rgba(0, 0, 0, 0.03) 4px
+      );
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.4;
+    }
+    
+    .room-hero {
+      background: #141820;
+      padding: 60px 40px;
+      position: relative;
+      z-index: 10;
+      border-bottom: 2px solid #7fcfe0;
+    }
+    
+    .room-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #9aa6b2;
+      margin-bottom: 12px;
+    }
+    
+    .room-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 72px;
+      font-weight: 700;
+      color: #7fcfe0;
+      letter-spacing: -2px;
+      margin-bottom: 8px;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .cursor-blink {
+      display: inline-block;
+      width: 4px;
+      height: 60px;
+      background: #7fcfe0;
+      margin-left: 8px;
+      vertical-align: middle;
+      animation: blink 1s steps(1) infinite;
+    }
+    
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+    
+    @media (prefers-reduced-motion: reduce) {
+      .cursor-blink {
+        animation: none;
+        opacity: 1;
+      }
+    }
+    
+    .room-tagline {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 18px;
+      font-weight: 400;
+      color: #9aa6b2;
+    }
+    
+    .room-content {
+      padding: 60px 40px;
+      position: relative;
+      z-index: 10;
+    }
+    
+    /* Article cards with hard modular grid */
+    .articles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 24px;
+      margin-bottom: 60px;
+    }
+    
+    .article-card {
+      background: #141820;
+      border: 1px solid #7fcfe0;
+      padding: 0;
+      position: relative;
+      transition: none;
+    }
+    
+    .article-card:hover,
+    .article-card:focus-within {
+      transform: none;
+      box-shadow: 0 0 0 2px #7fcfe0;
+    }
+    
+    @media (prefers-reduced-motion: reduce) {
+      .article-card {
+        transition: none;
+      }
+    }
+    
+    .article-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: #7fcfe0;
+      padding: 12px 16px;
+      background: rgba(127, 207, 224, 0.05);
+      border-bottom: 1px solid #2a3340;
+      letter-spacing: 0.5px;
+    }
+    
+    .article-content {
+      padding: 20px 16px;
+    }
+    
+    .article-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: #e8ecef;
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+    
+    .article-description {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14px;
+      color: #9aa6b2;
+      line-height: 1.6;
+    }
+    
+    /* Feature section with art slot */
+    .feature-section {
+      margin-bottom: 80px;
+      background: #141820;
+      border: 2px solid #7fcfe0;
+      padding: 0;
+    }
+    
+    .feature-header {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #7fcfe0;
+      padding: 12px 20px;
+      background: rgba(127, 207, 224, 0.08);
+      border-bottom: 1px solid #7fcfe0;
+      letter-spacing: 1px;
+    }
+    
+    .feature-body {
+      padding: 32px;
+    }
+    
+    .art-slot {
+      width: 100%;
+      height: 400px;
+      background: linear-gradient(135deg, #1a1c20 0%, #0d0f13 100%);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #2a3340;
+    }
+    
+    .art-slot-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      color: #9aa6b2;
+      text-align: center;
+      padding: 16px;
+      border: 1px dashed #7fcfe0;
+      background: rgba(13, 15, 19, 0.8);
+    }
+    
+    .feature-headline {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 42px;
+      font-weight: 700;
+      color: #e8ecef;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      letter-spacing: -1px;
+    }
+    
+    .feature-byline {
+      font-family: 'JetBrains Mono', monospace;
+      margin-bottom: 20px;
+      color: #9aa6b2;
+      font-size: 12px;
+    }
+    
+    .feature-text {
+      font-size: 16px;
+      line-height: 1.7;
+      color: #e8ecef;
+      max-width: 720px;
+    }
+    
+    /* Section headers */
+    .section-header {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: #7fcfe0;
+      margin-bottom: 24px;
+      letter-spacing: -1px;
+      text-transform: uppercase;
+    }
+    
+    /* System info panel */
+    .system-info {
+      background: rgba(20, 24, 32, 0.8);
+      border: 1px solid #7fcfe0;
+      padding: 20px;
+      margin-top: 60px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      line-height: 1.8;
+      color: #9aa6b2;
+    }
+    
+    .system-info strong {
+      color: #7fcfe0;
+      font-weight: 600;
+    }
+    
+    .system-info-header {
+      font-size: 11px;
+      color: #7fcfe0;
+      margin-bottom: 12px;
+      letter-spacing: 1px;
+    }
+    
+    /* Sound control */
+    .sound-control {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      z-index: 100;
+    }
+    
+    .sound-toggle {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      color: #e8ecef;
+      background: #141820;
+      border: 1px solid #7fcfe0;
+      padding: 12px 20px;
+      border-radius: 2px;
+      cursor: pointer;
+      min-width: 44px;
+      min-height: 44px;
+      transition: none;
+    }
+    
+    .sound-toggle:hover {
+      background: #1a1e28;
+      box-shadow: 0 0 0 2px #7fcfe0;
+    }
+    
+    .sound-toggle:focus {
+      outline: 2px solid #7fcfe0;
+      outline-offset: 3px;
+    }
+    
+    .sound-toggle[aria-pressed="true"] {
+      background: #1a1e28;
+      color: #7fcfe0;
+    }
+    
+    /* Mobile responsive */
+    @media (max-width: 768px) {
+      .room-hero {
+        padding: 40px 24px;
+      }
+      
+      .room-title {
+        font-size: 48px;
+      }
+      
+      .cursor-blink {
+        height: 40px;
+      }
+      
+      .room-content {
+        padding: 40px 24px;
+      }
+      
+      .articles-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .feature-headline {
+        font-size: 28px;
+      }
+      
+      .feature-body {
+        padding: 20px;
+      }
+      
+      .sound-control {
+        bottom: 20px;
+        right: 20px;
+      }
+    }
+    
+    /* Entry transition (door) - instant cut with scanline sweep */
+    @keyframes door-entry {
+      from {
+        opacity: 0;
+        clip-path: inset(0 0 100% 0);
+      }
+      to {
+        opacity: 1;
+        clip-path: inset(0 0 0 0);
+      }
+    }
+    
+    .room-container {
+      animation: door-entry 0.4s steps(4);
+    }
+    
+    @media (prefers-reduced-motion: reduce) {
+      .room-container {
+        animation: door-entry 0.15s linear;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-overlay"></div>
+  <div class="scanline-overlay"></div>
+  
+  <!-- Shared masthead -->
+  <header class="masthead">
+    <div class="masthead-wordmark">SOVRANO@Infini</div>
+    <div class="masthead-subline">an Infinity Enterprises publication</div>
+  </header>
+  
+  <!-- Shared navigation -->
+  <nav class="nav">
+    <ul class="nav-list">
+      <li><a href="#" class="nav-link">Daily Desk</a></li>
+      <li><a href="#" class="nav-link">Music</a></li>
+      <li><a href="#" class="nav-link">Tech@Lounge</a></li>
+      <li><a href="#" class="nav-link">Food</a></li>
+      <li><a href="#" class="nav-link">Culture</a></li>
+      <li><a href="#" class="nav-link">MODA</a></li>
+      <li><a href="#" class="nav-link">MOTOR</a></li>
+      <li><button class="nav-menu-button" aria-label="Open departments menu">Departments</button></li>
+    </ul>
+  </nav>
+  
+  <div class="room-container">
+    <!-- Room hero -->
+    <section class="room-hero">
+      <div class="room-label">CIRCUIT</div>
+      <h1 class="room-title">TECH@LOUNGE<span class="cursor-blink"></span></h1>
+      <p class="room-tagline">Cold and exact</p>
+    </section>
+    
+    <!-- Room content -->
+    <main class="room-content">
+      <!-- Feature section -->
+      <article class="feature-section">
+        <div class="feature-header">
+          [FEATURED] PLACEHOLDER CONTENT
+        </div>
+        <div class="feature-body">
+          <div class="art-slot">
+            <div class="art-slot-label">art slot (Ember)<br><span class="placeholder-tag">PLACEHOLDER</span></div>
+          </div>
+          <h2 class="feature-headline">
+            Placeholder Tech Feature Headline<span class="placeholder-tag">PLACEHOLDER</span>
+          </h2>
+          <div class="byline feature-byline">
+            BY: PLACEHOLDER_AUTHOR <span class="placeholder-tag">PLACEHOLDER</span> | CREDIT: PLACEHOLDER
+          </div>
+          <div class="feature-text">
+            <p>This is placeholder article text demonstrating the Tech@Lounge room layout with hard modular grid, monospace metadata, and scanline texture. No real editorial content. Sample text showing cold, exact aesthetic with visible grid lines and precise spacing.</p>
+            <p>Additional placeholder paragraph. Elements snap into place with no easing. Grid remains visible throughout. All metadata uses monospace typeface for technical precision.</p>
+          </div>
+        </div>
+      </article>
+      
+      <!-- Articles grid -->
+      <section>
+        <h2 class="section-header">Latest Stories <span class="placeholder-tag">PLACEHOLDER</span></h2>
+        <div class="articles-grid">
+          <article class="article-card" tabindex="0">
+            <div class="article-meta">[GADGETS] 2026.09.27 14:32:00 UTC <span class="placeholder-tag">PLACEHOLDER</span></div>
+            <div class="article-content">
+              <h3 class="article-title">Placeholder Gadget Headline</h3>
+              <p class="article-description">Sample article description text for layout purposes. This is not real content. Placeholder only.</p>
+            </div>
+          </article>
+          
+          <article class="article-card" tabindex="0">
+            <div class="article-meta">[AI REVOLUTION] 2026.09.26 09:15:43 UTC <span class="placeholder-tag">PLACEHOLDER</span></div>
+            <div class="article-content">
+              <h3 class="article-title">Placeholder AI Story Title</h3>
+              <p class="article-description">More placeholder text showing card layout. Wireframe content for design review only.</p>
+            </div>
+          </article>
+          
+          <article class="article-card" tabindex="0">
+            <div class="article-meta">[SECURITY] 2026.09.25 18:44:12 UTC <span class="placeholder-tag">PLACEHOLDER</span></div>
+            <div class="article-content">
+              <h3 class="article-title">Sample Security Headline</h3>
+              <p class="article-description">Additional placeholder description. No real news or editorial content here.</p>
+            </div>
+          </article>
+          
+          <article class="article-card" tabindex="0">
+            <div class="article-meta">[SUBSTACK PICKS] 2026.09.24 12:20:15 UTC <span class="placeholder-tag">PLACEHOLDER</span></div>
+            <div class="article-content">
+              <h3 class="article-title">Placeholder Substack Pick</h3>
+              <p class="article-description">Sample text for another card. This demonstrates the modular grid system layout.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+      
+      <!-- System info panel -->
+      <div class="system-info">
+        <div class="system-info-header">SYSTEM_INFO:</div>
+        <strong>Motion:</strong> Elements snap, no easing; cursor blinks on title (static in reduced motion).<br>
+        <strong>Texture:</strong> Scanlines (faint, repeating gradient overlay); visible modular grid.<br>
+        <strong>Sound:</strong> Off by default. Opt-in toggle for cursor blip/snap sounds (no audio in mock).<br>
+        <strong>Door:</strong> Instant cut with one-frame scanline sweep (0.4s steps(4), reduced to 0.15s linear).<br>
+        <strong>Grid:</strong> Visible, modular, precise (40px grid, cyan #7fcfe0 at 8% opacity).<br>
+        <strong>Type:</strong> Space Grotesk (headlines) + JetBrains Mono (metadata), both SIL OFL 1.1 via Google Fonts.
+      </div>
+    </main>
+  </div>
+  
+  <!-- Sound control (off by default) -->
+  <div class="sound-control">
+    <button class="sound-toggle" aria-pressed="false" aria-label="Toggle sound">
+      Sound: off
+    </button>
+  </div>
+</body>
+</html>
