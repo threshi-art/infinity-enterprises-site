@@ -1,11 +1,19 @@
 import { test } from 'node:test';
 import { strict as assert } from 'node:assert';
 import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 
 test('Ukraine desk base map asset', () => {
   // Read the SVG file
   const svgPath = 'src/assets/ukraine-desk/map/base.svg';
   const svgContent = readFileSync(svgPath, 'utf8');
+  
+  // Content hash: covers the drawing, line endings normalized to LF, update when map is redrawn
+  const expectedHash = 'b90beabf7d72061f0f524a80e9694be2ea13950e131aa2daf2badd35c7fe4073';
+  const svgBytes = readFileSync(svgPath);
+  const normalized = svgBytes.toString('utf8').replace(/\r\n/g, '\n');
+  const actualHash = createHash('sha256').update(normalized, 'utf8').digest('hex');
+  assert.strictEqual(actualHash, expectedHash, 'base.svg content hash should match expected SHA-256');
   
   // Parse root <svg> attributes with regex
   const svgMatch = svgContent.match(/<svg\s+([^>]+)>/);

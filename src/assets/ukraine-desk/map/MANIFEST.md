@@ -7,6 +7,7 @@
 - **Size:** 34,240 bytes. SHA-256 `b90beabf7d72061f0f524a80e9694be2ea13950e131aa2daf2badd35c7fe4073`.
 - **Accessibility:** the root has `aria-hidden="true"` and no `role`. It is decorative, and the page supplies any text alternative.
 - **Read-only:** placement code reads this file and never edits it.
+- **Test:** the test checks the SHA-256 of base.svg after converting CRLF to LF, and the expected hash in test-ukraine-map.js must be updated whenever the map is intentionally redrawn.
 
 ## Geometry contract
 
