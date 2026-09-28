@@ -51,6 +51,7 @@ const routes = [
   '/learning',
   '/motor',
   '/music',
+  '/osint',
   '/partners',
   '/practice',
   '/privacy',

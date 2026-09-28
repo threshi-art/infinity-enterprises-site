@@ -2,7 +2,7 @@ import { readFile, mkdir, writeFile, rm } from 'node:fs/promises';
 import { createPublicationPages } from './src/publication-pages.mjs';
 import { departments, departmentHref } from './src/departments.mjs';
 
-const [home, about, standards, atlas, diana, development, learning, journal, foundation, youth, techLounge, ether, motor, form, enigmas, enigmaArticle, enigmaStories, projectsJson, editorialJson, login, admin, roadmaps, sharedCss, music, dispatchScript, splashCss, splashScript, etherScript, etherImages, motorScript, motorImages, formScript, formImages, hero, detail, dianaImage, dianaCardsImage, developmentImage, techLoungeImage, techMacroImage, politicsImage, lawImage, academyImage, researchImage, learningImage, foundationImage, youthImage, coverImage, feedsConfig, feedsScript, pageViewsScript, pvScript, worker] = await Promise.all([
+const [home, about, standards, atlas, diana, development, learning, journal, foundation, youth, techLounge, ether, motor, form, enigmas, enigmaArticle, enigmaStories, projectsJson, editorialJson, login, admin, roadmaps, osintHtml, osintSourcesJson, sharedCss, music, dispatchScript, splashCss, splashScript, etherScript, etherImages, motorScript, motorImages, formScript, formImages, hero, detail, dianaImage, dianaCardsImage, developmentImage, techLoungeImage, techMacroImage, politicsImage, lawImage, academyImage, researchImage, learningImage, foundationImage, youthImage, coverImage, feedsConfig, feedsScript, pageViewsScript, pvScript, worker] = await Promise.all([
   readFile('src/home.html', 'utf8'),
   readFile('src/about.html', 'utf8'),
   readFile('src/standards.html', 'utf8'),
@@ -25,6 +25,8 @@ const [home, about, standards, atlas, diana, development, learning, journal, fou
   readFile('src/login.html', 'utf8'),
   readFile('src/admin.html', 'utf8'),
   readFile('src/roadmaps.json', 'utf8'),
+  readFile('src/osint.html', 'utf8'),
+  readFile('src/data/osint-sources.json', 'utf8'),
   readFile('src/site.css', 'utf8'),
   readFile('src/music.js', 'utf8'),
   readFile('src/dispatch.js', 'utf8'),
@@ -61,6 +63,7 @@ const catalog = JSON.parse(roadmaps);
 const stories = JSON.parse(enigmaStories);
 const projects = JSON.parse(projectsJson);
 const editorial = JSON.parse(editorialJson);
+const osintSources = JSON.parse(osintSourcesJson);
 const publicationCss = await readFile('src/publication.css', 'utf8');
 const publicationScript = await readFile('src/publication.js', 'utf8');
 const foodImage = await readFile('src/assets/food.jpg');
@@ -69,6 +72,13 @@ const feedOrigin = 'https://infinity-enterprises.infinity-ent-8507.chatgpt.site'
 if (!Array.isArray(projects) || projects.length < 10 || projects.some(project => !['AI','Software','Civic','Research'].includes(project.field) || !['feature','products','prototypes','ideas'].includes(project.group))) throw new Error('Invalid project catalog');
 const sections = ['Politics', 'The Intelligence Desk', 'Law, Power & Institutions', 'Civilization Futures', 'The Reading Room'];
 if (!Array.isArray(stories) || stories.length < 3 || new Set(stories.map(story => story.slug)).size !== stories.length || stories.some(story => !/^[a-z0-9-]+$/.test(story.slug) || !sections.includes(story.section) || !Array.isArray(story.paragraphs) || story.paragraphs.length < 3)) throw new Error('Invalid Enigmas catalog');
+const requiredFields = ['name', 'url', 'category', 'description', 'terms', 'reliability'];
+if (!Array.isArray(osintSources) || osintSources.length === 0) throw new Error('OSINT sources catalog is empty');
+for (const entry of osintSources) {
+  for (const field of requiredFields) {
+    if (!entry[field]) throw new Error(`OSINT entry "${entry.name || 'unknown'}" is missing required field: ${field}`);
+  }
+}
 const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const feedXml = `<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Infinity Enterprises</title><link>${feedOrigin}/issues</link><description>Original essays and new issues from Infinity Enterprises.</description><language>en-us</language>${stories.map(story=>`<item><title>${escapeHtml(story.title)}</title><link>${feedOrigin}/enigmas/${story.slug}</link><guid isPermaLink="true">${feedOrigin}/enigmas/${story.slug}</guid><description>${escapeHtml(story.dek)}</description></item>`).join('')}</channel></rss>`;
 const projectLink = project => project.link ? `<a class="project-link" href="${escapeHtml(project.link)}">Read the related work ↗</a>` : '<span class="project-link muted">Public demonstration in preparation</span>';
@@ -79,6 +89,12 @@ const productCards = group('products').map((project, index) => `<article class="
 const prototypeCards = group('prototypes').map(project => `<article class="prototype-card" ${projectImage(project)}><span class="stage">${escapeHtml(project.stage)}</span><h3>${escapeHtml(project.title)}</h3><p>${escapeHtml(project.description)}</p><dl><dt>What exists / Next</dt><dd>${escapeHtml(project.evidence)} ${escapeHtml(project.next)}</dd></dl>${projectLink(project)}</article>`).join('');
 const ideaCards = group('ideas').map((project, index) => `<article class="idea-card"><span class="number">0${index + 1}</span><h3>${escapeHtml(project.title)}</h3><div class="details"><span class="stage">${escapeHtml(project.stage)}</span><p>${escapeHtml(project.description)}</p><p><strong>Evidence:</strong> ${escapeHtml(project.evidence)}</p><p><strong>Next:</strong> ${escapeHtml(project.next)}</p>${projectLink(project)}</div></article>`).join('');
 const editorialQueue = editorial.queue.map(item => `<div class="queue-row"><span>${escapeHtml(item.desk)}</span><strong>${escapeHtml(item.title)}</strong><span>${escapeHtml(item.state)}</span><p>${escapeHtml(item.next)}</p></div>`).join('');
+const osintCategories = [...new Set(osintSources.map(s => s.category))];
+const osintEntriesByCategory = osintCategories.map(category => {
+  const entries = osintSources.filter(s => s.category === category);
+  const entryHtml = entries.map(entry => `<li class="osint-entry"><div class="osint-entry-header"><h3 class="osint-entry-name"><a href="${escapeHtml(entry.url)}">${escapeHtml(entry.name)}</a></h3></div><p class="osint-entry-desc">${escapeHtml(entry.description)}</p><dl class="osint-entry-meta"><dt>Terms</dt><dd>${escapeHtml(entry.terms)}</dd><dt>Reliability</dt><dd>${escapeHtml(entry.reliability)}</dd></dl></li>`).join('');
+  return `<section class="osint-category"><h2 class="osint-category-title">${escapeHtml(category)}</h2><ul class="osint-list">${entryHtml}</ul></section>`;
+}).join('');
 const card = (story, lead = false) => `<a class="story-card ${lead ? 'story-lead' : ''}" href="/enigmas/${story.slug}"><img src="${escapeHtml(story.image)}" alt="${escapeHtml(story.alt)}" loading="${lead ? 'eager' : 'lazy'}"><span class="story-meta">${escapeHtml(story.status)} <span>·</span> ${escapeHtml(story.read)}</span><h3>${escapeHtml(story.title)}</h3><p>${escapeHtml(story.dek)}</p><span class="read-link">Read the essay ↗</span></a>`;
 const sectionIds = {'Politics':'politics','The Intelligence Desk':'intelligence','Law, Power & Institutions':'law','Civilization Futures':'civilization','The Reading Room':'reading-room'};
 const sectionIntro = {'Politics':'The republic in its full light and shadow.','The Intelligence Desk':'How minds and machines reason together.','Law, Power & Institutions':'Rules, evidence, and a path to correction.','Civilization Futures':'Visions held to the discipline of feasibility.','The Reading Room':'The first essays that opened this conversation.'};
@@ -158,6 +174,7 @@ const compiled = workerWithFeeds
   .replace('/* ENIGMAS_HTML */ null', JSON.stringify(page(enigmas, '/enigmas').replace('<!-- LEAD_STORY -->', card(stories[0], true)).replace('<!-- STORY_SECTIONS -->', storySections)))
   .replace('/* ENIGMA_ARTICLES */ null', JSON.stringify(renderedStories))
   .replace('/* ATLAS_HTML */ null', JSON.stringify(page(atlas, '/development/atlas').replace('<!-- PROJECT_CARDS -->', projectCards)))
+  .replace('/* OSINT_HTML */ null', JSON.stringify(page(osintHtml, '/osint').replace('<!-- OSINT_ENTRIES -->', osintEntriesByCategory)))
   .replace('/* PUBLICATION_PAGES */ null', JSON.stringify(Object.fromEntries(Object.entries(publicationPages).map(([path, markup]) => [path, page(markup, path).replace('/* DISPATCH_SCRIPT */', dispatchScript)]))))
   .replace('/* FEED_XML */ null', JSON.stringify(feedXml))
   .replace('/* LOGIN_HTML */ null', JSON.stringify(login))
@@ -185,7 +202,7 @@ const compiled = workerWithFeeds
   .replace('/* VALID_PUBLIC_PATHS */ null', JSON.stringify([
     '/', '/about', '/about/standards', '/about/diana', '/development', '/development/atlas',
     '/learning', '/journal', '/foundation', '/foundation/youth', '/tech-lounge', '/ether',
-    '/motor', '/form', '/enigmas',
+    '/motor', '/form', '/enigmas', '/osint',
     ...Object.keys(publicationPages),
     ...stories.map(story => '/enigmas/' + story.slug)
   ]));
