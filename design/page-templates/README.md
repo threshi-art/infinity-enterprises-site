@@ -18,7 +18,7 @@ The cover section borrows the editorial *scale* of a newsmagazine cover without 
 ## Which reference wins
 
 1. The actual existing page and its behavior are the preservation baseline: [`src/home.html`](../../src/home.html), [`src/ether.html`](../../src/ether.html), [`src/motor.html`](../../src/motor.html), [`src/form.html`](../../src/form.html), existing article routes, learning paths, foundation concepts, and the projects ledger. The source mirror may lag the published Site; compare with the live route before replacing a visual treatment.
-2. Check [`docs/blueprint/NAVIGATION.md`](../../docs/blueprint/NAVIGATION.md) against the recorded ten-section public map before integrating a page. This guide describes layout, not a route migration.
+2. Check [`docs/blueprint/NAVIGATION.md`](../../docs/blueprint/NAVIGATION.md) and the latest owner direction on #60 before integrating a page. The public section hierarchy remains under discussion. This guide describes layout, not a route migration.
 3. This kit defines the visual grammar for new pages and review of changes. Its illustrated text and crops are examples, not approved editorial or final imagery.
 4. Where this kit conflicts with [`design/sovrano-v1/`](../sovrano-v1/) on **page composition or the masthead name**, this kit wins. The older pack's room colors, motifs, and other compatible visual work remain useful. The department examples below record the earlier #60 outline; they do not authorize public routes or menu labels. Check the recorded owner decision and current navigation blueprint before applying a composition.
 5. [`design/issue-mocks/`](../issue-mocks/) explores possible room directions. A mock is not permission to overwrite an existing page or change a locked journey. Resolve a conflict with the owner in the relevant issue.
@@ -70,9 +70,9 @@ These are intentionally **not interchangeable department cards**. The image or s
 - **MOTOR `/motor`:** treat supercars and classics as objects of desire: detail → silhouette → full reveal → craft/history. Keep its charcoal, oxblood, and cream atmosphere. Racing can enter as a different pace. Avoid a showroom grid or a giant pasted car photo with little editorial direction.
 - **FORM:** preserve full-viewport martial arts and meditation imagery, nearly invisible but readable captions, discreet previous/next arrows, and optional ambient music. Pose, breath, energy, and purpose take precedence over combat instruction. Keep the route from Forge & Flow easy to find.
 
-## Historical department composition examples
+## Department composition examples from #60
 
-This table records the department outline in #60 as historical layout examples. The approved public map has ten sections: The Daily Desk, Culture, MOTOR, Food, The Practice, Music, Academic Journal, Tech Lounge, In Development, and About. Re-key the examples to that map during integration; do not create routes from the older table. The A/B/C composition families do not depend on the older names.
+This table records the earlier fourteen-department outline as composition examples. #60 also records a ten-section public map: The Daily Desk, Culture, MOTOR, Food, The Practice, Music, Academic Journal, Tech Lounge, In Development, and About. Later owner discussion leaves the parent hierarchy open. Confirm the current navigation decision before mapping any example to a public section; do not create routes or menu labels from this table. The A/B/C composition families work with either hierarchy.
 
 The layouts are families, not rigid component inventories. The distinguishing column is what gives each page its own character. The first two features named in the owner outline are editorial slots, not instructions to invent stories.
 
