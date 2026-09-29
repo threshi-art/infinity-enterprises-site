@@ -1,249 +1,1391 @@
 {
-  "imageInfo": {
-    "hero.jpg": {
-      "base64Bytes": 219688,
-      "decodedBytes": 164766
+  "results": [
+    {
+      "route": "/development/atlas",
+      "viewport": "1440x900",
+      "baseline": 1479,
+      "measured": 1515601,
+      "mediaBytes": 1471764,
+      "projected": 667283,
+      "responses": [
+        {
+          "url": "http://localhost:3000/media/tech-macro.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 212850
+        },
+        {
+          "url": "http://localhost:3000/media/enigmas-politics.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 210355
+        },
+        {
+          "url": "http://localhost:3000/media/youth.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 187094
+        },
+        {
+          "url": "http://localhost:3000/media/enigmas-law.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 185262
+        },
+        {
+          "url": "http://localhost:3000/media/tech-lounge.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 180178
+        },
+        {
+          "url": "http://localhost:3000/media/research.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 180056
+        },
+        {
+          "url": "http://localhost:3000/media/learning.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 166609
+        },
+        {
+          "url": "http://localhost:3000/media/development.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 149360
+        },
+        {
+          "url": "http://localhost:3000/development/atlas",
+          "contentType": "text/html; charset=utf-8",
+          "bytes": 43136
+        },
+        {
+          "url": "http://localhost:3000/pv.js",
+          "contentType": "application/javascript; charset=utf-8",
+          "bytes": 701
+        }
+      ],
+      "mediaRequests": [
+        {
+          "url": "http://localhost:3000/media/tech-macro.jpg",
+          "image": "tech-macro.jpg",
+          "bytes": 212850
+        },
+        {
+          "url": "http://localhost:3000/media/tech-lounge.jpg",
+          "image": "tech-lounge.jpg",
+          "bytes": 180178
+        },
+        {
+          "url": "http://localhost:3000/media/enigmas-politics.jpg",
+          "image": "enigmas-politics.jpg",
+          "bytes": 210355
+        },
+        {
+          "url": "http://localhost:3000/media/research.jpg",
+          "image": "research.jpg",
+          "bytes": 180056
+        },
+        {
+          "url": "http://localhost:3000/media/enigmas-law.jpg",
+          "image": "enigmas-law.jpg",
+          "bytes": 185262
+        },
+        {
+          "url": "http://localhost:3000/media/youth.jpg",
+          "image": "youth.jpg",
+          "bytes": 187094
+        },
+        {
+          "url": "http://localhost:3000/media/development.jpg",
+          "image": "development.jpg",
+          "bytes": 149360
+        },
+        {
+          "url": "http://localhost:3000/media/learning.jpg",
+          "image": "learning.jpg",
+          "bytes": 166609
+        }
+      ]
     },
-    "detail.jpg": {
-      "base64Bytes": 149804,
-      "decodedBytes": 112352
+    {
+      "route": "/development/atlas",
+      "viewport": "390x844",
+      "baseline": 1479,
+      "measured": 1515601,
+      "mediaBytes": 1471764,
+      "projected": 184031,
+      "responses": [
+        {
+          "url": "http://localhost:3000/media/tech-macro.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 212850
+        },
+        {
+          "url": "http://localhost:3000/media/enigmas-politics.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 210355
+        },
+        {
+          "url": "http://localhost:3000/media/youth.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 187094
+        },
+        {
+          "url": "http://localhost:3000/media/enigmas-law.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 185262
+        },
+        {
+          "url": "http://localhost:3000/media/tech-lounge.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 180178
+        },
+        {
+          "url": "http://localhost:3000/media/research.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 180056
+        },
+        {
+          "url": "http://localhost:3000/media/learning.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 166609
+        },
+        {
+          "url": "http://localhost:3000/media/development.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 149360
+        },
+        {
+          "url": "http://localhost:3000/development/atlas",
+          "contentType": "text/html; charset=utf-8",
+          "bytes": 43136
+        },
+        {
+          "url": "http://localhost:3000/pv.js",
+          "contentType": "application/javascript; charset=utf-8",
+          "bytes": 701
+        }
+      ],
+      "mediaRequests": [
+        {
+          "url": "http://localhost:3000/media/tech-lounge.jpg",
+          "image": "tech-lounge.jpg",
+          "bytes": 180178
+        },
+        {
+          "url": "http://localhost:3000/media/tech-macro.jpg",
+          "image": "tech-macro.jpg",
+          "bytes": 212850
+        },
+        {
+          "url": "http://localhost:3000/media/research.jpg",
+          "image": "research.jpg",
+          "bytes": 180056
+        },
+        {
+          "url": "http://localhost:3000/media/youth.jpg",
+          "image": "youth.jpg",
+          "bytes": 187094
+        },
+        {
+          "url": "http://localhost:3000/media/development.jpg",
+          "image": "development.jpg",
+          "bytes": 149360
+        },
+        {
+          "url": "http://localhost:3000/media/learning.jpg",
+          "image": "learning.jpg",
+          "bytes": 166609
+        },
+        {
+          "url": "http://localhost:3000/media/enigmas-politics.jpg",
+          "image": "enigmas-politics.jpg",
+          "bytes": 210355
+        },
+        {
+          "url": "http://localhost:3000/media/enigmas-law.jpg",
+          "image": "enigmas-law.jpg",
+          "bytes": 185262
+        }
+      ]
     },
-    "diana.jpg": {
-      "base64Bytes": 253832,
-      "decodedBytes": 190372
+    {
+      "route": "/",
+      "viewport": "1440x900",
+      "baseline": 1278,
+      "measured": 1310731,
+      "mediaBytes": 1257213,
+      "projected": 611450,
+      "responses": [
+        {
+          "url": "http://localhost:3000/media/tech-macro.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 212850
+        },
+        {
+          "url": "http://localhost:3000/media/youth.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 187094
+        },
+        {
+          "url": "http://localhost:3000/media/cover.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 181066
+        },
+        {
+          "url": "http://localhost:3000/media/tech-lounge.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 180178
+        },
+        {
+          "url": "http://localhost:3000/media/research.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 180056
+        },
+        {
+          "url": "http://localhost:3000/media/learning.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 166609
+        },
+        {
+          "url": "http://localhost:3000/media/development.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 149360
+        },
+        {
+          "url": "http://localhost:3000/",
+          "contentType": "text/html; charset=utf-8",
+          "bytes": 52444
+        },
+        {
+          "url": "http://localhost:3000/pv.js",
+          "contentType": "application/javascript; charset=utf-8",
+          "bytes": 701
+        },
+        {
+          "url": "http://localhost:3000/api/dispatch",
+          "contentType": "application/json; charset=utf-8",
+          "bytes": 373
+        }
+      ],
+      "mediaRequests": [
+        {
+          "url": "http://localhost:3000/media/cover.jpg",
+          "image": "cover.jpg",
+          "bytes": 181066
+        },
+        {
+          "url": "http://localhost:3000/media/tech-lounge.jpg",
+          "image": "tech-lounge.jpg",
+          "bytes": 180178
+        },
+        {
+          "url": "http://localhost:3000/media/research.jpg",
+          "image": "research.jpg",
+          "bytes": 180056
+        },
+        {
+          "url": "http://localhost:3000/media/development.jpg",
+          "image": "development.jpg",
+          "bytes": 149360
+        },
+        {
+          "url": "http://localhost:3000/media/learning.jpg",
+          "image": "learning.jpg",
+          "bytes": 166609
+        },
+        {
+          "url": "http://localhost:3000/media/tech-macro.jpg",
+          "image": "tech-macro.jpg",
+          "bytes": 212850
+        },
+        {
+          "url": "http://localhost:3000/media/youth.jpg",
+          "image": "youth.jpg",
+          "bytes": 187094
+        }
+      ]
     },
-    "diana-cards.jpg": {
-      "base64Bytes": 523248,
-      "decodedBytes": 392435
+    {
+      "route": "/",
+      "viewport": "390x844",
+      "baseline": 787,
+      "measured": 974277,
+      "mediaBytes": 920759,
+      "projected": 146904,
+      "responses": [
+        {
+          "url": "http://localhost:3000/media/tech-macro.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 212850
+        },
+        {
+          "url": "http://localhost:3000/media/cover.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 181066
+        },
+        {
+          "url": "http://localhost:3000/media/tech-lounge.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 180178
+        },
+        {
+          "url": "http://localhost:3000/media/research.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 180056
+        },
+        {
+          "url": "http://localhost:3000/media/learning.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 166609
+        },
+        {
+          "url": "http://localhost:3000/",
+          "contentType": "text/html; charset=utf-8",
+          "bytes": 52444
+        },
+        {
+          "url": "http://localhost:3000/pv.js",
+          "contentType": "application/javascript; charset=utf-8",
+          "bytes": 701
+        },
+        {
+          "url": "http://localhost:3000/api/dispatch",
+          "contentType": "application/json; charset=utf-8",
+          "bytes": 373
+        },
+        {
+          "url": "http://localhost:3000/api/pv",
+          "contentType": "",
+          "bytes": 0
+        }
+      ],
+      "mediaRequests": [
+        {
+          "url": "http://localhost:3000/media/cover.jpg",
+          "image": "cover.jpg",
+          "bytes": 181066
+        },
+        {
+          "url": "http://localhost:3000/media/tech-macro.jpg",
+          "image": "tech-macro.jpg",
+          "bytes": 212850
+        },
+        {
+          "url": "http://localhost:3000/media/research.jpg",
+          "image": "research.jpg",
+          "bytes": 180056
+        },
+        {
+          "url": "http://localhost:3000/media/tech-lounge.jpg",
+          "image": "tech-lounge.jpg",
+          "bytes": 180178
+        },
+        {
+          "url": "http://localhost:3000/media/learning.jpg",
+          "image": "learning.jpg",
+          "bytes": 166609
+        }
+      ]
     },
-    "development.jpg": {
-      "base64Bytes": 199148,
-      "decodedBytes": 149360
+    {
+      "route": "/issues",
+      "viewport": "1440x900",
+      "baseline": 1269,
+      "measured": 1300728,
+      "mediaBytes": 1272371,
+      "projected": 656791,
+      "responses": [
+        {
+          "url": "http://localhost:3000/media/food.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 266382
+        },
+        {
+          "url": "http://localhost:3000/media/ether-1.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 229291
+        },
+        {
+          "url": "http://localhost:3000/media/enigmas-politics.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 210355
+        },
+        {
+          "url": "http://localhost:3000/media/research.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 180056
+        },
+        {
+          "url": "http://localhost:3000/media/development.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 149360
+        },
+        {
+          "url": "http://localhost:3000/media/motor-1.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 128913
+        },
+        {
+          "url": "http://localhost:3000/media/form-1.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 108014
+        },
+        {
+          "url": "http://localhost:3000/issues",
+          "contentType": "text/html; charset=utf-8",
+          "bytes": 27656
+        },
+        {
+          "url": "http://localhost:3000/pv.js",
+          "contentType": "application/javascript; charset=utf-8",
+          "bytes": 701
+        },
+        {
+          "url": "http://localhost:3000/api/pv",
+          "contentType": "",
+          "bytes": 0
+        }
+      ],
+      "mediaRequests": [
+        {
+          "url": "http://localhost:3000/media/enigmas-politics.jpg",
+          "image": "enigmas-politics.jpg",
+          "bytes": 210355
+        },
+        {
+          "url": "http://localhost:3000/media/ether-1.jpg",
+          "image": "ether-1.jpg",
+          "bytes": 229291
+        },
+        {
+          "url": "http://localhost:3000/media/motor-1.jpg",
+          "image": "motor-1.jpg",
+          "bytes": 128913
+        },
+        {
+          "url": "http://localhost:3000/media/food.jpg",
+          "image": "food.jpg",
+          "bytes": 266382
+        },
+        {
+          "url": "http://localhost:3000/media/form-1.jpg",
+          "image": "form-1.jpg",
+          "bytes": 108014
+        },
+        {
+          "url": "http://localhost:3000/media/research.jpg",
+          "image": "research.jpg",
+          "bytes": 180056
+        },
+        {
+          "url": "http://localhost:3000/media/development.jpg",
+          "image": "development.jpg",
+          "bytes": 149360
+        }
+      ]
     },
-    "tech-lounge.jpg": {
-      "base64Bytes": 240240,
-      "decodedBytes": 180178
+    {
+      "route": "/issues",
+      "viewport": "390x844",
+      "baseline": 1123,
+      "measured": 1300728,
+      "mediaBytes": 1272371,
+      "projected": 139051,
+      "responses": [
+        {
+          "url": "http://localhost:3000/media/food.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 266382
+        },
+        {
+          "url": "http://localhost:3000/media/ether-1.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 229291
+        },
+        {
+          "url": "http://localhost:3000/media/enigmas-politics.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 210355
+        },
+        {
+          "url": "http://localhost:3000/media/research.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 180056
+        },
+        {
+          "url": "http://localhost:3000/media/development.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 149360
+        },
+        {
+          "url": "http://localhost:3000/media/motor-1.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 128913
+        },
+        {
+          "url": "http://localhost:3000/media/form-1.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 108014
+        },
+        {
+          "url": "http://localhost:3000/issues",
+          "contentType": "text/html; charset=utf-8",
+          "bytes": 27656
+        },
+        {
+          "url": "http://localhost:3000/pv.js",
+          "contentType": "application/javascript; charset=utf-8",
+          "bytes": 701
+        },
+        {
+          "url": "http://localhost:3000/api/pv",
+          "contentType": "",
+          "bytes": 0
+        }
+      ],
+      "mediaRequests": [
+        {
+          "url": "http://localhost:3000/media/enigmas-politics.jpg",
+          "image": "enigmas-politics.jpg",
+          "bytes": 210355
+        },
+        {
+          "url": "http://localhost:3000/media/ether-1.jpg",
+          "image": "ether-1.jpg",
+          "bytes": 229291
+        },
+        {
+          "url": "http://localhost:3000/media/motor-1.jpg",
+          "image": "motor-1.jpg",
+          "bytes": 128913
+        },
+        {
+          "url": "http://localhost:3000/media/form-1.jpg",
+          "image": "form-1.jpg",
+          "bytes": 108014
+        },
+        {
+          "url": "http://localhost:3000/media/research.jpg",
+          "image": "research.jpg",
+          "bytes": 180056
+        },
+        {
+          "url": "http://localhost:3000/media/food.jpg",
+          "image": "food.jpg",
+          "bytes": 266382
+        },
+        {
+          "url": "http://localhost:3000/media/development.jpg",
+          "image": "development.jpg",
+          "bytes": 149360
+        }
+      ]
     },
-    "tech-macro.jpg": {
-      "base64Bytes": 283800,
-      "decodedBytes": 212850
+    {
+      "route": "/form",
+      "viewport": "1440x900",
+      "baseline": 1267,
+      "measured": 1299049,
+      "mediaBytes": 1271496,
+      "projected": 729911,
+      "responses": [
+        {
+          "url": "http://localhost:3000/media/form-7.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 286261
+        },
+        {
+          "url": "http://localhost:3000/media/form-3.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 209147
+        },
+        {
+          "url": "http://localhost:3000/media/form-4.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 185378
+        },
+        {
+          "url": "http://localhost:3000/media/form-5.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 174600
+        },
+        {
+          "url": "http://localhost:3000/media/form-6.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 160941
+        },
+        {
+          "url": "http://localhost:3000/media/form-2.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 147155
+        },
+        {
+          "url": "http://localhost:3000/media/form-1.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 108014
+        },
+        {
+          "url": "http://localhost:3000/form",
+          "contentType": "text/html; charset=utf-8",
+          "bytes": 26852
+        },
+        {
+          "url": "http://localhost:3000/pv.js",
+          "contentType": "application/javascript; charset=utf-8",
+          "bytes": 701
+        },
+        {
+          "url": "http://localhost:3000/api/pv",
+          "contentType": "",
+          "bytes": 0
+        }
+      ],
+      "mediaRequests": [
+        {
+          "url": "http://localhost:3000/media/form-1.jpg",
+          "image": "form-1.jpg",
+          "bytes": 108014
+        },
+        {
+          "url": "http://localhost:3000/media/form-2.jpg",
+          "image": "form-2.jpg",
+          "bytes": 147155
+        },
+        {
+          "url": "http://localhost:3000/media/form-3.jpg",
+          "image": "form-3.jpg",
+          "bytes": 209147
+        },
+        {
+          "url": "http://localhost:3000/media/form-6.jpg",
+          "image": "form-6.jpg",
+          "bytes": 160941
+        },
+        {
+          "url": "http://localhost:3000/media/form-4.jpg",
+          "image": "form-4.jpg",
+          "bytes": 185378
+        },
+        {
+          "url": "http://localhost:3000/media/form-7.jpg",
+          "image": "form-7.jpg",
+          "bytes": 286261
+        },
+        {
+          "url": "http://localhost:3000/media/form-5.jpg",
+          "image": "form-5.jpg",
+          "bytes": 174600
+        }
+      ]
     },
-    "enigmas-politics.jpg": {
-      "base64Bytes": 280476,
-      "decodedBytes": 210355
+    {
+      "route": "/form",
+      "viewport": "390x844",
+      "baseline": 1267,
+      "measured": 1299049,
+      "mediaBytes": 1271496,
+      "projected": 139171,
+      "responses": [
+        {
+          "url": "http://localhost:3000/media/form-7.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 286261
+        },
+        {
+          "url": "http://localhost:3000/media/form-3.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 209147
+        },
+        {
+          "url": "http://localhost:3000/media/form-4.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 185378
+        },
+        {
+          "url": "http://localhost:3000/media/form-5.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 174600
+        },
+        {
+          "url": "http://localhost:3000/media/form-6.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 160941
+        },
+        {
+          "url": "http://localhost:3000/media/form-2.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 147155
+        },
+        {
+          "url": "http://localhost:3000/media/form-1.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 108014
+        },
+        {
+          "url": "http://localhost:3000/form",
+          "contentType": "text/html; charset=utf-8",
+          "bytes": 26852
+        },
+        {
+          "url": "http://localhost:3000/pv.js",
+          "contentType": "application/javascript; charset=utf-8",
+          "bytes": 701
+        },
+        {
+          "url": "http://localhost:3000/api/pv",
+          "contentType": "",
+          "bytes": 0
+        }
+      ],
+      "mediaRequests": [
+        {
+          "url": "http://localhost:3000/media/form-1.jpg",
+          "image": "form-1.jpg",
+          "bytes": 108014
+        },
+        {
+          "url": "http://localhost:3000/media/form-2.jpg",
+          "image": "form-2.jpg",
+          "bytes": 147155
+        },
+        {
+          "url": "http://localhost:3000/media/form-3.jpg",
+          "image": "form-3.jpg",
+          "bytes": 209147
+        },
+        {
+          "url": "http://localhost:3000/media/form-6.jpg",
+          "image": "form-6.jpg",
+          "bytes": 160941
+        },
+        {
+          "url": "http://localhost:3000/media/form-4.jpg",
+          "image": "form-4.jpg",
+          "bytes": 185378
+        },
+        {
+          "url": "http://localhost:3000/media/form-7.jpg",
+          "image": "form-7.jpg",
+          "bytes": 286261
+        },
+        {
+          "url": "http://localhost:3000/media/form-5.jpg",
+          "image": "form-5.jpg",
+          "bytes": 174600
+        }
+      ]
     },
-    "enigmas-law.jpg": {
-      "base64Bytes": 247016,
-      "decodedBytes": 185262
+    {
+      "route": "/development",
+      "viewport": "1440x900",
+      "baseline": 1091,
+      "measured": 1118202,
+      "mediaBytes": 1076147,
+      "projected": 547955,
+      "responses": [
+        {
+          "url": "http://localhost:3000/media/tech-macro.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 212850
+        },
+        {
+          "url": "http://localhost:3000/media/youth.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 187094
+        },
+        {
+          "url": "http://localhost:3000/media/tech-lounge.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 180178
+        },
+        {
+          "url": "http://localhost:3000/media/research.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 180056
+        },
+        {
+          "url": "http://localhost:3000/media/learning.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 166609
+        },
+        {
+          "url": "http://localhost:3000/media/development.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 149360
+        },
+        {
+          "url": "http://localhost:3000/development",
+          "contentType": "text/html; charset=utf-8",
+          "bytes": 41354
+        },
+        {
+          "url": "http://localhost:3000/pv.js",
+          "contentType": "application/javascript; charset=utf-8",
+          "bytes": 701
+        },
+        {
+          "url": "http://localhost:3000/api/pv",
+          "contentType": "",
+          "bytes": 0
+        }
+      ],
+      "mediaRequests": [
+        {
+          "url": "http://localhost:3000/media/development.jpg",
+          "image": "development.jpg",
+          "bytes": 149360
+        },
+        {
+          "url": "http://localhost:3000/media/tech-macro.jpg",
+          "image": "tech-macro.jpg",
+          "bytes": 212850
+        },
+        {
+          "url": "http://localhost:3000/media/tech-lounge.jpg",
+          "image": "tech-lounge.jpg",
+          "bytes": 180178
+        },
+        {
+          "url": "http://localhost:3000/media/research.jpg",
+          "image": "research.jpg",
+          "bytes": 180056
+        },
+        {
+          "url": "http://localhost:3000/media/youth.jpg",
+          "image": "youth.jpg",
+          "bytes": 187094
+        },
+        {
+          "url": "http://localhost:3000/media/learning.jpg",
+          "image": "learning.jpg",
+          "bytes": 166609
+        }
+      ]
     },
-    "enigmas-academy.jpg": {
-      "base64Bytes": 372200,
-      "decodedBytes": 279149
+    {
+      "route": "/development",
+      "viewport": "390x844",
+      "baseline": 1091,
+      "measured": 1118202,
+      "mediaBytes": 1076147,
+      "projected": 143599,
+      "responses": [
+        {
+          "url": "http://localhost:3000/media/tech-macro.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 212850
+        },
+        {
+          "url": "http://localhost:3000/media/youth.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 187094
+        },
+        {
+          "url": "http://localhost:3000/media/tech-lounge.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 180178
+        },
+        {
+          "url": "http://localhost:3000/media/research.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 180056
+        },
+        {
+          "url": "http://localhost:3000/media/learning.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 166609
+        },
+        {
+          "url": "http://localhost:3000/media/development.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 149360
+        },
+        {
+          "url": "http://localhost:3000/development",
+          "contentType": "text/html; charset=utf-8",
+          "bytes": 41354
+        },
+        {
+          "url": "http://localhost:3000/pv.js",
+          "contentType": "application/javascript; charset=utf-8",
+          "bytes": 701
+        },
+        {
+          "url": "http://localhost:3000/api/pv",
+          "contentType": "",
+          "bytes": 0
+        }
+      ],
+      "mediaRequests": [
+        {
+          "url": "http://localhost:3000/media/development.jpg",
+          "image": "development.jpg",
+          "bytes": 149360
+        },
+        {
+          "url": "http://localhost:3000/media/tech-macro.jpg",
+          "image": "tech-macro.jpg",
+          "bytes": 212850
+        },
+        {
+          "url": "http://localhost:3000/media/tech-lounge.jpg",
+          "image": "tech-lounge.jpg",
+          "bytes": 180178
+        },
+        {
+          "url": "http://localhost:3000/media/research.jpg",
+          "image": "research.jpg",
+          "bytes": 180056
+        },
+        {
+          "url": "http://localhost:3000/media/youth.jpg",
+          "image": "youth.jpg",
+          "bytes": 187094
+        },
+        {
+          "url": "http://localhost:3000/media/learning.jpg",
+          "image": "learning.jpg",
+          "bytes": 166609
+        }
+      ]
     },
-    "research.jpg": {
-      "base64Bytes": 240076,
-      "decodedBytes": 180056
+    {
+      "route": "/enigmas",
+      "viewport": "1440x900",
+      "baseline": 1086,
+      "measured": 1113957,
+      "mediaBytes": 1071820,
+      "projected": 469341,
+      "responses": [
+        {
+          "url": "http://localhost:3000/media/enigmas-politics.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 210355
+        },
+        {
+          "url": "http://localhost:3000/media/enigmas-law.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 185262
+        },
+        {
+          "url": "http://localhost:3000/media/tech-lounge.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 180178
+        },
+        {
+          "url": "http://localhost:3000/media/research.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 180056
+        },
+        {
+          "url": "http://localhost:3000/media/learning.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 166609
+        },
+        {
+          "url": "http://localhost:3000/media/development.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 149360
+        },
+        {
+          "url": "http://localhost:3000/enigmas",
+          "contentType": "text/html; charset=utf-8",
+          "bytes": 41436
+        },
+        {
+          "url": "http://localhost:3000/pv.js",
+          "contentType": "application/javascript; charset=utf-8",
+          "bytes": 701
+        },
+        {
+          "url": "http://localhost:3000/api/pv",
+          "contentType": "",
+          "bytes": 0
+        }
+      ],
+      "mediaRequests": [
+        {
+          "url": "http://localhost:3000/media/enigmas-politics.jpg",
+          "image": "enigmas-politics.jpg",
+          "bytes": 210355
+        },
+        {
+          "url": "http://localhost:3000/media/development.jpg",
+          "image": "development.jpg",
+          "bytes": 149360
+        },
+        {
+          "url": "http://localhost:3000/media/enigmas-law.jpg",
+          "image": "enigmas-law.jpg",
+          "bytes": 185262
+        },
+        {
+          "url": "http://localhost:3000/media/tech-lounge.jpg",
+          "image": "tech-lounge.jpg",
+          "bytes": 180178
+        },
+        {
+          "url": "http://localhost:3000/media/research.jpg",
+          "image": "research.jpg",
+          "bytes": 180056
+        },
+        {
+          "url": "http://localhost:3000/media/learning.jpg",
+          "image": "learning.jpg",
+          "bytes": 166609
+        }
+      ]
     },
-    "learning.jpg": {
-      "base64Bytes": 222148,
-      "decodedBytes": 166609
+    {
+      "route": "/enigmas",
+      "viewport": "390x844",
+      "baseline": 748,
+      "measured": 767292,
+      "mediaBytes": 725155,
+      "projected": 110465,
+      "responses": [
+        {
+          "url": "http://localhost:3000/media/enigmas-politics.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 210355
+        },
+        {
+          "url": "http://localhost:3000/media/enigmas-law.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 185262
+        },
+        {
+          "url": "http://localhost:3000/media/tech-lounge.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 180178
+        },
+        {
+          "url": "http://localhost:3000/media/development.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 149360
+        },
+        {
+          "url": "http://localhost:3000/enigmas",
+          "contentType": "text/html; charset=utf-8",
+          "bytes": 41436
+        },
+        {
+          "url": "http://localhost:3000/pv.js",
+          "contentType": "application/javascript; charset=utf-8",
+          "bytes": 701
+        },
+        {
+          "url": "http://localhost:3000/api/pv",
+          "contentType": "",
+          "bytes": 0
+        }
+      ],
+      "mediaRequests": [
+        {
+          "url": "http://localhost:3000/media/enigmas-politics.jpg",
+          "image": "enigmas-politics.jpg",
+          "bytes": 210355
+        },
+        {
+          "url": "http://localhost:3000/media/development.jpg",
+          "image": "development.jpg",
+          "bytes": 149360
+        },
+        {
+          "url": "http://localhost:3000/media/enigmas-law.jpg",
+          "image": "enigmas-law.jpg",
+          "bytes": 185262
+        },
+        {
+          "url": "http://localhost:3000/media/tech-lounge.jpg",
+          "image": "tech-lounge.jpg",
+          "bytes": 180178
+        }
+      ]
     },
-    "foundation.jpg": {
-      "base64Bytes": 304960,
-      "decodedBytes": 228718
+    {
+      "route": "/ether",
+      "viewport": "1440x900",
+      "baseline": 1080,
+      "measured": 1107190,
+      "mediaBytes": 1075129,
+      "projected": 801661,
+      "responses": [
+        {
+          "url": "http://localhost:3000/media/ether-2.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 342643
+        },
+        {
+          "url": "http://localhost:3000/media/ether-3.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 275967
+        },
+        {
+          "url": "http://localhost:3000/media/ether-1.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 229291
+        },
+        {
+          "url": "http://localhost:3000/media/ether-4.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 227228
+        },
+        {
+          "url": "http://localhost:3000/ether",
+          "contentType": "text/html; charset=utf-8",
+          "bytes": 31360
+        },
+        {
+          "url": "http://localhost:3000/pv.js",
+          "contentType": "application/javascript; charset=utf-8",
+          "bytes": 701
+        },
+        {
+          "url": "http://localhost:3000/api/pv",
+          "contentType": "",
+          "bytes": 0
+        }
+      ],
+      "mediaRequests": [
+        {
+          "url": "http://localhost:3000/media/ether-1.jpg",
+          "image": "ether-1.jpg",
+          "bytes": 229291
+        },
+        {
+          "url": "http://localhost:3000/media/ether-2.jpg",
+          "image": "ether-2.jpg",
+          "bytes": 342643
+        },
+        {
+          "url": "http://localhost:3000/media/ether-3.jpg",
+          "image": "ether-3.jpg",
+          "bytes": 275967
+        },
+        {
+          "url": "http://localhost:3000/media/ether-4.jpg",
+          "image": "ether-4.jpg",
+          "bytes": 227228
+        }
+      ]
     },
-    "youth.jpg": {
-      "base64Bytes": 249460,
-      "decodedBytes": 187094
+    {
+      "route": "/ether",
+      "viewport": "390x844",
+      "baseline": 1080,
+      "measured": 1107190,
+      "mediaBytes": 1075129,
+      "projected": 137727,
+      "responses": [
+        {
+          "url": "http://localhost:3000/media/ether-2.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 342643
+        },
+        {
+          "url": "http://localhost:3000/media/ether-3.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 275967
+        },
+        {
+          "url": "http://localhost:3000/media/ether-1.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 229291
+        },
+        {
+          "url": "http://localhost:3000/media/ether-4.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 227228
+        },
+        {
+          "url": "http://localhost:3000/ether",
+          "contentType": "text/html; charset=utf-8",
+          "bytes": 31360
+        },
+        {
+          "url": "http://localhost:3000/pv.js",
+          "contentType": "application/javascript; charset=utf-8",
+          "bytes": 701
+        },
+        {
+          "url": "http://localhost:3000/api/pv",
+          "contentType": "",
+          "bytes": 0
+        }
+      ],
+      "mediaRequests": [
+        {
+          "url": "http://localhost:3000/media/ether-1.jpg",
+          "image": "ether-1.jpg",
+          "bytes": 229291
+        },
+        {
+          "url": "http://localhost:3000/media/ether-2.jpg",
+          "image": "ether-2.jpg",
+          "bytes": 342643
+        },
+        {
+          "url": "http://localhost:3000/media/ether-3.jpg",
+          "image": "ether-3.jpg",
+          "bytes": 275967
+        },
+        {
+          "url": "http://localhost:3000/media/ether-4.jpg",
+          "image": "ether-4.jpg",
+          "bytes": 227228
+        }
+      ]
     },
-    "cover.jpg": {
-      "base64Bytes": 241424,
-      "decodedBytes": 181066
+    {
+      "route": "/foundation",
+      "viewport": "1440x900",
+      "baseline": 1001,
+      "measured": 1026214,
+      "mediaBytes": 993980,
+      "projected": 502250,
+      "responses": [
+        {
+          "url": "http://localhost:3000/media/foundation.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 228718
+        },
+        {
+          "url": "http://localhost:3000/media/tech-macro.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 212850
+        },
+        {
+          "url": "http://localhost:3000/media/youth.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 187094
+        },
+        {
+          "url": "http://localhost:3000/media/enigmas-law.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 185262
+        },
+        {
+          "url": "http://localhost:3000/media/research.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 180056
+        },
+        {
+          "url": "http://localhost:3000/foundation",
+          "contentType": "text/html; charset=utf-8",
+          "bytes": 31533
+        },
+        {
+          "url": "http://localhost:3000/pv.js",
+          "contentType": "application/javascript; charset=utf-8",
+          "bytes": 701
+        },
+        {
+          "url": "http://localhost:3000/api/pv",
+          "contentType": "",
+          "bytes": 0
+        }
+      ],
+      "mediaRequests": [
+        {
+          "url": "http://localhost:3000/media/foundation.jpg",
+          "image": "foundation.jpg",
+          "bytes": 228718
+        },
+        {
+          "url": "http://localhost:3000/media/enigmas-law.jpg",
+          "image": "enigmas-law.jpg",
+          "bytes": 185262
+        },
+        {
+          "url": "http://localhost:3000/media/tech-macro.jpg",
+          "image": "tech-macro.jpg",
+          "bytes": 212850
+        },
+        {
+          "url": "http://localhost:3000/media/research.jpg",
+          "image": "research.jpg",
+          "bytes": 180056
+        },
+        {
+          "url": "http://localhost:3000/media/youth.jpg",
+          "image": "youth.jpg",
+          "bytes": 187094
+        }
+      ]
     },
-    "food.jpg": {
-      "base64Bytes": 355176,
-      "decodedBytes": 266382
-    },
-    "ether-1.jpg": {
-      "base64Bytes": 305724,
-      "decodedBytes": 229291
-    },
-    "ether-2.jpg": {
-      "base64Bytes": 456860,
-      "decodedBytes": 342643
-    },
-    "ether-3.jpg": {
-      "base64Bytes": 367956,
-      "decodedBytes": 275967
-    },
-    "ether-4.jpg": {
-      "base64Bytes": 302972,
-      "decodedBytes": 227228
-    },
-    "motor-1.jpg": {
-      "base64Bytes": 171884,
-      "decodedBytes": 128913
-    },
-    "motor-2.jpg": {
-      "base64Bytes": 337236,
-      "decodedBytes": 252925
-    },
-    "motor-3.jpg": {
-      "base64Bytes": 229856,
-      "decodedBytes": 172390
-    },
-    "motor-4.jpg": {
-      "base64Bytes": 260740,
-      "decodedBytes": 195553
-    },
-    "form-1.jpg": {
-      "base64Bytes": 144020,
-      "decodedBytes": 108014
-    },
-    "form-2.jpg": {
-      "base64Bytes": 196208,
-      "decodedBytes": 147155
-    },
-    "form-3.jpg": {
-      "base64Bytes": 278864,
-      "decodedBytes": 209147
-    },
-    "form-4.jpg": {
-      "base64Bytes": 247172,
-      "decodedBytes": 185378
-    },
-    "form-5.jpg": {
-      "base64Bytes": 232800,
-      "decodedBytes": 174600
-    },
-    "form-6.jpg": {
-      "base64Bytes": 214588,
-      "decodedBytes": 160941
-    },
-    "form-7.jpg": {
-      "base64Bytes": 381684,
-      "decodedBytes": 286261
+    {
+      "route": "/foundation",
+      "viewport": "390x844",
+      "baseline": 1001,
+      "measured": 1026214,
+      "mediaBytes": 993980,
+      "projected": 128642,
+      "responses": [
+        {
+          "url": "http://localhost:3000/media/foundation.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 228718
+        },
+        {
+          "url": "http://localhost:3000/media/tech-macro.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 212850
+        },
+        {
+          "url": "http://localhost:3000/media/youth.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 187094
+        },
+        {
+          "url": "http://localhost:3000/media/enigmas-law.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 185262
+        },
+        {
+          "url": "http://localhost:3000/media/research.jpg",
+          "contentType": "image/jpeg",
+          "bytes": 180056
+        },
+        {
+          "url": "http://localhost:3000/foundation",
+          "contentType": "text/html; charset=utf-8",
+          "bytes": 31533
+        },
+        {
+          "url": "http://localhost:3000/pv.js",
+          "contentType": "application/javascript; charset=utf-8",
+          "bytes": 701
+        },
+        {
+          "url": "http://localhost:3000/api/pv",
+          "contentType": "",
+          "bytes": 0
+        }
+      ],
+      "mediaRequests": [
+        {
+          "url": "http://localhost:3000/media/foundation.jpg",
+          "image": "foundation.jpg",
+          "bytes": 228718
+        },
+        {
+          "url": "http://localhost:3000/media/enigmas-law.jpg",
+          "image": "enigmas-law.jpg",
+          "bytes": 185262
+        },
+        {
+          "url": "http://localhost:3000/media/tech-macro.jpg",
+          "image": "tech-macro.jpg",
+          "bytes": 212850
+        },
+        {
+          "url": "http://localhost:3000/media/research.jpg",
+          "image": "research.jpg",
+          "bytes": 180056
+        },
+        {
+          "url": "http://localhost:3000/media/youth.jpg",
+          "image": "youth.jpg",
+          "bytes": 187094
+        }
+      ]
     }
-  },
-  "routeImages": {
-    "/": [
-      "cover.jpg",
-      "development.jpg",
-      "diana.jpg",
-      "enigmas-politics.jpg",
-      "ether-1.jpg",
-      "form-4.jpg",
-      "learning.jpg",
-      "motor-1.jpg",
-      "research.jpg",
-      "tech-lounge.jpg",
-      "tech-macro.jpg",
-      "youth.jpg"
-    ],
-    "/about": [
-      "cover.jpg",
-      "diana.jpg",
-      "hero.jpg"
-    ],
-    "/about/standards": [
-      "cover.jpg"
-    ],
-    "/about/diana": [
-      "cover.jpg",
-      "diana-cards.jpg",
-      "diana.jpg"
-    ],
-    "/development": [
-      "cover.jpg",
-      "development.jpg",
-      "learning.jpg",
-      "research.jpg",
-      "tech-lounge.jpg",
-      "tech-macro.jpg",
-      "youth.jpg"
-    ],
-    "/development/atlas": [
-      "cover.jpg",
-      "development.jpg",
-      "enigmas-law.jpg",
-      "enigmas-politics.jpg",
-      "learning.jpg",
-      "research.jpg",
-      "tech-lounge.jpg",
-      "tech-macro.jpg",
-      "youth.jpg"
-    ],
-    "/learning": [
-      "cover.jpg",
-      "learning.jpg",
-      "research.jpg",
-      "tech-macro.jpg"
-    ],
-    "/journal": [
-      "cover.jpg",
-      "enigmas-law.jpg",
-      "enigmas-politics.jpg",
-      "learning.jpg",
-      "research.jpg",
-      "tech-macro.jpg"
-    ],
-    "/foundation": [
-      "cover.jpg",
-      "enigmas-law.jpg",
-      "foundation.jpg",
-      "research.jpg",
-      "tech-macro.jpg",
-      "youth.jpg"
-    ],
-    "/foundation/youth": [
-      "cover.jpg",
-      "foundation.jpg",
-      "learning.jpg",
-      "research.jpg",
-      "youth.jpg"
-    ],
-    "/tech-lounge": [
-      "cover.jpg",
-      "development.jpg",
-      "tech-lounge.jpg",
-      "tech-macro.jpg"
-    ],
-    "/ether": [
-      "cover.jpg",
-      "ether-1.jpg",
-      "ether-2.jpg",
-      "ether-3.jpg",
-      "ether-4.jpg"
-    ],
-    "/motor": [
-      "cover.jpg",
-      "motor-1.jpg",
-      "motor-2.jpg",
-      "motor-3.jpg",
-      "motor-4.jpg"
-    ],
-    "/form": [
-      "cover.jpg",
-      "form-1.jpg",
-      "form-2.jpg",
-      "form-3.jpg",
-      "form-4.jpg",
-      "form-5.jpg",
-      "form-6.jpg",
-      "form-7.jpg"
-    ],
-    "/enigmas": [
-      "cover.jpg",
-      "detail.jpg",
-      "development.jpg",
-      "enigmas-law.jpg",
-      "enigmas-politics.jpg",
-      "foundation.jpg",
-      "learning.jpg",
-      "research.jpg",
-      "tech-lounge.jpg",
-      "tech-macro.jpg",
-      "youth.jpg"
-    ]
-  }
+  ]
 }
