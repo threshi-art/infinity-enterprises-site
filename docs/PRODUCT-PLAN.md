@@ -1,6 +1,6 @@
 # Infinity Enterprises product plan
 
-**Status:** Working product architecture, recorded September 28, 2026. This document guides design and issue planning. It does not approve a new public route, editorial claim, paid feature, or live release. Chris makes product and editorial decisions in the decision log.
+**Status:** Working product architecture, recorded September 28, 2026. This document guides design and issue planning. It does not approve a new public route, editorial claim, paid feature, or live release. The owner makes product and editorial decisions in the decision log.
 
 ## Purpose and reader
 
@@ -17,7 +17,7 @@ The experience has one recognizable house identity and distinct room atmospheres
 | Distinct rooms | Culture, MOTOR, Food, The Practice, Music and the other subjects have their own pace | Shared masthead and controls, room specific visual and sound language |
 | Deeper work | Research, original essays, OSINT methods, policy thinking, and working projects | Separate reporting, analysis, opinion, and project states; visible sources and uncertainty |
 
-The repository README records a ten section public map: The Daily Desk, Culture, MOTOR, Food, The Practice, Music, Academic Journal, Tech Lounge, In Development, and About. Chris's later discussion raised a possible Reading Room containing The Daily Desk. **That hierarchy is an open decision on #60.** The older fourteen department page and earlier nine room design studies remain historical source and are not permission to change the public menu. Do not silently replace existing public labels or routes.
+The repository contains an unconfirmed ten section list: The Daily Desk, Culture, MOTOR, Food, The Practice, Music, Academic Journal, Tech Lounge, In Development, and About. The owner later raised a possible Reading Room containing The Daily Desk. **That hierarchy is an open decision on #60.** Until the owner records a superseding decision, the fourteen department editorial map remains the current reference. Earlier design studies remain design source only and are not permission to change the public menu. Do not silently replace existing public labels or routes.
 
 Proposed editorial areas for exploration, without new top level routes yet:
 
@@ -27,7 +27,7 @@ Proposed editorial areas for exploration, without new top level routes yet:
 - **Gray zone:** cross subject explainers that trace a cause, consequence, evidence, and unknowns.
 - **Music and Ether:** a few featured listening journeys with creator credit, archive access, and sound only after a visitor's explicit action. Preserve the existing Ether Slot 01 journey.
 
-The final names, hierarchy, editorial charter, and placement of OSINT, The Tank, law, and the gray zone require Chris's decision and their own bounded issues. The Reading Room option can be modeled as an editorial environment without creating a route while that decision is open.
+The final names, hierarchy, editorial charter, and placement of OSINT, The Tank, law, and the gray zone require the owner's decision and their own bounded issues. The Reading Room option can be modeled as an editorial environment without creating a route while that decision is open.
 
 ## Content and data contracts
 
@@ -51,6 +51,6 @@ Release small coherent slices from `studio` to `main`. A green build does not ap
 
 ## Decision rights and evidence
 
-Chris owns product direction, editorial approval, spending, and public section choices. Codex owns architecture and release recommendations, with Cursor an authorized `main` reviewer and merger under `AGENTS.md`. Forge stewards issues and `studio`; the PR author may merge to `studio` after independent exact head review and green required checks. Puck supplies verification and findings, Ember assets, Conduit integrations and operational evidence, and Turris the decision log. An agent owns the accuracy of the work it reports. A shared GitHub account does not authenticate which person or agent made a statement.
+The owner owns product direction, editorial approval, spending, and public section choices. Codex owns architecture and release recommendations, with Cursor an authorized `main` reviewer and merger under `AGENTS.md`. Forge stewards issues and `studio`; the PR author may merge to `studio` after independent exact head review and green required checks. Puck supplies verification and findings, Ember assets, Conduit integrations and operational evidence, and Turris the decision log. An agent owns the accuracy of the work it reports. A shared GitHub account does not authenticate which person or agent made a statement.
 
-Record decisions with date and a direct Chris source. A comment written under the shared account alone is not owner approval. See [AGENTS.md](../AGENTS.md) for the operative contribution and release rules and [#60](https://github.com/threshi-art/infinity-enterprises-site/issues/60) for the open hierarchy decision.
+Record decisions with date and a direct owner source. A comment written under the shared account alone is not owner approval. See [AGENTS.md](../AGENTS.md) for the operative contribution and release rules and [#60](https://github.com/threshi-art/infinity-enterprises-site/issues/60) for the open hierarchy decision.
