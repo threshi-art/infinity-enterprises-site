@@ -7,7 +7,7 @@ These instructions apply to this `infinity-enterprises-site` repository. The par
 - `studio` is the single shared working branch for Cursor, Grok bots, Manus, Codex, and other contributors. Do not create a branch for each agent as the normal workflow.
 - `main` is the reviewed release source. Codex coordinates release review, integration, OneDrive sync, and the separate live Sites publication step.
 - Forge is the GitHub steward when given repository access. Forge may triage issues, update PR status and descriptions, note ownership and overlap, keep `studio` aligned with `main`, and prepare release PRs or verified Sites source mirror updates for Codex review.
-- Each contributor uses a separate local clone or worktree, checked out on `studio`. The OneDrive clone stays on `main` as Chris's clean release copy. Never have multiple agents edit the same local checkout.
+- Each contributor uses a separate local clone or worktree, checked out on `studio`. The OneDrive clone stays on `main` as the owner's clean release copy. Never have multiple agents edit the same local checkout.
 
 ## Intake and release authority
 
