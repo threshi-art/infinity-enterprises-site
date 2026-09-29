@@ -1,6 +1,6 @@
 # Infinity page layout templates
 
-**Status:** owner selected the combined system in issue #76: A for the front page, B for visual departments, and C for reading and research, with a dedicated Major Feature cover section. Chris selected **SOVRANO INFINITUM** for the masthead. This is not a live page or a replacement for an approved room. Open [reference.html](reference.html) in a browser to see the responsive layouts. Its images are existing repository assets; illustrative copy is marked as such.
+**Status:** owner selected the combined system in issue #76: A for the front page, B for visual departments, and C for reading and research, with a dedicated Major Feature cover section. The owner selected **SOVRANO INFINITUM** for the masthead. This is not a live page or a replacement for an approved room. Open [reference.html](reference.html) in a browser to see the responsive layouts. Its images are existing repository assets; illustrative copy is marked as such.
 
 Desktop preview boards use a **1600 × 900 (16:9)** frame. The phone studies remain 390 × 900 portrait. These are viewports into scrolling pages, not fixed page heights.
 
@@ -72,7 +72,7 @@ These are intentionally **not interchangeable department cards**. The image or s
 
 ## Department composition examples from #60
 
-This table records the earlier fourteen-department outline as composition examples. #60 also records a ten-section public map: The Daily Desk, Culture, MOTOR, Food, The Practice, Music, Academic Journal, Tech Lounge, In Development, and About. Later owner discussion leaves the parent hierarchy open. Confirm the current navigation decision before mapping any example to a public section; do not create routes or menu labels from this table. The A/B/C composition families work with either hierarchy.
+This table records the earlier fourteen-department outline as composition examples. #60 also contains an unconfirmed ten-section list: The Daily Desk, Culture, MOTOR, Food, The Practice, Music, Academic Journal, Tech Lounge, In Development, and About. Later owner discussion leaves the parent hierarchy open. Confirm the current navigation decision before mapping any example to a public section; do not create routes or menu labels from this table. The A/B/C composition families work with either hierarchy.
 
 The layouts are families, not rigid component inventories. The distinguishing column is what gives each page its own character. The first two features named in the owner outline are editorial slots, not instructions to invent stories.
 
