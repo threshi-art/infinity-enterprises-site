@@ -1,0 +1,249 @@
+{
+  "imageInfo": {
+    "hero.jpg": {
+      "base64Bytes": 219688,
+      "decodedBytes": 164766
+    },
+    "detail.jpg": {
+      "base64Bytes": 149804,
+      "decodedBytes": 112352
+    },
+    "diana.jpg": {
+      "base64Bytes": 253832,
+      "decodedBytes": 190372
+    },
+    "diana-cards.jpg": {
+      "base64Bytes": 523248,
+      "decodedBytes": 392435
+    },
+    "development.jpg": {
+      "base64Bytes": 199148,
+      "decodedBytes": 149360
+    },
+    "tech-lounge.jpg": {
+      "base64Bytes": 240240,
+      "decodedBytes": 180178
+    },
+    "tech-macro.jpg": {
+      "base64Bytes": 283800,
+      "decodedBytes": 212850
+    },
+    "enigmas-politics.jpg": {
+      "base64Bytes": 280476,
+      "decodedBytes": 210355
+    },
+    "enigmas-law.jpg": {
+      "base64Bytes": 247016,
+      "decodedBytes": 185262
+    },
+    "enigmas-academy.jpg": {
+      "base64Bytes": 372200,
+      "decodedBytes": 279149
+    },
+    "research.jpg": {
+      "base64Bytes": 240076,
+      "decodedBytes": 180056
+    },
+    "learning.jpg": {
+      "base64Bytes": 222148,
+      "decodedBytes": 166609
+    },
+    "foundation.jpg": {
+      "base64Bytes": 304960,
+      "decodedBytes": 228718
+    },
+    "youth.jpg": {
+      "base64Bytes": 249460,
+      "decodedBytes": 187094
+    },
+    "cover.jpg": {
+      "base64Bytes": 241424,
+      "decodedBytes": 181066
+    },
+    "food.jpg": {
+      "base64Bytes": 355176,
+      "decodedBytes": 266382
+    },
+    "ether-1.jpg": {
+      "base64Bytes": 305724,
+      "decodedBytes": 229291
+    },
+    "ether-2.jpg": {
+      "base64Bytes": 456860,
+      "decodedBytes": 342643
+    },
+    "ether-3.jpg": {
+      "base64Bytes": 367956,
+      "decodedBytes": 275967
+    },
+    "ether-4.jpg": {
+      "base64Bytes": 302972,
+      "decodedBytes": 227228
+    },
+    "motor-1.jpg": {
+      "base64Bytes": 171884,
+      "decodedBytes": 128913
+    },
+    "motor-2.jpg": {
+      "base64Bytes": 337236,
+      "decodedBytes": 252925
+    },
+    "motor-3.jpg": {
+      "base64Bytes": 229856,
+      "decodedBytes": 172390
+    },
+    "motor-4.jpg": {
+      "base64Bytes": 260740,
+      "decodedBytes": 195553
+    },
+    "form-1.jpg": {
+      "base64Bytes": 144020,
+      "decodedBytes": 108014
+    },
+    "form-2.jpg": {
+      "base64Bytes": 196208,
+      "decodedBytes": 147155
+    },
+    "form-3.jpg": {
+      "base64Bytes": 278864,
+      "decodedBytes": 209147
+    },
+    "form-4.jpg": {
+      "base64Bytes": 247172,
+      "decodedBytes": 185378
+    },
+    "form-5.jpg": {
+      "base64Bytes": 232800,
+      "decodedBytes": 174600
+    },
+    "form-6.jpg": {
+      "base64Bytes": 214588,
+      "decodedBytes": 160941
+    },
+    "form-7.jpg": {
+      "base64Bytes": 381684,
+      "decodedBytes": 286261
+    }
+  },
+  "routeImages": {
+    "/": [
+      "cover.jpg",
+      "development.jpg",
+      "diana.jpg",
+      "enigmas-politics.jpg",
+      "ether-1.jpg",
+      "form-4.jpg",
+      "learning.jpg",
+      "motor-1.jpg",
+      "research.jpg",
+      "tech-lounge.jpg",
+      "tech-macro.jpg",
+      "youth.jpg"
+    ],
+    "/about": [
+      "cover.jpg",
+      "diana.jpg",
+      "hero.jpg"
+    ],
+    "/about/standards": [
+      "cover.jpg"
+    ],
+    "/about/diana": [
+      "cover.jpg",
+      "diana-cards.jpg",
+      "diana.jpg"
+    ],
+    "/development": [
+      "cover.jpg",
+      "development.jpg",
+      "learning.jpg",
+      "research.jpg",
+      "tech-lounge.jpg",
+      "tech-macro.jpg",
+      "youth.jpg"
+    ],
+    "/development/atlas": [
+      "cover.jpg",
+      "development.jpg",
+      "enigmas-law.jpg",
+      "enigmas-politics.jpg",
+      "learning.jpg",
+      "research.jpg",
+      "tech-lounge.jpg",
+      "tech-macro.jpg",
+      "youth.jpg"
+    ],
+    "/learning": [
+      "cover.jpg",
+      "learning.jpg",
+      "research.jpg",
+      "tech-macro.jpg"
+    ],
+    "/journal": [
+      "cover.jpg",
+      "enigmas-law.jpg",
+      "enigmas-politics.jpg",
+      "learning.jpg",
+      "research.jpg",
+      "tech-macro.jpg"
+    ],
+    "/foundation": [
+      "cover.jpg",
+      "enigmas-law.jpg",
+      "foundation.jpg",
+      "research.jpg",
+      "tech-macro.jpg",
+      "youth.jpg"
+    ],
+    "/foundation/youth": [
+      "cover.jpg",
+      "foundation.jpg",
+      "learning.jpg",
+      "research.jpg",
+      "youth.jpg"
+    ],
+    "/tech-lounge": [
+      "cover.jpg",
+      "development.jpg",
+      "tech-lounge.jpg",
+      "tech-macro.jpg"
+    ],
+    "/ether": [
+      "cover.jpg",
+      "ether-1.jpg",
+      "ether-2.jpg",
+      "ether-3.jpg",
+      "ether-4.jpg"
+    ],
+    "/motor": [
+      "cover.jpg",
+      "motor-1.jpg",
+      "motor-2.jpg",
+      "motor-3.jpg",
+      "motor-4.jpg"
+    ],
+    "/form": [
+      "cover.jpg",
+      "form-1.jpg",
+      "form-2.jpg",
+      "form-3.jpg",
+      "form-4.jpg",
+      "form-5.jpg",
+      "form-6.jpg",
+      "form-7.jpg"
+    ],
+    "/enigmas": [
+      "cover.jpg",
+      "detail.jpg",
+      "development.jpg",
+      "enigmas-law.jpg",
+      "enigmas-politics.jpg",
+      "foundation.jpg",
+      "learning.jpg",
+      "research.jpg",
+      "tech-lounge.jpg",
+      "tech-macro.jpg",
+      "youth.jpg"
+    ]
+  }
+}
