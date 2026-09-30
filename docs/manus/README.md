@@ -13,8 +13,9 @@ This directory holds reusable, public-safe coordination material for Manus’s b
 | [`STUDIO-MERGE-CLOSEOUT-CHECKLIST.md`](STUDIO-MERGE-CLOSEOUT-CHECKLIST.md) | Evidence-led checklist for reviewing and recording a safe `studio` merge. |
 | [`INFINITY-GLOBAL-AGENT-OPERATING-CHARTER-PROPOSED.md`](INFINITY-GLOBAL-AGENT-OPERATING-CHARTER-PROPOSED.md) | Proposed organization chart, RAA/authority matrices, lifecycle, escalation model, recommendations, and decision registers. |
 | [`INFINITY-AGENT-CHARTER-REVIEW-PROMPT.md`](INFINITY-AGENT-CHARTER-REVIEW-PROMPT.md) | Neutral review prompt for named-agent consultation. |
-| [`INFINITY-AGENT-CHARTER-CONSULTATION-LOG.md`](INFINITY-AGENT-CHARTER-CONSULTATION-LOG.md) | Verbatim-response register and phase progress line. |
-| [`INFINITY-AGENT-CHARTER-CONFLICT-MATRIX.md`](INFINITY-AGENT-CHARTER-CONFLICT-MATRIX.md) | Pre-consultation policy/architecture questions and post-response conflict analysis. |
+| [`INFINITY-AGENT-CHARTER-CONSULTATION-LOG.md`](INFINITY-AGENT-CHARTER-CONSULTATION-LOG.md) | Primary-ballot register, secondary-summary handling, phase progress line, and operational updates. |
+| [`INFINITY-AGENT-CHARTER-CONFLICT-MATRIX.md`](INFINITY-AGENT-CHARTER-CONFLICT-MATRIX.md) | Candidate consensus, authority collisions, and post-response conflict analysis. |
+| [`INFINITY-AGENT-CHARTER-RECONCILIATION-PACKAGE-PROPOSED.md`](INFINITY-AGENT-CHARTER-RECONCILIATION-PACKAGE-PROPOSED.md) | Proposed handoff package: ballots, consensus, disagreements, collisions, decisions, RAA, lane rules, release/verification split, and #102 event record. |
 
 ## Operating boundaries
 
