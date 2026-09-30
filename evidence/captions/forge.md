@@ -1,0 +1,65 @@
+# Forge evidence captions
+
+All shots are from the live site (Sites v29), https://infinity-enterprises.infinity-ent-8507.chatgpt.site/ , captured 2026-09-29 PT from a clean headless browser. Phone shots were taken at 390x844 at 2x and downscaled to 1x; images are colour-quantised for size. Full-page unless the name says crop.
+
+- `8/20260929-2159-1440-blog.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/blog , 21:59 PT, 1440px viewport, live v29. 283 KB
+- `8/20260929-2159-390-blog.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/blog , 21:59 PT, 390px viewport, live v29 (page width measured 437px). 187 KB
+- `8/20260929-2159-1440-daily-desk.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/daily-desk , 21:59 PT, 1440px viewport, live v29. 811 KB
+- `8/20260929-2159-390-daily-desk.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/daily-desk , 21:59 PT, 390px viewport, live v29. 274 KB
+- `8/20260929-2159-1440-subscribe.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/subscribe , 21:59 PT, 1440px viewport, live v29. 665 KB
+- `8/20260929-2159-390-subscribe.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/subscribe , 21:59 PT, 390px viewport, live v29. 195 KB
+- `9/20260929-2159-1440-blog.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/blog , 21:59 PT, 1440px viewport, live v29. 283 KB
+- `9/20260929-2159-390-blog.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/blog , 21:59 PT, 390px viewport, live v29 (page width measured 437px). 187 KB
+- `9/20260929-2200-1440-enigmas.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/enigmas , 22:00 PT, 1440px viewport, live v29. 4144 KB
+- `9/20260929-2200-390-enigmas.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/enigmas , 22:00 PT, 390px viewport, live v29 (page width measured 414px). 809 KB
+- `9/20260929-2202-1440-home-after-skip-intro.png`: see issue , 22:02 PT, 1440px viewport, live v29. 776 KB
+- `9/20260929-2202-390-home-after-skip-intro.png`: see issue , 22:02 PT, 390px viewport, live v29. 113 KB
+- `9/20260929-2200-1440-home.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/ , 22:00 PT, 1440px viewport, live v29. 3163 KB
+- `9/20260929-2200-390-home.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/ , 22:00 PT, 390px viewport, live v29. 632 KB
+- `10/20260929-2159-1440-daily-desk.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/daily-desk , 21:59 PT, 1440px viewport, live v29. 811 KB
+- `10/20260929-2159-390-daily-desk.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/daily-desk , 21:59 PT, 390px viewport, live v29. 274 KB
+- `10/20260929-2200-1440-home.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/ , 22:00 PT, 1440px viewport, live v29. 3163 KB
+- `10/20260929-2200-390-home.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/ , 22:00 PT, 390px viewport, live v29. 632 KB
+- `10/20260929-2202-1440-home-signal-block.png`: see issue , 22:02 PT, 1440px viewport, live v29. 486 KB
+- `10/20260929-2202-390-home-signal-block.png`: see issue , 22:02 PT, 390px viewport, live v29. 213 KB
+- `11/20260929-2200-1440-about-standards.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/about/standards , 22:00 PT, 1440px viewport, live v29. 209 KB
+- `11/20260929-2200-390-about-standards.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/about/standards , 22:00 PT, 390px viewport, live v29. 139 KB
+- `11/20260929-2202-1440-home-after-skip-intro.png`: see issue , 22:02 PT, 1440px viewport, live v29. 776 KB
+- `11/20260929-2202-390-home-after-skip-intro.png`: see issue , 22:02 PT, 390px viewport, live v29. 113 KB
+- `11/20260929-2200-1440-home.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/ , 22:00 PT, 1440px viewport, live v29. 3163 KB
+- `11/20260929-2200-390-home.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/ , 22:00 PT, 390px viewport, live v29. 632 KB
+- `13/20260929-2202-1440-home-after-skip-intro.png`: see issue , 22:02 PT, 1440px viewport, live v29. 776 KB
+- `13/20260929-2202-390-home-after-skip-intro.png`: see issue , 22:02 PT, 390px viewport, live v29. 113 KB
+- `13/20260929-2200-1440-home.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/ , 22:00 PT, 1440px viewport, live v29. 3163 KB
+- `13/20260929-2200-390-home.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/ , 22:00 PT, 390px viewport, live v29. 632 KB
+- `13/20260929-2200-1440-issues.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/issues , 22:00 PT, 1440px viewport, live v29. 1621 KB
+- `13/20260929-2200-390-issues.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/issues , 22:00 PT, 390px viewport, live v29. 381 KB
+- `13/20260929-2159-1440-subscribe.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/subscribe , 21:59 PT, 1440px viewport, live v29. 665 KB
+- `13/20260929-2159-390-subscribe.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/subscribe , 21:59 PT, 390px viewport, live v29. 195 KB
+- `18/20260929-2159-1440-daily-desk.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/daily-desk , 21:59 PT, 1440px viewport, live v29. 811 KB
+- `18/20260929-2159-390-daily-desk.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/daily-desk , 21:59 PT, 390px viewport, live v29. 274 KB
+- `18/20260929-2200-1440-enigmas.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/enigmas , 22:00 PT, 1440px viewport, live v29. 4144 KB
+- `18/20260929-2200-390-enigmas.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/enigmas , 22:00 PT, 390px viewport, live v29 (page width measured 414px). 809 KB
+- `19/20260929-2200-1440-enigmas-nope.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/enigmas/nope , 22:00 PT, 1440px viewport, live v29. 9 KB
+- `19/20260929-2200-390-enigmas-nope.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/enigmas/nope , 22:00 PT, 390px viewport, live v29. 5 KB
+- `19/20260929-2200-1440-nope.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/nope , 22:00 PT, 1440px viewport, live v29. 9 KB
+- `19/20260929-2200-390-nope.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/nope , 22:00 PT, 390px viewport, live v29. 5 KB
+- `20/20260929-2200-1440-tech-lounge.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/tech-lounge , 22:00 PT, 1440px viewport, live v29. 3044 KB
+- `20/20260929-2200-390-tech-lounge.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/tech-lounge , 22:00 PT, 390px viewport, live v29. 491 KB
+- `20/20260929-2202-1440-tech-lounge-substack-card.png`: see issue , 22:02 PT, 1440px viewport, live v29. 14 KB
+- `33/20260929-2202-1440-home-after-skip-intro.png`: see issue , 22:02 PT, 1440px viewport, live v29. 776 KB
+- `33/20260929-2202-390-home-after-skip-intro.png`: see issue , 22:02 PT, 390px viewport, live v29. 113 KB
+- `33/20260929-2200-1440-home.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/ , 22:00 PT, 1440px viewport, live v29. 3163 KB
+- `33/20260929-2200-390-home.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/ , 22:00 PT, 390px viewport, live v29. 632 KB
+- `54/20260929-2201-1440-ether.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/ether , 22:01 PT, 1440px viewport, live v29. 5132 KB
+- `54/20260929-2201-390-ether.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/ether , 22:01 PT, 390px viewport, live v29. 521 KB
+- `55/20260929-2201-1440-ether.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/ether , 22:01 PT, 1440px viewport, live v29. 5132 KB
+- `55/20260929-2201-390-ether.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/ether , 22:01 PT, 390px viewport, live v29. 521 KB
+- `55/20260929-2201-390-ether-player-open.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/ether , 22:01 PT, 390px viewport, live v29. 155 KB
+- `67/20260929-2159-1440-blog.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/blog , 21:59 PT, 1440px viewport, live v29. 283 KB
+- `67/20260929-2202-390-blog-header-crop.png`: see issue , 22:02 PT, 390px viewport, live v29. 28 KB
+- `67/20260929-2159-390-blog.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/blog , 21:59 PT, 390px viewport, live v29 (page width measured 437px). 187 KB
+- `67/20260929-2202-1440-home-after-skip-intro.png`: see issue , 22:02 PT, 1440px viewport, live v29. 776 KB
+- `67/20260929-2202-390-home-after-skip-intro.png`: see issue , 22:02 PT, 390px viewport, live v29. 113 KB
+- `67/20260929-2200-1440-home.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/ , 22:00 PT, 1440px viewport, live v29. 3163 KB
+- `67/20260929-2200-390-home.png`: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/ , 22:00 PT, 390px viewport, live v29. 632 KB
