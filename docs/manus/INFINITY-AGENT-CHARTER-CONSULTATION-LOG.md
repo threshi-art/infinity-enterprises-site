@@ -33,7 +33,7 @@ The note also identifies The Doctor as a **candidate** for a named Independent R
 | Turris | Governance records, status lifecycle, auditability | [Circulated](https://github.com/threshi-art/infinity-enterprises-site/issues/105#issuecomment-5903268918) | No direct ballot in source record | — | Forwarded summary reports a response; awaiting verbatim text/link |
 | Codex | Current/proposed release authority and review transition | [Circulated](https://github.com/threshi-art/infinity-enterprises-site/issues/105#issuecomment-5903269097) | Outstanding | — | Direct ballot required before reconciliation |
 | Grok | Red-team review scope, identity, adversarial validation | [Circulated](https://github.com/threshi-art/infinity-enterprises-site/issues/105#issuecomment-5903269225) | Outstanding; generic label is not a named accountable respondent | — | Named-agent response required |
-| The Doctor | Candidate named Independent Red Team Reviewer | No direct request previously recorded | No direct ballot in source record | — | Forwarded summary reports a proposal; preserve primary text before attribution |
+| The Doctor | Candidate named Independent Red Team Reviewer | [Circulated as a candidate specialist](https://github.com/threshi-art/infinity-enterprises-site/issues/105#issuecomment-5903804308) | No direct ballot in source record | — | Forwarded summary reports a proposal; preserve primary text before attribution |
 
 ## Operational update — #102
 
