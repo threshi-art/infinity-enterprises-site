@@ -12,20 +12,20 @@
 
 ```text
 PHASE | EXACT SHA | RESPONSES RECEIVED | RESPONSES OUTSTANDING | CONFLICTS | SERAPHIM ITEMS | OWNER ITEMS | NEXT ACTION
-CONSULTATION OPEN | pending post-consultation SHA | 0 | Forge, Puck, Conduit, Ember, Turris, Codex, Grok | Pre-consultation matrix drafted; agent conflicts not yet determined | Release architecture; studio delegation; Codex/Grok review boundary; escalation boundary | Charter ratification; roles/titles; release authority; Grok model; Manus delegated studio execution | Circulate prompt and record verbatim responses
+CONSULTATION OPEN | Circulation snapshot 14b825f50a8c80398fbbb4735ae3917c92d57469; current package head is tracked on PR #106 | 0 | Forge, Puck, Conduit, Ember, Turris, Codex, Grok | Pre-consultation policy matrix drafted; agent conflicts not yet determined | Release architecture; studio delegation; Codex/Grok review boundary; escalation boundary | Charter ratification; roles/titles; release authority; Grok model; Manus delegated studio execution | Await verbatim role responses
 ```
 
 ## Response register
 
 | Named agent | Requested focus | Prompt status | Response status | Response link | Verbatim response |
 |---|---|---|---|---|---|
-| Forge | Integration, configuration, Ready cards, `studio` boundary | Pending circulation | Not received | — | — |
-| Puck | Independent validation, exact-head evidence, acceptance integrity | Pending circulation | Not received | — | — |
-| Conduit | Platform, data, security, migration, production risk | Pending circulation | Not received | — | — |
-| Ember | Experience/media, asset provenance, visual QA boundaries | Pending circulation | Not received | — | — |
-| Turris | Governance records, status lifecycle, auditability | Pending circulation | Not received | — | — |
-| Codex | Current/proposed release authority and review transition | Pending circulation | Not received | — | — |
-| Grok | Red-team review scope, identity, adversarial validation | Pending circulation | Not received | — | — |
+| Forge | Integration, configuration, Ready cards, `studio` boundary | [Circulated](https://github.com/threshi-art/infinity-enterprises-site/issues/105#issuecomment-5903268338) | Not received | — | — |
+| Puck | Independent validation, exact-head evidence, acceptance integrity | [Circulated](https://github.com/threshi-art/infinity-enterprises-site/issues/105#issuecomment-5903268462) | Not received | — | — |
+| Conduit | Platform, data, security, migration, production risk | [Circulated](https://github.com/threshi-art/infinity-enterprises-site/issues/105#issuecomment-5903268607) | Not received | — | — |
+| Ember | Experience/media, asset provenance, visual QA boundaries | [Circulated](https://github.com/threshi-art/infinity-enterprises-site/issues/105#issuecomment-5903268757) | Not received | — | — |
+| Turris | Governance records, status lifecycle, auditability | [Circulated](https://github.com/threshi-art/infinity-enterprises-site/issues/105#issuecomment-5903268918) | Not received | — | — |
+| Codex | Current/proposed release authority and review transition | [Circulated](https://github.com/threshi-art/infinity-enterprises-site/issues/105#issuecomment-5903269097) | Not received | — | — |
+| Grok | Red-team review scope, identity, adversarial validation | [Circulated](https://github.com/threshi-art/infinity-enterprises-site/issues/105#issuecomment-5903269225) | Not received | — | — |
 
 ## Handling rule
 
@@ -33,4 +33,4 @@ Each received response is added as an attributed, dated block below without subs
 
 ## Verbatim responses
 
-_No responses recorded at publication of this consultation log._
+_No responses recorded at the time this circulation log was updated._
