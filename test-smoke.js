@@ -168,3 +168,57 @@ test('POST /api/pv with valid real page path stores the view', async () => {
   const [id, path] = mockEnv.DB._inserts[0];
   assert.equal(path, '/learning');
 });
+
+
+test('GET unknown public path returns the branded noindex 404 shell', async () => {
+  const response = await worker.default.fetch(new Request('https://example.com/nope'), mockEnv);
+
+  assert.equal(response.status, 404);
+  assert.equal(response.headers.get('x-robots-tag'), 'noindex');
+  const html = await response.text();
+  assert.match(html, /^<!doctype html>/i);
+  assert.match(html, /<html lang="en">/i);
+  assert.match(html, /<meta name="robots" content="noindex">/i);
+  assert.match(html, /<title>Page not found · Infinity Enterprises<\/title>/i);
+  assert.match(html, /class="site-header"/);
+  assert.match(html, /class="site-footer"/);
+  assert.match(html, /href="\/favicon\.svg"/);
+  assert.match(html, /href="\/"/);
+  assert.match(html, /href="\/search"/);
+  assert.match(html, /href="\/issues"/);
+});
+
+test('GET unknown Enigmas slug returns the same branded noindex 404 shell', async () => {
+  const response = await worker.default.fetch(new Request('https://example.com/enigmas/nope'), mockEnv);
+
+  assert.equal(response.status, 404);
+  assert.equal(response.headers.get('x-robots-tag'), 'noindex');
+  const html = await response.text();
+  assert.match(html, /Page not found\./);
+  assert.match(html, /Find your way back/);
+  assert.match(html, /class="site-header"/);
+});
+
+test('favicon SVG and legacy ICO paths return non-404 SVG responses', async () => {
+  for (const path of ['/favicon.svg', '/favicon.ico']) {
+    const response = await worker.default.fetch(new Request(`https://example.com${path}`), mockEnv);
+    assert.equal(response.status, 200, path);
+    assert.ok(response.headers.get('content-type').includes('image/svg+xml'), path);
+    assert.match(await response.text(), /<svg/);
+  }
+});
+
+test('GET / declares the shared SVG favicon once', async () => {
+  const response = await worker.default.fetch(new Request('https://example.com/'), mockEnv);
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.equal((html.match(/href="\/favicon\.svg"/g) || []).length, 1);
+});
+
+test('existing 308 redirects remain unchanged', async () => {
+  for (const [path, location] of [['/diana', '/about/diana'], ['/atlas', '/development/atlas'], ['/media/hero.png', '/media/hero.jpg']]) {
+    const response = await worker.default.fetch(new Request(`https://example.com${path}`), mockEnv);
+    assert.equal(response.status, 308, path);
+    assert.equal(response.headers.get('location'), location, path);
+  }
+});
