@@ -10,7 +10,7 @@ This board sequences focused pull requests from `studio` to `main` in a coherent
 **Key rules:**
 
 - Every PR restates the problem, records the corrective action, cites objective evidence at the exact head commit, and gives the reviewer concrete next steps.
-- Codex or Cursor reviews and merges PRs into `main`. Other contributors provide findings but do not merge.
+- PRs into `main` follow Merge authority in AGENTS.md. Other contributors provide findings but do not merge.
 - Live Sites publication and release sync copy sync are separate verified steps after each merge.
 - No owned-domain task appears anywhere in this plan (excluded by owner direction).
 
@@ -158,12 +158,12 @@ These issues improve the editorial workflow but do not block the initial publica
 
 **Process:**
 
-1. Codex or Cursor reviews and merges an accepted PR from `studio` to `main`.
+1. An accepted PR from `studio` to `main` is merged under Merge authority in AGENTS.md.
 2. Codex publishes the new `main` head through the Sites project (identified in `.openai/hosting.json`).
 3. Codex verifies the exact published Sites version and source commit.
 4. Forge prepares the resulting GitHub mirror update only after verifying the published version.
-5. Codex or Cursor reviews the mirror-update record before it lands.
-6. After a merge commit lands, Forge or Codex fast-forwards `studio` to the new `main` before the next release cycle.
+5. The reviewer examines the mirror-update record before it lands.
+6. After a release is squash-merged, bring `studio` up to date by merging `main` into `studio` through a normal pull request under Merge authority in AGENTS.md.
 
 **No GitHub merge alone publishes the live Site.** Publication and release sync copy sync are separate verified steps.
 
