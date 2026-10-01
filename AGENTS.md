@@ -46,6 +46,8 @@ Echo may merge a pull request to `main` only when all of the following condition
 
 Separation of duties: The sign-off must come from a bot that didn't launch, write or push to the PR, and Echo never merges a PR Echo launched or reviewed alone. Puck or Forge signs off on the exact head first. Each exact-head sign-off comment must name the reviewing bot and quote the full 40-character head SHA it checked. The merger then merges pinned to that same SHA (the connector's merge `sha` field, or `gh pr merge --match-head-commit <sha>`), so any push after review makes the merge fail (HTTP 409). GitHub cannot enforce this rule because every bot posts as the same account (threshi-art), so branch protection stays at 0 required approvals and the rule is written and auditable. Codex and Cursor may still merge where assigned.
 
+Making independence checkable: Every PR body names its launching bot ("Launched by: <bot>"). Every sign-off (a review or comment) names the reviewing bot and quotes the full 40-character head SHA. Before merging, the merger checks that the two names differ and that the SHA matches the current head. If either check fails, don't merge.
+
 ### Release and publication
 
 A GitHub merge to `main` does not publish the live Site. The principal architect (Codex) reviews `main` and publishes the live Sites deployment. The release chain is: source work → review → `studio` integration → release candidate → `main` → Sites publication → live verification.
@@ -93,7 +95,7 @@ Escalate to the principal architect for material architecture changes, conflicti
 - A PR may be merged into `studio` only when every required check (Build, and Accessibility and Performance) is green on the exact head commit, and the latest non-author review covers that exact commit with no open blocker or major findings. Minor findings may be deferred to a follow-up PR when the merge comment lists them. If the review has any blocker or major findings, the author fixes them on the same branch and the reviewer re-checks at the new head. A new push means a new review is needed.
 - After the merge conditions are met, the author's cloud agent merges into `studio` with a normal merge commit (no squash on `studio`, so release slices keep their history). The merge comment links the review comment it relied on and names the head commit that was built.
 - Art PRs are opened and merged by the art author's own cloud agent and change only asset files and manifests, never page code. The reviewer checks file paths, file weight and how the art looks on the page.
-- `main` is unchanged: Codex or Cursor reviews and squash-merges release PRs.
+- Release PRs to `main` follow the Merge authority section: a clean PR with a current exact-head sign-off from an independent bot is squash-merged pinned to that SHA.
 - Work pushed straight to `studio` before the PR flow was adopted may finish that way. Everything new goes through a PR.
 
 ## Publishing and syncing
