@@ -17,7 +17,7 @@ This document reconciles the earlier redesign issues (#29–#50) and feature iss
 
 **Original scope:** Ten-room taxonomy using Italian names: The Daily Desk (Nocturne), Mercati (Ledger), Cultura (Atelier), Music (sub-room of Cultura), Motore (Paddock), Tempo Libero (Riviera), Tavola (Trattoria), Sport (Arena), Tech (Circuit), The Reading Room (Library). Each room has its own colors, type, layout, motion, sound, texture, and door.
 
-**#60 map:** Fourteen departments with English names: Home/Current Issue, Fin@Tech, The Reading Room, Culture, Travel & Leisure, Pets, Motor, Food, Forge & Flow, Music, Academic Journal, Tech@Lounge, In Development, About. Utility links remain outside the editorial map. Music is a top-level department.
+**#60 map:** Fourteen departments with English names: Home/Current Issue, Fin@Tech, The Reading Room, Culture, Travel & Leisure, Motor, Food, Forge & Flow, Music, Academic Journal, Tech@Lounge, In Development, About, Legal/Utility. Music is a top-level department, not a sub-room of Culture.
 
 **What changes:**
 
@@ -25,7 +25,7 @@ This document reconciles the earlier redesign issues (#29–#50) and feature iss
 2. **Naming:** English department names win (Culture, Motor, Food, Music) over Italian room names (Cultura, Motore, Tavola). The Reading Room, The Daily Desk, and Tech@Lounge keep their established names.
 3. **Music placement:** Music becomes a top-level department housing the Ether Room (per #60), not a sub-room of Cultura (per #29 #41 #42). The `/music` and `/ether` routes are preserved.
 4. **Fin@Tech:** A new department in #60, not present in #29.
-5. **Forge & Flow vs Sport:** #29 called it "Sport (Arena)." #60 calls it "Forge & Flow" (training, recovery, meditation, martial arts, sport). The existing `/practice` route remains.
+5. **Forge & Flow vs Sport:** #29 called it "Sport (Arena)." #60 calls it "Forge & Flow" (training, recovery, meditation, martial arts, sport). The menu label is an open decision; the existing `/practice` route accommodates either.
 
 **What #29 contributes:** The room system (#31), doors (#32), sound (#33), textures (#34), accessibility gate (#37), and per-room visual identity remain valid implementation methods. Ember's covers and textures (#33 #34) are essential assets. The shared shell (#30) is the foundation for all pages.
 
@@ -155,9 +155,9 @@ Each room issue (#39 The Daily Desk, #40 Mercati, #41 Cultura, #42 Music, #43 Mo
 | #41 | Cultura (Atelier) | Culture | `/culture` | English name; visual theming stays |
 | #42 | Music (sub-room of Cultura) | Music (top-level department) | `/music` | Promoted to top-level; Ether Room stays at `/ether` |
 | #43 | Motore (Paddock) | Motor | `/motor` | English name; visual theming stays |
-| #44 | Tempo Libero (Riviera) | Travel & Leisure | `/travel` (new) | English name; Pets is a separate department |
+| #44 | Tempo Libero (Riviera) | Travel & Leisure | `/travel` (new) | English name; Pets gallery included |
 | #45 | Tavola (Trattoria) | Food | `/food` | English name; visual theming stays |
-| #46 | Sport (Arena) | Forge & Flow | `/practice` | Forge & Flow menu label; visual theming stays |
+| #46 | Sport (Arena) | Forge & Flow | `/practice` | Menu label TBD (Sport vs Forge & Flow); visual theming stays |
 | #47 | Tech (Circuit) | Tech@Lounge | `/tech-lounge` | Existing name and route preserved; visual theming stays |
 | #48 | The Reading Room (Library) | The Reading Room (top-level department) | `/reading-room` (new hub) | Existing `/enigmas`, `/journal`, `/learning` preserved as subsections |
 
@@ -236,6 +236,11 @@ Each room issue (#39 The Daily Desk, #40 Mercati, #41 Cultura, #42 Music, #43 Mo
 The following decisions remain open and should be resolved before the affected issues close:
 
 1. **Final masthead identity:** SOVRANO@Infini is the working title. Infinity Enterprises is the company name. Which appears in the masthead?
+2. **Sport vs Forge & Flow menu label:** The department encompasses training, recovery, meditation, martial arts, and sport. Options:
+   - "Forge & Flow"
+   - "Sport (Forge & Flow)"
+   - "The Practice"
+3. **OSINT & Tradecraft placement:** Currently scoped under The Daily Desk (#39). Alternative: move to The Reading Room. Which is correct?
 4. **Tavola subsections:** Recipes, Restaurants, Wine, or a single Food feed?
 5. **Crest founding year:** MMXXVI (2026) is a placeholder. Confirm or change.
 6. **Market-data source and license:** Required before #38 can show live Fin@Tech numbers.

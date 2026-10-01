@@ -4,39 +4,32 @@ about: Define a site change with evidence and a proposed approach
 title: "[Feature] "
 ---
 
-### Description
+## Issue
 
-[Describe the visitor or editor need, who encounters the limitation, where it appears, and what they do today. Describe the desired experience and keep existing content in scope.]
+One sentence naming the visitor or editor need.
 
-### Desired outcome
+## Description of problem
 
-[What should happen when this feature is implemented.]
+Who encounters the limitation, where it appears, and what they do today. Describe the desired experience and keep existing content in scope.
 
-### Root Cause
+## Root cause
 
-[Explain the current design or missing capability. If the cause is not yet established, say so and label any hypothesis.]
+Explain the current design or missing capability. If the cause is not yet established, say so and label any hypothesis.
 
-### Proposed Corrective Action
+## Objective evidence
 
-[The proposed page, behavior, content, or technical change. Name alternatives or dependencies when they affect the decision. The PR records the action actually taken.]
+Page links, screenshots, user request, current behavior, constraints, and reference material. State what each supports. Do not include passwords or visitor data.
 
-### Objective Evidence & Screenshots
+## Proposed corrective action
 
-[Page links, screenshots, user request, current behavior, constraints, and reference material. State what each supports.]
+The proposed page, behavior, content, or technical change. Name alternatives or dependencies when they affect the decision. The PR records the action actually taken.
 
-This repository is public: strip emails, account names, tokens, IP addresses and any personal details from screenshots and logs.
-
-### Environment
-
-- **OS and Version:** [e.g. macOS 14.1 / Windows 11 / Ubuntu 22.04]
-- **Browser/Node/App Version:** [e.g. Chrome 120 / Node.js v20 / App v1.2]
-
-### Acceptance criteria
+## Acceptance criteria
 
 - [ ] Observable visitor or editor outcome
 - [ ] Existing pages, assets, and behavior to preserve
 - [ ] Checks needed before issue closure, including live publication when applicable
 
-### Owner and handoff
+## Owner and handoff
 
-[Who is working on it, the files expected to change, and what the next person needs.]
+Working agent, affected files or pages, dependencies, and the next reviewer action.
