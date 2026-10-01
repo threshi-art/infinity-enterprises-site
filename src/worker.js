@@ -15,6 +15,7 @@ const formHtml = /* FORM_HTML */ null;
 const enigmasHtml = /* ENIGMAS_HTML */ null;
 const enigmaArticles = /* ENIGMA_ARTICLES */ null;
 const osintHtml = /* OSINT_HTML */ null;
+const notFoundHtml = /* NOT_FOUND_HTML */ null;
 const publicationPages = /* PUBLICATION_PAGES */ null;
 const feedXml = /* FEED_XML */ null;
 const loginTemplate = /* LOGIN_HTML */ null;
@@ -40,6 +41,8 @@ const motorBase64 = /* MOTOR_IMAGES */ null;
 const formBase64 = /* FORM_IMAGES */ null;
 const pvScript = /* PV_SCRIPT */ null;
 const encoder = new TextEncoder();
+const faviconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="15" fill="#08101a"/><circle cx="32" cy="32" r="21" fill="none" stroke="#e8a46d" stroke-width="3"/><path d="M32 10v44M10 32h44M21 43l22-22" fill="none" stroke="#e8a46d" stroke-width="2"/></svg>`;
+const faviconLink = '<link rel="icon" type="image/svg+xml" href="/favicon.svg">';
 const cookieName = 'infinity_staff_session';
 const sessionHours = 12;
 const decoded = new Map();
@@ -91,6 +94,10 @@ function html(markup, status = 200, extra = {}) {
   return new Response(markup, { status, headers: headers(extra) });
 }
 
+function notFound() {
+  return html(notFoundHtml, 404, { 'x-robots-tag': 'noindex' });
+}
+
 const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 function noticePage(route, message, success = true, status = 200) {
   const page = publicationPages[route];
@@ -111,7 +118,7 @@ function adminTable(title, rows) {
 }
 
 function login(error = '') {
-  return loginTemplate.replace('<!-- LOGIN_ERROR -->', error ? '<p class="error" role="alert">'+error+'</p>' : '');
+  return loginTemplate.replace('</head>', faviconLink + '</head>').replace('<!-- LOGIN_ERROR -->', error ? '<p class="error" role="alert">'+error+'</p>' : '');
 }
 
 function equalBytes(a, b) {
@@ -199,6 +206,7 @@ export default {
       const paths = ['/', '/about', '/about/standards', '/about/diana', '/development', '/development/atlas', '/learning', '/journal', '/foundation', '/foundation/youth', '/tech-lounge', '/ether', '/motor', '/form', '/enigmas', ...Object.keys(publicationPages), ...Object.keys(enigmaArticles).map(slug => '/enigmas/' + slug)];
       return new Response('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + paths.map(item => '<url><loc>' + base + item + '</loc></url>').join('') + '</urlset>', { headers: { 'content-type': 'application/xml; charset=utf-8' } });
     }
+    if (request.method === 'GET' && (path === '/favicon.svg' || path === '/favicon.ico')) return new Response(faviconSvg, { headers: { 'content-type': 'image/svg+xml; charset=utf-8', 'cache-control': 'public, max-age=86400', 'x-content-type-options': 'nosniff' } });
     if (path.startsWith('/media/') && path.endsWith('.png')) return new Response(null, { status: 308, headers: { location: path.slice(0, -4) + '.jpg' } });
     if (request.method === 'GET' && path === '/media/hero.jpg') return image('hero');
     if (request.method === 'GET' && path === '/media/detail.jpg') return image('detail');
@@ -265,9 +273,9 @@ export default {
     if (/^\/media\/motor-[1-4]\.jpg$/.test(path)) return image(path.slice(7, -4));
     if (/^\/media\/form-[1-7]\.jpg$/.test(path)) return image(path.slice(7, -4));
     if (path === '/diana' || path === '/atlas') return new Response(null, { status: 308, headers: headers({ location: path === '/diana' ? '/about/diana' : '/development/atlas' }) });
-    if (path.startsWith('/enigmas/')) return enigmaArticles[path.slice('/enigmas/'.length)] ? html(enigmaArticles[path.slice('/enigmas/'.length)]) : html('<h1>Page not found</h1>', 404);
+    if (path.startsWith('/enigmas/')) return enigmaArticles[path.slice('/enigmas/'.length)] ? html(enigmaArticles[path.slice('/enigmas/'.length)]) : notFound();
     if (publicationPages[path]) return html(publicationPages[path]);
-    if (!['/', '/about', '/about/standards', '/about/diana', '/development', '/development/atlas', '/learning', '/journal', '/foundation', '/foundation/youth', '/tech-lounge', '/ether', '/motor', '/form', '/enigmas', '/osint'].includes(path)) return html('<h1>Page not found</h1>', 404);
+    if (!['/', '/about', '/about/standards', '/about/diana', '/development', '/development/atlas', '/learning', '/journal', '/foundation', '/foundation/youth', '/tech-lounge', '/ether', '/motor', '/form', '/enigmas', '/osint'].includes(path)) return notFound();
     return html(path === '/' ? homeHtml : path === '/about' ? aboutHtml : path === '/about/standards' ? standardsHtml : path === '/about/diana' ? dianaHtml : path === '/development' ? developmentHtml : path === '/learning' ? learningHtml : path === '/journal' ? journalHtml : path === '/foundation' ? foundationHtml : path === '/foundation/youth' ? youthHtml : path === '/tech-lounge' ? techLoungeHtml : path === '/ether' ? etherHtml : path === '/motor' ? motorHtml : path === '/form' ? formHtml : path === '/enigmas' ? enigmasHtml : path === '/osint' ? osintHtml : atlasHtml);
   },
 };
