@@ -162,8 +162,8 @@ These issues improve the editorial workflow but do not block the initial publica
 2. Codex publishes the new `main` head through the Sites project (identified in `.openai/hosting.json`).
 3. Codex verifies the exact published Sites version and source commit.
 4. Forge prepares the resulting GitHub mirror update only after verifying the published version.
-5. The mirror-update record is reviewed before it lands.
-6. After a merge commit lands, Forge or Codex fast-forwards `studio` to the new `main` before the next release cycle.
+5. Codex or Cursor reviews the mirror-update record before it lands.
+6. After a release is squash-merged, bring `studio` up to date by merging `main` into `studio` through a normal pull request under Merge authority in AGENTS.md.
 
 **No GitHub merge alone publishes the live Site.** Publication and release sync copy sync are separate verified steps.
 
