@@ -36,7 +36,7 @@ Manus maintains the Ready, Next, and Planned queues. Each contributor claims one
 
 ### Merge authority
 
-Echo may merge a pull request to `main` only when all of the following conditions hold:
+Echo may merge a pull request to `main` or `studio` only when all of the following conditions hold:
 
 - CI passes
 - An exact-head review is current
@@ -83,18 +83,18 @@ Escalate to the principal architect for material architecture changes, conflicti
 
 - Before pushing, fetch `studio` again. If it advanced, integrate those commits in your own clone and resolve conflicts before pushing. Push normally; retry after another fetch if GitHub rejects a nonfastforward push. Never force push, reset away another person's work, or use `git clean` to resolve a conflict.
 - Keep unfinished experiments local until they are ready for other contributors. Stop and coordinate if changes to the same files cannot be combined safely.
-- Every PR into `studio` follows the PR template sections: Description, Related Issue (using `Refs #N`), Objective Evidence & Screenshots (with Before/After table), Type of Change & Corrective Action (listing what actually changed, and identifying content preserved, moved, or removed), Checklist, and Final notes to reviewer (naming the peer reviewer). Release PRs from `studio` to `main` list `Closes #N` only when the issue's full acceptance criteria are satisfied; use `Refs #N` for partial work or work still waiting on live, phone, or migration checks. Merging to `main` does not publish the live Site, and GitHub auto-closing an issue is not proof the work is complete. For a release PR carrying multiple issues, repeat the problem, corrective action, and evidence record per issue. Forge may prepare a release pull request from `studio` to `main` and link the included issues. The reviewer evaluates the build and diff, coordinates a pause on pushes to `studio`, and merges accepted releases. After a release is squash-merged to `main`, bring `studio` up to date by merging `main` into `studio` through a normal pull request (no force push), and compare by content, not commit SHA.
+- Every PR into `studio` follows the PR template sections: Description, Related Issue (using `Refs #N`), Objective Evidence & Screenshots (with Before/After table), Type of Change & Corrective Action (listing what actually changed, and identifying content preserved, moved, or removed), Checklist, and Final notes to reviewer (naming the peer reviewer). Release PRs from `studio` to `main` list `Closes #N` only when the issue's full acceptance criteria are satisfied; use `Refs #N` for partial work or work still waiting on live, phone, or migration checks. Merging to `main` does not publish the live Site, and GitHub auto-closing an issue is not proof the work is complete. For a release PR carrying multiple issues, repeat the problem, corrective action, and evidence record per issue. Forge may prepare a release pull request from `studio` to `main` and link the included issues. The reviewer evaluates the build and diff and coordinates a pause on pushes to `studio`; the merge follows Merge authority above. After a release is squash-merged to `main`, bring `studio` up to date by merging `main` into `studio` through a normal pull request (no force push), and compare by content, not commit SHA.
 - Do not commit `dist/`, `node_modules/`, credentials, `.env` files, visitor data, or private engineering documents.
 
 ## Review and merge into studio
 
-- No PR merges without a non-author review that covers the exact head. The author or its cloud agent performs the merge.
+- No PR merges without a non-author review that covers the exact head. The merge itself follows Merge authority above.
 - One other contributor posts a review comment in the policy's evidence format. Puck is the default reviewer. Forge reviews Ember's and Conduit's code PRs and all art PRs.
 - A review says which parts were read and which parts only the build proves. The proof that code runs is a green build on the exact head commit, not a reviewer's read.
 - Reviews are comments, not GitHub approvals. Every contributor posts through the owner's single GitHub account, and GitHub doesn't let an account approve its own PR, so branch protection can't require an approval. The non-author review rule (no PR merges without a non-author review that covers the exact head) holds only because every contributor follows it.
 - A PR may be merged into `studio` only when every required check (Build, and Accessibility and Performance) is green on the exact head commit, and the latest non-author review covers that exact commit with no open blocker or major findings. Minor findings may be deferred to a follow-up PR when the merge comment lists them. If the review has any blocker or major findings, the author fixes them on the same branch and the reviewer re-checks at the new head. A new push means a new review is needed.
-- After the merge conditions are met, the author's cloud agent merges into `studio` with a normal merge commit (no squash on `studio`, so release slices keep their history). The merge comment links the review comment it relied on and names the head commit that was built.
-- Art PRs are opened and merged by the art author's own cloud agent and change only asset files and manifests, never page code. The reviewer checks file paths, file weight and how the art looks on the page.
+- Merges into `studio` follow Merge authority above. The merger uses a normal merge commit (no squash on `studio`, so release slices keep their history), pinned to the reviewed head SHA. The merge comment links the review comment it relied on and names the head commit that was built.
+- Art PRs are opened by the art author's own cloud agent, are merged under Merge authority, and change only asset files and manifests, never page code. The reviewer checks file paths, file weight and how the art looks on the page.
 - Release PRs to `main` follow the Merge authority section: a clean PR with a current exact-head sign-off from an independent bot is squash-merged pinned to that SHA.
 - Work pushed straight to `studio` before the PR flow was adopted may finish that way. Everything new goes through a PR.
 
