@@ -65,6 +65,7 @@ const projects = JSON.parse(projectsJson);
 const editorial = JSON.parse(editorialJson);
 const osintSources = JSON.parse(osintSourcesJson);
 const publicationCss = await readFile('src/publication.css', 'utf8');
+const notFound = await readFile('src/not-found.html', 'utf8');
 const publicationScript = await readFile('src/publication.js', 'utf8');
 const foodImage = await readFile('src/assets/food.jpg');
 const { pages: publicationPages, searchRecords, existingDepartments } = createPublicationPages(stories, projects, editorial);
@@ -122,7 +123,8 @@ function page(source, path = '/') {
   const title = source.match(/<title>([^<]+)<\/title>/)?.[1] || 'Infinity Enterprises';
   const description = source.match(/<meta name="description" content="([^"]*)"/)?.[1] || 'An independent publication.';
   const origin = 'https://infinity-enterprises.infinity-ent-8507.chatgpt.site';
-  const metadata = `<link rel="canonical" href="${origin}${path}"><meta property="og:type" content="${path.startsWith('/enigmas/')?'article':'website'}"><meta property="og:title" content="${title}"><meta property="og:description" content="${description}"><meta property="og:url" content="${origin}${path}"><meta property="og:image" content="${origin}/media/cover.jpg"><meta name="twitter:card" content="summary_large_image">`;
+  const favicon = '<link rel="icon" type="image/svg+xml" href="/favicon.svg">';
+  const metadata = `${source.includes('rel="icon"') ? '' : favicon}<link rel="canonical" href="${origin}${path}"><meta property="og:type" content="${path.startsWith('/enigmas/')?'article':'website'}"><meta property="og:title" content="${title}"><meta property="og:description" content="${description}"><meta property="og:url" content="${origin}${path}"><meta property="og:image" content="${origin}/media/cover.jpg"><meta name="twitter:card" content="summary_large_image">`;
   const readerTools = path.startsWith('/enigmas/') ? `<div class="reading-tools"><button type="button" data-save-story="${path}" aria-pressed="false">Save this story</button><button type="button" id="share-story">Share this story ↗</button><a href="/reading-list">My reading list ↗</a></div><p class="reader-note">Saved stories stay on this device.</p>` : '';
   const result = source
     .replace('/* SHARED_CSS */', sharedCss)
@@ -175,6 +177,7 @@ const compiled = workerWithFeeds
   .replace('/* ENIGMA_ARTICLES */ null', JSON.stringify(renderedStories))
   .replace('/* ATLAS_HTML */ null', JSON.stringify(page(atlas, '/development/atlas').replace('<!-- PROJECT_CARDS -->', projectCards)))
   .replace('/* OSINT_HTML */ null', JSON.stringify(page(osintHtml, '/osint').replace('<!-- OSINT_ENTRIES -->', osintEntriesByCategory)))
+  .replace('/* NOT_FOUND_HTML */ null', JSON.stringify(page(notFound, '/not-found')))
   .replace('/* PUBLICATION_PAGES */ null', JSON.stringify(Object.fromEntries(Object.entries(publicationPages).map(([path, markup]) => [path, page(markup, path).replace('/* DISPATCH_SCRIPT */', dispatchScript)]))))
   .replace('/* FEED_XML */ null', JSON.stringify(feedXml))
   .replace('/* LOGIN_HTML */ null', JSON.stringify(login))
@@ -206,7 +209,7 @@ const compiled = workerWithFeeds
     ...Object.keys(publicationPages),
     ...stories.map(story => '/enigmas/' + story.slug)
   ]));
-if (/\/\* (?:HOME_HTML|ABOUT_HTML|ATLAS_HTML|DIANA_HTML|DEVELOPMENT_HTML|LEARNING_HTML|JOURNAL_HTML|FOUNDATION_HTML|YOUTH_HTML|TECH_LOUNGE_HTML|ENIGMAS_HTML|ENIGMA_ARTICLES|LOGIN_HTML|ADMIN_HTML|HERO_IMAGE|DETAIL_IMAGE|DIANA_IMAGE|DIANA_CARDS_IMAGE|DEVELOPMENT_IMAGE|TECH_LOUNGE_IMAGE|TECH_MACRO_IMAGE|ENIGMAS_POLITICS_IMAGE|ENIGMAS_LAW_IMAGE|ENIGMAS_ACADEMY_IMAGE|PV_SCRIPT|VALID_PUBLIC_PATHS) \*\//.test(compiled)) throw new Error('Build marker missing');
+if (/\/\* (?:HOME_HTML|ABOUT_HTML|ATLAS_HTML|DIANA_HTML|DEVELOPMENT_HTML|LEARNING_HTML|JOURNAL_HTML|FOUNDATION_HTML|YOUTH_HTML|TECH_LOUNGE_HTML|ENIGMAS_HTML|ENIGMA_ARTICLES|LOGIN_HTML|ADMIN_HTML|NOT_FOUND_HTML|HERO_IMAGE|DETAIL_IMAGE|DIANA_IMAGE|DIANA_CARDS_IMAGE|DEVELOPMENT_IMAGE|TECH_LOUNGE_IMAGE|TECH_MACRO_IMAGE|ENIGMAS_POLITICS_IMAGE|ENIGMAS_LAW_IMAGE|ENIGMAS_ACADEMY_IMAGE|PV_SCRIPT|VALID_PUBLIC_PATHS) \*\//.test(compiled)) throw new Error('Build marker missing');
 await rm('dist', { recursive: true, force: true });
 await mkdir('dist/server', { recursive: true });
 await writeFile('dist/server/index.js', compiled);
