@@ -46,6 +46,8 @@ Echo may merge a pull request to `main` or `studio` only when all of the followi
 
 Separation of duties: The sign-off must come from a bot that didn't launch, write or push to the PR, and Echo never merges a PR Echo launched or reviewed alone. Puck or Forge signs off on the exact head first. Each exact-head sign-off comment must name the reviewing bot and quote the full 40-character head SHA it checked. The merger then merges pinned to that same SHA (the connector's merge `sha` field, or `gh pr merge --match-head-commit <sha>`), so any push after review makes the merge fail (HTTP 409). GitHub cannot enforce this rule because every bot posts as the same account (threshi-art), so branch protection stays at 0 required approvals and the rule is written and auditable. Codex and Cursor may still merge where assigned.
 
+Making independence checkable: Every PR body names its launching bot ("Launched by: <bot>"). Every sign-off (a review or comment) names the reviewing bot and quotes the full 40-character head SHA. Before merging, the merger checks that the two names differ and that the SHA matches the current head. If either check fails, don't merge.
+
 ### Release and publication
 
 A GitHub merge to `main` does not publish the live Site. The principal architect (Codex) reviews `main` and publishes the live Sites deployment. The release chain is: source work → review → `studio` integration → release candidate → `main` → Sites publication → live verification.
