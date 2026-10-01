@@ -88,13 +88,13 @@ Escalate to the principal architect for material architecture changes, conflicti
 
 ## Review and merge into studio
 
-- No PR merges without a non-author review that covers the exact head. The author or its cloud agent performs the merge.
+- No PR merges without a non-author review that covers the exact head. The merge itself follows Merge authority above.
 - One other contributor posts a review comment in the policy's evidence format. Puck is the default reviewer. Forge reviews Ember's and Conduit's code PRs and all art PRs.
 - A review says which parts were read and which parts only the build proves. The proof that code runs is a green build on the exact head commit, not a reviewer's read.
 - Reviews are comments, not GitHub approvals. Every contributor posts through the owner's single GitHub account, and GitHub doesn't let an account approve its own PR, so branch protection can't require an approval. The non-author review rule (no PR merges without a non-author review that covers the exact head) holds only because every contributor follows it.
 - A PR may be merged into `studio` only when every required check (Build, and Accessibility and Performance) is green on the exact head commit, and the latest non-author review covers that exact commit with no open blocker or major findings. Minor findings may be deferred to a follow-up PR when the merge comment lists them. If the review has any blocker or major findings, the author fixes them on the same branch and the reviewer re-checks at the new head. A new push means a new review is needed.
 - Merges into `studio` follow Merge authority above. The merger uses a normal merge commit (no squash on `studio`, so release slices keep their history), pinned to the reviewed head SHA. The merge comment links the review comment it relied on and names the head commit that was built.
-- Art PRs are opened by the art author's own cloud agent and merged under Merge authority and change only asset files and manifests, never page code. The reviewer checks file paths, file weight and how the art looks on the page.
+- Art PRs are opened by the art author's own cloud agent, are merged under Merge authority, and change only asset files and manifests, never page code. The reviewer checks file paths, file weight and how the art looks on the page.
 - Release PRs to `main` follow the Merge authority section: a clean PR with a current exact-head sign-off from an independent bot is squash-merged pinned to that SHA.
 - Work pushed straight to `studio` before the PR flow was adopted may finish that way. Everything new goes through a PR.
 
