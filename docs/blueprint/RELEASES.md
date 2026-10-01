@@ -116,7 +116,7 @@ Individual departments ship in groups that make editorial sense. Each department
 | Issue | Department | Owner | Evidence Gate | Dependencies |
 |---|---|---|---|---|
 | #44 | Travel & Leisure (formerly Tempo Libero) | Forge | Parallax off with reduced motion; no layout shift; blurred-text test; #37 gate; build passes | #31, #37 |
-| #50 | Pets gallery (subsection of Travel & Leisure) | Conduit (upload, storage, review), Forge (display) | No submission visible before approval; metadata stripped on upload; consent required; file type, size, rate limits enforced; build passes | #44, owner decisions (approver, storage) |
+| #50 | Pets gallery (top-level department) | Conduit (upload, storage, review), Forge (display) | No submission visible before approval; metadata stripped on upload; consent required; file type, size, rate limits enforced; build passes | #30, owner decisions (approver, storage) |
 | (none) | In Development (no redesign issue; existing pages preserved) | Forge | Existing `/development` and `/development/atlas` pages preserved; integrated into new navigation | #30 (shell) |
 
 **Evidence:** Each issue provides #37 gate results. #50 requires owner decisions on approver and storage before implementation.
@@ -199,8 +199,8 @@ The following decisions must be resolved before the affected issues can close:
 5. **Substack Picks newsletters (Chris):** Blocks #49 (Tech@Lounge feed).
 6. **Pets gallery approver and storage (Chris):** Blocks #50 (Pets upload and review).
 7. **Final masthead identity (Chris):** SOVRANO@Infini is working title; final approval needed for #30 (shell).
-8. **Sport vs Forge & Flow menu label (Chris):** Affects #30 (menu) and #46 (department label).
-9. **OSINT & Tradecraft placement (Chris):** Daily Desk or Reading Room? Affects #39 and #48 navigation.
+8. **Forge & Flow:** #60 sets the menu label; keep `/practice` as the existing route.
+9. **OSINT & Tradecraft:** Place under the Daily Desk within The Reading Room, per #60.
 10. **Tavola subsections (Chris):** Recipes, Restaurants, Wine, or single feed? Affects #45 (Food).
 
 ---
