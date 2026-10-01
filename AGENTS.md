@@ -93,7 +93,7 @@ Escalate to the principal architect for material architecture changes, conflicti
 - A PR may be merged into `studio` only when every required check (Build, and Accessibility and Performance) is green on the exact head commit, and the latest non-author review covers that exact commit with no open blocker or major findings. Minor findings may be deferred to a follow-up PR when the merge comment lists them. If the review has any blocker or major findings, the author fixes them on the same branch and the reviewer re-checks at the new head. A new push means a new review is needed.
 - After the merge conditions are met, the author's cloud agent merges into `studio` with a normal merge commit (no squash on `studio`, so release slices keep their history). The merge comment links the review comment it relied on and names the head commit that was built.
 - Art PRs are opened and merged by the art author's own cloud agent and change only asset files and manifests, never page code. The reviewer checks file paths, file weight and how the art looks on the page.
-- `main` is unchanged: Codex or Cursor reviews and squash-merges release PRs.
+- Release PRs from `studio` to `main` follow the Merge authority section above: Echo may merge when those conditions hold; Codex and Cursor may still merge where assigned.
 - Work pushed straight to `studio` before the PR flow was adopted may finish that way. Everything new goes through a PR.
 
 ## Publishing and syncing
