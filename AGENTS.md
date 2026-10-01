@@ -17,7 +17,7 @@ Chris (owner) sets priorities and makes final product decisions. The principal a
 
 ### Intake and assignment
 
-Chris sends feature requests and changes to Codex, who triages them. Codex decides whether a GitHub issue is needed, writes the scope and acceptance criteria when it is, and routes the work to the appropriate contributor.
+Chris sends feature requests and changes to Codex. Echo (deputy solutions architect) routes requests alongside Codex. Codex decides whether a GitHub issue is needed, writes the scope and acceptance criteria when it is, and routes the work to the appropriate contributor.
 
 ### Work flow and queues
 
@@ -44,7 +44,7 @@ Echo may merge a pull request to `main` only when all of the following condition
 - No conflicts
 - No open architecture, security, privacy, rights, or owner-decision issue
 
-Separation of duties: Echo never merges a PR that Echo launched or reviewed alone. Puck or Forge signs off on the exact head first. Each exact-head sign-off comment must name the reviewing bot and quote the full 40-character head SHA it checked. The merger then merges pinned to that same SHA (the connector's merge `sha` field, or `gh pr merge --match-head-commit <sha>`), so any push after review makes the merge fail (HTTP 409). GitHub cannot enforce this rule because every bot posts as the same account (threshi-art), so branch protection stays at 0 required approvals and the rule is written and auditable. Codex and Cursor may still merge where assigned.
+Separation of duties: The sign-off must come from a bot that didn't launch, write or push to the PR, and Echo never merges a PR Echo launched or reviewed alone. Puck or Forge signs off on the exact head first. Each exact-head sign-off comment must name the reviewing bot and quote the full 40-character head SHA it checked. The merger then merges pinned to that same SHA (the connector's merge `sha` field, or `gh pr merge --match-head-commit <sha>`), so any push after review makes the merge fail (HTTP 409). GitHub cannot enforce this rule because every bot posts as the same account (threshi-art), so branch protection stays at 0 required approvals and the rule is written and auditable. Codex and Cursor may still merge where assigned.
 
 ### Release and publication
 
@@ -67,7 +67,7 @@ Escalate to the principal architect for material architecture changes, conflicti
 
 - Before pushing, fetch `studio` again. If it advanced, integrate those commits in your own clone and resolve conflicts before pushing. Push normally; retry after another fetch if GitHub rejects a nonfastforward push. Never force push, reset away another person's work, or use `git clean` to resolve a conflict.
 - Keep unfinished experiments local until they are ready for other contributors. Stop and coordinate if changes to the same files cannot be combined safely.
-- Every PR restates the problem, records the corrective action actually taken, cites objective evidence at the exact head commit, and gives the codeowner or reviewer concrete next steps. For a release with multiple issues, repeat that record per issue. Use `Closes` only when all acceptance criteria are met; use `Refs` for partial or pending live verification. Forge may prepare a release pull request from `studio` to `main` and link the included issues. The reviewer evaluates the build and diff, coordinates a pause on pushes to `studio`, and merges accepted releases. After a merge commit lands, Forge fast forwards `studio` to the new `main` before the next release cycle.
+- Every PR restates the problem, records the corrective action actually taken, cites objective evidence at the exact head commit, and gives the codeowner or reviewer concrete next steps. For a release with multiple issues, repeat that record per issue. Use `Closes` only when all acceptance criteria are met; use `Refs` for partial or pending live verification. Forge may prepare a release pull request from `studio` to `main` and link the included issues. The reviewer evaluates the build and diff, coordinates a pause on pushes to `studio`, and merges accepted releases. After a release is squash-merged to `main`, bring `studio` up to date by merging `main` into `studio` through a normal pull request (no force push), and compare by content, not commit SHA.
 - Do not commit `dist/`, `node_modules/`, credentials, `.env` files, visitor data, or private engineering documents.
 
 ## Publishing and syncing
@@ -79,4 +79,4 @@ Escalate to the principal architect for material architecture changes, conflicti
 
 - SAVRONO is a working name behind a single `PUBLICATION_NAME` config value. It may be renamed before launch.
 - Pull requests #77, #97, and #101 are historical reference and must not merge as-is.
-- Never force-push to `main` or `studio` without the owner's explicit approval.
+- Never force push to `main` or `studio`.
