@@ -38,7 +38,7 @@ Record the exact head commit, then the build or automated check results with run
 
 ### Final notes to reviewer
 
-[For a PR into `studio`, name the peer reviewer (Puck by default, or Forge for Ember's and Conduit's code PRs and all art PRs) and the author's cloud agent as the merger. For a release PR into `main`, name Codex or Cursor as the final reviewer and merger. List the files or tradeoffs needing close attention, open questions, dependencies, risks, follow-ups, and anything the reviewer should look at first. State whether `studio` pushes are paused for release review.]
+[For a PR into `studio`, name the peer reviewer (Puck by default, or Forge for Ember's and Conduit's code PRs and all art PRs); the merge follows Merge authority in AGENTS.md. For a release PR into `main`, name the final reviewer; the merge follows Merge authority in AGENTS.md. List the files or tradeoffs needing close attention, open questions, dependencies, risks, follow-ups, and anything the reviewer should look at first. State whether `studio` pushes are paused for release review.]
 
 ### Publishing
 
