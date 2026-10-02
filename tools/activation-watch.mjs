@@ -2,8 +2,8 @@ import { appendFile, readFile } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
 
 export const TRACKED_ISSUES = [
-  { number: 88, rail: 'Now', gate: 'Parent owner must post a complete Ready card.' },
-  { number: 94, rail: 'Next', gate: 'Forge confirms the final narrow boundary after #88 is staged.' },
+  { number: 88, rail: 'Now', gate: 'PR #124 has green checks; required exact-head reviews remain.' },
+  { number: 94, rail: 'Next', gate: 'Staged. Forge posts Ready after #88 merges into studio because both edit the test command.' },
   { number: 81, rail: 'Hold', gate: 'Sample-data placement decision.' },
   { number: 82, rail: 'Hold', gate: 'Named editor and reviewed static source basis.' },
   { number: 87, rail: 'Hold', gate: 'Parent route and transition interface.' },
@@ -15,7 +15,7 @@ export const TRACKED_ISSUES = [
 ];
 
 const USER_AGENT = 'savrano-activation-watch';
-const READ_ONLY_NOTICE = 'Automated observation only. A detected heading is not authorization to start source work; only the parent owner can post a complete Ready card.';
+const READ_ONLY_NOTICE = 'Automated observation only. A detected marker is not authorization to start source work; only the parent owner can post a complete Ready card.';
 
 function tableCell(value) {
   return String(value ?? '—')
@@ -36,10 +36,10 @@ function formatTime(value) {
 }
 
 function markerFromComment(comment) {
-  const match = String(comment.body ?? '').match(/^\s*##\s*(Ready|Blocked)\b[^\n]*/im);
+  const match = String(comment.body ?? '').match(/^\s*(?:##\s*(Ready|Blocked)\b[^\n]*|\*\*Status:\s*(Ready|Blocked)\.?\*\*)/i);
   if (!match) return null;
   return {
-    kind: match[1],
+    kind: match[1] ?? match[2],
     createdAt: comment.created_at ?? comment.createdAt ?? null,
     url: comment.html_url ?? comment.url ?? null,
   };
@@ -54,8 +54,8 @@ export function latestExplicitMarker(comments = []) {
 }
 
 function markerText(marker) {
-  if (!marker) return 'No Ready/Blocked heading detected';
-  const label = `${marker.kind} heading detected`;
+  if (!marker) return 'No Ready/Blocked marker detected';
+  const label = `${marker.kind} marker detected`;
   const rendered = marker.url ? `[${label}](${marker.url})` : label;
   return marker.createdAt ? `${rendered}<br>${formatTime(marker.createdAt)}` : rendered;
 }
@@ -93,14 +93,15 @@ export function formatActivationWatch({ repository, generatedAt = new Date().toI
     '',
     '## Interpretation',
     '',
-    '- `Ready heading detected` reports only that a tracked issue comment contains an explicit `## Ready` heading. It does **not** validate the card, the file boundary, dependencies, tests, reviewer, or parent-owner authority.',
-    '- `Blocked heading detected` reports only that a tracked issue comment contains an explicit `## Blocked` heading. Read the linked issue comment for the actual blocker and next action.',
-    '- `No Ready/Blocked heading detected` is absence of an observed heading, not proof that a contract is incomplete or that no work exists.',
+    '- `Ready marker detected` reports only an explicit marker at the start of a tracked issue comment: `## Ready` or `**Status: Ready.**`. It does **not** validate the card, the file boundary, dependencies, tests, reviewer, or parent-owner authority.',
+    '- `Blocked marker detected` reports only an explicit `## Blocked` or `**Status: Blocked.**` marker at the start of a comment. Read the linked issue comment for the actual blocker and next action.',
+    '- `No Ready/Blocked heading detected` is absence of an observed marker, not proof that a contract is incomplete or that no work exists.',
     '',
     '## Automation boundary',
     '',
     '- This workflow uses GitHub read APIs only and writes only to standard output or the Actions job summary.',
     '- It never comments, labels, assigns, opens, closes, merges, commits, deploys, publishes, or creates source branches.',
+    '- The watch cannot verify marker authorship because every bot comment uses the shared GitHub account. Its output is not a Ready signal or implementation authorization.',
     '- GitHub Issues, pull requests, checks, and owner comments remain the authoritative records. A `studio` or `main` merge remains separate from ChatGPT Sites publication.',
     '',
   ].join('\n');
@@ -121,6 +122,16 @@ async function githubJson(fetchImpl, url, token) {
   return response.json();
 }
 
+async function loadCommentHistory(fetchImpl, baseUrl, token) {
+  const comments = [];
+  for (let page = 1; ; page += 1) {
+    const batch = await githubJson(fetchImpl, `${baseUrl}?per_page=100&page=${page}`, token);
+    if (!Array.isArray(batch)) throw new Error('GitHub API comments response must be an array.');
+    comments.push(...batch);
+    if (batch.length < 100) return comments;
+  }
+}
+
 export async function loadLiveSnapshot({ fetchImpl = fetch, repository, token, plans = TRACKED_ISSUES }) {
   if (!repository || !/^[^/]+\/[^/]+$/.test(repository)) {
     throw new Error('GITHUB_REPOSITORY must have the form owner/repository.');
@@ -132,7 +143,7 @@ export async function loadLiveSnapshot({ fetchImpl = fetch, repository, token, p
   const base = `https://api.github.com/repos/${repository}/issues`;
   const issues = await Promise.all(plans.map(async (plan) => {
     const issue = await githubJson(fetchImpl, `${base}/${plan.number}`, token);
-    const comments = await githubJson(fetchImpl, `${base}/${plan.number}/comments?per_page=100`, token);
+    const comments = await loadCommentHistory(fetchImpl, `${base}/${plan.number}/comments`, token);
     return normalizedIssue(plan, { ...issue, repository }, comments);
   }));
 

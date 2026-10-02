@@ -3,7 +3,9 @@ name: SAVRONO activation watch
 on:
   workflow_dispatch:
   schedule:
-    # GitHub may delay scheduled workflows. This is a weekday UTC check, not a real-time signal.
+    # GitHub evaluates schedules only from the default branch (main), not studio.
+    # This proposed weekday UTC check is not active until reviewed release governance reaches main.
+    # GitHub may delay it and may disable public-repository schedules after 60 days of inactivity.
     - cron: '17 15 * * 1-5'
 
 permissions:
@@ -27,6 +29,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+
+      - name: Test activation watch
+        run: node --test test-activation-watch.js
 
       - name: Generate read-only queue summary
         env:
