@@ -49,3 +49,25 @@ jobs:
             echo "::error::dist/ or .env files are tracked in git (see AGENTS.md)"
             exit 1
           fi
+
+  image-metadata:
+    name: Image Metadata Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    continue-on-error: true
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libimage-exiftool-perl
+
+      - name: Check image metadata compliance
+        run: npm run check:images
