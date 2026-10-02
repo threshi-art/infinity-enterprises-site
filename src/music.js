@@ -28,16 +28,20 @@ const RoomSoundController = (() => {
   }
 
   function create(options = {}) {
+    const isHidden = typeof options.isHidden === 'function' ? options.isHidden : () => false;
+    const assetBase = options.assetBase || (typeof window !== 'undefined' && window.location ? `${window.location.origin}/` : 'https://infinity.invalid/');
     const state = {
       activeStops: [],
       context: null,
       externallySuppressed: false,
+      generation: 0,
       hasUserActivated: false,
       hiddenPause: false,
       master: null,
       nowPlaying: null,
       playing: false,
       route: options.route || '/',
+      starting: false,
       storage: options.storage || null,
     };
     const contextFactory = options.contextFactory;
@@ -87,6 +91,22 @@ const RoomSoundController = (() => {
       return manifest.rooms.find(room => room && room.route === state.route) || null;
     }
 
+    function resolveSourcePath(sourcePath) {
+      if (typeof sourcePath !== 'string' || !sourcePath.trim()) return null;
+      try {
+        const base = new URL(assetBase);
+        const resolved = new URL(sourcePath, base);
+        if (resolved.origin === base.origin) return `${resolved.pathname}${resolved.search}${resolved.hash}`;
+        return resolved.href;
+      } catch {
+        return null;
+      }
+    }
+
+    function canContinue(generation) {
+      return generation === state.generation && !state.externallySuppressed && !state.hiddenPause && !isHidden();
+    }
+
     function startDrone() {
       const context = state.context;
       const frequencies = [55, 82.41, 110.3, 164.5];
@@ -114,51 +134,75 @@ const RoomSoundController = (() => {
       return 'drone';
     }
 
-    async function startManifestLoop(loop, room) {
-      if (!loop || typeof fetchImpl !== 'function') return false;
+    async function startManifestLoop(loop, room, generation) {
+      if (!loop || typeof fetchImpl !== 'function') return { started: false, cancelled: false };
       for (const sourcePath of loop.src) {
+        if (!canContinue(generation)) return { started: false, cancelled: true };
+        const resolvedPath = resolveSourcePath(sourcePath);
+        if (!resolvedPath) continue;
         try {
-          const response = await fetchImpl(sourcePath);
+          const response = await fetchImpl(resolvedPath);
+          if (!canContinue(generation)) return { started: false, cancelled: true };
           if (!response || !response.ok) continue;
           const encoded = await response.arrayBuffer();
+          if (!canContinue(generation)) return { started: false, cancelled: true };
           const buffer = await state.context.decodeAudioData(encoded);
+          if (!canContinue(generation)) return { started: false, cancelled: true };
+          if (!buffer || !Number.isFinite(buffer.duration) || loop.loop_end_s > buffer.duration) continue;
           const source = state.context.createBufferSource();
           source.buffer = buffer;
           source.loop = true;
           source.loopStart = loop.loop_start_s;
           source.loopEnd = loop.loop_end_s;
           source.connect(state.master);
+          if (!canContinue(generation)) return { started: false, cancelled: true };
           source.start();
           state.activeStops.push(() => source.stop());
           state.nowPlaying = loop.display_name || room.label || 'Room ambience';
-          return true;
+          return { started: true, cancelled: false };
         } catch {
-          continue;
+          if (!canContinue(generation)) return { started: false, cancelled: true };
         }
       }
-      return false;
+      return { started: false, cancelled: false };
     }
 
-    async function start() {
-      state.externallySuppressed = false;
+    async function start({ clearSuppression = true } = {}) {
+      if (clearSuppression) state.externallySuppressed = false;
+      if (state.externallySuppressed || isHidden()) return false;
       state.hiddenPause = false;
       state.hasUserActivated = true;
-      const context = ensureContext();
-      if (typeof context.resume === 'function') await context.resume();
-      stopActiveSources();
-      const room = roomForRoute();
-      const loop = validLoop(room);
-      const loaded = await startManifestLoop(loop, room);
-      const source = loaded ? 'manifest-loop' : startDrone();
-      setMasterGain(0.12, 0.12);
-      state.playing = true;
-      return source;
+      const generation = state.generation + 1;
+      state.generation = generation;
+      state.starting = true;
+      try {
+        const context = ensureContext();
+        if (typeof context.resume === 'function') await context.resume();
+        if (!canContinue(generation)) return false;
+        stopActiveSources();
+        const room = roomForRoute();
+        const loop = validLoop(room);
+        const result = await startManifestLoop(loop, room, generation);
+        if (result.cancelled || !canContinue(generation)) return false;
+        if (!result.started) startDrone();
+        if (!canContinue(generation)) {
+          stopActiveSources();
+          return false;
+        }
+        setMasterGain(0.12, 0.12);
+        state.playing = true;
+        return true;
+      } finally {
+        if (state.generation === generation) state.starting = false;
+      }
     }
 
-    function stop() {
+    function stop({ preserveHiddenPause = false } = {}) {
+      state.generation += 1;
+      state.starting = false;
       setMasterGain(0, 0.12);
       stopActiveSources();
-      state.hiddenPause = false;
+      if (!preserveHiddenPause) state.hiddenPause = false;
       state.playing = false;
     }
 
@@ -168,32 +212,28 @@ const RoomSoundController = (() => {
     }
 
     async function pauseForVisibility() {
-      if (!state.playing || !state.context) return false;
+      if ((!state.playing && !state.starting) || !state.context) return false;
       state.hiddenPause = true;
-      setMasterGain(0, 0.05);
+      stop({ preserveHiddenPause: true });
       if (typeof state.context.suspend === 'function') await state.context.suspend();
-      state.playing = false;
       return true;
     }
 
     async function resumeForVisibility() {
-      if (!state.hiddenPause || state.externallySuppressed || preference() !== 'on' || !state.hasUserActivated || !state.context) return false;
+      if (!state.hiddenPause || state.externallySuppressed || preference() !== 'on' || !state.hasUserActivated || !state.context || isHidden()) return false;
       if (typeof state.context.resume === 'function') await state.context.resume();
       state.hiddenPause = false;
-      setMasterGain(0.12, 0.12);
-      state.playing = true;
-      return true;
+      return start({ clearSuppression: false });
     }
 
     async function toggleFromUserAction() {
-      if (state.playing) {
+      if (state.playing || state.starting) {
         setPreference('off');
         stop();
         return false;
       }
       setPreference('on');
-      await start();
-      return true;
+      return start();
     }
 
     function snapshot() {
@@ -231,6 +271,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = { RoomSoun
   const controller = RoomSoundController.create({
     contextFactory,
     fetchImpl: typeof window.fetch === 'function' ? window.fetch.bind(window) : null,
+    isHidden: () => document.hidden,
     manifest: window.infinityRoomSound || null,
     route: window.location.pathname,
     storage: window.localStorage,
