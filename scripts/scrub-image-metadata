@@ -27,6 +27,7 @@ echo "Processing $TOTAL image files..."
 
 PROCESSED=0
 FAILED=0
+SKIPPED=0
 
 while IFS= read -r img; do
   if [ ! -f "$img" ]; then
@@ -38,49 +39,49 @@ while IFS= read -r img; do
   
   if [ -z "$HASH_BEFORE" ]; then
     echo "Warning: Could not compute pixel hash for $img, skipping" >&2
-    ((FAILED++)) || true
+    ((SKIPPED++)) || true
     continue
   fi
   
-  # Detect actual file type
-  FILE_TYPE=$(file -b --mime-type "$img")
+  # Detect actual file type (exiftool reports the real format)
+  FILE_TYPE=$(exiftool -s -s -s -FileType "$img" 2>/dev/null)
+  
+  # For JPEG files with .png extension, temporarily work with a .jpg copy
+  TEMP_FILE=""
+  if [[ "$FILE_TYPE" == "JPEG" ]] && [[ "$img" =~ \.png$ ]]; then
+    TEMP_FILE="${img}.tmp.jpg"
+    cp "$img" "$TEMP_FILE"
+    WORK_FILE="$TEMP_FILE"
+  else
+    WORK_FILE="$img"
+  fi
   
   # Strip all metadata except ICC profile (to preserve colors)
+  # Use -api Compact=all to avoid XMP padding
   # Remove EXIF, XMP, IPTC, C2PA/JUMBF
-  # Use ImageMagick for files with mismatched extensions
-  if [[ "$FILE_TYPE" == "image/jpeg" ]] && [[ "$img" =~ \.png$ ]]; then
-    # JPEG with .png extension - use ImageMagick to strip and convert to PNG
-    convert "$img" -strip "$img" 2>/dev/null || {
-      echo "Error: ImageMagick failed on $img" >&2
+  if ! exiftool -q -overwrite_original -m \
+    -api Compact=all \
+    -all= \
+    -icc_profile\<icc_profile \
+    "$WORK_FILE" 2>/dev/null; then
+      echo "Error: exiftool failed on $img" >&2
+      [ -n "$TEMP_FILE" ] && rm -f "$TEMP_FILE"
       ((FAILED++)) || true
       continue
+  fi
+  
+  # Add copyright stamp to EXIF Copyright field only (minimal size increase)
+  # XMP adds ~450 bytes of structure overhead, so use EXIF only
+  exiftool -q -overwrite_original -m \
+    -api Compact=all \
+    -Copyright="$STAMP" \
+    "$WORK_FILE" 2>/dev/null || {
+      echo "Warning: Could not add stamp to $WORK_FILE" >&2
     }
-    # Now add stamp with exiftool to the converted PNG
-    exiftool -q -overwrite_original -m \
-      -Copyright="$STAMP" \
-      -XMP:Rights="$STAMP" \
-      -IPTC:CopyrightNotice="$STAMP" \
-      "$img" 2>/dev/null || {
-        echo "Warning: Could not add stamp to $img after conversion" >&2
-      }
-  else
-    # Normal case - use exiftool
-    exiftool -q -overwrite_original -m \
-      -all= \
-      -icc_profile\<icc_profile \
-      "$img" 2>/dev/null || {
-        echo "Error: exiftool failed on $img" >&2
-        ((FAILED++)) || true
-        continue
-      }
-    # Add copyright stamp to supported fields
-    exiftool -q -overwrite_original -m \
-      -Copyright="$STAMP" \
-      -XMP:Rights="$STAMP" \
-      -IPTC:CopyrightNotice="$STAMP" \
-      "$img" 2>/dev/null || {
-        echo "Warning: Could not add stamp to $img (format may not support metadata)" >&2
-      }
+  
+  # If we used a temp file, copy it back
+  if [ -n "$TEMP_FILE" ]; then
+    mv "$TEMP_FILE" "$img"
   fi
   
   # Verify pixel data unchanged
@@ -102,6 +103,9 @@ while IFS= read -r img; do
 done <<< "$IMAGES"
 
 echo "Done: $PROCESSED files processed successfully"
+if [ $SKIPPED -gt 0 ]; then
+  echo "Skipped: $SKIPPED files" >&2
+fi
 if [ $FAILED -gt 0 ]; then
   echo "Failed: $FAILED files" >&2
   exit 1

@@ -47,14 +47,11 @@ while IFS= read -r img; do
     ((FAILURES++)) || true
   fi
   
-  # Check for ownership stamp (must be in at least one supported field)
+  # Check for ownership stamp in EXIF Copyright field
   HAS_STAMP=false
-  for field in Copyright Rights "Copyright Notice"; do
-    if exiftool -"$field" "$img" 2>/dev/null | grep -qF "$STAMP"; then
-      HAS_STAMP=true
-      break
-    fi
-  done
+  if exiftool -Copyright "$img" 2>/dev/null | grep -qF "$STAMP"; then
+    HAS_STAMP=true
+  fi
   
   if [ "$HAS_STAMP" = false ]; then
     # Check if format supports metadata
