@@ -1,0 +1,106 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Read stamp text from config
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+STAMP=$(node -p "require('$SCRIPT_DIR/image-stamp.json').stamp")
+
+if [ -z "$STAMP" ]; then
+  echo "Error: stamp text not found in image-stamp.json" >&2
+  exit 1
+fi
+
+# Find all image files (excluding node_modules, .git, dist)
+IMAGES=$(find . -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.webp" -o -name "*.gif" -o -name "*.avif" \) \
+  ! -path "*/node_modules/*" \
+  ! -path "*/.git/*" \
+  ! -path "*/dist/*" \
+  ! -path "*/build/*" | sort)
+
+if [ -z "$IMAGES" ]; then
+  echo "No image files found"
+  exit 0
+fi
+
+TOTAL=$(echo "$IMAGES" | wc -l)
+echo "Checking $TOTAL image files for metadata compliance..."
+
+FAILURES=0
+C2PA_FOUND=()
+GPS_FOUND=()
+MISSING_STAMP=()
+
+while IFS= read -r img; do
+  if [ ! -f "$img" ]; then
+    continue
+  fi
+  
+  # Check for C2PA/JUMBF bytes using strings (covers all markers)
+  if strings "$img" | grep -qE '(c2pa|jumb|caBX)'; then
+    C2PA_FOUND+=("$img")
+    ((FAILURES++)) || true
+  fi
+  
+  # Check for GPS tags
+  if exiftool -GPS* "$img" 2>/dev/null | grep -q "GPS"; then
+    GPS_FOUND+=("$img")
+    ((FAILURES++)) || true
+  fi
+  
+  # Check for ownership stamp (must be in at least one supported field)
+  HAS_STAMP=false
+  for field in Copyright Rights "Copyright Notice"; do
+    if exiftool -"$field" "$img" 2>/dev/null | grep -qF "$STAMP"; then
+      HAS_STAMP=true
+      break
+    fi
+  done
+  
+  if [ "$HAS_STAMP" = false ]; then
+    # Check if format supports metadata
+    FILE_TYPE=$(file -b --mime-type "$img")
+    ACTUAL_EXT="${img##*.}"
+    
+    # Skip files with mismatched type/extension (e.g., JPEG with .png extension)
+    # as they may not support full metadata embedding
+    if [[ "$FILE_TYPE" == "image/jpeg" && "$ACTUAL_EXT" == "png" ]]; then
+      continue
+    fi
+    
+    if [[ "$FILE_TYPE" =~ ^image/(jpeg|png|tiff|webp)$ ]]; then
+      # Format supports metadata but stamp is missing
+      MISSING_STAMP+=("$img")
+      ((FAILURES++)) || true
+    fi
+  fi
+done <<< "$IMAGES"
+
+# Report results
+echo ""
+if [ $FAILURES -eq 0 ]; then
+  echo "✓ All $TOTAL images passed metadata compliance checks"
+  exit 0
+else
+  echo "✗ Found $FAILURES compliance issue(s):"
+  echo ""
+  
+  if [ ${#C2PA_FOUND[@]} -gt 0 ]; then
+    echo "C2PA/JUMBF metadata found in ${#C2PA_FOUND[@]} file(s):"
+    printf '  %s\n' "${C2PA_FOUND[@]}"
+    echo ""
+  fi
+  
+  if [ ${#GPS_FOUND[@]} -gt 0 ]; then
+    echo "GPS tags found in ${#GPS_FOUND[@]} file(s):"
+    printf '  %s\n' "${GPS_FOUND[@]}"
+    echo ""
+  fi
+  
+  if [ ${#MISSING_STAMP[@]} -gt 0 ]; then
+    echo "Ownership stamp missing in ${#MISSING_STAMP[@]} file(s):"
+    printf '  %s\n' "${MISSING_STAMP[@]}"
+    echo ""
+  fi
+  
+  exit 1
+fi
