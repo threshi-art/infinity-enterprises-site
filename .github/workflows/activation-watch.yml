@@ -1,0 +1,40 @@
+name: SAVRONO activation watch
+
+on:
+  workflow_dispatch:
+  schedule:
+    # GitHub evaluates schedules only from the default branch (main), not studio.
+    # This proposed weekday UTC check is not active until reviewed release governance reaches main.
+    # GitHub may delay it and may disable public-repository schedules after 60 days of inactivity.
+    - cron: '17 15 * * 1-5'
+
+permissions:
+  contents: read
+  issues: read
+
+concurrency:
+  group: savrano-activation-watch
+  cancel-in-progress: false
+
+jobs:
+  activation-watch:
+    name: Read-only activation snapshot
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Test activation watch
+        run: node --test test-activation-watch.js
+
+      - name: Generate read-only queue summary
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node tools/activation-watch.mjs
