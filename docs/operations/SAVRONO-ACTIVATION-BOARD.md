@@ -29,11 +29,13 @@ READY CARD → FOCUSED BRANCH → EXACT-HEAD REVIEW → STUDIO INTEGRATION
 
 ## Activation rail
 
+> **Manual status snapshot · 2026-10-02:** recheck the cited issue, pull request, exact head, and review comments before acting. This page intentionally does not replace their live records.
+
 ### 01 · Now: unlock Manus’s next focused source PR
 
 | Packet | Status | Single action that unlocks it | Implementer after Ready |
 | --- | --- | --- | --- |
-| [#88 · Room ambience controller](https://github.com/threshi-art/infinity-enterprises-site/issues/88) | **Awaiting Forge parent Ready marker** | Forge posts `Ready` or one precise remaining blocker on the issue. | Manus: `manus/88-room-ambience` into `studio` |
+| [#88 · Room ambience controller](https://github.com/threshi-art/infinity-enterprises-site/issues/88) | **PR [#124](https://github.com/threshi-art/infinity-enterprises-site/pull/124) open; Build and Accessibility/Performance green; exact-head reviews pending** | Puck and Ember record their separate review boundaries against the current PR head. | Manus: `manus/88-room-ambience` into `studio` |
 
 **#88 preservation boundary**
 
@@ -44,13 +46,13 @@ READY CARD → FOCUSED BRANCH → EXACT-HEAD REVIEW → STUDIO INTEGRATION
 - Puck performs the non-author exact-head review. Ember checks manifest handling and levels. Forge owns the separate manifest-injection integration.
 
 > [!NOTE]
-> The technical handoff is detailed, but the parent owner’s explicit Ready marker is still the process gate. Do not create a source branch, push a draft, or open a PR before that marker appears.
+> Forge posted the parent Ready marker in [issue comment 5946533264](https://github.com/threshi-art/infinity-enterprises-site/issues/88#issuecomment-5946533264). Manus opened PR #124 at its declared head; the current remaining gate is the required non-author exact-head review, not a new source branch or a #94 start.
 
 ### 02 · Next: stage the serial follow-on
 
 | Packet | Status | Allowed first slice | Explicitly excluded |
 | --- | --- | --- | --- |
-| [#94 · Schedule eligibility evaluator](https://github.com/threshi-art/infinity-enterprises-site/issues/94) | **Next, pending Forge confirmation** | Pure `isEligible(item, now, approvedEditors, currentHash)` logic with controlled-clock tests. | Database, migration, API, editor UI, public preview, job, service account, or unpublished copy. |
+| [#94 · Schedule eligibility evaluator](https://github.com/threshi-art/infinity-enterprises-site/issues/94) | **Staged, not Ready** | Pure `isEligible(item, now, approvedEditors, currentHash)` logic with controlled-clock tests after Forge posts Ready. | Database, migration, API, editor UI, public preview, job, service account, or unpublished copy. |
 
 The proposed narrow boundary is:
 
@@ -63,7 +65,7 @@ Read-only: db/schema.ts, drizzle/, src/worker.js, src/admin.html,
            build.mjs, and all public editorial data
 ```
 
-An empty approved-editor list is a valid fixture and holds every item. The evaluator must report reasons, fail closed on malformed input or errors, and never decide publication on its own. Forge confirms the final boundary and reviewer only **after #88 is staged**.
+An empty approved-editor list is a valid fixture and holds every item. The evaluator must report reasons, fail closed on malformed input or errors, and never decide publication on its own. Forge’s current staged contract says #94 becomes Ready only **after #88’s source PR merges into `studio`**, because both slices edit the same `package.json` test-script line. Green #88 checks alone do not open #94.
 
 ### 03 · Hold: resolve one named gate, not a cloud of uncertainty
 
