@@ -35,7 +35,7 @@ READY CARD → FOCUSED BRANCH → EXACT-HEAD REVIEW → STUDIO INTEGRATION
 
 | Packet | Status | Single action that unlocks it | Implementer after Ready |
 | --- | --- | --- | --- |
-| [#88 · Room ambience controller](https://github.com/threshi-art/infinity-enterprises-site/issues/88) | **PR [#124](https://github.com/threshi-art/infinity-enterprises-site/pull/124) open; Build and Accessibility/Performance green; exact-head reviews pending** | Puck and Ember record their separate review boundaries against the current PR head. | Manus: `manus/88-room-ambience` into `studio` |
+| [#88 · Room ambience controller](https://github.com/threshi-art/infinity-enterprises-site/issues/88) | **Corrective PR [#124](https://github.com/threshi-art/infinity-enterprises-site/pull/124) open; current checks and fresh exact-head rereviews pending** | Puck reviews code/evidence; Ember reviews **manifest handling only** against the current PR head. | Manus: `manus/88-room-ambience` into `studio` |
 
 **#88 preservation boundary**
 
@@ -43,10 +43,10 @@ READY CARD → FOCUSED BRANCH → EXACT-HEAD REVIEW → STUDIO INTEGRATION
 - Read-only: `src/ether.js`, page/templates, `build.mjs`, `src/worker.js`, CSS, `src/departments.mjs`, manifest, and audio assets.
 - Existing `#music-toggle` remains the mount point. There is no markup change, Ether change, or audio-asset addition.
 - Sound defaults off. Placeholder rows request nothing. Missing/invalid manifest or media fails safely to the current drone. Ether’s existing event suppresses ambience.
-- Puck performs the non-author exact-head review. Ember checks manifest handling and levels. Forge owns the separate manifest-injection integration.
+- Puck performs the non-author exact-head code/evidence review. Ember checks **manifest handling only**. Forge owns the separate manifest-injection integration.
 
 > [!NOTE]
-> Forge posted the parent Ready marker in [issue comment 5946533264](https://github.com/threshi-art/infinity-enterprises-site/issues/88#issuecomment-5946533264). Manus opened PR #124 at its declared head; the current remaining gate is the required non-author exact-head review, not a new source branch or a #94 start.
+> Forge posted the parent Ready marker in [issue comment 5946533264](https://github.com/threshi-art/infinity-enterprises-site/issues/88#issuecomment-5946533264). Manus pushed the current corrective #124 head after the prior review hold; the remaining gate is fresh non-author exact-head review plus current checks, not a new source branch or a #94 start.
 
 ### 02 · Next: stage the serial follow-on
 
