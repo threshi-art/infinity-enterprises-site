@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "node build.mjs",
+    "check:images": "scripts/check-image-metadata",
     "db:generate": "drizzle-kit generate",
     "test": "node --test test-feeds.js test-feeds-integration.js test-page-views.js test-room-sound.js test-smoke.js test-suspect-days.js test-ukraine-map.js"
   },
