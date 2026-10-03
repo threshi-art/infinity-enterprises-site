@@ -36,7 +36,7 @@ The corresponding Wiki record should include:
 | Page-family reference | #76 | Links design studies to current desk structure without a runtime claim. |
 | Federated art direction | #109 | Supplies a reviewable catalogue, Tech desk bible, and outward-reference / rights controls. |
 | Current visual-vibe study | #125 / PR #126 `7a5fb0a8f7fb7781748d62761400d1e8b698a4e0` | Preserves PR #126 as a separate narrow study; does not copy or revise its files. |
-| Historical visual evidence | Seraphim board, legacy #47 | Labels historical/exploratory rather than allowing an old map to become current authority. |
+| Historical visual evidence | Historical board, legacy #47 | Labels historical/exploratory rather than allowing an old map to become current authority. |
 | Asset rights boundary | Current scattered source/review material | Adds a classified intake register and production metadata requirements. |
 | Future runtime work | Later desk-specific Ready contract | Requires exact files, preservation baseline, tests, visual evidence, reviewer, and branch. |
 
@@ -47,7 +47,7 @@ The corresponding Wiki record should include:
 | Puck | Provenance, rights/disclosure language, stale-authority risk, and exact-head evidence. |
 | Ember | Federated desk differentiation, art direction, and whether the package accidentally flattens desk identity. |
 | Forge | Current-source preservation, integration implications, package boundary, and future implementation feasibility. |
-| Seraphim | Architecture, documentation coherence, and separation of current authority from historical studies. |
+| Principal architect | Architecture, documentation coherence, and separation of current authority from historical studies. |
 | Echo | Merge only after green required checks and exact-head independent comments agree. |
 
 ## Review route

@@ -1,8 +1,8 @@
 # Historical / Exploratory Reference
 
-![Seraphim SAVRONO visual-study board](seraphim-savrano-visual-study-2026-10-02.jpg)
+![SAVRONO historical visual-study board](principal-architect-savrano-visual-study-2026-10-02.jpg)
 
-**Source:** Chris supplied this image and identified Seraphim as its creator.
+**Source:** The owner supplied this image as an internally created historical study.
 
 > **Historical/exploratory visual study.** The labels, desk count, Ether Room placement, navigation, sample content, and structural diagram are illustrative and non-authoritative. See [#107](https://github.com/threshi-art/infinity-enterprises-site/issues/107) and [#60](https://github.com/threshi-art/infinity-enterprises-site/issues/60) for current architecture; see [#76](https://github.com/threshi-art/infinity-enterprises-site/issues/76) and [#109](https://github.com/threshi-art/infinity-enterprises-site/issues/109) for current design guidance.
 

@@ -1,6 +1,6 @@
 # Proposed Wiki Bridge — Post-Merge Only
 
-**This file is a reviewable draft, not a Wiki edit.** The Wiki should be updated only after the #127 PR merges so it points to stable merged evidence rather than a moving branch.
+**This file is a reviewable draft, not a current Wiki authority.** A separate Wiki mirror was published before the privacy findings on this PR; its corrective diff is held for exact-head review before it is published. The Wiki should ultimately point to stable merged evidence rather than a moving branch.
 
 ## Proposed additions
 
@@ -11,8 +11,8 @@
 | Design System | Add shared publisher controls versus desk-variable visual layers. | Visual Direction Catalogue. |
 | Visual System and Layouts | Add a design-study index; distinguish generated studies from production assets. | Studies manifest/readme and Asset Intake Register. |
 | Workstream Ownership / Detailed Action Plan | Link #127 as the visual-governance evidence package; link later Ready contracts if created. | #127 and future issue links. |
-| Historical Evidence and Releases | Record Seraphim’s board as historical/exploratory, not architecture authority. | Historical board and its annotation. |
-| Decision Register | Add the approved House Figure/Tech Lounge design direction only if Chris finalizes the open naming/label choices. | Owner decision record, not a mood board. |
+| Historical Evidence and Releases | Record the principal architect’s board as historical/exploratory, not architecture authority. | Historical board and its annotation. |
+| Decision Register | Add the approved House Figure/Tech Lounge design direction only if the owner finalizes the open naming/label choices. | Owner decision record, not a mood board. |
 
 ## Bridge text template
 

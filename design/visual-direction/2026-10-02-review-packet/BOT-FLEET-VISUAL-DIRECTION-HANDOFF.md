@@ -53,7 +53,7 @@ Future Tech direction merges that warmth with an internal precision layer:
 
 The owner-supplied screenshots are **inspiration only**. Do not commit or deploy them. Do not reproduce platform UI, show logos, copy a poster composition, reproduce recognizable characters, or inherit embedded claims.
 
-Owner photographs and the Apple RAW candidate remain private until an asset-intake record includes: creator/rights, subject/location/date context, caption, desk placement, alteration status, and approval state.
+Owner photographs and the owner-supplied RAW candidate remain private until an asset-intake record includes: creator/rights, subject/location/date context, caption, desk placement, alteration status, and approval state.
 
 ## House Figure
 
