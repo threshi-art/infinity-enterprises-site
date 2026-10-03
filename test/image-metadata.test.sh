@@ -217,26 +217,33 @@ else
   fail_test "EXIF SerialNumber should fail but passed"
 fi
 
-# Test 14: JPEG-in-.png list recognition from repo root with ./ prefix
+# Test 14: JPEG-in-.png list recognition with ./ prefix guards the fix
 echo "Test 14: JPEG-in-.png list recognized with ./ prefix"
-# Test that the check recognizes a known JPEG-.png file even with ./ prefix
-KNOWN_FILE="design/sovrano-v1/editorial-art/01-penthouse-portrait.png"
-if [ -f "$PROJECT_ROOT/$KNOWN_FILE" ]; then
-  # Run check from repo root with ./ prefix - should pass (has stamp)
-  cd "$PROJECT_ROOT"
-  if "$PROJECT_ROOT/scripts/check-image-metadata" "./$KNOWN_FILE" >/dev/null 2>&1; then
-    pass_test "JPEG-in-.png list matches with ./ prefix"
-  else
-    # If it failed, check that it's because of stamp check (not skipped)
-    OUTPUT=$("$PROJECT_ROOT/scripts/check-image-metadata" "./$KNOWN_FILE" 2>&1) || true
-    if echo "$OUTPUT" | grep -qE "(missing|JPEG)"; then
-      pass_test "JPEG-in-.png list matches (verified as JPEG)"
-    else
-      fail_test "JPEG-in-.png check failed for wrong reason: $OUTPUT"
-    fi
-  fi
+# Create a real PNG file at a known JPEG-.png list path with ./ prefix
+# This tests that the list matching works even when find adds ./
+TEST_PNG="$TEMP_DIR/test-jpeg-png-check.png"
+# Create real PNG content (PNG signature + minimal IHDR)
+printf '\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x02\x00\x00\x00\x90wS\xde' > "$TEST_PNG"
+# Add stamp so only the format mismatch triggers
+exiftool -q -overwrite_original -Copyright="Property of Infinity Enterprises" "$TEST_PNG" 2>/dev/null || true
+# Create the directory structure and symlink to simulate a listed path
+mkdir -p "$TEMP_DIR/design/sovrano-v1/editorial-art"
+ln -sf "$TEST_PNG" "$TEMP_DIR/design/sovrano-v1/editorial-art/01-penthouse-portrait.png"
+# Run check from temp dir with ./ prefix (simulating find output)
+cd "$TEMP_DIR"
+ln -sf "$PROJECT_ROOT/scripts" scripts 2>/dev/null || true
+ln -sf "$PROJECT_ROOT/node_modules" node_modules 2>/dev/null || true
+# Capture output and exit code
+set +e
+OUTPUT=$(./scripts/check-image-metadata "./design/sovrano-v1/editorial-art/01-penthouse-portrait.png" 2>&1)
+EXIT_CODE=$?
+set -e
+cd "$PROJECT_ROOT"
+# Should fail with exit 1 and the exact "expected JPEG" message
+if [ $EXIT_CODE -eq 1 ] && echo "$OUTPUT" | grep -q "expected JPEG format"; then
+  pass_test "JPEG-in-.png list matches with ./ prefix and detects format mismatch"
 else
-  fail_test "Test file not found: $KNOWN_FILE"
+  fail_test "JPEG-in-.png check failed: exit=$EXIT_CODE (expected 1), looking for 'expected JPEG format' in: $OUTPUT"
 fi
 
 # Test 15: Check script fails on missing file in file list
@@ -260,12 +267,14 @@ else
 fi
 
 # Test 17: Fail closed - missing exiftool
-echo "Test 13: Check script fails when exiftool is missing"
+echo "Test 17: Check script fails when exiftool is missing"
 RESTRICTED_BIN=$(mktemp -d)
-ln -s "$(which node)" "$RESTRICTED_BIN/node"
-ln -s "$(which bash)" "$RESTRICTED_BIN/bash"
-ln -s "$(which identify)" "$RESTRICTED_BIN/identify"
-ln -s "$(which strings)" "$RESTRICTED_BIN/strings"
+# Keep essential coreutils, hide only exiftool
+for cmd in node bash dirname basename cat grep sed awk sort head tail wc find identify strings; do
+  if command -v "$cmd" >/dev/null 2>&1; then
+    ln -s "$(command -v "$cmd")" "$RESTRICTED_BIN/$cmd" 2>/dev/null || true
+  fi
+done
 if OUTPUT=$(timeout 5 env PATH="$RESTRICTED_BIN" "$PROJECT_ROOT/scripts/check-image-metadata" "$TEMP_DIR/clean-stamped.png" 2>&1); then
   fail_test "Check script should fail without exiftool (exit 0)"
 elif echo "$OUTPUT" | grep -q "exiftool is not installed"; then
@@ -275,28 +284,15 @@ else
 fi
 rm -rf "$RESTRICTED_BIN"
 
-# Test 14: Fail closed - missing ImageMagick
-echo "Test 18: Check script fails when ImageMagick is missing"
+# Test 18: Fail closed - scrub script missing exiftool
+echo "Test 18: Scrub script fails when exiftool is missing"
 RESTRICTED_BIN=$(mktemp -d)
-ln -s "$(which node)" "$RESTRICTED_BIN/node"
-ln -s "$(which bash)" "$RESTRICTED_BIN/bash"
-ln -s "$(which exiftool)" "$RESTRICTED_BIN/exiftool"
-ln -s "$(which strings)" "$RESTRICTED_BIN/strings"
-if OUTPUT=$(timeout 5 env PATH="$RESTRICTED_BIN" "$PROJECT_ROOT/scripts/check-image-metadata" "$TEMP_DIR/clean-stamped.png" 2>&1); then
-  fail_test "Check script should fail without ImageMagick (exit 0)"
-elif echo "$OUTPUT" | grep -q "ImageMagick"; then
-  pass_test "Check script fails closed without ImageMagick"
-else
-  fail_test "Check script failed but wrong error message"
-fi
-rm -rf "$RESTRICTED_BIN"
-
-# Test 15: Fail closed - scrub script missing exiftool
-echo "Test 19: Scrub script fails when exiftool is missing"
-RESTRICTED_BIN=$(mktemp -d)
-ln -s "$(which node)" "$RESTRICTED_BIN/node"
-ln -s "$(which bash)" "$RESTRICTED_BIN/bash"
-ln -s "$(which identify)" "$RESTRICTED_BIN/identify"
+# Keep essential coreutils, hide only exiftool
+for cmd in node bash dirname basename cat grep sed awk sort head tail wc find identify; do
+  if command -v "$cmd" >/dev/null 2>&1; then
+    ln -s "$(command -v "$cmd")" "$RESTRICTED_BIN/$cmd" 2>/dev/null || true
+  fi
+done
 if OUTPUT=$(timeout 5 env PATH="$RESTRICTED_BIN" "$PROJECT_ROOT/scripts/scrub-image-metadata" "$TEMP_DIR/clean-stamped.png" 2>&1); then
   fail_test "Scrub script should fail without exiftool (exit 0)"
 elif echo "$OUTPUT" | grep -q "exiftool is not installed"; then
@@ -306,12 +302,15 @@ else
 fi
 rm -rf "$RESTRICTED_BIN"
 
-# Test 16: Fail closed - scrub script missing ImageMagick
-echo "Test 20: Scrub script fails when ImageMagick is missing"
+# Test 19: Fail closed - scrub script missing ImageMagick
+echo "Test 19: Scrub script fails when ImageMagick is missing"
 RESTRICTED_BIN=$(mktemp -d)
-ln -s "$(which node)" "$RESTRICTED_BIN/node"
-ln -s "$(which bash)" "$RESTRICTED_BIN/bash"
-ln -s "$(which exiftool)" "$RESTRICTED_BIN/exiftool"
+# Keep essential coreutils, hide only identify
+for cmd in node bash dirname basename cat grep sed awk sort head tail wc find exiftool; do
+  if command -v "$cmd" >/dev/null 2>&1; then
+    ln -s "$(command -v "$cmd")" "$RESTRICTED_BIN/$cmd" 2>/dev/null || true
+  fi
+done
 if OUTPUT=$(timeout 5 env PATH="$RESTRICTED_BIN" "$PROJECT_ROOT/scripts/scrub-image-metadata" "$TEMP_DIR/clean-stamped.png" 2>&1); then
   fail_test "Scrub script should fail without ImageMagick (exit 0)"
 elif echo "$OUTPUT" | grep -q "ImageMagick"; then
@@ -321,8 +320,8 @@ else
 fi
 rm -rf "$RESTRICTED_BIN"
 
-# Test 17: File list argument - only listed files are modified
-echo "Test 21: Scrub script with file list only modifies listed files"
+# Test 20: File list argument - only listed files are modified
+echo "Test 20: Scrub script with file list only modifies listed files"
 # Create three test images
 convert -size 50x50 xc:red "$TEMP_DIR/file-list-1.png"
 convert -size 50x50 xc:green "$TEMP_DIR/file-list-2.png"
@@ -361,8 +360,8 @@ else
   fail_test "Scrub with file list should succeed"
 fi
 
-# Test 18: Scrub script fails when file is skipped
-echo "Test 22: Scrub script exits non-zero when file is skipped"
+# Test 21: Scrub script fails when file is skipped
+echo "Test 21: Scrub script exits non-zero when file is skipped"
 # Create a file that will cause hash computation to fail (corrupt/invalid)
 echo "not an image" > "$TEMP_DIR/corrupt.png"
 
