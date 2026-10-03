@@ -396,15 +396,24 @@ rm -rf "$RESTRICTED_BIN"
 
 # Test 23: JPEG-as-.png with missing stamp should fail
 echo "Test 23: JPEG-as-.png with missing stamp should fail"
-# Create a JPEG file with .png extension at a listed path, no stamp
+# Create a real JPEG file with .png extension at a listed path, no stamp
 mkdir -p "$TEMP_DIR/design/sovrano-v1/editorial-art"
-convert -size 100x100 xc:teal "$TEMP_DIR/design/sovrano-v1/editorial-art/01-penthouse-portrait.png"
-# The above creates a PNG by default, convert it to JPEG format but keep .png extension
-convert "$TEMP_DIR/design/sovrano-v1/editorial-art/01-penthouse-portrait.png" -format jpeg "$TEMP_DIR/design/sovrano-v1/editorial-art/01-penthouse-portrait.png"
-if ! "$PROJECT_ROOT/scripts/check-image-metadata" "$TEMP_DIR/design/sovrano-v1/editorial-art/01-penthouse-portrait.png" >/dev/null 2>&1; then
-  pass_test "JPEG-as-.png without stamp fails"
+TEST_JPEG_PNG="$TEMP_DIR/design/sovrano-v1/editorial-art/01-penthouse-portrait.png"
+convert -size 100x100 xc:teal jpeg:"$TEST_JPEG_PNG"
+# Verify it's really JPEG
+ACTUAL_TYPE=$(exiftool -s -s -s -FileType "$TEST_JPEG_PNG" 2>/dev/null || echo "")
+if [ "$ACTUAL_TYPE" != "JPEG" ]; then
+  fail_test "Test 23 fixture creation failed: expected JPEG but got $ACTUAL_TYPE"
 else
-  fail_test "JPEG-as-.png without stamp should fail"
+  set +e
+  OUTPUT=$("$PROJECT_ROOT/scripts/check-image-metadata" "$TEST_JPEG_PNG" 2>&1)
+  EXIT_CODE=$?
+  set -e
+  if [ $EXIT_CODE -ne 0 ] && echo "$OUTPUT" | grep -q "Ownership stamp missing" && ! echo "$OUTPUT" | grep -q "expected JPEG format"; then
+    pass_test "JPEG-as-.png without stamp fails with missing stamp error"
+  else
+    fail_test "JPEG-as-.png without stamp should fail with missing stamp error (exit=$EXIT_CODE), got: $OUTPUT"
+  fi
 fi
 
 # Test 24: JPEG-as-.png with EXIF device fields should fail
@@ -414,11 +423,22 @@ convert -size 100x100 xc:navy "$TEMP_DIR/has-jpeg-png-device.jpg"
 exiftool -q -overwrite_original -Make="TestCamera" -Copyright="Property of Infinity Enterprises" "$TEMP_DIR/has-jpeg-png-device.jpg"
 # Move to a JPEG-as-.png path
 mkdir -p "$TEMP_DIR/design/sovrano-v1/editorial-art/covers"
-mv "$TEMP_DIR/has-jpeg-png-device.jpg" "$TEMP_DIR/design/sovrano-v1/editorial-art/covers/cover-daily-desk.png"
-if ! "$PROJECT_ROOT/scripts/check-image-metadata" "$TEMP_DIR/design/sovrano-v1/editorial-art/covers/cover-daily-desk.png" >/dev/null 2>&1; then
-  pass_test "JPEG-as-.png with device fields fails"
+TEST_PATH="$TEMP_DIR/design/sovrano-v1/editorial-art/covers/cover-daily-desk.png"
+mv "$TEMP_DIR/has-jpeg-png-device.jpg" "$TEST_PATH"
+# Verify it's JPEG
+ACTUAL_TYPE=$(exiftool -s -s -s -FileType "$TEST_PATH" 2>/dev/null || echo "")
+if [ "$ACTUAL_TYPE" != "JPEG" ]; then
+  fail_test "Test 24 fixture is not JPEG: $ACTUAL_TYPE"
 else
-  fail_test "JPEG-as-.png with device fields should fail"
+  set +e
+  OUTPUT=$("$PROJECT_ROOT/scripts/check-image-metadata" "$TEST_PATH" 2>&1)
+  EXIT_CODE=$?
+  set -e
+  if [ $EXIT_CODE -ne 0 ] && echo "$OUTPUT" | grep -q "EXIF device/author fields found" && ! echo "$OUTPUT" | grep -q "expected JPEG format"; then
+    pass_test "JPEG-as-.png with device fields fails with device fields error"
+  else
+    fail_test "JPEG-as-.png with device fields should fail with device fields error (exit=$EXIT_CODE), got: $OUTPUT"
+  fi
 fi
 
 # Test 25: JPEG-as-.png with XMP should fail
@@ -426,11 +446,22 @@ echo "Test 25: JPEG-as-.png with XMP should fail"
 convert -size 100x100 xc:olive "$TEMP_DIR/has-jpeg-png-xmp.jpg"
 exiftool -q -overwrite_original -XMP:Creator="Test Creator" -Copyright="Property of Infinity Enterprises" "$TEMP_DIR/has-jpeg-png-xmp.jpg"
 mkdir -p "$TEMP_DIR/design/sovrano-v1/editorial-art"
-mv "$TEMP_DIR/has-jpeg-png-xmp.jpg" "$TEMP_DIR/design/sovrano-v1/editorial-art/02-lounge-couple.png"
-if ! "$PROJECT_ROOT/scripts/check-image-metadata" "$TEMP_DIR/design/sovrano-v1/editorial-art/02-lounge-couple.png" >/dev/null 2>&1; then
-  pass_test "JPEG-as-.png with XMP fails"
+TEST_PATH="$TEMP_DIR/design/sovrano-v1/editorial-art/02-lounge-couple.png"
+mv "$TEMP_DIR/has-jpeg-png-xmp.jpg" "$TEST_PATH"
+# Verify it's JPEG
+ACTUAL_TYPE=$(exiftool -s -s -s -FileType "$TEST_PATH" 2>/dev/null || echo "")
+if [ "$ACTUAL_TYPE" != "JPEG" ]; then
+  fail_test "Test 25 fixture is not JPEG: $ACTUAL_TYPE"
 else
-  fail_test "JPEG-as-.png with XMP should fail"
+  set +e
+  OUTPUT=$("$PROJECT_ROOT/scripts/check-image-metadata" "$TEST_PATH" 2>&1)
+  EXIT_CODE=$?
+  set -e
+  if [ $EXIT_CODE -ne 0 ] && echo "$OUTPUT" | grep -q "XMP blocks found" && ! echo "$OUTPUT" | grep -q "expected JPEG format"; then
+    pass_test "JPEG-as-.png with XMP fails with XMP error"
+  else
+    fail_test "JPEG-as-.png with XMP should fail with XMP error (exit=$EXIT_CODE), got: $OUTPUT"
+  fi
 fi
 
 # Test 26: JPEG-as-.png with IPTC should fail
@@ -438,11 +469,22 @@ echo "Test 26: JPEG-as-.png with IPTC should fail"
 convert -size 100x100 xc:maroon "$TEMP_DIR/has-jpeg-png-iptc.jpg"
 exiftool -q -overwrite_original -IPTC:By-line="Test Byline" -Copyright="Property of Infinity Enterprises" "$TEMP_DIR/has-jpeg-png-iptc.jpg"
 mkdir -p "$TEMP_DIR/design/sovrano-v1/editorial-art"
-mv "$TEMP_DIR/has-jpeg-png-iptc.jpg" "$TEMP_DIR/design/sovrano-v1/editorial-art/03-motore-chrome.png"
-if ! "$PROJECT_ROOT/scripts/check-image-metadata" "$TEMP_DIR/design/sovrano-v1/editorial-art/03-motore-chrome.png" >/dev/null 2>&1; then
-  pass_test "JPEG-as-.png with IPTC fails"
+TEST_PATH="$TEMP_DIR/design/sovrano-v1/editorial-art/03-motore-chrome.png"
+mv "$TEMP_DIR/has-jpeg-png-iptc.jpg" "$TEST_PATH"
+# Verify it's JPEG
+ACTUAL_TYPE=$(exiftool -s -s -s -FileType "$TEST_PATH" 2>/dev/null || echo "")
+if [ "$ACTUAL_TYPE" != "JPEG" ]; then
+  fail_test "Test 26 fixture is not JPEG: $ACTUAL_TYPE"
 else
-  fail_test "JPEG-as-.png with IPTC should fail"
+  set +e
+  OUTPUT=$("$PROJECT_ROOT/scripts/check-image-metadata" "$TEST_PATH" 2>&1)
+  EXIT_CODE=$?
+  set -e
+  if [ $EXIT_CODE -ne 0 ] && echo "$OUTPUT" | grep -q "IPTC blocks found" && ! echo "$OUTPUT" | grep -q "expected JPEG format"; then
+    pass_test "JPEG-as-.png with IPTC fails with IPTC error"
+  else
+    fail_test "JPEG-as-.png with IPTC should fail with IPTC error (exit=$EXIT_CODE), got: $OUTPUT"
+  fi
 fi
 
 # Summary
