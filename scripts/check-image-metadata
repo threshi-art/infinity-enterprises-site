@@ -137,7 +137,7 @@ while IFS= read -r img; do
   # For files with image extensions, the actual type must be a recognized image format
   case "$FILE_EXT_LOWER" in
     png|jpg|jpeg|webp|gif|avif)
-      if [[ ! "$FILE_TYPE" =~ ^(JPEG|PNG|TIFF|WEBP|GIF|AVIF)$ ]]; then
+      if [[ ! "$FILE_TYPE" =~ ^(JPEG|PNG|TIFF|WEBP|Extended\ WEBP|GIF|AVIF)$ ]]; then
         echo "Error: cannot identify file type for: $img (got: ${FILE_TYPE:-unknown})" >&2
         exit 1
       fi
