@@ -1,0 +1,453 @@
+name: Private Name Check (report-only)
+
+# This workflow scans for protected personal names in PRs, commits, issues, and comments.
+# The protected names are provided via the PROTECTED_NAMES repository secret (pipe-separated).
+# 
+# IMPORTANT: This check is REPORT-ONLY and must not be made a required check.
+# It will be promoted to required status after a clean observation period.
+#
+# Secret format: name1|name2|name3 (case-insensitive matching)
+# When the secret is missing, scan jobs are skipped (grey status), not green.
+#
+# Permissions: issues: write (for labeling), contents: read (for diff)
+# Actions: First-party only, pinned by full commit SHA
+# Security: All event text passed via env vars to prevent script injection
+
+on:
+  pull_request:
+    branches: [main, studio]
+    types: [opened, synchronize, reopened, edited]
+  issues:
+    types: [opened, edited]
+  issue_comment:
+    types: [created, edited]
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: private-name-check-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check-secret:
+    name: Check Secret Presence
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      secret_present: ${{ steps.check.outputs.secret_present }}
+    steps:
+      - name: Check if secret is set
+        id: check
+        env:
+          SECRET_VALUE: ${{ secrets.PROTECTED_NAMES }}
+        run: |
+          if [ -n "$SECRET_VALUE" ]; then
+            echo "secret_present=true" >> $GITHUB_OUTPUT
+          else
+            echo "secret_present=false" >> $GITHUB_OUTPUT
+          fi
+
+  scan-pr-diff:
+    name: Scan PR Diff and Metadata
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: check-secret
+    if: github.event_name == 'pull_request' && needs.check-secret.outputs.secret_present == 'true'
+    steps:
+      - name: Check out PR head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+
+      - name: Fetch base branch
+        run: |
+          git fetch origin ${{ github.base_ref }}
+
+      - name: Scan file paths in diff
+        id: scan-paths
+        env:
+          PROTECTED_NAMES: ${{ secrets.PROTECTED_NAMES }}
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          echo "Scanning file paths in PR diff..."
+          
+          IFS='|' read -ra NAMES <<< "$PROTECTED_NAMES"
+          
+          FINDINGS=$(mktemp)
+          git diff --name-only origin/$BASE_REF...HEAD | while read -r file; do
+            for name in "${NAMES[@]}"; do
+              name_trimmed=$(echo "$name" | xargs)
+              if [ -n "$name_trimmed" ]; then
+                if echo "$file" | grep -qi "$name_trimmed"; then
+                  echo "::warning file=$file::Possible protected name in file path"
+                  echo "$file" >> "$FINDINGS"
+                fi
+              fi
+            done
+          done
+          
+          if [ -s "$FINDINGS" ]; then
+            echo "found=true" >> $GITHUB_OUTPUT
+            echo "count=$(wc -l < "$FINDINGS")" >> $GITHUB_OUTPUT
+          else
+            echo "found=false" >> $GITHUB_OUTPUT
+            echo "count=0" >> $GITHUB_OUTPUT
+          fi
+          rm "$FINDINGS"
+
+      - name: Scan file contents in diff
+        id: scan-contents
+        env:
+          PROTECTED_NAMES: ${{ secrets.PROTECTED_NAMES }}
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          echo "Scanning file contents in PR diff..."
+          
+          IFS='|' read -ra NAMES <<< "$PROTECTED_NAMES"
+          
+          FINDINGS=$(mktemp)
+          current_file=""
+          
+          git diff -U0 origin/$BASE_REF...HEAD | while IFS= read -r line; do
+            if [[ "$line" =~ ^diff\ --git ]]; then
+              current_file=$(echo "$line" | sed 's|^diff --git a/\(.*\) b/.*|\1|')
+            elif [[ "$line" =~ ^@@ ]]; then
+              line_info=$(echo "$line" | sed 's/@@ -[0-9,]* +\([0-9]*\).*/\1/')
+            elif [[ "$line" =~ ^[\+] ]] && [[ ! "$line" =~ ^\+\+\+ ]]; then
+              for name in "${NAMES[@]}"; do
+                name_trimmed=$(echo "$name" | xargs)
+                if [ -n "$name_trimmed" ]; then
+                  if echo "$line" | grep -qi "$name_trimmed"; then
+                    echo "::warning file=$current_file,line=$line_info::Possible protected name in added line"
+                    echo "$current_file:$line_info" >> "$FINDINGS"
+                  fi
+                fi
+              done
+            fi
+          done
+          
+          if [ -s "$FINDINGS" ]; then
+            echo "found=true" >> $GITHUB_OUTPUT
+            echo "count=$(wc -l < "$FINDINGS")" >> $GITHUB_OUTPUT
+          else
+            echo "found=false" >> $GITHUB_OUTPUT
+            echo "count=0" >> $GITHUB_OUTPUT
+          fi
+          rm "$FINDINGS"
+
+      - name: Scan PR title
+        id: scan-title
+        env:
+          PROTECTED_NAMES: ${{ secrets.PROTECTED_NAMES }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          echo "Scanning PR title..."
+          
+          IFS='|' read -ra NAMES <<< "$PROTECTED_NAMES"
+          
+          FOUND=false
+          for name in "${NAMES[@]}"; do
+            name_trimmed=$(echo "$name" | xargs)
+            if [ -n "$name_trimmed" ]; then
+              if echo "$PR_TITLE" | grep -qi "$name_trimmed"; then
+                echo "::warning::Possible protected name in PR title"
+                FOUND=true
+              fi
+            fi
+          done
+          
+          echo "found=$FOUND" >> $GITHUB_OUTPUT
+
+      - name: Scan PR body
+        id: scan-body
+        env:
+          PROTECTED_NAMES: ${{ secrets.PROTECTED_NAMES }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          echo "Scanning PR body..."
+          
+          IFS='|' read -ra NAMES <<< "$PROTECTED_NAMES"
+          
+          FOUND=false
+          for name in "${NAMES[@]}"; do
+            name_trimmed=$(echo "$name" | xargs)
+            if [ -n "$name_trimmed" ]; then
+              if echo "$PR_BODY" | grep -qi "$name_trimmed"; then
+                echo "::warning::Possible protected name in PR body"
+                FOUND=true
+              fi
+            fi
+          done
+          
+          echo "found=$FOUND" >> $GITHUB_OUTPUT
+
+      - name: Scan commit messages
+        id: scan-commits
+        env:
+          PROTECTED_NAMES: ${{ secrets.PROTECTED_NAMES }}
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          echo "Scanning commit messages..."
+          
+          IFS='|' read -ra NAMES <<< "$PROTECTED_NAMES"
+          
+          FINDINGS=$(mktemp)
+          
+          git log --format="%H %s%n%b" origin/$BASE_REF..HEAD | while IFS= read -r line; do
+            if [[ "$line" =~ ^[0-9a-f]{40} ]]; then
+              commit_sha=$(echo "$line" | cut -d' ' -f1)
+              message=$(echo "$line" | cut -d' ' -f2-)
+              commit_context="$commit_sha"
+            else
+              message="$line"
+            fi
+            
+            for name in "${NAMES[@]}"; do
+              name_trimmed=$(echo "$name" | xargs)
+              if [ -n "$name_trimmed" ]; then
+                if echo "$message" | grep -qi "$name_trimmed"; then
+                  echo "::warning::Possible protected name in commit: $commit_context"
+                  echo "$commit_context" >> "$FINDINGS"
+                fi
+              fi
+            done
+          done
+          
+          if [ -s "$FINDINGS" ]; then
+            echo "found=true" >> $GITHUB_OUTPUT
+            echo "count=$(wc -l < "$FINDINGS")" >> $GITHUB_OUTPUT
+          else
+            echo "found=false" >> $GITHUB_OUTPUT
+            echo "count=0" >> $GITHUB_OUTPUT
+          fi
+          rm "$FINDINGS"
+
+      - name: Generate summary
+        if: always()
+        run: |
+          echo "# Private Name Check Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Status:** Report-only (not a required check)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          TOTAL_FINDINGS=0
+          
+          if [ "${{ steps.scan-paths.outputs.found }}" = "true" ]; then
+            echo "- ⚠️ File paths: ${{ steps.scan-paths.outputs.count }} finding(s)" >> $GITHUB_STEP_SUMMARY
+            TOTAL_FINDINGS=$((TOTAL_FINDINGS + ${{ steps.scan-paths.outputs.count }}))
+          else
+            echo "- ✅ File paths: clean" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ steps.scan-contents.outputs.found }}" = "true" ]; then
+            echo "- ⚠️ File contents: ${{ steps.scan-contents.outputs.count }} finding(s)" >> $GITHUB_STEP_SUMMARY
+            TOTAL_FINDINGS=$((TOTAL_FINDINGS + ${{ steps.scan-contents.outputs.count }}))
+          else
+            echo "- ✅ File contents: clean" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ steps.scan-title.outputs.found }}" = "true" ]; then
+            echo "- ⚠️ PR title: finding detected" >> $GITHUB_STEP_SUMMARY
+            TOTAL_FINDINGS=$((TOTAL_FINDINGS + 1))
+          else
+            echo "- ✅ PR title: clean" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ steps.scan-body.outputs.found }}" = "true" ]; then
+            echo "- ⚠️ PR body: finding detected" >> $GITHUB_STEP_SUMMARY
+            TOTAL_FINDINGS=$((TOTAL_FINDINGS + 1))
+          else
+            echo "- ✅ PR body: clean" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ steps.scan-commits.outputs.found }}" = "true" ]; then
+            echo "- ⚠️ Commit messages: ${{ steps.scan-commits.outputs.count }} finding(s)" >> $GITHUB_STEP_SUMMARY
+            TOTAL_FINDINGS=$((TOTAL_FINDINGS + ${{ steps.scan-commits.outputs.count }}))
+          else
+            echo "- ✅ Commit messages: clean" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ "$TOTAL_FINDINGS" -gt 0 ]; then
+            echo "**Total findings:** $TOTAL_FINDINGS" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "See workflow annotations for specific locations." >> $GITHUB_STEP_SUMMARY
+            echo "Matched text is never printed for privacy." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "**Result:** No protected names detected ✅" >> $GITHUB_STEP_SUMMARY
+          fi
+
+  scan-pr-diff-skipped:
+    name: Scan PR Diff and Metadata
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: check-secret
+    if: github.event_name == 'pull_request' && needs.check-secret.outputs.secret_present != 'true'
+    steps:
+      - name: Report skipped (secret missing)
+        run: |
+          echo "# Private Name Check: Skipped" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Status:** skipped: names secret missing" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "The \`PROTECTED_NAMES\` repository secret is not set." >> $GITHUB_STEP_SUMMARY
+          echo "This check will run once the secret is configured." >> $GITHUB_STEP_SUMMARY
+
+  scan-issue-text:
+    name: Scan Issue and Comment Text
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: check-secret
+    if: (github.event_name == 'issues' || github.event_name == 'issue_comment') && needs.check-secret.outputs.secret_present == 'true'
+    steps:
+      - name: Scan issue title
+        id: scan-title
+        if: github.event_name == 'issues' && github.event.issue.pull_request == null
+        env:
+          PROTECTED_NAMES: ${{ secrets.PROTECTED_NAMES }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          echo "Scanning issue title..."
+          
+          IFS='|' read -ra NAMES <<< "$PROTECTED_NAMES"
+          
+          FOUND=false
+          for name in "${NAMES[@]}"; do
+            name_trimmed=$(echo "$name" | xargs)
+            if [ -n "$name_trimmed" ]; then
+              if echo "$ISSUE_TITLE" | grep -qi "$name_trimmed"; then
+                echo "::warning::Possible protected name in issue #$ISSUE_NUMBER title"
+                FOUND=true
+              fi
+            fi
+          done
+          
+          echo "found=$FOUND" >> $GITHUB_OUTPUT
+
+      - name: Scan issue body
+        id: scan-body
+        if: github.event_name == 'issues' && github.event.issue.pull_request == null
+        env:
+          PROTECTED_NAMES: ${{ secrets.PROTECTED_NAMES }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          echo "Scanning issue body..."
+          
+          IFS='|' read -ra NAMES <<< "$PROTECTED_NAMES"
+          
+          FOUND=false
+          for name in "${NAMES[@]}"; do
+            name_trimmed=$(echo "$name" | xargs)
+            if [ -n "$name_trimmed" ]; then
+              if echo "$ISSUE_BODY" | grep -qi "$name_trimmed"; then
+                echo "::warning::Possible protected name in issue #$ISSUE_NUMBER body"
+                FOUND=true
+              fi
+            fi
+          done
+          
+          echo "found=$FOUND" >> $GITHUB_OUTPUT
+
+      - name: Scan comment
+        id: scan-comment
+        if: github.event_name == 'issue_comment'
+        env:
+          PROTECTED_NAMES: ${{ secrets.PROTECTED_NAMES }}
+          COMMENT_BODY: ${{ github.event.comment.body }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          COMMENT_ID: ${{ github.event.comment.id }}
+        run: |
+          echo "Scanning comment..."
+          
+          IFS='|' read -ra NAMES <<< "$PROTECTED_NAMES"
+          
+          FOUND=false
+          for name in "${NAMES[@]}"; do
+            name_trimmed=$(echo "$name" | xargs)
+            if [ -n "$name_trimmed" ]; then
+              if echo "$COMMENT_BODY" | grep -qi "$name_trimmed"; then
+                echo "::warning::Possible protected name in issue #$ISSUE_NUMBER comment #$COMMENT_ID"
+                FOUND=true
+              fi
+            fi
+          done
+          
+          echo "found=$FOUND" >> $GITHUB_OUTPUT
+
+      - name: Check out for gh CLI
+        if: |
+          github.event.issue.pull_request == null && 
+          (steps.scan-title.outputs.found == 'true' || 
+           steps.scan-body.outputs.found == 'true' || 
+           steps.scan-comment.outputs.found == 'true')
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Add needs-name-scrub label
+        if: |
+          github.event.issue.pull_request == null && 
+          (steps.scan-title.outputs.found == 'true' || 
+           steps.scan-body.outputs.found == 'true' || 
+           steps.scan-comment.outputs.found == 'true')
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          gh label create needs-name-scrub \
+            --color d73a4a \
+            --description "Contains protected name requiring manual review" \
+            --force || true
+          gh issue edit "$ISSUE_NUMBER" --add-label needs-name-scrub
+
+      - name: Generate summary
+        if: always()
+        run: |
+          echo "# Private Name Check Report (Issue/Comment)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Status:** Report-only (not a required check)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          ANY_FOUND=false
+          
+          if [ "${{ steps.scan-title.outputs.found }}" = "true" ]; then
+            echo "- ⚠️ Issue title: finding detected" >> $GITHUB_STEP_SUMMARY
+            ANY_FOUND=true
+          fi
+          
+          if [ "${{ steps.scan-body.outputs.found }}" = "true" ]; then
+            echo "- ⚠️ Issue body: finding detected" >> $GITHUB_STEP_SUMMARY
+            ANY_FOUND=true
+          fi
+          
+          if [ "${{ steps.scan-comment.outputs.found }}" = "true" ]; then
+            echo "- ⚠️ Comment: finding detected" >> $GITHUB_STEP_SUMMARY
+            ANY_FOUND=true
+          fi
+          
+          if [ "$ANY_FOUND" = "false" ]; then
+            echo "- ✅ No protected names detected" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "The \`needs-name-scrub\` label has been added." >> $GITHUB_STEP_SUMMARY
+            echo "Manual review and edit required." >> $GITHUB_STEP_SUMMARY
+            echo "Matched text is never printed for privacy." >> $GITHUB_STEP_SUMMARY
+          fi
+
+  scan-issue-text-skipped:
+    name: Scan Issue and Comment Text
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: check-secret
+    if: (github.event_name == 'issues' || github.event_name == 'issue_comment') && needs.check-secret.outputs.secret_present != 'true'
+    steps:
+      - name: Report skipped (secret missing)
+        run: |
+          echo "# Private Name Check: Skipped" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Status:** skipped: names secret missing" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "The \`PROTECTED_NAMES\` repository secret is not set." >> $GITHUB_STEP_SUMMARY
+          echo "This check will run once the secret is configured." >> $GITHUB_STEP_SUMMARY
