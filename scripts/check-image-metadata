@@ -7,6 +7,11 @@ if ! command -v exiftool >/dev/null 2>&1; then
   exit 1
 fi
 
+if ! command -v strings >/dev/null 2>&1; then
+  echo "Error: strings is not installed" >&2
+  exit 1
+fi
+
 # Read stamp text from config
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 STAMP=$(node -p "require('$SCRIPT_DIR/image-stamp.json').stamp")
@@ -91,6 +96,24 @@ while IFS= read -r img; do
   # Strip leading ./ for consistent path matching
   IMG_CLEAN="${img#./}"
   
+  # Identify if this is a known JPEG-with-.png-extension file
+  IS_JPEG_PNG=false
+  for known_jpeg_png in "${JPEG_PNG_NAMES[@]}"; do
+    if [[ "$IMG_CLEAN" == "$known_jpeg_png" ]]; then
+      IS_JPEG_PNG=true
+      break
+    fi
+  done
+  
+  # For JPEG-as-.png files, verify format first
+  if [ "$IS_JPEG_PNG" = true ]; then
+    FILE_TYPE=$(exiftool -s -s -s -FileType "$img" 2>/dev/null || echo "")
+    if [[ "$FILE_TYPE" != "JPEG" ]]; then
+      echo "Error: expected JPEG format for $img but got $FILE_TYPE" >&2
+      exit 1
+    fi
+  fi
+  
   # Check for C2PA/JUMBF bytes using strings (covers all markers including APP11)
   if strings "$img" | grep -qE '(c2pa|jumb|caBX)'; then
     C2PA_FOUND+=("$img")
@@ -131,27 +154,10 @@ while IFS= read -r img; do
   if [ "$HAS_STAMP" = false ]; then
     # Check actual file type
     FILE_TYPE=$(exiftool -s -s -s -FileType "$img" 2>/dev/null || echo "")
-    ACTUAL_EXT="${img##*.}"
     
-    # For the 16 known JPEG files with .png extensions, verify as JPEG with stamp
-    IS_JPEG_PNG=false
-    for known_jpeg_png in "${JPEG_PNG_NAMES[@]}"; do
-      if [[ "$IMG_CLEAN" == "$known_jpeg_png" ]]; then
-        IS_JPEG_PNG=true
-        break
-      fi
-    done
-    
-    if [ "$IS_JPEG_PNG" = true ]; then
-      if [[ "$FILE_TYPE" != "JPEG" ]]; then
-        echo "Error: expected JPEG format for $img but got $FILE_TYPE" >&2
-        exit 1
-      fi
-      # File is in the known list and is JPEG, so it should have stamp
-      MISSING_STAMP+=("$img")
-      ((FAILURES++)) || true
-    elif [[ "$FILE_TYPE" =~ ^(JPEG|PNG|TIFF|WEBP)$ ]]; then
-      # Format supports metadata but stamp is missing
+    # JPEG-as-.png files need stamps (already verified as JPEG above)
+    # Other formats that support metadata also need stamps
+    if [ "$IS_JPEG_PNG" = true ] || [[ "$FILE_TYPE" =~ ^(JPEG|PNG|TIFF|WEBP)$ ]]; then
       MISSING_STAMP+=("$img")
       ((FAILURES++)) || true
     fi

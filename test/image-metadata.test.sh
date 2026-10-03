@@ -221,10 +221,12 @@ fi
 echo "Test 14: JPEG-in-.png list recognized with ./ prefix"
 # Create a real PNG file at a known JPEG-.png list path with ./ prefix
 # This tests that the list matching works even when find adds ./
+# The fixture is real PNG bytes (not JPEG) at a path in JPEG_PNG_NAMES,
+# so the format check must fail with the exact "expected JPEG format" message.
 TEST_PNG="$TEMP_DIR/test-jpeg-png-check.png"
 # Create real PNG content (PNG signature + minimal IHDR)
 printf '\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x02\x00\x00\x00\x90wS\xde' > "$TEST_PNG"
-# Add stamp so only the format mismatch triggers
+# Attempt to add stamp, but exiftool will fail on this truncated PNG; || true hides that
 exiftool -q -overwrite_original -Copyright="Property of Infinity Enterprises" "$TEST_PNG" 2>/dev/null || true
 # Create the directory structure and symlink to simulate a listed path
 mkdir -p "$TEMP_DIR/design/sovrano-v1/editorial-art"
@@ -372,6 +374,75 @@ elif echo "$OUTPUT" | grep -q "skipped"; then
   pass_test "Scrub script exits non-zero when file is skipped"
 else
   fail_test "Scrub script should report skipped files"
+fi
+
+# Test 22: Check script fails when strings is missing
+echo "Test 22: Check script fails when strings is missing"
+RESTRICTED_BIN=$(mktemp -d)
+# Keep essential coreutils and exiftool, hide only strings
+for cmd in node bash dirname basename cat grep sed awk sort head tail wc find identify exiftool; do
+  if command -v "$cmd" >/dev/null 2>&1; then
+    ln -s "$(command -v "$cmd")" "$RESTRICTED_BIN/$cmd" 2>/dev/null || true
+  fi
+done
+if OUTPUT=$(timeout 5 env PATH="$RESTRICTED_BIN" "$PROJECT_ROOT/scripts/check-image-metadata" "$TEMP_DIR/clean-stamped.png" 2>&1); then
+  fail_test "Check script should fail without strings (exit 0)"
+elif echo "$OUTPUT" | grep -q "strings is not installed"; then
+  pass_test "Check script fails closed without strings"
+else
+  fail_test "Check script failed but wrong error message: $OUTPUT"
+fi
+rm -rf "$RESTRICTED_BIN"
+
+# Test 23: JPEG-as-.png with missing stamp should fail
+echo "Test 23: JPEG-as-.png with missing stamp should fail"
+# Create a JPEG file with .png extension at a listed path, no stamp
+mkdir -p "$TEMP_DIR/design/sovrano-v1/editorial-art"
+convert -size 100x100 xc:teal "$TEMP_DIR/design/sovrano-v1/editorial-art/01-penthouse-portrait.png"
+# The above creates a PNG by default, convert it to JPEG format but keep .png extension
+convert "$TEMP_DIR/design/sovrano-v1/editorial-art/01-penthouse-portrait.png" -format jpeg "$TEMP_DIR/design/sovrano-v1/editorial-art/01-penthouse-portrait.png"
+if ! "$PROJECT_ROOT/scripts/check-image-metadata" "$TEMP_DIR/design/sovrano-v1/editorial-art/01-penthouse-portrait.png" >/dev/null 2>&1; then
+  pass_test "JPEG-as-.png without stamp fails"
+else
+  fail_test "JPEG-as-.png without stamp should fail"
+fi
+
+# Test 24: JPEG-as-.png with EXIF device fields should fail
+echo "Test 24: JPEG-as-.png with EXIF device fields should fail"
+# Create JPEG with device fields at a listed path
+convert -size 100x100 xc:navy "$TEMP_DIR/has-jpeg-png-device.jpg"
+exiftool -q -overwrite_original -Make="TestCamera" -Copyright="Property of Infinity Enterprises" "$TEMP_DIR/has-jpeg-png-device.jpg"
+# Move to a JPEG-as-.png path
+mkdir -p "$TEMP_DIR/design/sovrano-v1/editorial-art/covers"
+mv "$TEMP_DIR/has-jpeg-png-device.jpg" "$TEMP_DIR/design/sovrano-v1/editorial-art/covers/cover-daily-desk.png"
+if ! "$PROJECT_ROOT/scripts/check-image-metadata" "$TEMP_DIR/design/sovrano-v1/editorial-art/covers/cover-daily-desk.png" >/dev/null 2>&1; then
+  pass_test "JPEG-as-.png with device fields fails"
+else
+  fail_test "JPEG-as-.png with device fields should fail"
+fi
+
+# Test 25: JPEG-as-.png with XMP should fail
+echo "Test 25: JPEG-as-.png with XMP should fail"
+convert -size 100x100 xc:olive "$TEMP_DIR/has-jpeg-png-xmp.jpg"
+exiftool -q -overwrite_original -XMP:Creator="Test Creator" -Copyright="Property of Infinity Enterprises" "$TEMP_DIR/has-jpeg-png-xmp.jpg"
+mkdir -p "$TEMP_DIR/design/sovrano-v1/editorial-art"
+mv "$TEMP_DIR/has-jpeg-png-xmp.jpg" "$TEMP_DIR/design/sovrano-v1/editorial-art/02-lounge-couple.png"
+if ! "$PROJECT_ROOT/scripts/check-image-metadata" "$TEMP_DIR/design/sovrano-v1/editorial-art/02-lounge-couple.png" >/dev/null 2>&1; then
+  pass_test "JPEG-as-.png with XMP fails"
+else
+  fail_test "JPEG-as-.png with XMP should fail"
+fi
+
+# Test 26: JPEG-as-.png with IPTC should fail
+echo "Test 26: JPEG-as-.png with IPTC should fail"
+convert -size 100x100 xc:maroon "$TEMP_DIR/has-jpeg-png-iptc.jpg"
+exiftool -q -overwrite_original -IPTC:By-line="Test Byline" -Copyright="Property of Infinity Enterprises" "$TEMP_DIR/has-jpeg-png-iptc.jpg"
+mkdir -p "$TEMP_DIR/design/sovrano-v1/editorial-art"
+mv "$TEMP_DIR/has-jpeg-png-iptc.jpg" "$TEMP_DIR/design/sovrano-v1/editorial-art/03-motore-chrome.png"
+if ! "$PROJECT_ROOT/scripts/check-image-metadata" "$TEMP_DIR/design/sovrano-v1/editorial-art/03-motore-chrome.png" >/dev/null 2>&1; then
+  pass_test "JPEG-as-.png with IPTC fails"
+else
+  fail_test "JPEG-as-.png with IPTC should fail"
 fi
 
 # Summary
