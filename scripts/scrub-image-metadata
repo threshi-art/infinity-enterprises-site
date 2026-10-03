@@ -1,6 +1,17 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Fail closed: verify required tools
+if ! command -v exiftool >/dev/null 2>&1; then
+  echo "Error: exiftool is not installed" >&2
+  exit 1
+fi
+
+if ! command -v identify >/dev/null 2>&1; then
+  echo "Error: ImageMagick (identify) is not installed" >&2
+  exit 1
+fi
+
 # Read stamp text from config
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 STAMP=$(node -p "require('$SCRIPT_DIR/image-stamp.json').stamp")
@@ -10,12 +21,25 @@ if [ -z "$STAMP" ]; then
   exit 1
 fi
 
-# Find all image files (excluding node_modules, .git, dist)
-IMAGES=$(find . -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.webp" -o -name "*.gif" -o -name "*.avif" \) \
-  ! -path "*/node_modules/*" \
-  ! -path "*/.git/*" \
-  ! -path "*/dist/*" \
-  ! -path "*/build/*" | sort)
+# Accept optional file list as arguments, or discover all images
+if [ $# -gt 0 ]; then
+  IMAGES=""
+  for file in "$@"; do
+    if [ -f "$file" ]; then
+      IMAGES="${IMAGES}${file}"$'\n'
+    else
+      echo "Warning: file not found: $file" >&2
+    fi
+  done
+  IMAGES=$(echo "$IMAGES" | grep -v '^$' | sort || echo "")
+else
+  # Find all image files (excluding node_modules, .git, dist)
+  IMAGES=$(find . -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.webp" -o -name "*.gif" -o -name "*.avif" \) \
+    ! -path "*/node_modules/*" \
+    ! -path "*/.git/*" \
+    ! -path "*/dist/*" \
+    ! -path "*/build/*" | sort)
+fi
 
 if [ -z "$IMAGES" ]; then
   echo "No image files found"
@@ -103,9 +127,12 @@ while IFS= read -r img; do
 done <<< "$IMAGES"
 
 echo "Done: $PROCESSED files processed successfully"
+
 if [ $SKIPPED -gt 0 ]; then
-  echo "Skipped: $SKIPPED files" >&2
+  echo "Error: $SKIPPED file(s) were skipped" >&2
+  exit 1
 fi
+
 if [ $FAILED -gt 0 ]; then
   echo "Failed: $FAILED files" >&2
   exit 1
