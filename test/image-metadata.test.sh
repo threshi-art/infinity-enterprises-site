@@ -709,14 +709,20 @@ else
   else
     fail_test "Uppercase .PNG with JPEG content should fail (exit=$EXIT_CODE), got: $OUTPUT"
   fi
-  # Also test whole-tree mode (no file list)
-  cd "$TEMP_DIR"
+  # Also test whole-tree mode (no file list) - use isolated directory
+  ISOLATED_DIR=$(mktemp -d)
+  mkdir -p "$ISOLATED_DIR/scripts"
+  cp "$PROJECT_ROOT/scripts/check-image-metadata" "$ISOLATED_DIR/scripts/"
+  cp "$PROJECT_ROOT/scripts/image-stamp.json" "$ISOLATED_DIR/scripts/"
+  cp "$TEST_UPPERCASE" "$ISOLATED_DIR/test.PNG"
+  cd "$ISOLATED_DIR"
   set +e
-  OUTPUT=$("$PROJECT_ROOT/scripts/check-image-metadata" 2>&1)
+  OUTPUT=$(IMAGE_CHECK_ROOT="$ISOLATED_DIR" "$ISOLATED_DIR/scripts/check-image-metadata" 2>&1)
   EXIT_CODE=$?
   set -e
   cd "$PROJECT_ROOT"
-  if [ $EXIT_CODE -ne 0 ] && echo "$OUTPUT" | grep -q "JPEG content in .png file not on the allowed list"; then
+  rm -rf "$ISOLATED_DIR"
+  if [ $EXIT_CODE -ne 0 ] && echo "$OUTPUT" | grep -q "JPEG content in .png file not on the allowed list" && echo "$OUTPUT" | grep -q "test.PNG"; then
     pass_test "Uppercase .PNG with JPEG content fails (whole-tree mode)"
   else
     fail_test "Uppercase .PNG with JPEG content should fail in whole-tree mode (exit=$EXIT_CODE), got: $OUTPUT"
