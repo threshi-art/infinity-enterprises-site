@@ -31,8 +31,10 @@ Matching is case-insensitive. When the secret is missing, scan jobs are **skippe
 
 #### On Issues and Comments (`issues`, `issue_comment` events)
 - Issue title and body
-- Issue comments
-- Automatically adds `needs-name-scrub` label when a match is found
+- Issue comments (including comments on pull requests)
+- Automatically adds `needs-name-scrub` label when a match is found on issues
+
+**Note:** Comments on pull request conversations are scanned and flagged with an annotation, but do NOT receive the `needs-name-scrub` label because the workflow does not have `pull-requests: write` permission.
 
 ### What Doesn't Get Scanned (Current Scope)
 
@@ -106,9 +108,10 @@ All tests use dummy placeholder names (`DUMMYNAME`, `TESTNAME`) and verify that:
 
 ### When Secret is Missing
 
-- The `check-secret` job detects the absence
-- Scan jobs show as **skipped** (grey) with summary: "skipped: names secret missing"
-- The check does NOT pass (green), enforcing fail-closed behavior
+- The `check-secret` job (renamed to "Private name check - secret status") detects the absence
+- A step summary states "skipped: names secret missing" and a `::notice::` annotation is written
+- Scan jobs with names starting with "Scan" are skipped (grey status)
+- No job shows green while the secret is missing
 
 ### When Secret is Present
 
@@ -119,29 +122,23 @@ All tests use dummy placeholder names (`DUMMYNAME`, `TESTNAME`) and verify that:
 
 ## Workflow Jobs
 
-### 1. `check-secret`
-Detects whether `PROTECTED_NAMES` is set. Outputs `secret_present: true/false`.
+### 1. `check-secret` (renamed: "Private name check - secret status")
+Detects whether `PROTECTED_NAMES` is set. When missing, writes a skip message to the step summary and a `::notice::` annotation. Outputs `secret_present: true/false`. The job is renamed so it cannot be misread as a scan result.
 
 ### 2. `scan-pr-diff` (conditional on secret presence)
 Scans PR changes:
 - File paths: checks all changed file names
-- File contents: checks added lines in the diff
+- File contents: checks added lines in the diff (with per-line tracking)
 - PR metadata: checks title and body
 - Commits: checks all commit messages in the PR
 
 Generates a detailed summary showing findings per category.
 
-### 3. `scan-pr-diff-skipped` (when secret missing)
-Runs instead of `scan-pr-diff` when secret is absent. Shows skip message in summary.
-
-### 4. `scan-issue-text` (conditional on secret presence)
+### 3. `scan-issue-text` (conditional on secret presence)
 Scans issue/comment text:
-- Issue title and body (on `issues` event)
+- Issue title and body (on `issues` event, issues only)
 - Comment text (on `issue_comment` event)
-- Adds `needs-name-scrub` label automatically when matches are found
-
-### 5. `scan-issue-text-skipped` (when secret missing)
-Runs instead of `scan-issue-text` when secret is absent. Shows skip message in summary.
+- Adds `needs-name-scrub` label automatically when matches are found on issues (not on PR comments, which would require `pull-requests: write`)
 
 ## Future Enhancements (Planned)
 

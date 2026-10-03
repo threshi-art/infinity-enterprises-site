@@ -32,7 +32,7 @@ concurrency:
 
 jobs:
   check-secret:
-    name: Check Secret Presence
+    name: Private name check - secret status
     runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:
@@ -47,6 +47,13 @@ jobs:
             echo "secret_present=true" >> $GITHUB_OUTPUT
           else
             echo "secret_present=false" >> $GITHUB_OUTPUT
+            echo "# Private Name Check: Skipped" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Status:** skipped: names secret missing" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "The \`PROTECTED_NAMES\` repository secret is not set." >> $GITHUB_STEP_SUMMARY
+            echo "This check will run once the secret is configured." >> $GITHUB_STEP_SUMMARY
+            echo "::notice::Private name check skipped: names secret missing"
           fi
 
   scan-pr-diff:
@@ -62,8 +69,10 @@ jobs:
           fetch-depth: 0
 
       - name: Fetch base branch
+        env:
+          BASE_REF: ${{ github.base_ref }}
         run: |
-          git fetch origin ${{ github.base_ref }}
+          git fetch origin "$BASE_REF"
 
       - name: Scan file paths in diff
         id: scan-paths
@@ -76,11 +85,12 @@ jobs:
           IFS='|' read -ra NAMES <<< "$PROTECTED_NAMES"
           
           FINDINGS=$(mktemp)
-          git diff --name-only origin/$BASE_REF...HEAD | while read -r file; do
+          git diff --name-only "origin/$BASE_REF...HEAD" | while read -r file; do
             for name in "${NAMES[@]}"; do
-              name_trimmed=$(echo "$name" | xargs)
+              name_trimmed="${name#"${name%%[![:space:]]*}"}"
+              name_trimmed="${name_trimmed%"${name_trimmed##*[![:space:]]}"}"
               if [ -n "$name_trimmed" ]; then
-                if echo "$file" | grep -qi "$name_trimmed"; then
+                if printf '%s\n' "$file" | grep -qiF -- "$name_trimmed"; then
                   echo "::warning file=$file::Possible protected name in file path"
                   echo "$file" >> "$FINDINGS"
                 fi
@@ -109,22 +119,25 @@ jobs:
           
           FINDINGS=$(mktemp)
           current_file=""
+          line_number=0
           
-          git diff -U0 origin/$BASE_REF...HEAD | while IFS= read -r line; do
+          git diff -U0 "origin/$BASE_REF...HEAD" | while IFS= read -r line; do
             if [[ "$line" =~ ^diff\ --git ]]; then
-              current_file=$(echo "$line" | sed 's|^diff --git a/\(.*\) b/.*|\1|')
-            elif [[ "$line" =~ ^@@ ]]; then
-              line_info=$(echo "$line" | sed 's/@@ -[0-9,]* +\([0-9]*\).*/\1/')
+              current_file=$(printf '%s\n' "$line" | sed 's|^diff --git a/\(.*\) b/.*|\1|')
+            elif [[ "$line" =~ ^@@\ -[0-9,]*\ \+([0-9]+) ]]; then
+              line_number="${BASH_REMATCH[1]}"
             elif [[ "$line" =~ ^[\+] ]] && [[ ! "$line" =~ ^\+\+\+ ]]; then
               for name in "${NAMES[@]}"; do
-                name_trimmed=$(echo "$name" | xargs)
+                name_trimmed="${name#"${name%%[![:space:]]*}"}"
+                name_trimmed="${name_trimmed%"${name_trimmed##*[![:space:]]}"}"
                 if [ -n "$name_trimmed" ]; then
-                  if echo "$line" | grep -qi "$name_trimmed"; then
-                    echo "::warning file=$current_file,line=$line_info::Possible protected name in added line"
-                    echo "$current_file:$line_info" >> "$FINDINGS"
+                  if printf '%s\n' "$line" | grep -qiF -- "$name_trimmed"; then
+                    echo "::warning file=$current_file,line=$line_number::Possible protected name in added line"
+                    echo "$current_file:$line_number" >> "$FINDINGS"
                   fi
                 fi
               done
+              ((line_number++))
             fi
           done
           
@@ -149,9 +162,10 @@ jobs:
           
           FOUND=false
           for name in "${NAMES[@]}"; do
-            name_trimmed=$(echo "$name" | xargs)
+            name_trimmed="${name#"${name%%[![:space:]]*}"}"
+            name_trimmed="${name_trimmed%"${name_trimmed##*[![:space:]]}"}"
             if [ -n "$name_trimmed" ]; then
-              if echo "$PR_TITLE" | grep -qi "$name_trimmed"; then
+              if printf '%s\n' "$PR_TITLE" | grep -qiF -- "$name_trimmed"; then
                 echo "::warning::Possible protected name in PR title"
                 FOUND=true
               fi
@@ -172,9 +186,10 @@ jobs:
           
           FOUND=false
           for name in "${NAMES[@]}"; do
-            name_trimmed=$(echo "$name" | xargs)
+            name_trimmed="${name#"${name%%[![:space:]]*}"}"
+            name_trimmed="${name_trimmed%"${name_trimmed##*[![:space:]]}"}"
             if [ -n "$name_trimmed" ]; then
-              if echo "$PR_BODY" | grep -qi "$name_trimmed"; then
+              if printf '%s\n' "$PR_BODY" | grep -qiF -- "$name_trimmed"; then
                 echo "::warning::Possible protected name in PR body"
                 FOUND=true
               fi
@@ -195,19 +210,20 @@ jobs:
           
           FINDINGS=$(mktemp)
           
-          git log --format="%H %s%n%b" origin/$BASE_REF..HEAD | while IFS= read -r line; do
+          git log --format="%H %s%n%b" "origin/$BASE_REF..HEAD" | while IFS= read -r line; do
             if [[ "$line" =~ ^[0-9a-f]{40} ]]; then
-              commit_sha=$(echo "$line" | cut -d' ' -f1)
-              message=$(echo "$line" | cut -d' ' -f2-)
+              commit_sha=$(printf '%s\n' "$line" | cut -d' ' -f1)
+              message=$(printf '%s\n' "$line" | cut -d' ' -f2-)
               commit_context="$commit_sha"
             else
               message="$line"
             fi
             
             for name in "${NAMES[@]}"; do
-              name_trimmed=$(echo "$name" | xargs)
+              name_trimmed="${name#"${name%%[![:space:]]*}"}"
+              name_trimmed="${name_trimmed%"${name_trimmed##*[![:space:]]}"}"
               if [ -n "$name_trimmed" ]; then
-                if echo "$message" | grep -qi "$name_trimmed"; then
+                if printf '%s\n' "$message" | grep -qiF -- "$name_trimmed"; then
                   echo "::warning::Possible protected name in commit: $commit_context"
                   echo "$commit_context" >> "$FINDINGS"
                 fi
@@ -279,22 +295,6 @@ jobs:
             echo "**Result:** No protected names detected ✅" >> $GITHUB_STEP_SUMMARY
           fi
 
-  scan-pr-diff-skipped:
-    name: Scan PR Diff and Metadata
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    needs: check-secret
-    if: github.event_name == 'pull_request' && needs.check-secret.outputs.secret_present != 'true'
-    steps:
-      - name: Report skipped (secret missing)
-        run: |
-          echo "# Private Name Check: Skipped" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Status:** skipped: names secret missing" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "The \`PROTECTED_NAMES\` repository secret is not set." >> $GITHUB_STEP_SUMMARY
-          echo "This check will run once the secret is configured." >> $GITHUB_STEP_SUMMARY
-
   scan-issue-text:
     name: Scan Issue and Comment Text
     runs-on: ubuntu-latest
@@ -316,9 +316,10 @@ jobs:
           
           FOUND=false
           for name in "${NAMES[@]}"; do
-            name_trimmed=$(echo "$name" | xargs)
+            name_trimmed="${name#"${name%%[![:space:]]*}"}"
+            name_trimmed="${name_trimmed%"${name_trimmed##*[![:space:]]}"}"
             if [ -n "$name_trimmed" ]; then
-              if echo "$ISSUE_TITLE" | grep -qi "$name_trimmed"; then
+              if printf '%s\n' "$ISSUE_TITLE" | grep -qiF -- "$name_trimmed"; then
                 echo "::warning::Possible protected name in issue #$ISSUE_NUMBER title"
                 FOUND=true
               fi
@@ -341,9 +342,10 @@ jobs:
           
           FOUND=false
           for name in "${NAMES[@]}"; do
-            name_trimmed=$(echo "$name" | xargs)
+            name_trimmed="${name#"${name%%[![:space:]]*}"}"
+            name_trimmed="${name_trimmed%"${name_trimmed##*[![:space:]]}"}"
             if [ -n "$name_trimmed" ]; then
-              if echo "$ISSUE_BODY" | grep -qi "$name_trimmed"; then
+              if printf '%s\n' "$ISSUE_BODY" | grep -qiF -- "$name_trimmed"; then
                 echo "::warning::Possible protected name in issue #$ISSUE_NUMBER body"
                 FOUND=true
               fi
@@ -367,9 +369,10 @@ jobs:
           
           FOUND=false
           for name in "${NAMES[@]}"; do
-            name_trimmed=$(echo "$name" | xargs)
+            name_trimmed="${name#"${name%%[![:space:]]*}"}"
+            name_trimmed="${name_trimmed%"${name_trimmed##*[![:space:]]}"}"
             if [ -n "$name_trimmed" ]; then
-              if echo "$COMMENT_BODY" | grep -qi "$name_trimmed"; then
+              if printf '%s\n' "$COMMENT_BODY" | grep -qiF -- "$name_trimmed"; then
                 echo "::warning::Possible protected name in issue #$ISSUE_NUMBER comment #$COMMENT_ID"
                 FOUND=true
               fi
@@ -435,19 +438,3 @@ jobs:
             echo "Manual review and edit required." >> $GITHUB_STEP_SUMMARY
             echo "Matched text is never printed for privacy." >> $GITHUB_STEP_SUMMARY
           fi
-
-  scan-issue-text-skipped:
-    name: Scan Issue and Comment Text
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    needs: check-secret
-    if: (github.event_name == 'issues' || github.event_name == 'issue_comment') && needs.check-secret.outputs.secret_present != 'true'
-    steps:
-      - name: Report skipped (secret missing)
-        run: |
-          echo "# Private Name Check: Skipped" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Status:** skipped: names secret missing" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "The \`PROTECTED_NAMES\` repository secret is not set." >> $GITHUB_STEP_SUMMARY
-          echo "This check will run once the secret is configured." >> $GITHUB_STEP_SUMMARY
