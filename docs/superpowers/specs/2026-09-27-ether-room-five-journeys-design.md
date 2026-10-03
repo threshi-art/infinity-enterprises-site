@@ -53,7 +53,7 @@ Do not turn scrolling into a rapid series of seeks: choose the scene with the la
 
 The page should feel like an editorial listening environment. Images command the viewport, titles have quiet negative space, and controls remain readable without covering the subject. The three new journeys share navigation, controls, focus treatment, and source-credit conventions but each has its own palette and progression. Preserve the existing four `src/assets/ether-*.jpg` files unchanged.
 
-Ember supplies twelve new scene masters, plus responsive exports and card crops derived from those masters. The asset manifest records each file's source scene, pixel dimensions, export format, generation tool and prompt when known, production status, alt text, and confirmation that it contains no real person, trademark, or readable generated text. If a generation detail is unavailable, the manifest says unknown. The masters and web exports live in the repository through the shared `studio` workflow and a normal pull request. Measure page weight and provide mobile crops before release.
+Ember supplies twelve new scene masters, plus responsive exports and card crops derived from those masters. The asset manifest records each file's source scene, pixel dimensions, export format, generation tool and prompt when known, production status, alt text, and confirmation that it contains no real person, trademark, or readable generated text. If a generation detail is unavailable, the manifest says unknown. The masters and web exports are committed to a feature branch and opened as a pull request into `studio`. Measure page weight and provide mobile crops before release.
 
 ## Accessibility and failure behavior
 
@@ -67,7 +67,7 @@ If a source fails to embed, offer its original YouTube link and a truthful avail
 2. Ember supplies the twelve original masters, web exports, phone crops, and manifest. Forge integrates them into the three new journeys.
 3. Puck verifies the four supplied new video URLs, the two-source sequence, creator attribution, embed behavior, durations, and each proposed movement time. Record check dates and any unavailable source.
 4. Forge implements playback and scene selection with tests for silent first load, scene selection, source switch, Close, blocked autoplay fallback, keyboard behavior, and reduced motion.
-5. Review the exact `studio` head: `npm ci && npm run build`, desktop and phone manual checks, source playback tests, image weight, and accessibility results. The pull request carries the issue-to-action evidence record.
+5. Review the exact head: open a pull request into `studio`, confirm `npm ci && npm run build` passes, perform desktop and phone manual checks, source playback tests, image weight verification, and accessibility results. CI must be green on the exact head commit, and an exact-head review sign-off is current, before the pinned merge. The pull request carries the issue-to-action evidence record.
 6. Codex or Cursor reviews and accepts a release to `main`. Live Sites publication, source mirror verification, and OneDrive synchronization are separate release steps.
 
 The new routes may land incrementally only if each card reflects the true state. No incomplete journey gets an active Play label. No implementation under this issue changes application credentials, deploys the live site, merges a pull request, or closes #56 without the acceptance evidence.
