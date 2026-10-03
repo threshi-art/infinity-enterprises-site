@@ -73,9 +73,10 @@ MATCHES=$(mktemp)
 git diff --name-only main...HEAD | while read -r file; do
   IFS='|' read -ra NAMES <<< "$PROTECTED_NAMES"
   for name in "${NAMES[@]}"; do
-    name_trimmed=$(echo "$name" | xargs)
+    name_trimmed="${name#"${name%%[![:space:]]*}"}"
+    name_trimmed="${name_trimmed%"${name_trimmed##*[![:space:]]}"}"
     if [ -n "$name_trimmed" ]; then
-      if echo "$file" | grep -qi "$name_trimmed"; then
+      if printf '%s\n' "$file" | grep -qiF -- "$name_trimmed"; then
         echo "  Found protected name in path: $file"
         echo "1" > "$MATCHES"
       fi
@@ -103,21 +104,26 @@ git commit -q -m "Add author"
 
 MATCHES=$(mktemp)
 current_file=""
+line_number=0
 
 git diff -U0 main...HEAD | while IFS= read -r line; do
   if [[ "$line" =~ ^diff\ --git ]]; then
-    current_file=$(echo "$line" | sed 's|^diff --git a/\(.*\) b/.*|\1|')
+    current_file=$(printf '%s\n' "$line" | sed 's|^diff --git a/\(.*\) b/.*|\1|')
+  elif [[ "$line" =~ ^@@\ -[0-9,]*\ \+([0-9]+) ]]; then
+    line_number="${BASH_REMATCH[1]}"
   elif [[ "$line" =~ ^[\+] ]] && [[ ! "$line" =~ ^\+\+\+ ]]; then
     IFS='|' read -ra NAMES <<< "$PROTECTED_NAMES"
     for name in "${NAMES[@]}"; do
-      name_trimmed=$(echo "$name" | xargs)
+      name_trimmed="${name#"${name%%[![:space:]]*}"}"
+      name_trimmed="${name_trimmed%"${name_trimmed##*[![:space:]]}"}"
       if [ -n "$name_trimmed" ]; then
-        if echo "$line" | grep -qi "$name_trimmed"; then
-          echo "  Found protected name in: $current_file"
+        if printf '%s\n' "$line" | grep -qiF -- "$name_trimmed"; then
+          echo "  Found protected name in: $current_file:$line_number"
           echo "1" > "$MATCHES"
         fi
       fi
     done
+    ((line_number++))
   fi
 done
 
@@ -140,9 +146,10 @@ FOUND=0
 
 IFS='|' read -ra NAMES <<< "$PROTECTED_NAMES"
 for name in "${NAMES[@]}"; do
-  name_trimmed=$(echo "$name" | xargs)
+  name_trimmed="${name#"${name%%[![:space:]]*}"}"
+  name_trimmed="${name_trimmed%"${name_trimmed##*[![:space:]]}"}"
   if [ -n "$name_trimmed" ]; then
-    if echo "$PR_TITLE" | grep -qi "$name_trimmed"; then
+    if printf '%s\n' "$PR_TITLE" | grep -qiF -- "$name_trimmed"; then
       echo "  Found protected name in PR title"
       FOUND=1
     fi
@@ -166,9 +173,10 @@ FOUND=0
 
 IFS='|' read -ra NAMES <<< "$PROTECTED_NAMES"
 for name in "${NAMES[@]}"; do
-  name_trimmed=$(echo "$name" | xargs)
+  name_trimmed="${name#"${name%%[![:space:]]*}"}"
+  name_trimmed="${name_trimmed%"${name_trimmed##*[![:space:]]}"}"
   if [ -n "$name_trimmed" ]; then
-    if echo "$PR_BODY" | grep -qi "$name_trimmed"; then
+    if printf '%s\n' "$PR_BODY" | grep -qiF -- "$name_trimmed"; then
       echo "  Found protected name in PR body"
       FOUND=1
     fi
@@ -195,14 +203,15 @@ MATCHES=$(mktemp)
 
 git log --format="%H %s" main..HEAD | while IFS= read -r line; do
   if [[ "$line" =~ ^[0-9a-f]{40} ]]; then
-    commit_sha=$(echo "$line" | cut -d' ' -f1)
-    message=$(echo "$line" | cut -d' ' -f2-)
+    commit_sha=$(printf '%s\n' "$line" | cut -d' ' -f1)
+    message=$(printf '%s\n' "$line" | cut -d' ' -f2-)
     
     IFS='|' read -ra NAMES <<< "$PROTECTED_NAMES"
     for name in "${NAMES[@]}"; do
-      name_trimmed=$(echo "$name" | xargs)
+      name_trimmed="${name#"${name%%[![:space:]]*}"}"
+      name_trimmed="${name_trimmed%"${name_trimmed##*[![:space:]]}"}"
       if [ -n "$name_trimmed" ]; then
-        if echo "$message" | grep -qi "$name_trimmed"; then
+        if printf '%s\n' "$message" | grep -qiF -- "$name_trimmed"; then
           echo "  Found protected name in commit: $commit_sha"
           echo "1" > "$MATCHES"
         fi
@@ -233,9 +242,10 @@ COMMENT_BODY="Normal text with DUMMYNAME and $INJECTION_TEST"
 FOUND=0
 IFS='|' read -ra NAMES <<< "$PROTECTED_NAMES"
 for name in "${NAMES[@]}"; do
-  name_trimmed=$(echo "$name" | xargs)
+  name_trimmed="${name#"${name%%[![:space:]]*}"}"
+  name_trimmed="${name_trimmed%"${name_trimmed##*[![:space:]]}"}"
   if [ -n "$name_trimmed" ]; then
-    if echo "$COMMENT_BODY" | grep -qi "$name_trimmed"; then
+    if printf '%s\n' "$COMMENT_BODY" | grep -qiF -- "$name_trimmed"; then
       echo "  Found protected name (injection string not executed)"
       FOUND=1
     fi
@@ -268,9 +278,10 @@ COMMENT_BODY="Update by DUMMYNAME"
 FOUND=0
 IFS='|' read -ra NAMES <<< "$PROTECTED_NAMES"
 for name in "${NAMES[@]}"; do
-  name_trimmed=$(echo "$name" | xargs)
+  name_trimmed="${name#"${name%%[![:space:]]*}"}"
+  name_trimmed="${name_trimmed%"${name_trimmed##*[![:space:]]}"}"
   if [ -n "$name_trimmed" ]; then
-    if echo "$ISSUE_TITLE" | grep -qi "$name_trimmed"; then
+    if printf '%s\n' "$ISSUE_TITLE" | grep -qiF -- "$name_trimmed"; then
       echo "  Found protected name in issue title"
       FOUND=1
     fi
@@ -288,9 +299,10 @@ fi
 FOUND=0
 IFS='|' read -ra NAMES <<< "$PROTECTED_NAMES"
 for name in "${NAMES[@]}"; do
-  name_trimmed=$(echo "$name" | xargs)
+  name_trimmed="${name#"${name%%[![:space:]]*}"}"
+  name_trimmed="${name_trimmed%"${name_trimmed##*[![:space:]]}"}"
   if [ -n "$name_trimmed" ]; then
-    if echo "$ISSUE_BODY" | grep -qi "$name_trimmed"; then
+    if printf '%s\n' "$ISSUE_BODY" | grep -qiF -- "$name_trimmed"; then
       echo "  Found protected name in issue body"
       FOUND=1
     fi
@@ -308,9 +320,10 @@ fi
 FOUND=0
 IFS='|' read -ra NAMES <<< "$PROTECTED_NAMES"
 for name in "${NAMES[@]}"; do
-  name_trimmed=$(echo "$name" | xargs)
+  name_trimmed="${name#"${name%%[![:space:]]*}"}"
+  name_trimmed="${name_trimmed%"${name_trimmed##*[![:space:]]}"}"
   if [ -n "$name_trimmed" ]; then
-    if echo "$COMMENT_BODY" | grep -qi "$name_trimmed"; then
+    if printf '%s\n' "$COMMENT_BODY" | grep -qiF -- "$name_trimmed"; then
       echo "  Found protected name in comment"
       FOUND=1
     fi
@@ -337,3 +350,164 @@ echo "- PR title/body scanning: working"
 echo "- Commit message scanning: working"
 echo "- Issue/comment scanning: working"
 echo "- Script injection protection: working"
+
+# Additional tests for review findings
+echo
+echo "=== Additional Review Finding Tests ==="
+echo
+
+# Test 9: Regex special characters (. and *)
+echo "Test 9: Name with regex special characters"
+echo "------------------------------------------"
+
+PROTECTED_NAMES="J.R.|Test*Name"
+PR_TITLE="Update by J.R. Smith"
+FOUND=0
+
+IFS='|' read -ra NAMES <<< "$PROTECTED_NAMES"
+for name in "${NAMES[@]}"; do
+  name_trimmed="${name#"${name%%[![:space:]]*}"}"
+  name_trimmed="${name_trimmed%"${name_trimmed##*[![:space:]]}"}"
+  if [ -n "$name_trimmed" ]; then
+    if printf '%s\n' "$PR_TITLE" | grep -qiF -- "$name_trimmed"; then
+      echo "  Found protected name with special chars: $name_trimmed"
+      FOUND=1
+    fi
+  fi
+done
+
+if [ "$FOUND" = "1" ]; then
+  echo "✓ Regex special characters handled correctly (literal match)"
+else
+  echo "✗ FAIL: Regex special characters not handled correctly"
+  exit 1
+fi
+echo
+
+# Test 10: Name starting with dash (option-like)
+echo "Test 10: Name starting with dash"
+echo "--------------------------------"
+
+PROTECTED_NAMES="-ntest"
+PR_BODY="Changes by -ntest user"
+FOUND=0
+
+IFS='|' read -ra NAMES <<< "$PROTECTED_NAMES"
+for name in "${NAMES[@]}"; do
+  name_trimmed="${name#"${name%%[![:space:]]*}"}"
+  name_trimmed="${name_trimmed%"${name_trimmed##*[![:space:]]}"}"
+  if [ -n "$name_trimmed" ]; then
+    if printf '%s\n' "$PR_BODY" | grep -qiF -- "$name_trimmed"; then
+      echo "  Found protected name starting with dash"
+      FOUND=1
+    fi
+  fi
+done
+
+if [ "$FOUND" = "1" ]; then
+  echo "✓ Names starting with dash handled correctly"
+else
+  echo "✗ FAIL: Names starting with dash not handled correctly"
+  exit 1
+fi
+echo
+
+# Test 11: Name with apostrophe
+echo "Test 11: Name with apostrophe"
+echo "-----------------------------"
+
+PROTECTED_NAMES="O'Neil|DUMMYNAME"
+ISSUE_TITLE="Bug report from O'Neil"
+FOUND=0
+
+IFS='|' read -ra NAMES <<< "$PROTECTED_NAMES"
+for name in "${NAMES[@]}"; do
+  name_trimmed="${name#"${name%%[![:space:]]*}"}"
+  name_trimmed="${name_trimmed%"${name_trimmed##*[![:space:]]}"}"
+  if [ -n "$name_trimmed" ]; then
+    if printf '%s\n' "$ISSUE_TITLE" | grep -qiF -- "$name_trimmed"; then
+      echo "  Found protected name with apostrophe: $name_trimmed"
+      FOUND=1
+    fi
+  fi
+done
+
+if [ "$FOUND" = "1" ]; then
+  echo "✓ Names with apostrophes handled correctly"
+else
+  echo "✗ FAIL: Names with apostrophes not handled correctly"
+  exit 1
+fi
+echo
+
+# Test 12: Line number tracking in multi-line hunk
+echo "Test 12: Line number tracking in multi-line hunk"
+echo "------------------------------------------------"
+
+cd "$TEST_DIR"
+git checkout -q main
+git branch -D test-branch 2>/dev/null || true
+git checkout -q -b test-branch-line-tracking
+
+cat > multiline.js << 'EOF'
+function test() {
+  const line1 = "first";
+  const line2 = "second";
+  const line3 = "DUMMYNAME";
+  const line4 = "fourth";
+}
+EOF
+
+git add multiline.js
+git commit -q -m "Add multiline test"
+
+PROTECTED_NAMES="DUMMYNAME"
+MATCHES=$(mktemp)
+current_file=""
+line_number=0
+found_line=0
+
+git diff -U0 main...HEAD | while IFS= read -r line; do
+  if [[ "$line" =~ ^diff\ --git ]]; then
+    current_file=$(printf '%s\n' "$line" | sed 's|^diff --git a/\(.*\) b/.*|\1|')
+  elif [[ "$line" =~ ^@@\ -[0-9,]*\ \+([0-9]+) ]]; then
+    line_number="${BASH_REMATCH[1]}"
+  elif [[ "$line" =~ ^[\+] ]] && [[ ! "$line" =~ ^\+\+\+ ]]; then
+    IFS='|' read -ra NAMES <<< "$PROTECTED_NAMES"
+    for name in "${NAMES[@]}"; do
+      name_trimmed="${name#"${name%%[![:space:]]*}"}"
+      name_trimmed="${name_trimmed%"${name_trimmed##*[![:space:]]}"}"
+      if [ -n "$name_trimmed" ]; then
+        if printf '%s\n' "$line" | grep -qiF -- "$name_trimmed"; then
+          if [ "$current_file" = "multiline.js" ]; then
+            echo "  Found at line $line_number in $current_file"
+            echo "$line_number" > "$MATCHES"
+          fi
+        fi
+      fi
+    done
+    ((line_number++))
+  fi
+done
+
+if [ -f "$MATCHES" ]; then
+  DETECTED_LINE=$(cat "$MATCHES")
+  # Line should be 4 (the 4th line of the file where DUMMYNAME appears)
+  if [ "$DETECTED_LINE" = "4" ]; then
+    echo "✓ Line number tracking correct (found at line 4)"
+    rm "$MATCHES"
+  else
+    echo "✗ FAIL: Line number tracking incorrect (expected 4, got $DETECTED_LINE)"
+    rm "$MATCHES"
+    exit 1
+  fi
+else
+  echo "✗ FAIL: Line number tracking failed (no match found)"
+  rm -f "$MATCHES"
+  exit 1
+fi
+echo
+
+echo "=========================================="
+echo "All extended tests passed! ✓"
+echo "=========================================="
