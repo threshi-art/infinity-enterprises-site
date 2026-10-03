@@ -32,6 +32,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install ImageMagick and exiftool
+        run: sudo apt-get update && sudo apt-get install -y imagemagick libimage-exiftool-perl
+
       - name: Build worker
         run: npm run build
 
@@ -67,7 +70,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libimage-exiftool-perl
+          sudo apt-get install -y libimage-exiftool-perl imagemagick
 
       - name: Check image metadata compliance
         run: npm run check:images
