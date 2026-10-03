@@ -14,11 +14,12 @@ fi
 
 # Determine repository root (default: script's parent directory)
 # Override via IMAGE_CHECK_ROOT env var for testing
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Use pwd -P to resolve symlinks consistently
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 if [ -n "${IMAGE_CHECK_ROOT:-}" ]; then
-  REPO_ROOT="$(cd "$IMAGE_CHECK_ROOT" && pwd)"
+  REPO_ROOT="$(cd "$IMAGE_CHECK_ROOT" && pwd -P)"
 else
-  REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+  REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd -P)"
 fi
 
 # Read stamp text from config
@@ -101,14 +102,16 @@ while IFS= read -r img; do
     continue
   fi
   
-  # Resolve input path to absolute, then make it relative to REPO_ROOT
-  IMG_ABS="$(cd "$(dirname "$img")" && pwd)/$(basename "$img")"
+  # Resolve input path's directory to absolute with symlinks resolved, then append basename
+  # Do NOT resolve the file itself - symlinked files on the list must keep their listed name
+  IMG_DIR="$(cd "$(dirname "$img")" && pwd -P)"
+  IMG_ABS="$IMG_DIR/$(basename "$img")"
   
   # Make path relative to REPO_ROOT for list matching
-  # Only match if the file is under REPO_ROOT
+  # Use quoted pattern to prevent glob expansion in REPO_ROOT path
   IMG_REL=""
-  if [[ "$IMG_ABS" == "$REPO_ROOT"* ]]; then
-    IMG_REL="${IMG_ABS#$REPO_ROOT/}"
+  if [[ "$IMG_ABS" == "$REPO_ROOT/"* ]]; then
+    IMG_REL="${IMG_ABS#"$REPO_ROOT"/}"
   fi
   
   # Identify if this is a known JPEG-with-.png-extension file
@@ -127,7 +130,17 @@ while IFS= read -r img; do
   # Read file type once (used for JPEG-as-.png format check and stamp check)
   FILE_TYPE=$(exiftool -s -s -s -FileType "$img" 2>/dev/null || echo "")
   
-  # For JPEG-as-.png files, verify format first
+  # Check if this is a .png file with JPEG content
+  FILE_EXT="${img##*.}"
+  if [[ "$FILE_EXT" == "png" && "$FILE_TYPE" == "JPEG" ]]; then
+    # JPEG content in .png file is only allowed at listed paths
+    if [ "$IS_JPEG_PNG" != true ]; then
+      echo "Error: JPEG content in .png file not on the allowed list: $img" >&2
+      exit 1
+    fi
+  fi
+  
+  # For listed JPEG-as-.png files, verify format
   if [ "$IS_JPEG_PNG" = true ]; then
     if [[ "$FILE_TYPE" != "JPEG" ]]; then
       echo "Error: expected JPEG format for $img but got $FILE_TYPE" >&2

@@ -11,6 +11,7 @@ The `scripts/check-image-metadata` script validates that images in the repositor
 - IPTC blocks
 - Required ownership stamp in EXIF Copyright field
 - Format mismatches for known JPEG files with `.png` extensions
+- **JPEG content in `.png` files**: JPEG bytes in a `.png` file are only allowed at paths explicitly listed in the script. Any unlisted `.png` containing JPEG data fails the check.
 
 ### Usage
 
@@ -38,10 +39,18 @@ The script performs **exact path matching** against the known JPEG-as-.png list.
 
 ### Test Suite
 
+**Important:** Run `npm run build` before running tests, as `npm test` depends on the built worker.
+
 Run the image metadata test suite:
 
 ```bash
 npm run check:images:test
+```
+
+Run all tests (Node + image):
+
+```bash
+npm test
 ```
 
 The test suite uses `IMAGE_CHECK_ROOT` to test path resolution with temporary fixtures.

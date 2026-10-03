@@ -568,6 +568,105 @@ else
   fi
 fi
 
+# Test 30: JPEG-as-.png at nested lookalike path must fail (not on list)
+echo "Test 30: JPEG-as-.png at nested lookalike path should fail with unlisted error"
+# Reuse the nested path from test 29 but make it JPEG content
+mkdir -p "$TEMP_DIR/sub/design/sovrano-v1/editorial-art"
+TEST_NESTED_JPEG="$TEMP_DIR/sub/design/sovrano-v1/editorial-art/02-lounge-couple.png"
+convert -size 100x100 xc:purple "$TEMP_DIR/nested-jpeg.jpg"
+exiftool -q -overwrite_original -Copyright="Property of Infinity Enterprises" "$TEMP_DIR/nested-jpeg.jpg"
+mv "$TEMP_DIR/nested-jpeg.jpg" "$TEST_NESTED_JPEG"
+ACTUAL_TYPE=$(exiftool -s -s -s -FileType "$TEST_NESTED_JPEG" 2>/dev/null || echo "")
+if [ "$ACTUAL_TYPE" != "JPEG" ]; then
+  fail_test "Test 30 fixture is not JPEG: $ACTUAL_TYPE"
+else
+  set +e
+  OUTPUT=$("$PROJECT_ROOT/scripts/check-image-metadata" "$TEST_NESTED_JPEG" 2>&1)
+  EXIT_CODE=$?
+  set -e
+  if [ $EXIT_CODE -ne 0 ] && echo "$OUTPUT" | grep -q "JPEG content in .png file not on the allowed list"; then
+    pass_test "JPEG-as-.png at nested path fails with unlisted error"
+  else
+    fail_test "JPEG-as-.png at nested path should fail with unlisted error (exit=$EXIT_CODE), got: $OUTPUT"
+  fi
+fi
+
+# Test 31: JPEG-as-.png at arbitrary unlisted path must fail
+echo "Test 31: JPEG-as-.png at arbitrary unlisted path should fail"
+mkdir -p "$TEMP_DIR/arbitrary/path"
+TEST_UNLISTED="$TEMP_DIR/arbitrary/path/unlisted.png"
+convert -size 100x100 xc:orange "$TEMP_DIR/unlisted.jpg"
+exiftool -q -overwrite_original -Copyright="Property of Infinity Enterprises" "$TEMP_DIR/unlisted.jpg"
+mv "$TEMP_DIR/unlisted.jpg" "$TEST_UNLISTED"
+ACTUAL_TYPE=$(exiftool -s -s -s -FileType "$TEST_UNLISTED" 2>/dev/null || echo "")
+if [ "$ACTUAL_TYPE" != "JPEG" ]; then
+  fail_test "Test 31 fixture is not JPEG: $ACTUAL_TYPE"
+else
+  set +e
+  OUTPUT=$("$PROJECT_ROOT/scripts/check-image-metadata" "$TEST_UNLISTED" 2>&1)
+  EXIT_CODE=$?
+  set -e
+  if [ $EXIT_CODE -ne 0 ] && echo "$OUTPUT" | grep -q "JPEG content in .png file not on the allowed list"; then
+    pass_test "JPEG-as-.png at unlisted path fails with unlisted error"
+  else
+    fail_test "JPEG-as-.png at unlisted path should fail with unlisted error (exit=$EXIT_CODE), got: $OUTPUT"
+  fi
+fi
+
+# Test 32: Listed path without ./ prefix works
+echo "Test 32: Listed path called without ./ prefix should work"
+mkdir -p "$TEMP_DIR/design/sovrano-v1/forge-web-mocks/pages"
+TEST_NO_PREFIX="$TEMP_DIR/design/sovrano-v1/forge-web-mocks/pages/01-penthouse-portrait.png"
+convert -size 100x100 xc:lime "$TEMP_DIR/no-prefix.jpg"
+exiftool -q -overwrite_original -Copyright="Property of Infinity Enterprises" "$TEMP_DIR/no-prefix.jpg"
+mv "$TEMP_DIR/no-prefix.jpg" "$TEST_NO_PREFIX"
+ACTUAL_TYPE=$(exiftool -s -s -s -FileType "$TEST_NO_PREFIX" 2>/dev/null || echo "")
+if [ "$ACTUAL_TYPE" != "JPEG" ]; then
+  fail_test "Test 32 fixture is not JPEG: $ACTUAL_TYPE"
+else
+  # Call with relative path WITHOUT ./ prefix
+  cd "$TEMP_DIR"
+  set +e
+  OUTPUT=$("$PROJECT_ROOT/scripts/check-image-metadata" "design/sovrano-v1/forge-web-mocks/pages/01-penthouse-portrait.png" 2>&1)
+  EXIT_CODE=$?
+  set -e
+  cd "$PROJECT_ROOT"
+  if [ $EXIT_CODE -eq 0 ]; then
+    pass_test "Listed path without ./ prefix works"
+  else
+    fail_test "Listed path without ./ prefix should work (exit=$EXIT_CODE), got: $OUTPUT"
+  fi
+fi
+
+# Test 33: Symlinked IMAGE_CHECK_ROOT with real paths
+echo "Test 33: Symlinked IMAGE_CHECK_ROOT with real paths should work"
+TEMP_LINK="$TEMP_DIR-link"
+ln -sf "$TEMP_DIR" "$TEMP_LINK"
+mkdir -p "$TEMP_DIR/design/sovrano-v1/editorial-art/covers"
+TEST_SYMLINK_JPEG="$TEMP_DIR/design/sovrano-v1/editorial-art/covers/cover-viaggi.png"
+TEST_SYMLINK_PNG="$TEMP_DIR/design/sovrano-v1/editorial-art/covers/cover-tech.png"
+# Create stamped JPEG-as-.png at listed path (should pass)
+convert -size 100x100 xc:cyan "$TEMP_DIR/symlink-jpeg.jpg"
+exiftool -q -overwrite_original -Copyright="Property of Infinity Enterprises" "$TEMP_DIR/symlink-jpeg.jpg"
+mv "$TEMP_DIR/symlink-jpeg.jpg" "$TEST_SYMLINK_JPEG"
+# Create stamped real PNG at listed path (should fail with format error)
+convert -size 100x100 xc:magenta "$TEST_SYMLINK_PNG"
+exiftool -q -overwrite_original -Copyright="Property of Infinity Enterprises" "$TEST_SYMLINK_PNG"
+
+set +e
+OUTPUT_JPEG=$(IMAGE_CHECK_ROOT="$TEMP_LINK" "$PROJECT_ROOT/scripts/check-image-metadata" "$TEST_SYMLINK_JPEG" 2>&1)
+EXIT_JPEG=$?
+OUTPUT_PNG=$(IMAGE_CHECK_ROOT="$TEMP_LINK" "$PROJECT_ROOT/scripts/check-image-metadata" "$TEST_SYMLINK_PNG" 2>&1)
+EXIT_PNG=$?
+set -e
+
+if [ $EXIT_JPEG -eq 0 ] && [ $EXIT_PNG -eq 1 ] && echo "$OUTPUT_PNG" | grep -q "expected JPEG format"; then
+  pass_test "Symlinked IMAGE_CHECK_ROOT works (JPEG passes, PNG fails)"
+else
+  fail_test "Symlinked IMAGE_CHECK_ROOT should work (JPEG exit=$EXIT_JPEG, PNG exit=$EXIT_PNG should be 1 with format error), JPEG: $OUTPUT_JPEG, PNG: $OUTPUT_PNG"
+fi
+rm -f "$TEMP_LINK"
+
 # Summary
 echo ""
 echo "=== Test Summary ==="
