@@ -97,7 +97,7 @@ const RoomSoundController = (() => {
         const base = new URL(assetBase);
         const resolved = new URL(sourcePath, base);
         if (resolved.origin === base.origin) return `${resolved.pathname}${resolved.search}${resolved.hash}`;
-        return resolved.href;
+        return null;
       } catch {
         return null;
       }
