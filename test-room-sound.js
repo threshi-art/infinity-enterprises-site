@@ -387,3 +387,48 @@ test('external audio suppresses ambience and visibility resumes only after user 
   assert.equal(reloadController.preference(), 'on');
   assert.equal(reloadController.snapshot().playing, false);
 });
+
+test('cross-origin URLs are rejected and same-origin URLs are accepted', async () => {
+  const context = createContext();
+  const attempted = [];
+  const controller = RoomSoundController.create({
+    assetBase: 'https://infinity.invalid/',
+    contextFactory() { return context; },
+    fetchImpl(sourcePath) {
+      attempted.push(sourcePath);
+      return Promise.resolve({ ok: false });
+    },
+    manifest: {
+      rooms: [{
+        route: '/music',
+        label: 'Music',
+        loop: {
+          designation: 'loop',
+          display_name: 'Test loop',
+          duration_s: 10,
+          loop_end_s: 9.9,
+          loop_start_s: 0.1,
+          src: [
+            'https://evil.example/audio.mp3',
+            '//evil.example/audio.mp3',
+            'data:audio/mp3;base64,fake',
+            'https://infinity.invalid/audio/same-origin.mp3',
+            '/audio/root-relative.mp3',
+          ],
+          status: 'ready',
+        },
+      }],
+    },
+    route: '/music',
+    storage: createStorage(),
+  });
+
+  await controller.toggleFromUserAction();
+  assert.deepEqual(attempted, [
+    '/audio/same-origin.mp3',
+    '/audio/root-relative.mp3',
+  ]);
+  assert.equal(controller.snapshot().nowPlaying, 'Ambient drone');
+  assert.equal(context.calls.buffers.length, 0);
+  assert.equal(context.calls.oscillators.length, 5);
+});
