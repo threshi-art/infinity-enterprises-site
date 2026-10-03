@@ -6,6 +6,9 @@ PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 FIXTURES_DIR="$SCRIPT_DIR/fixtures/images"
 TEMP_DIR=$(mktemp -d)
 
+# Set IMAGE_CHECK_ROOT to temp dir for all tests
+export IMAGE_CHECK_ROOT="$TEMP_DIR"
+
 trap 'rm -rf "$TEMP_DIR"' EXIT
 
 echo "=== Image Metadata Check Test Suite ==="
@@ -221,10 +224,12 @@ fi
 echo "Test 14: JPEG-in-.png list recognized with ./ prefix"
 # Create a real PNG file at a known JPEG-.png list path with ./ prefix
 # This tests that the list matching works even when find adds ./
+# The fixture is real PNG bytes (not JPEG) at a path in JPEG_PNG_NAMES,
+# so the format check must fail with the exact "expected JPEG format" message.
 TEST_PNG="$TEMP_DIR/test-jpeg-png-check.png"
 # Create real PNG content (PNG signature + minimal IHDR)
 printf '\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x02\x00\x00\x00\x90wS\xde' > "$TEST_PNG"
-# Add stamp so only the format mismatch triggers
+# Attempt to add stamp, but exiftool will fail on this truncated PNG; || true hides that
 exiftool -q -overwrite_original -Copyright="Property of Infinity Enterprises" "$TEST_PNG" 2>/dev/null || true
 # Create the directory structure and symlink to simulate a listed path
 mkdir -p "$TEMP_DIR/design/sovrano-v1/editorial-art"
@@ -373,6 +378,294 @@ elif echo "$OUTPUT" | grep -q "skipped"; then
 else
   fail_test "Scrub script should report skipped files"
 fi
+
+# Test 22: Check script fails when strings is missing
+echo "Test 22: Check script fails when strings is missing"
+RESTRICTED_BIN=$(mktemp -d)
+# Keep essential coreutils and exiftool, hide only strings
+for cmd in node bash dirname basename cat grep sed awk sort head tail wc find identify exiftool; do
+  if command -v "$cmd" >/dev/null 2>&1; then
+    ln -s "$(command -v "$cmd")" "$RESTRICTED_BIN/$cmd" 2>/dev/null || true
+  fi
+done
+if OUTPUT=$(timeout 5 env PATH="$RESTRICTED_BIN" "$PROJECT_ROOT/scripts/check-image-metadata" "$TEMP_DIR/clean-stamped.png" 2>&1); then
+  fail_test "Check script should fail without strings (exit 0)"
+elif echo "$OUTPUT" | grep -q "strings is not installed"; then
+  pass_test "Check script fails closed without strings"
+else
+  fail_test "Check script failed but wrong error message: $OUTPUT"
+fi
+rm -rf "$RESTRICTED_BIN"
+
+# Test 23: JPEG-as-.png with missing stamp should fail
+echo "Test 23: JPEG-as-.png with missing stamp should fail"
+# Create a real JPEG file with .png extension at a listed path, no stamp
+mkdir -p "$TEMP_DIR/design/sovrano-v1/editorial-art"
+TEST_JPEG_PNG="$TEMP_DIR/design/sovrano-v1/editorial-art/01-penthouse-portrait.png"
+convert -size 100x100 xc:teal jpeg:"$TEST_JPEG_PNG"
+# Verify it's really JPEG
+ACTUAL_TYPE=$(exiftool -s -s -s -FileType "$TEST_JPEG_PNG" 2>/dev/null || echo "")
+if [ "$ACTUAL_TYPE" != "JPEG" ]; then
+  fail_test "Test 23 fixture creation failed: expected JPEG but got $ACTUAL_TYPE"
+else
+  set +e
+  OUTPUT=$("$PROJECT_ROOT/scripts/check-image-metadata" "$TEST_JPEG_PNG" 2>&1)
+  EXIT_CODE=$?
+  set -e
+  if [ $EXIT_CODE -ne 0 ] && echo "$OUTPUT" | grep -q "Ownership stamp missing" && ! echo "$OUTPUT" | grep -q "expected JPEG format"; then
+    pass_test "JPEG-as-.png without stamp fails with missing stamp error"
+  else
+    fail_test "JPEG-as-.png without stamp should fail with missing stamp error (exit=$EXIT_CODE), got: $OUTPUT"
+  fi
+fi
+
+# Test 24: JPEG-as-.png with EXIF device fields should fail
+echo "Test 24: JPEG-as-.png with EXIF device fields should fail"
+# Create JPEG with device fields at a listed path
+convert -size 100x100 xc:navy "$TEMP_DIR/has-jpeg-png-device.jpg"
+exiftool -q -overwrite_original -Make="TestCamera" -Copyright="Property of Infinity Enterprises" "$TEMP_DIR/has-jpeg-png-device.jpg"
+# Move to a JPEG-as-.png path
+mkdir -p "$TEMP_DIR/design/sovrano-v1/editorial-art/covers"
+TEST_PATH="$TEMP_DIR/design/sovrano-v1/editorial-art/covers/cover-daily-desk.png"
+mv "$TEMP_DIR/has-jpeg-png-device.jpg" "$TEST_PATH"
+# Verify it's JPEG
+ACTUAL_TYPE=$(exiftool -s -s -s -FileType "$TEST_PATH" 2>/dev/null || echo "")
+if [ "$ACTUAL_TYPE" != "JPEG" ]; then
+  fail_test "Test 24 fixture is not JPEG: $ACTUAL_TYPE"
+else
+  set +e
+  OUTPUT=$("$PROJECT_ROOT/scripts/check-image-metadata" "$TEST_PATH" 2>&1)
+  EXIT_CODE=$?
+  set -e
+  if [ $EXIT_CODE -ne 0 ] && echo "$OUTPUT" | grep -q "EXIF device/author fields found" && ! echo "$OUTPUT" | grep -q "expected JPEG format"; then
+    pass_test "JPEG-as-.png with device fields fails with device fields error"
+  else
+    fail_test "JPEG-as-.png with device fields should fail with device fields error (exit=$EXIT_CODE), got: $OUTPUT"
+  fi
+fi
+
+# Test 25: JPEG-as-.png with XMP should fail
+echo "Test 25: JPEG-as-.png with XMP should fail"
+convert -size 100x100 xc:olive "$TEMP_DIR/has-jpeg-png-xmp.jpg"
+exiftool -q -overwrite_original -XMP:Creator="Test Creator" -Copyright="Property of Infinity Enterprises" "$TEMP_DIR/has-jpeg-png-xmp.jpg"
+mkdir -p "$TEMP_DIR/design/sovrano-v1/editorial-art"
+TEST_PATH="$TEMP_DIR/design/sovrano-v1/editorial-art/02-lounge-couple.png"
+mv "$TEMP_DIR/has-jpeg-png-xmp.jpg" "$TEST_PATH"
+# Verify it's JPEG
+ACTUAL_TYPE=$(exiftool -s -s -s -FileType "$TEST_PATH" 2>/dev/null || echo "")
+if [ "$ACTUAL_TYPE" != "JPEG" ]; then
+  fail_test "Test 25 fixture is not JPEG: $ACTUAL_TYPE"
+else
+  set +e
+  OUTPUT=$("$PROJECT_ROOT/scripts/check-image-metadata" "$TEST_PATH" 2>&1)
+  EXIT_CODE=$?
+  set -e
+  if [ $EXIT_CODE -ne 0 ] && echo "$OUTPUT" | grep -q "XMP blocks found" && ! echo "$OUTPUT" | grep -q "expected JPEG format"; then
+    pass_test "JPEG-as-.png with XMP fails with XMP error"
+  else
+    fail_test "JPEG-as-.png with XMP should fail with XMP error (exit=$EXIT_CODE), got: $OUTPUT"
+  fi
+fi
+
+# Test 26: JPEG-as-.png with IPTC should fail
+echo "Test 26: JPEG-as-.png with IPTC should fail"
+convert -size 100x100 xc:maroon "$TEMP_DIR/has-jpeg-png-iptc.jpg"
+exiftool -q -overwrite_original -IPTC:By-line="Test Byline" -Copyright="Property of Infinity Enterprises" "$TEMP_DIR/has-jpeg-png-iptc.jpg"
+mkdir -p "$TEMP_DIR/design/sovrano-v1/editorial-art"
+TEST_PATH="$TEMP_DIR/design/sovrano-v1/editorial-art/03-motore-chrome.png"
+mv "$TEMP_DIR/has-jpeg-png-iptc.jpg" "$TEST_PATH"
+# Verify it's JPEG
+ACTUAL_TYPE=$(exiftool -s -s -s -FileType "$TEST_PATH" 2>/dev/null || echo "")
+if [ "$ACTUAL_TYPE" != "JPEG" ]; then
+  fail_test "Test 26 fixture is not JPEG: $ACTUAL_TYPE"
+else
+  set +e
+  OUTPUT=$("$PROJECT_ROOT/scripts/check-image-metadata" "$TEST_PATH" 2>&1)
+  EXIT_CODE=$?
+  set -e
+  if [ $EXIT_CODE -ne 0 ] && echo "$OUTPUT" | grep -q "IPTC blocks found" && ! echo "$OUTPUT" | grep -q "expected JPEG format"; then
+    pass_test "JPEG-as-.png with IPTC fails with IPTC error"
+  else
+    fail_test "JPEG-as-.png with IPTC should fail with IPTC error (exit=$EXIT_CODE), got: $OUTPUT"
+  fi
+fi
+
+# Test 27: Stamped PNG at a JPEG-as-.png list path must fail with format error
+echo "Test 27: Stamped PNG at JPEG-as-.png list path should fail with format error"
+# Create a real PNG (not JPEG) at a listed path, with stamp
+mkdir -p "$TEMP_DIR/design/sovrano-v1/editorial-art"
+TEST_PNG_PATH="$TEMP_DIR/design/sovrano-v1/editorial-art/04-house-of-sovrano-plate.png"
+convert -size 100x100 xc:silver "$TEST_PNG_PATH"
+exiftool -q -overwrite_original -Copyright="Property of Infinity Enterprises" "$TEST_PNG_PATH"
+# Verify it's PNG
+ACTUAL_TYPE=$(exiftool -s -s -s -FileType "$TEST_PNG_PATH" 2>/dev/null || echo "")
+if [ "$ACTUAL_TYPE" != "PNG" ]; then
+  fail_test "Test 27 fixture is not PNG: $ACTUAL_TYPE"
+else
+  set +e
+  OUTPUT=$("$PROJECT_ROOT/scripts/check-image-metadata" "$TEST_PNG_PATH" 2>&1)
+  EXIT_CODE=$?
+  set -e
+  if [ $EXIT_CODE -eq 1 ] && echo "$OUTPUT" | grep -q "expected JPEG format"; then
+    pass_test "Stamped PNG at JPEG-as-.png path fails with format error"
+  else
+    fail_test "Stamped PNG at JPEG-as-.png path should fail with format error (exit=$EXIT_CODE), got: $OUTPUT"
+  fi
+fi
+
+# Test 28: Absolute path to stamped PNG at listed path must fail with format error
+echo "Test 28: Absolute path to stamped PNG at JPEG-as-.png list path should fail"
+# Reuse the fixture from test 27 (already a stamped PNG at a listed path)
+# Call with absolute path
+mkdir -p "$TEMP_DIR/design/sovrano-v1/editorial-art/covers"
+TEST_ABS_PNG="$TEMP_DIR/design/sovrano-v1/editorial-art/covers/cover-mercati.png"
+convert -size 100x100 xc:gold "$TEST_ABS_PNG"
+exiftool -q -overwrite_original -Copyright="Property of Infinity Enterprises" "$TEST_ABS_PNG"
+ACTUAL_TYPE=$(exiftool -s -s -s -FileType "$TEST_ABS_PNG" 2>/dev/null || echo "")
+if [ "$ACTUAL_TYPE" != "PNG" ]; then
+  fail_test "Test 28 fixture is not PNG: $ACTUAL_TYPE"
+else
+  set +e
+  # Pass absolute path directly
+  OUTPUT=$("$PROJECT_ROOT/scripts/check-image-metadata" "$TEST_ABS_PNG" 2>&1)
+  EXIT_CODE=$?
+  set -e
+  if [ $EXIT_CODE -eq 1 ] && echo "$OUTPUT" | grep -q "expected JPEG format"; then
+    pass_test "Absolute path to stamped PNG at JPEG-as-.png path fails with format error"
+  else
+    fail_test "Absolute path to stamped PNG at JPEG-as-.png path should fail with format error (exit=$EXIT_CODE), got: $OUTPUT"
+  fi
+fi
+
+# Test 29: Stamped PNG at nested lookalike path should pass (guards against suffix matching)
+echo "Test 29: Nested lookalike path should not match list (suffix-match guard)"
+# Create a stamped PNG at a path that ENDS with a listed name but has extra prefix
+# With exact matching, this should NOT match and should pass (PNG with stamp is ok)
+# With suffix matching, this WOULD match and fail with "expected JPEG format"
+mkdir -p "$TEMP_DIR/sub/design/sovrano-v1/editorial-art/covers"
+TEST_NESTED="$TEMP_DIR/sub/design/sovrano-v1/editorial-art/covers/cover-moda.png"
+convert -size 100x100 xc:indigo "$TEST_NESTED"
+exiftool -q -overwrite_original -Copyright="Property of Infinity Enterprises" "$TEST_NESTED"
+ACTUAL_TYPE=$(exiftool -s -s -s -FileType "$TEST_NESTED" 2>/dev/null || echo "")
+if [ "$ACTUAL_TYPE" != "PNG" ]; then
+  fail_test "Test 29 fixture is not PNG: $ACTUAL_TYPE"
+else
+  set +e
+  OUTPUT=$("$PROJECT_ROOT/scripts/check-image-metadata" "$TEST_NESTED" 2>&1)
+  EXIT_CODE=$?
+  set -e
+  # Should pass (no error) because the path is not exactly on the list
+  if [ $EXIT_CODE -eq 0 ]; then
+    pass_test "Nested lookalike path not matched (suffix guard works)"
+  else
+    # If it fails with format error, suffix matching is being used (bad)
+    if echo "$OUTPUT" | grep -q "expected JPEG format"; then
+      fail_test "Nested lookalike path should not match (suffix matching detected), got: $OUTPUT"
+    else
+      # Other error - unexpected
+      fail_test "Nested lookalike path test failed unexpectedly (exit=$EXIT_CODE), got: $OUTPUT"
+    fi
+  fi
+fi
+
+# Test 30: JPEG-as-.png at nested lookalike path must fail (not on list)
+echo "Test 30: JPEG-as-.png at nested lookalike path should fail with unlisted error"
+# Reuse the nested path from test 29 but make it JPEG content
+mkdir -p "$TEMP_DIR/sub/design/sovrano-v1/editorial-art"
+TEST_NESTED_JPEG="$TEMP_DIR/sub/design/sovrano-v1/editorial-art/02-lounge-couple.png"
+convert -size 100x100 xc:purple "$TEMP_DIR/nested-jpeg.jpg"
+exiftool -q -overwrite_original -Copyright="Property of Infinity Enterprises" "$TEMP_DIR/nested-jpeg.jpg"
+mv "$TEMP_DIR/nested-jpeg.jpg" "$TEST_NESTED_JPEG"
+ACTUAL_TYPE=$(exiftool -s -s -s -FileType "$TEST_NESTED_JPEG" 2>/dev/null || echo "")
+if [ "$ACTUAL_TYPE" != "JPEG" ]; then
+  fail_test "Test 30 fixture is not JPEG: $ACTUAL_TYPE"
+else
+  set +e
+  OUTPUT=$("$PROJECT_ROOT/scripts/check-image-metadata" "$TEST_NESTED_JPEG" 2>&1)
+  EXIT_CODE=$?
+  set -e
+  if [ $EXIT_CODE -ne 0 ] && echo "$OUTPUT" | grep -q "JPEG content in .png file not on the allowed list"; then
+    pass_test "JPEG-as-.png at nested path fails with unlisted error"
+  else
+    fail_test "JPEG-as-.png at nested path should fail with unlisted error (exit=$EXIT_CODE), got: $OUTPUT"
+  fi
+fi
+
+# Test 31: JPEG-as-.png at arbitrary unlisted path must fail
+echo "Test 31: JPEG-as-.png at arbitrary unlisted path should fail"
+mkdir -p "$TEMP_DIR/arbitrary/path"
+TEST_UNLISTED="$TEMP_DIR/arbitrary/path/unlisted.png"
+convert -size 100x100 xc:orange "$TEMP_DIR/unlisted.jpg"
+exiftool -q -overwrite_original -Copyright="Property of Infinity Enterprises" "$TEMP_DIR/unlisted.jpg"
+mv "$TEMP_DIR/unlisted.jpg" "$TEST_UNLISTED"
+ACTUAL_TYPE=$(exiftool -s -s -s -FileType "$TEST_UNLISTED" 2>/dev/null || echo "")
+if [ "$ACTUAL_TYPE" != "JPEG" ]; then
+  fail_test "Test 31 fixture is not JPEG: $ACTUAL_TYPE"
+else
+  set +e
+  OUTPUT=$("$PROJECT_ROOT/scripts/check-image-metadata" "$TEST_UNLISTED" 2>&1)
+  EXIT_CODE=$?
+  set -e
+  if [ $EXIT_CODE -ne 0 ] && echo "$OUTPUT" | grep -q "JPEG content in .png file not on the allowed list"; then
+    pass_test "JPEG-as-.png at unlisted path fails with unlisted error"
+  else
+    fail_test "JPEG-as-.png at unlisted path should fail with unlisted error (exit=$EXIT_CODE), got: $OUTPUT"
+  fi
+fi
+
+# Test 32: Listed path without ./ prefix works
+echo "Test 32: Listed path called without ./ prefix should work"
+mkdir -p "$TEMP_DIR/design/sovrano-v1/forge-web-mocks/pages"
+TEST_NO_PREFIX="$TEMP_DIR/design/sovrano-v1/forge-web-mocks/pages/01-penthouse-portrait.png"
+convert -size 100x100 xc:lime "$TEMP_DIR/no-prefix.jpg"
+exiftool -q -overwrite_original -Copyright="Property of Infinity Enterprises" "$TEMP_DIR/no-prefix.jpg"
+mv "$TEMP_DIR/no-prefix.jpg" "$TEST_NO_PREFIX"
+ACTUAL_TYPE=$(exiftool -s -s -s -FileType "$TEST_NO_PREFIX" 2>/dev/null || echo "")
+if [ "$ACTUAL_TYPE" != "JPEG" ]; then
+  fail_test "Test 32 fixture is not JPEG: $ACTUAL_TYPE"
+else
+  # Call with relative path WITHOUT ./ prefix
+  cd "$TEMP_DIR"
+  set +e
+  OUTPUT=$("$PROJECT_ROOT/scripts/check-image-metadata" "design/sovrano-v1/forge-web-mocks/pages/01-penthouse-portrait.png" 2>&1)
+  EXIT_CODE=$?
+  set -e
+  cd "$PROJECT_ROOT"
+  if [ $EXIT_CODE -eq 0 ]; then
+    pass_test "Listed path without ./ prefix works"
+  else
+    fail_test "Listed path without ./ prefix should work (exit=$EXIT_CODE), got: $OUTPUT"
+  fi
+fi
+
+# Test 33: Symlinked IMAGE_CHECK_ROOT with real paths
+echo "Test 33: Symlinked IMAGE_CHECK_ROOT with real paths should work"
+TEMP_LINK="$TEMP_DIR-link"
+ln -sf "$TEMP_DIR" "$TEMP_LINK"
+mkdir -p "$TEMP_DIR/design/sovrano-v1/editorial-art/covers"
+TEST_SYMLINK_JPEG="$TEMP_DIR/design/sovrano-v1/editorial-art/covers/cover-viaggi.png"
+TEST_SYMLINK_PNG="$TEMP_DIR/design/sovrano-v1/editorial-art/covers/cover-tech.png"
+# Create stamped JPEG-as-.png at listed path (should pass)
+convert -size 100x100 xc:cyan "$TEMP_DIR/symlink-jpeg.jpg"
+exiftool -q -overwrite_original -Copyright="Property of Infinity Enterprises" "$TEMP_DIR/symlink-jpeg.jpg"
+mv "$TEMP_DIR/symlink-jpeg.jpg" "$TEST_SYMLINK_JPEG"
+# Create stamped real PNG at listed path (should fail with format error)
+convert -size 100x100 xc:magenta "$TEST_SYMLINK_PNG"
+exiftool -q -overwrite_original -Copyright="Property of Infinity Enterprises" "$TEST_SYMLINK_PNG"
+
+set +e
+OUTPUT_JPEG=$(IMAGE_CHECK_ROOT="$TEMP_LINK" "$PROJECT_ROOT/scripts/check-image-metadata" "$TEST_SYMLINK_JPEG" 2>&1)
+EXIT_JPEG=$?
+OUTPUT_PNG=$(IMAGE_CHECK_ROOT="$TEMP_LINK" "$PROJECT_ROOT/scripts/check-image-metadata" "$TEST_SYMLINK_PNG" 2>&1)
+EXIT_PNG=$?
+set -e
+
+if [ $EXIT_JPEG -eq 0 ] && [ $EXIT_PNG -eq 1 ] && echo "$OUTPUT_PNG" | grep -q "expected JPEG format"; then
+  pass_test "Symlinked IMAGE_CHECK_ROOT works (JPEG passes, PNG fails)"
+else
+  fail_test "Symlinked IMAGE_CHECK_ROOT should work (JPEG exit=$EXIT_JPEG, PNG exit=$EXIT_PNG should be 1 with format error), JPEG: $OUTPUT_JPEG, PNG: $OUTPUT_PNG"
+fi
+rm -f "$TEMP_LINK"
 
 # Summary
 echo ""
