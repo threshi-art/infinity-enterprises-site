@@ -49,7 +49,7 @@ if [ $# -gt 0 ]; then
   fi
 else
   # Find all image files (excluding node_modules, .git, dist)
-  IMAGES=$(find . -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.webp" -o -name "*.gif" -o -name "*.avif" \) \
+  IMAGES=$(find . -type f \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.webp" -o -iname "*.gif" -o -iname "*.avif" \) \
     ! -path "*/node_modules/*" \
     ! -path "*/.git/*" \
     ! -path "*/dist/*" \
@@ -127,8 +127,8 @@ while IFS= read -r img; do
     done
   fi
   
-  # Read file type once (used for JPEG-as-.png format check and stamp check)
-  FILE_TYPE=$(exiftool -s -s -s -FileType "$img" 2>/dev/null || echo "")
+  # Read MIME type once (used for JPEG-as-.png format check and stamp check)
+  MIME_TYPE=$(exiftool -s -s -s -MIMEType "$img" 2>/dev/null || echo "")
   
   # Determine expected type based on extension
   FILE_EXT="${img##*.}"
@@ -137,15 +137,15 @@ while IFS= read -r img; do
   # For files with image extensions, the actual type must be a recognized image format
   case "$FILE_EXT_LOWER" in
     png|jpg|jpeg|webp|gif|avif)
-      if [[ ! "$FILE_TYPE" =~ ^(JPEG|PNG|TIFF|WEBP|Extended\ WEBP|GIF|AVIF)$ ]]; then
-        echo "Error: cannot identify file type for: $img (got: ${FILE_TYPE:-unknown})" >&2
+      if [[ ! "$MIME_TYPE" =~ ^image/(jpeg|png|tiff|webp|gif|avif)$ ]]; then
+        echo "Error: cannot identify file type for: $img (got: ${MIME_TYPE:-unknown})" >&2
         exit 1
       fi
       ;;
   esac
   
   # Check if this is a .png file with JPEG content
-  if [[ "$FILE_EXT_LOWER" == "png" && "$FILE_TYPE" == "JPEG" ]]; then
+  if [[ "$FILE_EXT_LOWER" == "png" && "$MIME_TYPE" == "image/jpeg" ]]; then
     # JPEG content in .png file is only allowed at listed paths
     if [ "$IS_JPEG_PNG" != true ]; then
       echo "Error: JPEG content in .png file not on the allowed list: $img" >&2
@@ -155,8 +155,8 @@ while IFS= read -r img; do
   
   # For listed JPEG-as-.png files, verify format
   if [ "$IS_JPEG_PNG" = true ]; then
-    if [[ "$FILE_TYPE" != "JPEG" ]]; then
-      echo "Error: expected JPEG format for $img but got $FILE_TYPE" >&2
+    if [[ "$MIME_TYPE" != "image/jpeg" ]]; then
+      echo "Error: expected JPEG format for $img but got $MIME_TYPE" >&2
       exit 1
     fi
   fi
@@ -201,7 +201,7 @@ while IFS= read -r img; do
   if [ "$HAS_STAMP" = false ]; then
     # JPEG-as-.png files need stamps (already verified as JPEG above)
     # Other formats that support metadata also need stamps
-    if [ "$IS_JPEG_PNG" = true ] || [[ "$FILE_TYPE" =~ ^(JPEG|PNG|TIFF|WEBP)$ ]]; then
+    if [ "$IS_JPEG_PNG" = true ] || [[ "$MIME_TYPE" =~ ^image/(jpeg|png|tiff|webp)$ ]]; then
       MISSING_STAMP+=("$img")
       ((FAILURES++)) || true
     fi
