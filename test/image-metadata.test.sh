@@ -9,7 +9,7 @@ TEMP_DIR=$(mktemp -d)
 # Set IMAGE_CHECK_ROOT to temp dir for all tests
 export IMAGE_CHECK_ROOT="$TEMP_DIR"
 
-trap 'rm -rf "$TEMP_DIR"' EXIT
+trap 'rm -rf "$TEMP_DIR" "$TEMP_DIR-link" "$SPACE_DIR"' EXIT
 
 echo "=== Image Metadata Check Test Suite ==="
 echo ""
@@ -665,7 +665,96 @@ if [ $EXIT_JPEG -eq 0 ] && [ $EXIT_PNG -eq 1 ] && echo "$OUTPUT_PNG" | grep -q "
 else
   fail_test "Symlinked IMAGE_CHECK_ROOT should work (JPEG exit=$EXIT_JPEG, PNG exit=$EXIT_PNG should be 1 with format error), JPEG: $OUTPUT_JPEG, PNG: $OUTPUT_PNG"
 fi
-rm -f "$TEMP_LINK"
+
+# Test 34: REPO_ROOT with spaces (guards quoted REPO_ROOT)
+echo "Test 34: REPO_ROOT path containing spaces should work"
+SPACE_DIR=$(mktemp -d -t "image test XXXXX")
+mkdir -p "$SPACE_DIR/design/sovrano-v1/editorial-art"
+TEST_SPACE_JPEG="$SPACE_DIR/design/sovrano-v1/editorial-art/01-penthouse-portrait.png"
+convert -size 100x100 xc:brown "$SPACE_DIR/space-jpeg.jpg"
+exiftool -q -overwrite_original -Copyright="Property of Infinity Enterprises" "$SPACE_DIR/space-jpeg.jpg"
+mv "$SPACE_DIR/space-jpeg.jpg" "$TEST_SPACE_JPEG"
+# Copy scripts for checking
+mkdir -p "$SPACE_DIR/scripts"
+cp "$PROJECT_ROOT/scripts/check-image-metadata" "$SPACE_DIR/scripts/"
+cp "$PROJECT_ROOT/scripts/image-stamp.json" "$SPACE_DIR/scripts/"
+set +e
+OUTPUT_SPACE=$(IMAGE_CHECK_ROOT="$SPACE_DIR" "$SPACE_DIR/scripts/check-image-metadata" "$TEST_SPACE_JPEG" 2>&1)
+EXIT_SPACE=$?
+set -e
+rm -rf "$SPACE_DIR"
+if [ $EXIT_SPACE -eq 0 ]; then
+  pass_test "REPO_ROOT with spaces works"
+else
+  fail_test "REPO_ROOT with spaces should work (exit=$EXIT_SPACE), got: $OUTPUT_SPACE"
+fi
+
+# Test 35: Uppercase .PNG with JPEG content should fail (case-insensitive extension check)
+echo "Test 35: Uppercase .PNG with JPEG content not on list should fail"
+mkdir -p "$TEMP_DIR/uppercase"
+TEST_UPPERCASE="$TEMP_DIR/uppercase/test.PNG"
+convert -size 100x100 xc:violet "$TEMP_DIR/uppercase-jpeg.jpg"
+exiftool -q -overwrite_original -Copyright="Property of Infinity Enterprises" "$TEMP_DIR/uppercase-jpeg.jpg"
+mv "$TEMP_DIR/uppercase-jpeg.jpg" "$TEST_UPPERCASE"
+ACTUAL_TYPE=$(exiftool -s -s -s -MIMEType "$TEST_UPPERCASE" 2>/dev/null || echo "")
+if [ "$ACTUAL_TYPE" != "image/jpeg" ]; then
+  fail_test "Test 35 fixture is not JPEG: $ACTUAL_TYPE"
+else
+  set +e
+  OUTPUT=$("$PROJECT_ROOT/scripts/check-image-metadata" "$TEST_UPPERCASE" 2>&1)
+  EXIT_CODE=$?
+  set -e
+  if [ $EXIT_CODE -ne 0 ] && echo "$OUTPUT" | grep -q "JPEG content in .png file not on the allowed list"; then
+    pass_test "Uppercase .PNG with JPEG content fails (explicit path)"
+  else
+    fail_test "Uppercase .PNG with JPEG content should fail (exit=$EXIT_CODE), got: $OUTPUT"
+  fi
+  # Also test whole-tree mode (no file list) - use isolated directory
+  ISOLATED_DIR=$(mktemp -d)
+  mkdir -p "$ISOLATED_DIR/scripts"
+  cp "$PROJECT_ROOT/scripts/check-image-metadata" "$ISOLATED_DIR/scripts/"
+  cp "$PROJECT_ROOT/scripts/image-stamp.json" "$ISOLATED_DIR/scripts/"
+  cp "$TEST_UPPERCASE" "$ISOLATED_DIR/test.PNG"
+  cd "$ISOLATED_DIR"
+  set +e
+  OUTPUT=$(IMAGE_CHECK_ROOT="$ISOLATED_DIR" "$ISOLATED_DIR/scripts/check-image-metadata" 2>&1)
+  EXIT_CODE=$?
+  set -e
+  cd "$PROJECT_ROOT"
+  rm -rf "$ISOLATED_DIR"
+  if [ $EXIT_CODE -ne 0 ] && echo "$OUTPUT" | grep -q "JPEG content in .png file not on the allowed list" && echo "$OUTPUT" | grep -q "test.PNG"; then
+    pass_test "Uppercase .PNG with JPEG content fails (whole-tree mode)"
+  else
+    fail_test "Uppercase .PNG with JPEG content should fail in whole-tree mode (exit=$EXIT_CODE), got: $OUTPUT"
+  fi
+fi
+
+# Test 36: Unidentifiable file should fail (text file named .png)
+echo "Test 36: Unidentifiable file (text as .png) should fail"
+echo "This is just text, not an image" > "$TEMP_DIR/text-file.png"
+set +e
+OUTPUT=$("$PROJECT_ROOT/scripts/check-image-metadata" "$TEMP_DIR/text-file.png" 2>&1)
+EXIT_CODE=$?
+set -e
+if [ $EXIT_CODE -ne 0 ] && echo "$OUTPUT" | grep -q "cannot identify file type"; then
+  pass_test "Unidentifiable file fails"
+else
+  fail_test "Unidentifiable file should fail (exit=$EXIT_CODE), got: $OUTPUT"
+fi
+
+# Test 37: WebP with wrong copyright should fail (stamp check on WebP)
+echo "Test 37: WebP with wrong copyright should fail"
+convert -size 100x100 xc:coral "$TEMP_DIR/wrong-stamp.webp"
+exiftool -q -overwrite_original -Copyright="Wrong Copyright" "$TEMP_DIR/wrong-stamp.webp"
+set +e
+OUTPUT=$("$PROJECT_ROOT/scripts/check-image-metadata" "$TEMP_DIR/wrong-stamp.webp" 2>&1)
+EXIT_CODE=$?
+set -e
+if [ $EXIT_CODE -ne 0 ] && echo "$OUTPUT" | grep -q "Ownership stamp missing"; then
+  pass_test "WebP with wrong copyright fails"
+else
+  fail_test "WebP with wrong copyright should fail (exit=$EXIT_CODE), got: $OUTPUT"
+fi
 
 # Summary
 echo ""
