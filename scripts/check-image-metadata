@@ -12,8 +12,16 @@ if ! command -v strings >/dev/null 2>&1; then
   exit 1
 fi
 
-# Read stamp text from config
+# Determine repository root (default: script's parent directory)
+# Override via IMAGE_CHECK_ROOT env var for testing
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [ -n "${IMAGE_CHECK_ROOT:-}" ]; then
+  REPO_ROOT="$(cd "$IMAGE_CHECK_ROOT" && pwd)"
+else
+  REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+fi
+
+# Read stamp text from config
 STAMP=$(node -p "require('$SCRIPT_DIR/image-stamp.json').stamp")
 
 if [ -z "$STAMP" ]; then
@@ -93,21 +101,34 @@ while IFS= read -r img; do
     continue
   fi
   
-  # Strip leading ./ for consistent path matching
-  IMG_CLEAN="${img#./}"
+  # Resolve input path to absolute, then make it relative to REPO_ROOT
+  IMG_ABS="$(cd "$(dirname "$img")" && pwd)/$(basename "$img")"
+  
+  # Make path relative to REPO_ROOT for list matching
+  # Only match if the file is under REPO_ROOT
+  IMG_REL=""
+  if [[ "$IMG_ABS" == "$REPO_ROOT"* ]]; then
+    IMG_REL="${IMG_ABS#$REPO_ROOT/}"
+  fi
   
   # Identify if this is a known JPEG-with-.png-extension file
+  # Match exactly against normalized list entries (strip leading ./ from list)
   IS_JPEG_PNG=false
-  for known_jpeg_png in "${JPEG_PNG_NAMES[@]}"; do
-    if [[ "$IMG_CLEAN" == "$known_jpeg_png" ]]; then
-      IS_JPEG_PNG=true
-      break
-    fi
-  done
+  if [ -n "$IMG_REL" ]; then
+    for known_jpeg_png in "${JPEG_PNG_NAMES[@]}"; do
+      KNOWN_NORMALIZED="${known_jpeg_png#./}"
+      if [[ "$IMG_REL" == "$KNOWN_NORMALIZED" ]]; then
+        IS_JPEG_PNG=true
+        break
+      fi
+    done
+  fi
+  
+  # Read file type once (used for JPEG-as-.png format check and stamp check)
+  FILE_TYPE=$(exiftool -s -s -s -FileType "$img" 2>/dev/null || echo "")
   
   # For JPEG-as-.png files, verify format first
   if [ "$IS_JPEG_PNG" = true ]; then
-    FILE_TYPE=$(exiftool -s -s -s -FileType "$img" 2>/dev/null || echo "")
     if [[ "$FILE_TYPE" != "JPEG" ]]; then
       echo "Error: expected JPEG format for $img but got $FILE_TYPE" >&2
       exit 1
@@ -152,9 +173,6 @@ while IFS= read -r img; do
   fi
   
   if [ "$HAS_STAMP" = false ]; then
-    # Check actual file type
-    FILE_TYPE=$(exiftool -s -s -s -FileType "$img" 2>/dev/null || echo "")
-    
     # JPEG-as-.png files need stamps (already verified as JPEG above)
     # Other formats that support metadata also need stamps
     if [ "$IS_JPEG_PNG" = true ] || [[ "$FILE_TYPE" =~ ^(JPEG|PNG|TIFF|WEBP)$ ]]; then

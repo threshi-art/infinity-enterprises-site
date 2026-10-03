@@ -6,6 +6,9 @@ PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 FIXTURES_DIR="$SCRIPT_DIR/fixtures/images"
 TEMP_DIR=$(mktemp -d)
 
+# Set IMAGE_CHECK_ROOT to temp dir for all tests
+export IMAGE_CHECK_ROOT="$TEMP_DIR"
+
 trap 'rm -rf "$TEMP_DIR"' EXIT
 
 echo "=== Image Metadata Check Test Suite ==="
@@ -484,6 +487,84 @@ else
     pass_test "JPEG-as-.png with IPTC fails with IPTC error"
   else
     fail_test "JPEG-as-.png with IPTC should fail with IPTC error (exit=$EXIT_CODE), got: $OUTPUT"
+  fi
+fi
+
+# Test 27: Stamped PNG at a JPEG-as-.png list path must fail with format error
+echo "Test 27: Stamped PNG at JPEG-as-.png list path should fail with format error"
+# Create a real PNG (not JPEG) at a listed path, with stamp
+mkdir -p "$TEMP_DIR/design/sovrano-v1/editorial-art"
+TEST_PNG_PATH="$TEMP_DIR/design/sovrano-v1/editorial-art/04-house-of-sovrano-plate.png"
+convert -size 100x100 xc:silver "$TEST_PNG_PATH"
+exiftool -q -overwrite_original -Copyright="Property of Infinity Enterprises" "$TEST_PNG_PATH"
+# Verify it's PNG
+ACTUAL_TYPE=$(exiftool -s -s -s -FileType "$TEST_PNG_PATH" 2>/dev/null || echo "")
+if [ "$ACTUAL_TYPE" != "PNG" ]; then
+  fail_test "Test 27 fixture is not PNG: $ACTUAL_TYPE"
+else
+  set +e
+  OUTPUT=$("$PROJECT_ROOT/scripts/check-image-metadata" "$TEST_PNG_PATH" 2>&1)
+  EXIT_CODE=$?
+  set -e
+  if [ $EXIT_CODE -eq 1 ] && echo "$OUTPUT" | grep -q "expected JPEG format"; then
+    pass_test "Stamped PNG at JPEG-as-.png path fails with format error"
+  else
+    fail_test "Stamped PNG at JPEG-as-.png path should fail with format error (exit=$EXIT_CODE), got: $OUTPUT"
+  fi
+fi
+
+# Test 28: Absolute path to stamped PNG at listed path must fail with format error
+echo "Test 28: Absolute path to stamped PNG at JPEG-as-.png list path should fail"
+# Reuse the fixture from test 27 (already a stamped PNG at a listed path)
+# Call with absolute path
+mkdir -p "$TEMP_DIR/design/sovrano-v1/editorial-art/covers"
+TEST_ABS_PNG="$TEMP_DIR/design/sovrano-v1/editorial-art/covers/cover-mercati.png"
+convert -size 100x100 xc:gold "$TEST_ABS_PNG"
+exiftool -q -overwrite_original -Copyright="Property of Infinity Enterprises" "$TEST_ABS_PNG"
+ACTUAL_TYPE=$(exiftool -s -s -s -FileType "$TEST_ABS_PNG" 2>/dev/null || echo "")
+if [ "$ACTUAL_TYPE" != "PNG" ]; then
+  fail_test "Test 28 fixture is not PNG: $ACTUAL_TYPE"
+else
+  set +e
+  # Pass absolute path directly
+  OUTPUT=$("$PROJECT_ROOT/scripts/check-image-metadata" "$TEST_ABS_PNG" 2>&1)
+  EXIT_CODE=$?
+  set -e
+  if [ $EXIT_CODE -eq 1 ] && echo "$OUTPUT" | grep -q "expected JPEG format"; then
+    pass_test "Absolute path to stamped PNG at JPEG-as-.png path fails with format error"
+  else
+    fail_test "Absolute path to stamped PNG at JPEG-as-.png path should fail with format error (exit=$EXIT_CODE), got: $OUTPUT"
+  fi
+fi
+
+# Test 29: Stamped PNG at nested lookalike path should pass (guards against suffix matching)
+echo "Test 29: Nested lookalike path should not match list (suffix-match guard)"
+# Create a stamped PNG at a path that ENDS with a listed name but has extra prefix
+# With exact matching, this should NOT match and should pass (PNG with stamp is ok)
+# With suffix matching, this WOULD match and fail with "expected JPEG format"
+mkdir -p "$TEMP_DIR/sub/design/sovrano-v1/editorial-art/covers"
+TEST_NESTED="$TEMP_DIR/sub/design/sovrano-v1/editorial-art/covers/cover-moda.png"
+convert -size 100x100 xc:indigo "$TEST_NESTED"
+exiftool -q -overwrite_original -Copyright="Property of Infinity Enterprises" "$TEST_NESTED"
+ACTUAL_TYPE=$(exiftool -s -s -s -FileType "$TEST_NESTED" 2>/dev/null || echo "")
+if [ "$ACTUAL_TYPE" != "PNG" ]; then
+  fail_test "Test 29 fixture is not PNG: $ACTUAL_TYPE"
+else
+  set +e
+  OUTPUT=$("$PROJECT_ROOT/scripts/check-image-metadata" "$TEST_NESTED" 2>&1)
+  EXIT_CODE=$?
+  set -e
+  # Should pass (no error) because the path is not exactly on the list
+  if [ $EXIT_CODE -eq 0 ]; then
+    pass_test "Nested lookalike path not matched (suffix guard works)"
+  else
+    # If it fails with format error, suffix matching is being used (bad)
+    if echo "$OUTPUT" | grep -q "expected JPEG format"; then
+      fail_test "Nested lookalike path should not match (suffix matching detected), got: $OUTPUT"
+    else
+      # Other error - unexpected
+      fail_test "Nested lookalike path test failed unexpectedly (exit=$EXIT_CODE), got: $OUTPUT"
+    fi
   fi
 fi
 
