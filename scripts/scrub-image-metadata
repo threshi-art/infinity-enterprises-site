@@ -1,0 +1,114 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Read stamp text from config
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+STAMP=$(node -p "require('$SCRIPT_DIR/image-stamp.json').stamp")
+
+if [ -z "$STAMP" ]; then
+  echo "Error: stamp text not found in image-stamp.json" >&2
+  exit 1
+fi
+
+# Find all image files (excluding node_modules, .git, dist)
+IMAGES=$(find . -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.webp" -o -name "*.gif" -o -name "*.avif" \) \
+  ! -path "*/node_modules/*" \
+  ! -path "*/.git/*" \
+  ! -path "*/dist/*" \
+  ! -path "*/build/*" | sort)
+
+if [ -z "$IMAGES" ]; then
+  echo "No image files found"
+  exit 0
+fi
+
+TOTAL=$(echo "$IMAGES" | wc -l)
+echo "Processing $TOTAL image files..."
+
+PROCESSED=0
+FAILED=0
+SKIPPED=0
+
+while IFS= read -r img; do
+  if [ ! -f "$img" ]; then
+    continue
+  fi
+  
+  # Compute pixel hash before modification
+  HASH_BEFORE=$(identify -format "%#" "$img" 2>/dev/null || echo "")
+  
+  if [ -z "$HASH_BEFORE" ]; then
+    echo "Warning: Could not compute pixel hash for $img, skipping" >&2
+    ((SKIPPED++)) || true
+    continue
+  fi
+  
+  # Detect actual file type (exiftool reports the real format)
+  FILE_TYPE=$(exiftool -s -s -s -FileType "$img" 2>/dev/null)
+  
+  # For JPEG files with .png extension, temporarily work with a .jpg copy
+  TEMP_FILE=""
+  if [[ "$FILE_TYPE" == "JPEG" ]] && [[ "$img" =~ \.png$ ]]; then
+    TEMP_FILE="${img}.tmp.jpg"
+    cp "$img" "$TEMP_FILE"
+    WORK_FILE="$TEMP_FILE"
+  else
+    WORK_FILE="$img"
+  fi
+  
+  # Strip all metadata except ICC profile (to preserve colors)
+  # Use -api Compact=all to avoid XMP padding
+  # Remove EXIF, XMP, IPTC, C2PA/JUMBF
+  if ! exiftool -q -overwrite_original -m \
+    -api Compact=all \
+    -all= \
+    -icc_profile\<icc_profile \
+    "$WORK_FILE" 2>/dev/null; then
+      echo "Error: exiftool failed on $img" >&2
+      [ -n "$TEMP_FILE" ] && rm -f "$TEMP_FILE"
+      ((FAILED++)) || true
+      continue
+  fi
+  
+  # Add copyright stamp to EXIF Copyright field only (minimal size increase)
+  # XMP adds ~450 bytes of structure overhead, so use EXIF only
+  exiftool -q -overwrite_original -m \
+    -api Compact=all \
+    -Copyright="$STAMP" \
+    "$WORK_FILE" 2>/dev/null || {
+      echo "Warning: Could not add stamp to $WORK_FILE" >&2
+    }
+  
+  # If we used a temp file, copy it back
+  if [ -n "$TEMP_FILE" ]; then
+    mv "$TEMP_FILE" "$img"
+  fi
+  
+  # Verify pixel data unchanged
+  HASH_AFTER=$(identify -format "%#" "$img" 2>/dev/null || echo "")
+  
+  if [ "$HASH_BEFORE" != "$HASH_AFTER" ]; then
+    echo "ERROR: Pixel data changed for $img" >&2
+    echo "  Before: $HASH_BEFORE" >&2
+    echo "  After:  $HASH_AFTER" >&2
+    ((FAILED++)) || true
+    continue
+  fi
+  
+  ((PROCESSED++)) || true
+  
+  if [ $((PROCESSED % 50)) -eq 0 ]; then
+    echo "  Processed $PROCESSED/$TOTAL files..."
+  fi
+done <<< "$IMAGES"
+
+echo "Done: $PROCESSED files processed successfully"
+if [ $SKIPPED -gt 0 ]; then
+  echo "Skipped: $SKIPPED files" >&2
+fi
+if [ $FAILED -gt 0 ]; then
+  echo "Failed: $FAILED files" >&2
+  exit 1
+fi
+
+exit 0
