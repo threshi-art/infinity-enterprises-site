@@ -27,8 +27,8 @@ permissions:
   issues: write
 
 concurrency:
-  group: private-name-check-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  group: private-name-check-${{ github.event_name }}-${{ github.event.pull_request.number || github.event.comment.id || github.event.issue.number }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' || (github.event_name == 'issues' && github.event.action == 'edited') }}
 
 jobs:
   check-secret:
@@ -242,6 +242,15 @@ jobs:
 
       - name: Generate summary
         if: always()
+        env:
+          PATHS_FOUND: ${{ steps.scan-paths.outputs.found }}
+          PATHS_COUNT: ${{ steps.scan-paths.outputs.count }}
+          CONTENTS_FOUND: ${{ steps.scan-contents.outputs.found }}
+          CONTENTS_COUNT: ${{ steps.scan-contents.outputs.count }}
+          TITLE_FOUND: ${{ steps.scan-title.outputs.found }}
+          BODY_FOUND: ${{ steps.scan-body.outputs.found }}
+          COMMITS_FOUND: ${{ steps.scan-commits.outputs.found }}
+          COMMITS_COUNT: ${{ steps.scan-commits.outputs.count }}
         run: |
           echo "# Private Name Check Report" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
@@ -250,37 +259,37 @@ jobs:
           
           TOTAL_FINDINGS=0
           
-          if [ "${{ steps.scan-paths.outputs.found }}" = "true" ]; then
-            echo "- ⚠️ File paths: ${{ steps.scan-paths.outputs.count }} finding(s)" >> $GITHUB_STEP_SUMMARY
-            TOTAL_FINDINGS=$((TOTAL_FINDINGS + ${{ steps.scan-paths.outputs.count }}))
+          if [ "$PATHS_FOUND" = "true" ]; then
+            echo "- ⚠️ File paths: ${PATHS_COUNT:-0} finding(s)" >> $GITHUB_STEP_SUMMARY
+            TOTAL_FINDINGS=$((TOTAL_FINDINGS + ${PATHS_COUNT:-0}))
           else
             echo "- ✅ File paths: clean" >> $GITHUB_STEP_SUMMARY
           fi
           
-          if [ "${{ steps.scan-contents.outputs.found }}" = "true" ]; then
-            echo "- ⚠️ File contents: ${{ steps.scan-contents.outputs.count }} finding(s)" >> $GITHUB_STEP_SUMMARY
-            TOTAL_FINDINGS=$((TOTAL_FINDINGS + ${{ steps.scan-contents.outputs.count }}))
+          if [ "$CONTENTS_FOUND" = "true" ]; then
+            echo "- ⚠️ File contents: ${CONTENTS_COUNT:-0} finding(s)" >> $GITHUB_STEP_SUMMARY
+            TOTAL_FINDINGS=$((TOTAL_FINDINGS + ${CONTENTS_COUNT:-0}))
           else
             echo "- ✅ File contents: clean" >> $GITHUB_STEP_SUMMARY
           fi
           
-          if [ "${{ steps.scan-title.outputs.found }}" = "true" ]; then
+          if [ "$TITLE_FOUND" = "true" ]; then
             echo "- ⚠️ PR title: finding detected" >> $GITHUB_STEP_SUMMARY
             TOTAL_FINDINGS=$((TOTAL_FINDINGS + 1))
           else
             echo "- ✅ PR title: clean" >> $GITHUB_STEP_SUMMARY
           fi
           
-          if [ "${{ steps.scan-body.outputs.found }}" = "true" ]; then
+          if [ "$BODY_FOUND" = "true" ]; then
             echo "- ⚠️ PR body: finding detected" >> $GITHUB_STEP_SUMMARY
             TOTAL_FINDINGS=$((TOTAL_FINDINGS + 1))
           else
             echo "- ✅ PR body: clean" >> $GITHUB_STEP_SUMMARY
           fi
           
-          if [ "${{ steps.scan-commits.outputs.found }}" = "true" ]; then
-            echo "- ⚠️ Commit messages: ${{ steps.scan-commits.outputs.count }} finding(s)" >> $GITHUB_STEP_SUMMARY
-            TOTAL_FINDINGS=$((TOTAL_FINDINGS + ${{ steps.scan-commits.outputs.count }}))
+          if [ "$COMMITS_FOUND" = "true" ]; then
+            echo "- ⚠️ Commit messages: ${COMMITS_COUNT:-0} finding(s)" >> $GITHUB_STEP_SUMMARY
+            TOTAL_FINDINGS=$((TOTAL_FINDINGS + ${COMMITS_COUNT:-0}))
           else
             echo "- ✅ Commit messages: clean" >> $GITHUB_STEP_SUMMARY
           fi
@@ -407,6 +416,10 @@ jobs:
 
       - name: Generate summary
         if: always()
+        env:
+          TITLE_FOUND: ${{ steps.scan-title.outputs.found }}
+          BODY_FOUND: ${{ steps.scan-body.outputs.found }}
+          COMMENT_FOUND: ${{ steps.scan-comment.outputs.found }}
         run: |
           echo "# Private Name Check Report (Issue/Comment)" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
@@ -415,17 +428,17 @@ jobs:
           
           ANY_FOUND=false
           
-          if [ "${{ steps.scan-title.outputs.found }}" = "true" ]; then
+          if [ "$TITLE_FOUND" = "true" ]; then
             echo "- ⚠️ Issue title: finding detected" >> $GITHUB_STEP_SUMMARY
             ANY_FOUND=true
           fi
           
-          if [ "${{ steps.scan-body.outputs.found }}" = "true" ]; then
+          if [ "$BODY_FOUND" = "true" ]; then
             echo "- ⚠️ Issue body: finding detected" >> $GITHUB_STEP_SUMMARY
             ANY_FOUND=true
           fi
           
-          if [ "${{ steps.scan-comment.outputs.found }}" = "true" ]; then
+          if [ "$COMMENT_FOUND" = "true" ]; then
             echo "- ⚠️ Comment: finding detected" >> $GITHUB_STEP_SUMMARY
             ANY_FOUND=true
           fi
