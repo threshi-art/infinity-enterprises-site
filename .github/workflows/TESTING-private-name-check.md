@@ -120,6 +120,16 @@ To test with the secret configured, the repository owner must:
      - 🏷️ Label is added if not already present
      - 📝 Warning shows issue and comment ID only
 
+3. **Test Concurrent Comment Handling**
+   - Post two comments on the same issue within a few seconds (under 10 seconds):
+     - First comment: "First update with DUMMYNAME"
+     - Second comment: "Second update with TESTNAME"
+   - Verify in Actions:
+     - ✅ **Two separate workflow runs complete** (neither is cancelled)
+     - Each run has its own concurrency group keyed by comment ID
+     - Both comments are scanned and both get workflow annotations
+   - This confirms that concurrent comment scans do not cancel each other
+
 ### Testing Script Injection Protection
 
 The workflow is designed to prevent script injection attacks. To verify:
