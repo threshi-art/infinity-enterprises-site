@@ -1,11 +1,11 @@
-# SAVRONO Seraphim Handoff — Visual Governance and Traceability
+# SAVRONO Principal Architect Handoff — Visual Governance and Traceability
 
 **Status:** Source-controlled design-review preparation. No repository, Wiki, live-site, deployment, or PR #126 modification has been made under this handoff.
 
 ## Owner-approved direction now in review
 
 1. Maintain PR [#126](https://github.com/threshi-art/infinity-enterprises-site/pull/126) as a narrow, exact-head visual-vibe reference at `7a5fb0a8f7fb7781748d62761400d1e8b698a4e0`.
-2. Build a separate **design-only** visual-direction and asset-intake package under the existing [#109](https://github.com/threshi-art/infinity-enterprises-site/issues/109) guidance after Chris accepts the private review packet.
+2. Build a separate **design-only** visual-direction and asset-intake package under the existing [#109](https://github.com/threshi-art/infinity-enterprises-site/issues/109) guidance after the owner accepts the private review packet.
 3. Treat supplied screenshots as reference-only; do not use them as repository or runtime assets.
 4. Treat personal photographs and the RAW DNG as pending asset-intake candidates; no public or repository use before provenance, caption, and rights state are recorded.
 5. Develop the owner-selected digital model as a fictional **House Figure**, pending a separate identity, ownership/release, disclosure, and prohibited-use sheet.
@@ -60,7 +60,7 @@ Every downstream design issue, Ready card, and PR should add:
 
 ## Review gates before any repository update
 
-1. Chris accepts the private VD-01 through VD-06 study packet.
+1. the owner accepts the private VD-01 through VD-06 study packet.
 2. Confirm the House Figure’s fictional status and record ownership/release confirmation for the model reference.
 3. Confirm the proposal is still documentation/design-study-only and does not contain runtime assets.
 4. Puck checks source/rights/provenance language.

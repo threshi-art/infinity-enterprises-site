@@ -40,11 +40,11 @@ This is the **single review package** for [#127](https://github.com/threshi-art/
 
 ## Historical/exploratory study
 
-[Seraphim’s visual-study board](historical/seraphim-savrano-visual-study-2026-10-02.jpg) is included because Chris identified Seraphim as its creator and directed that it be preserved. It is an **historical/exploratory reference only**.
+[The historical visual-study board](historical/principal-architect-savrano-visual-study-2026-10-02.jpg) is an owner-supplied internal study preserved as an **historical/exploratory reference only**.
 
 > Its Ether Room placement, simplified structure, desk count, labels, navigation, sample content, and illustrative media are non-authoritative. Current architecture is controlled by #107 and #60. Do not derive a runtime map or implementation claim from this board.
 
-![Seraphim historical/exploratory visual-study board](historical/seraphim-savrano-visual-study-2026-10-02.jpg)
+![Historical/exploratory visual-study board](historical/principal-architect-savrano-visual-study-2026-10-02.jpg)
 
 ## Non-goals
 

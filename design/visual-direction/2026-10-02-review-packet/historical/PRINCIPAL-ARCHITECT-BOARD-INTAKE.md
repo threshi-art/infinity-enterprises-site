@@ -1,14 +1,14 @@
-# Seraphim SAVRONO visual-study board — intake status
+# SAVRONO historical visual-study board — intake status
 
-**Source:** Chris-supplied image, credited by Chris as created by Seraphim.
+**Source:** Owner-supplied image, recorded as an internally created historical study.
 
-**Status:** Candidate **historical/exploratory design-study reference**, pending filing in the separate #109 design-only package. It is not a runtime asset, current page template, approved navigation, or current SAVRONO information-architecture record.
+**Status:** Committed **historical/exploratory design-study reference** in the #127 review package. It is not a runtime asset, current page template, approved navigation, or current SAVRONO information-architecture record.
 
 ## Why it is useful
 
 - It is an integrated visual study spanning a home shell, Cover Story, Daily Desk, MOTOR, Lifestyle, Ether Room, mobile studies, and a structural diagram.
 - It preserves an early visual language that can be useful evidence when explaining how a federated set of desk journeys evolved.
-- It provides baseline material for comparative review against the current #125 / PR #126 concept and the private VD-01 through VD-06 packet.
+- It provides baseline material for comparative review against the current #125 / PR #126 concept and VD-01 through VD-06 in this review packet.
 
 ## Current-authority conflict requiring visible annotation
 
@@ -16,7 +16,7 @@ The board visibly includes **Ether Room** as a desk and shows a simplified struc
 
 ## Filing rule
 
-If included in a future design-only PR, place it under `design/visual-direction/historical/` or a clearly equivalent non-runtime reference location. Its adjacent provenance record must say:
+It is filed under `design/visual-direction/2026-10-02-review-packet/historical/` as a non-runtime reference. Its adjacent provenance record states:
 
 > Historical/exploratory visual study. The labels, desk count, Ether Room placement, navigation, sample content, and structural diagram are illustrative and non-authoritative. See #107 and #60 for current architecture; see #76 and #109 for current design guidance.
 

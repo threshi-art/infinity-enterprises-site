@@ -55,11 +55,11 @@ The references support a coherent house principle, but **not a uniform look**:
 | Food photographs / steak screenshot | Appetite, heat, texture, preparation as material culture | Lifestyle food can be intimate, sensory, and photographer-led | Recipe instructions, health claims, third-party food photography, or promotional restaurant claims without approval |
 | Mercedes photograph | Motion, silhouette, detail, place | MOTOR can be owner-observed, machine-specific, and photographic | Brand endorsement, unverified specifications, or reused third-party car imagery |
 | Paddington / dogs image | Whimsy, memory, companionship | A reminder that Lifestyle may admit play and personal texture where it is editorially relevant | Use of Paddington imagery or character association in SAVRONO branding |
-| Personal DNG (`IMG_9491.DNG`) | Unclassified candidate source photo | Potential owner-supplied editorial image after conversion and provenance confirmation | Any repository or public use before rights, subject, caption, and location context are recorded |
+| Owner-supplied RAW candidate | Unclassified candidate source photo | Potential owner-supplied editorial image after conversion and provenance confirmation | Any repository or public use before rights, subject, caption, and location context are recorded |
 
 ### Asset intake finding
 
-The DNG is an **Apple iPhone 14 Pro Max RAW/TIFF file** of approximately 20 MB. The current sandbox decoder could not render it. That is a tooling limitation, not a content judgment. It remains a private candidate until it is converted, inspected, captioned, and its rights confirmed.
+The owner-supplied RAW candidate remains excluded. Current tooling could not render it; that is a tooling limitation, not a content judgment. It remains private until it is converted, inspected, captioned, and its rights confirmed.
 
 ## 3. Digital model / house figure proposal
 
@@ -230,7 +230,7 @@ The corresponding Wiki record should contain:
 
 ## 8. Owner approval recorded
 
-Chris approved the following on 2026-10-02. They are now carried through the single #127 review hub; independent review still applies:
+The owner approved the following on 2026-10-02. They are now carried through the single #127 review hub; independent review still applies:
 
 1. **Use the House Figure framing** for the digital model, subject to a later name/persona/rights sheet.
 2. **Adopt the Tech Lounge “Afterimage Workshop” direction**: warm editorial lounge as arrival; cold circuit rigor as its information layer.
