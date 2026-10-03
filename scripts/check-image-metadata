@@ -130,9 +130,22 @@ while IFS= read -r img; do
   # Read file type once (used for JPEG-as-.png format check and stamp check)
   FILE_TYPE=$(exiftool -s -s -s -FileType "$img" 2>/dev/null || echo "")
   
-  # Check if this is a .png file with JPEG content
+  # Determine expected type based on extension
   FILE_EXT="${img##*.}"
-  if [[ "$FILE_EXT" == "png" && "$FILE_TYPE" == "JPEG" ]]; then
+  FILE_EXT_LOWER=$(echo "$FILE_EXT" | tr '[:upper:]' '[:lower:]')
+  
+  # For files with image extensions, the actual type must be a recognized image format
+  case "$FILE_EXT_LOWER" in
+    png|jpg|jpeg|webp|gif|avif)
+      if [[ ! "$FILE_TYPE" =~ ^(JPEG|PNG|TIFF|WEBP|GIF|AVIF)$ ]]; then
+        echo "Error: cannot identify file type for: $img (got: ${FILE_TYPE:-unknown})" >&2
+        exit 1
+      fi
+      ;;
+  esac
+  
+  # Check if this is a .png file with JPEG content
+  if [[ "$FILE_EXT_LOWER" == "png" && "$FILE_TYPE" == "JPEG" ]]; then
     # JPEG content in .png file is only allowed at listed paths
     if [ "$IS_JPEG_PNG" != true ]; then
       echo "Error: JPEG content in .png file not on the allowed list: $img" >&2
