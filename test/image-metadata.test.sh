@@ -705,9 +705,21 @@ else
   EXIT_CODE=$?
   set -e
   if [ $EXIT_CODE -ne 0 ] && echo "$OUTPUT" | grep -q "JPEG content in .png file not on the allowed list"; then
-    pass_test "Uppercase .PNG with JPEG content fails"
+    pass_test "Uppercase .PNG with JPEG content fails (explicit path)"
   else
     fail_test "Uppercase .PNG with JPEG content should fail (exit=$EXIT_CODE), got: $OUTPUT"
+  fi
+  # Also test whole-tree mode (no file list)
+  cd "$TEMP_DIR"
+  set +e
+  OUTPUT=$("$PROJECT_ROOT/scripts/check-image-metadata" 2>&1)
+  EXIT_CODE=$?
+  set -e
+  cd "$PROJECT_ROOT"
+  if [ $EXIT_CODE -ne 0 ] && echo "$OUTPUT" | grep -q "JPEG content in .png file not on the allowed list"; then
+    pass_test "Uppercase .PNG with JPEG content fails (whole-tree mode)"
+  else
+    fail_test "Uppercase .PNG with JPEG content should fail in whole-tree mode (exit=$EXIT_CODE), got: $OUTPUT"
   fi
 fi
 
@@ -722,6 +734,20 @@ if [ $EXIT_CODE -ne 0 ] && echo "$OUTPUT" | grep -q "cannot identify file type";
   pass_test "Unidentifiable file fails"
 else
   fail_test "Unidentifiable file should fail (exit=$EXIT_CODE), got: $OUTPUT"
+fi
+
+# Test 37: WebP with wrong copyright should fail (stamp check on WebP)
+echo "Test 37: WebP with wrong copyright should fail"
+convert -size 100x100 xc:coral "$TEMP_DIR/wrong-stamp.webp"
+exiftool -q -overwrite_original -Copyright="Wrong Copyright" "$TEMP_DIR/wrong-stamp.webp"
+set +e
+OUTPUT=$("$PROJECT_ROOT/scripts/check-image-metadata" "$TEMP_DIR/wrong-stamp.webp" 2>&1)
+EXIT_CODE=$?
+set -e
+if [ $EXIT_CODE -ne 0 ] && echo "$OUTPUT" | grep -q "Ownership stamp missing"; then
+  pass_test "WebP with wrong copyright fails"
+else
+  fail_test "WebP with wrong copyright should fail (exit=$EXIT_CODE), got: $OUTPUT"
 fi
 
 # Summary
