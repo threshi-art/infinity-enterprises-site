@@ -63,17 +63,50 @@ exiftool -q -overwrite_original -GPSLatitude=37.7749 -GPSLongitude=-122.4194 -Co
 # 9. Image missing stamp (should fail)
 convert -size 100x100 xc:white "$TEMP_DIR/missing-stamp.png"
 
-# 10. Create a JPEG APP11/JUMBF test case (C2PA marker)
-convert -size 100x100 xc:brown "$TEMP_DIR/has-c2pa.jpg"
-exiftool -q -overwrite_original -Copyright="Property of Infinity Enterprises" "$TEMP_DIR/has-c2pa.jpg"
-# Insert actual jumb string that will be caught by strings command
-printf 'jumbf_metadata_here' >> "$TEMP_DIR/has-c2pa.jpg"
+# 10. Create a real JPEG APP11/JUMBF test case
+# JPEG structure: SOI (FF D8), APP11 (FF EB + length + data), rest of image
+# APP11 JUMBF box: common identifier 'JP\x20\x20' + box type 'jumb'
+convert -size 100x100 xc:brown "$TEMP_DIR/has-c2pa-app11.jpg"
+exiftool -q -overwrite_original -Copyright="Property of Infinity Enterprises" "$TEMP_DIR/has-c2pa-app11.jpg"
 
-# 11. Image with LensModel (should fail)
+# Build APP11 JUMBF segment and inject after SOI
+# Structure: FF EB (APP11 marker) + length (2 bytes) + JP box header + jumb box
+python3 << PYTHON_EOF
+import struct
+# Read original JPEG
+with open("$TEMP_DIR/has-c2pa-app11.jpg", "rb") as f:
+    jpeg_data = f.read()
+
+# Verify SOI marker
+if jpeg_data[:2] != b'\xFF\xD8':
+    raise ValueError("Not a valid JPEG")
+
+# Build APP11 JUMBF segment
+# Common identifier: 'JP\x20\x20' (4 bytes)
+# Box type: 'jumb' (4 bytes)
+jumbf_data = b'JP\x20\x20jumb'
+# APP11 marker + length (includes length bytes) + data
+app11_length = len(jumbf_data) + 2
+app11_segment = struct.pack('>H', 0xFFEB) + struct.pack('>H', app11_length) + jumbf_data
+
+# Insert APP11 after SOI
+new_jpeg = jpeg_data[:2] + app11_segment + jpeg_data[2:]
+
+with open("$TEMP_DIR/has-c2pa-app11.jpg", "wb") as f:
+    f.write(new_jpeg)
+PYTHON_EOF
+
+# 11. Create a plain C2PA marker test (simpler string-based detection)
+convert -size 100x100 xc:brown "$TEMP_DIR/has-c2pa-marker.jpg"
+exiftool -q -overwrite_original -Copyright="Property of Infinity Enterprises" "$TEMP_DIR/has-c2pa-marker.jpg"
+# Append c2pa marker string that will be caught by strings command
+printf 'c2pa_metadata_marker' >> "$TEMP_DIR/has-c2pa-marker.jpg"
+
+# 12. Image with LensModel (should fail)
 convert -size 100x100 xc:gray "$TEMP_DIR/has-lens-model.jpg"
 exiftool -q -overwrite_original -LensModel="50mm f/1.8" -Copyright="Property of Infinity Enterprises" "$TEMP_DIR/has-lens-model.jpg"
 
-# 12. Image with SerialNumber (should fail)
+# 13. Image with SerialNumber (should fail)
 convert -size 100x100 xc:pink "$TEMP_DIR/has-serial.jpg"
 exiftool -q -overwrite_original -SerialNumber="12345" -Copyright="Property of Infinity Enterprises" "$TEMP_DIR/has-serial.jpg"
 
@@ -152,31 +185,81 @@ else
   fail_test "Missing stamp should fail but passed"
 fi
 
-# Test 10: C2PA/JUMBF marker should fail
-echo "Test 10: Image with C2PA/JUMBF marker should fail"
-if ! "$PROJECT_ROOT/scripts/check-image-metadata" "$TEMP_DIR/has-c2pa.jpg" >/dev/null 2>&1; then
-  pass_test "C2PA/JUMBF detection works"
+# Test 10: Real APP11/JUMBF marker should fail
+echo "Test 10: Image with real APP11 JUMBF segment should fail"
+if ! "$PROJECT_ROOT/scripts/check-image-metadata" "$TEMP_DIR/has-c2pa-app11.jpg" >/dev/null 2>&1; then
+  pass_test "APP11 JUMBF detection works"
 else
-  fail_test "C2PA/JUMBF should fail but passed"
+  fail_test "APP11 JUMBF should fail but passed"
 fi
 
-# Test 11: LensModel should fail
-echo "Test 11: Image with LensModel should fail"
+# Test 11: Plain C2PA marker string should fail
+echo "Test 11: Image with C2PA marker string should fail"
+if ! "$PROJECT_ROOT/scripts/check-image-metadata" "$TEMP_DIR/has-c2pa-marker.jpg" >/dev/null 2>&1; then
+  pass_test "C2PA marker detection works"
+else
+  fail_test "C2PA marker should fail but passed"
+fi
+
+# Test 12: LensModel should fail
+echo "Test 12: Image with LensModel should fail"
 if ! "$PROJECT_ROOT/scripts/check-image-metadata" "$TEMP_DIR/has-lens-model.jpg" >/dev/null 2>&1; then
   pass_test "EXIF LensModel detection works"
 else
   fail_test "EXIF LensModel should fail but passed"
 fi
 
-# Test 12: SerialNumber should fail
-echo "Test 12: Image with SerialNumber should fail"
+# Test 13: SerialNumber should fail
+echo "Test 13: Image with SerialNumber should fail"
 if ! "$PROJECT_ROOT/scripts/check-image-metadata" "$TEMP_DIR/has-serial.jpg" >/dev/null 2>&1; then
   pass_test "EXIF SerialNumber detection works"
 else
   fail_test "EXIF SerialNumber should fail but passed"
 fi
 
-# Test 13: Fail closed - missing exiftool
+# Test 14: JPEG-in-.png list recognition from repo root with ./ prefix
+echo "Test 14: JPEG-in-.png list recognized with ./ prefix"
+# Test that the check recognizes a known JPEG-.png file even with ./ prefix
+KNOWN_FILE="design/sovrano-v1/editorial-art/01-penthouse-portrait.png"
+if [ -f "$PROJECT_ROOT/$KNOWN_FILE" ]; then
+  # Run check from repo root with ./ prefix - should pass (has stamp)
+  cd "$PROJECT_ROOT"
+  if "$PROJECT_ROOT/scripts/check-image-metadata" "./$KNOWN_FILE" >/dev/null 2>&1; then
+    pass_test "JPEG-in-.png list matches with ./ prefix"
+  else
+    # If it failed, check that it's because of stamp check (not skipped)
+    OUTPUT=$("$PROJECT_ROOT/scripts/check-image-metadata" "./$KNOWN_FILE" 2>&1) || true
+    if echo "$OUTPUT" | grep -qE "(missing|JPEG)"; then
+      pass_test "JPEG-in-.png list matches (verified as JPEG)"
+    else
+      fail_test "JPEG-in-.png check failed for wrong reason: $OUTPUT"
+    fi
+  fi
+else
+  fail_test "Test file not found: $KNOWN_FILE"
+fi
+
+# Test 15: Check script fails on missing file in file list
+echo "Test 15: Check script fails when file in list is missing"
+if OUTPUT=$("$PROJECT_ROOT/scripts/check-image-metadata" "$TEMP_DIR/clean-stamped.png" "$TEMP_DIR/nonexistent.png" 2>&1); then
+  fail_test "Check script should fail when file is missing"
+elif echo "$OUTPUT" | grep -q "not found"; then
+  pass_test "Check script fails on missing file"
+else
+  fail_test "Check script failed but wrong error message"
+fi
+
+# Test 16: Scrub script fails on missing file in file list
+echo "Test 16: Scrub script fails when file in list is missing"
+if OUTPUT=$("$PROJECT_ROOT/scripts/scrub-image-metadata" "$TEMP_DIR/clean-stamped.png" "$TEMP_DIR/nonexistent.png" 2>&1); then
+  fail_test "Scrub script should fail when file is missing"
+elif echo "$OUTPUT" | grep -q "not found"; then
+  pass_test "Scrub script fails on missing file"
+else
+  fail_test "Scrub script failed but wrong error message"
+fi
+
+# Test 17: Fail closed - missing exiftool
 echo "Test 13: Check script fails when exiftool is missing"
 RESTRICTED_BIN=$(mktemp -d)
 ln -s "$(which node)" "$RESTRICTED_BIN/node"
@@ -192,8 +275,8 @@ else
 fi
 rm -rf "$RESTRICTED_BIN"
 
-# Test 14: Fail closed - missing ImageMagick  
-echo "Test 14: Check script fails when ImageMagick is missing"
+# Test 14: Fail closed - missing ImageMagick
+echo "Test 18: Check script fails when ImageMagick is missing"
 RESTRICTED_BIN=$(mktemp -d)
 ln -s "$(which node)" "$RESTRICTED_BIN/node"
 ln -s "$(which bash)" "$RESTRICTED_BIN/bash"
@@ -209,7 +292,7 @@ fi
 rm -rf "$RESTRICTED_BIN"
 
 # Test 15: Fail closed - scrub script missing exiftool
-echo "Test 15: Scrub script fails when exiftool is missing"
+echo "Test 19: Scrub script fails when exiftool is missing"
 RESTRICTED_BIN=$(mktemp -d)
 ln -s "$(which node)" "$RESTRICTED_BIN/node"
 ln -s "$(which bash)" "$RESTRICTED_BIN/bash"
@@ -224,7 +307,7 @@ fi
 rm -rf "$RESTRICTED_BIN"
 
 # Test 16: Fail closed - scrub script missing ImageMagick
-echo "Test 16: Scrub script fails when ImageMagick is missing"
+echo "Test 20: Scrub script fails when ImageMagick is missing"
 RESTRICTED_BIN=$(mktemp -d)
 ln -s "$(which node)" "$RESTRICTED_BIN/node"
 ln -s "$(which bash)" "$RESTRICTED_BIN/bash"
@@ -239,7 +322,7 @@ fi
 rm -rf "$RESTRICTED_BIN"
 
 # Test 17: File list argument - only listed files are modified
-echo "Test 17: Scrub script with file list only modifies listed files"
+echo "Test 21: Scrub script with file list only modifies listed files"
 # Create three test images
 convert -size 50x50 xc:red "$TEMP_DIR/file-list-1.png"
 convert -size 50x50 xc:green "$TEMP_DIR/file-list-2.png"
@@ -279,7 +362,7 @@ else
 fi
 
 # Test 18: Scrub script fails when file is skipped
-echo "Test 18: Scrub script exits non-zero when file is skipped"
+echo "Test 22: Scrub script exits non-zero when file is skipped"
 # Create a file that will cause hash computation to fail (corrupt/invalid)
 echo "not an image" > "$TEMP_DIR/corrupt.png"
 
