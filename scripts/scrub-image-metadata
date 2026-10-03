@@ -24,14 +24,20 @@ fi
 # Accept optional file list as arguments, or discover all images
 if [ $# -gt 0 ]; then
   IMAGES=""
+  MISSING=0
   for file in "$@"; do
     if [ -f "$file" ]; then
       IMAGES="${IMAGES}${file}"$'\n'
     else
-      echo "Warning: file not found: $file" >&2
+      echo "Error: file not found: $file" >&2
+      ((MISSING++)) || true
     fi
   done
   IMAGES=$(echo "$IMAGES" | grep -v '^$' | sort || echo "")
+  if [ $MISSING -gt 0 ]; then
+    echo "Error: $MISSING file(s) not found" >&2
+    exit 1
+  fi
 else
   # Find all image files (excluding node_modules, .git, dist)
   IMAGES=$(find . -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.webp" -o -name "*.gif" -o -name "*.avif" \) \

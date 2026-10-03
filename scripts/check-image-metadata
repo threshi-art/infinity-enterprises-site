@@ -24,14 +24,20 @@ fi
 # Accept optional file list as arguments, or discover all images
 if [ $# -gt 0 ]; then
   IMAGES=""
+  MISSING=0
   for file in "$@"; do
     if [ -f "$file" ]; then
       IMAGES="${IMAGES}${file}"$'\n'
     else
-      echo "Warning: file not found: $file" >&2
+      echo "Error: file not found: $file" >&2
+      ((MISSING++)) || true
     fi
   done
   IMAGES=$(echo "$IMAGES" | grep -v '^$' | sort || echo "")
+  if [ $MISSING -gt 0 ]; then
+    echo "Error: $MISSING file(s) not found" >&2
+    exit 1
+  fi
 else
   # Find all image files (excluding node_modules, .git, dist)
   IMAGES=$(find . -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.webp" -o -name "*.gif" -o -name "*.avif" \) \
@@ -87,6 +93,9 @@ while IFS= read -r img; do
     continue
   fi
   
+  # Strip leading ./ for consistent path matching
+  IMG_CLEAN="${img#./}"
+  
   # Check for C2PA/JUMBF bytes using strings (covers all markers including APP11)
   if strings "$img" | grep -qE '(c2pa|jumb|caBX)'; then
     C2PA_FOUND+=("$img")
@@ -132,7 +141,7 @@ while IFS= read -r img; do
     # For the 16 known JPEG files with .png extensions, verify as JPEG with stamp
     IS_JPEG_PNG=false
     for known_jpeg_png in "${JPEG_PNG_NAMES[@]}"; do
-      if [[ "./$img" == "./$known_jpeg_png" ]] || [[ "$img" == "$known_jpeg_png" ]]; then
+      if [[ "$IMG_CLEAN" == "$known_jpeg_png" ]]; then
         IS_JPEG_PNG=true
         break
       fi
