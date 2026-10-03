@@ -9,7 +9,7 @@ TEMP_DIR=$(mktemp -d)
 # Set IMAGE_CHECK_ROOT to temp dir for all tests
 export IMAGE_CHECK_ROOT="$TEMP_DIR"
 
-trap 'rm -rf "$TEMP_DIR" "$TEMP_DIR-link"' EXIT
+trap 'rm -rf "$TEMP_DIR" "$TEMP_DIR-link" "$SPACE_DIR"' EXIT
 
 echo "=== Image Metadata Check Test Suite ==="
 echo ""
@@ -696,8 +696,8 @@ TEST_UPPERCASE="$TEMP_DIR/uppercase/test.PNG"
 convert -size 100x100 xc:violet "$TEMP_DIR/uppercase-jpeg.jpg"
 exiftool -q -overwrite_original -Copyright="Property of Infinity Enterprises" "$TEMP_DIR/uppercase-jpeg.jpg"
 mv "$TEMP_DIR/uppercase-jpeg.jpg" "$TEST_UPPERCASE"
-ACTUAL_TYPE=$(exiftool -s -s -s -FileType "$TEST_UPPERCASE" 2>/dev/null || echo "")
-if [ "$ACTUAL_TYPE" != "JPEG" ]; then
+ACTUAL_TYPE=$(exiftool -s -s -s -MIMEType "$TEST_UPPERCASE" 2>/dev/null || echo "")
+if [ "$ACTUAL_TYPE" != "image/jpeg" ]; then
   fail_test "Test 35 fixture is not JPEG: $ACTUAL_TYPE"
 else
   set +e
