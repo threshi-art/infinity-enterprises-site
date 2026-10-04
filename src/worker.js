@@ -29,6 +29,7 @@ const techLoungeBase64 = /* TECH_LOUNGE_IMAGE */ null;
 const techMacroBase64 = /* TECH_MACRO_IMAGE */ null;
 const politicsBase64 = /* ENIGMAS_POLITICS_IMAGE */ null;
 const lawBase64 = /* ENIGMAS_LAW_IMAGE */ null;
+const discoveryBase64 = /* ENIGMAS_DISCOVERY_IMAGE */ null;
 const academyBase64 = /* ENIGMAS_ACADEMY_IMAGE */ null;
 const researchBase64 = /* RESEARCH_IMAGE */ null;
 const learningBase64 = /* LEARNING_IMAGE */ null;
@@ -49,7 +50,7 @@ const decoded = new Map();
 
 function image(name) {
   if (!decoded.has(name)) {
-    const base64 = /^form-[1-7]$/.test(name) ? formBase64[Number(name.slice(-1)) - 1] : /^motor-[1-4]$/.test(name) ? motorBase64[Number(name.slice(-1)) - 1] : /^ether-[1-4]$/.test(name) ? etherBase64[Number(name.slice(-1)) - 1] : name === 'hero' ? heroBase64 : name === 'diana' ? dianaBase64 : name === 'diana-cards' ? dianaCardsBase64 : name === 'development' ? developmentBase64 : name === 'tech-lounge' ? techLoungeBase64 : name === 'tech-macro' ? techMacroBase64 : name === 'enigmas-politics' ? politicsBase64 : name === 'enigmas-law' ? lawBase64 : name === 'enigmas-academy' ? academyBase64 : name === 'research' ? researchBase64 : name === 'learning' ? learningBase64 : name === 'foundation' ? foundationBase64 : name === 'youth' ? youthBase64 : name === 'cover' ? coverBase64 : name === 'food' ? foodBase64 : detailBase64;
+    const base64 = /^form-[1-7]$/.test(name) ? formBase64[Number(name.slice(-1)) - 1] : /^motor-[1-4]$/.test(name) ? motorBase64[Number(name.slice(-1)) - 1] : /^ether-[1-4]$/.test(name) ? etherBase64[Number(name.slice(-1)) - 1] : name === 'hero' ? heroBase64 : name === 'diana' ? dianaBase64 : name === 'diana-cards' ? dianaCardsBase64 : name === 'development' ? developmentBase64 : name === 'tech-lounge' ? techLoungeBase64 : name === 'tech-macro' ? techMacroBase64 : name === 'enigmas-politics' ? politicsBase64 : name === 'enigmas-law' ? lawBase64 : name === 'enigmas-discovery' ? discoveryBase64 : name === 'enigmas-academy' ? academyBase64 : name === 'research' ? researchBase64 : name === 'learning' ? learningBase64 : name === 'foundation' ? foundationBase64 : name === 'youth' ? youthBase64 : name === 'cover' ? coverBase64 : name === 'food' ? foodBase64 : detailBase64;
     decoded.set(name, Uint8Array.from(atob(base64), char => char.charCodeAt(0)));
   }
   return new Response(decoded.get(name), { headers: {
@@ -262,6 +263,7 @@ export default {
     if (path === '/media/tech-macro.jpg') return image('tech-macro');
     if (path === '/media/enigmas-politics.jpg') return image('enigmas-politics');
     if (path === '/media/enigmas-law.jpg') return image('enigmas-law');
+    if (path === '/media/enigmas-discovery.jpg') return image('enigmas-discovery');
     if (path === '/media/enigmas-academy.jpg') return image('enigmas-academy');
     if (path === '/media/research.jpg') return image('research');
     if (path === '/media/learning.jpg') return image('learning');

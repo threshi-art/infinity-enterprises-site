@@ -2,7 +2,7 @@ import { readFile, mkdir, writeFile, rm } from 'node:fs/promises';
 import { createPublicationPages } from './src/publication-pages.mjs';
 import { departments, departmentHref } from './src/departments.mjs';
 
-const [home, about, standards, atlas, diana, development, learning, journal, foundation, youth, techLounge, ether, motor, form, enigmas, enigmaArticle, enigmaStories, projectsJson, editorialJson, login, admin, roadmaps, osintHtml, osintSourcesJson, sharedCss, music, dispatchScript, splashCss, splashScript, etherScript, etherImages, motorScript, motorImages, formScript, formImages, hero, detail, dianaImage, dianaCardsImage, developmentImage, techLoungeImage, techMacroImage, politicsImage, lawImage, academyImage, researchImage, learningImage, foundationImage, youthImage, coverImage, feedsConfig, feedsScript, pageViewsScript, pvScript, worker] = await Promise.all([
+const [home, about, standards, atlas, diana, development, learning, journal, foundation, youth, techLounge, ether, motor, form, enigmas, enigmaArticle, enigmaStories, projectsJson, editorialJson, login, admin, roadmaps, osintHtml, osintSourcesJson, sharedCss, music, dispatchScript, splashCss, splashScript, etherScript, etherImages, motorScript, motorImages, formScript, formImages, hero, detail, dianaImage, dianaCardsImage, developmentImage, techLoungeImage, techMacroImage, politicsImage, lawImage, discoveryImage, academyImage, researchImage, learningImage, foundationImage, youthImage, coverImage, feedsConfig, feedsScript, pageViewsScript, pvScript, worker] = await Promise.all([
   readFile('src/home.html', 'utf8'),
   readFile('src/about.html', 'utf8'),
   readFile('src/standards.html', 'utf8'),
@@ -47,6 +47,7 @@ const [home, about, standards, atlas, diana, development, learning, journal, fou
   readFile('src/assets/tech-macro.jpg'),
   readFile('src/assets/enigmas-politics.jpg'),
   readFile('src/assets/enigmas-law.jpg'),
+  readFile('src/assets/enigmas-discovery.jpg'),
   readFile('src/assets/enigmas-academy.jpg'),
   readFile('src/assets/research.jpg'),
   readFile('src/assets/learning.jpg'),
@@ -151,6 +152,7 @@ function page(source, path = '/') {
     .replaceAll('__YOUTH_IMAGE__', '/media/youth.jpg')
     .replaceAll('__COVER_IMAGE__', '/media/cover.jpg')
     .replaceAll('__ENIGMAS_LAW_IMAGE__', '/media/enigmas-law.jpg')
+    .replaceAll('__ENIGMAS_DISCOVERY_IMAGE__', '/media/enigmas-discovery.jpg')
     .replaceAll('__ENIGMAS_POLITICS_IMAGE__', '/media/enigmas-politics.jpg');
   if (source.includes('/* PUBLICATION_SCRIPT */')) {
     return result.replace('</body>', '<script src="/pv.js" defer></script></body>');
@@ -191,6 +193,7 @@ const compiled = workerWithFeeds
   .replace('/* TECH_MACRO_IMAGE */ null', JSON.stringify(techMacroImage.toString('base64')))
   .replace('/* ENIGMAS_POLITICS_IMAGE */ null', JSON.stringify(politicsImage.toString('base64')))
   .replace('/* ENIGMAS_LAW_IMAGE */ null', JSON.stringify(lawImage.toString('base64')))
+  .replace('/* ENIGMAS_DISCOVERY_IMAGE */ null', JSON.stringify(discoveryImage.toString('base64')))
   .replace('/* ENIGMAS_ACADEMY_IMAGE */ null', JSON.stringify(academyImage.toString('base64')))
   .replace('/* RESEARCH_IMAGE */ null', JSON.stringify(researchImage.toString('base64')))
   .replace('/* LEARNING_IMAGE */ null', JSON.stringify(learningImage.toString('base64')))
