@@ -130,7 +130,7 @@ function page(source, path = '/') {
     return baseHtml + childrenHtml;
   }).join('');
   const mainNav = '<span class="toc-label">Explore Infinity</span>' + buildNav(structure) + '<span class="toc-label toc-secondary">Also in the house</span>' + buildNav(alsoInTheHouse);
-  const topLevelRoutes = structure.filter(item => item.route && item.route !== '/').map(item => [item.route, item.label]);
+  const topLevelRoutes = structure.filter(item => item.route && item.route !== '/' && item.route !== '/cover-story' && item.route !== '/daily-desk').map(item => [item.route, item.label]);
   const roomBar = '<nav class="room-bar" aria-label="Main sections"><span>Explore the issue</span><a href="/cover-story"'+(path==='/cover-story'?' aria-current="page"':'')+'>Cover Story</a><a href="/daily-desk"'+(path==='/daily-desk'?' aria-current="page"':'')+'>The Daily Desk</a>' + topLevelRoutes.map(([href,label])=>`<a href="${href}"${path===href?' aria-current="page"':''}>${label}</a>`).join('') + '</nav>';
   const mainLinks = departments.map((d,i)=>[departmentHref(d,i),String(i+1).padStart(2,'0'),d.name]);
   const homeIndex = `<section class="home-department-index" aria-labelledby="department-index-title"><span class="hub-meta">Infinity / The complete index</span><h2 id="department-index-title">Every room has a door.</h2><div>${mainLinks.map(([href,no,label])=>`<a href="${href}"><span>${no}</span>${label}<span aria-hidden="true">↗</span></a>`).join('')}</div><p>Find original stories and visual editions throughout the house. <a href="/departments">Explore all departments ↗</a></p></section>`;

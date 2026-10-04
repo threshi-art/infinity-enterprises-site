@@ -105,7 +105,7 @@ test('4. Routes and sitemap', async () => {
   const pvResponse = await worker.default.fetch(makeRequest('/api/pv', 'POST'), {
     DB: { prepare: () => ({ bind: () => ({ run: () => Promise.resolve() }) }) }
   });
-  strictEqual(pvResponse.status, 204, '/cover-story can store page view');
+  strictEqual(pvResponse.status, 204, 'POST /api/pv returns 204');
 });
 
 test('5. Masthead', async () => {
@@ -114,6 +114,7 @@ test('5. Masthead', async () => {
   const ether = await html('/ether');
   const form = await html('/form');
   const journal = await html('/journal');
+  const coverStory = await html('/cover-story');
   
   match(home, /<a[^>]*class="[^"]*shell-masthead/, 'home has shell-masthead element');
   match(home, /shell-working-name/, 'home has shell-working-name');
@@ -128,7 +129,9 @@ test('5. Masthead', async () => {
   doesNotMatch(form, /<a[^>]*class="[^"]*shell-masthead/, 'form has no shell-masthead element');
   doesNotMatch(form, /<nav[^>]*class="[^"]*room-bar/, 'form has no room-bar element');
   
-  match(journal, /<a[^>]*class="[^"]*shell-masthead/, 'other pages have shell-masthead element');
+  match(journal, /<a[^>]*class="[^"]*shell-masthead/, 'journal has shell-masthead element');
+  match(coverStory, /<a[^>]*class="[^"]*shell-masthead/, '/cover-story has shell-masthead element');
+  match(coverStory, /<details class="toc">/, '/cover-story toc-panel sits inside <details class="toc">');
 });
 
 test('6. MOTOR/Ether narrow tests', async () => {
@@ -168,7 +171,7 @@ test('9. Cover Story content', async () => {
   match(coverStory, /Who governs/, 'cover story has headline');
   match(coverStory, /\/media\/cover\.jpg/, 'cover story has cover image');
   match(coverStory, /Illustrative hand above a networked glass table beside papers and a compass/, 'cover story has image alt');
-  match(coverStory, /unfinished \(#13\)/, 'cover story mentions #13');
+  match(coverStory, /unfinished<!--\s*#13\s*-->/, 'cover story has #13 in comment');
   match(coverStory, /not included/, 'cover story says media not included');
   doesNotMatch(coverStory, /Original artwork/, 'no "Original artwork"');
   doesNotMatch(coverStory, /credit unfinished/, 'no "credit unfinished"');
@@ -205,7 +208,7 @@ test('11. Home scope', async () => {
   
   doesNotMatch(home, /The September issue/, 'no "The September issue"');
   doesNotMatch(home, /Volume 01/, 'no "Volume 01"');
-  match(home, /Current issue · unfinished \(#13\)/, 'home shows unfinished issue');
+  match(home, /Current issue · unfinished<!--\s*#13\s*-->/, 'home has #13 in comment');
   match(home, /THE SEPTEMBER ISSUE/, 'stamp still says THE SEPTEMBER ISSUE');
   doesNotMatch(home, /Original artwork/, 'no "Original artwork"');
   doesNotMatch(home, /credit unfinished/, 'no "credit unfinished" visible');
@@ -230,6 +233,32 @@ test('13. site.css checks', () => {
   
   const newRules = [...css.matchAll(/\.(shell-|cover-story-|room-bar)[^{]+\{[^}]+color:[^;}]+/g)];
   ok(newRules.length > 0, 'new rules with color declarations');
+});
+
+test('14. Room bar hrefs appear exactly once', async () => {
+  for (const path of ['/', '/journal', '/cover-story']) {
+    const page = await html(path);
+    const roomBarMatch = page.match(/<nav[^>]*class="[^"]*room-bar[^"]*"[^>]*>(.*?)<\/nav>/s);
+    if (!roomBarMatch) throw new Error(`${path} has no room-bar`);
+    const roomBarHtml = roomBarMatch[1];
+    const hrefs = [...roomBarHtml.matchAll(/href="([^"]+)"/g)].map(m => m[1]);
+    const ariaCurrent = [...roomBarHtml.matchAll(/aria-current="page"/g)];
+    
+    const uniqueHrefs = [...new Set(hrefs)];
+    strictEqual(hrefs.length, uniqueHrefs.length, `${path}: all room-bar hrefs are unique`);
+    ok(ariaCurrent.length <= 1, `${path}: aria-current appears at most once`);
+  }
+});
+
+test('15. No visible issue references outside comments', async () => {
+  const home = await html('/');
+  const coverStory = await html('/cover-story');
+  
+  const homeWithoutComments = home.replace(/<!--[\s\S]*?-->/g, '');
+  const coverStoryWithoutComments = coverStory.replace(/<!--[\s\S]*?-->/g, '');
+  
+  doesNotMatch(homeWithoutComments, /\(#\d+\)/, 'home has no visible (#N) issue references outside comments');
+  doesNotMatch(coverStoryWithoutComments, /\(#\d+\)/, '/cover-story has no visible (#N) issue references outside comments');
 });
 
 console.log('All tests passed!');
