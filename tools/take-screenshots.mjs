@@ -8,7 +8,7 @@ const routes = [
   { path: '/journal', name: 'journal' },
   { path: '/tech-lounge', name: 'tech-lounge' },
   { path: '/enigmas', name: 'enigmas' },
-  { path: '/enigmas/seraphim-human-authority', name: 'enigmas-article' },
+  { path: '/enigmas/who-governs-the-reasoning', name: 'enigmas-article' },
   { path: '/daily-desk', name: 'daily-desk' },
   { path: '/music', name: 'music' },
 ];

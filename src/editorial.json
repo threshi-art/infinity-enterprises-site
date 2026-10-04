@@ -1,7 +1,7 @@
 {
-  "current": {"month":"September 2026","cover":"Who governs the reasoning?","slug":"/enigmas/seraphim-human-authority","status":"Published"},
+  "current": {"month":"September 2026","cover":"Who governs the reasoning?","slug":"/enigmas/who-governs-the-reasoning","status":"Published"},
   "queue": [
-    {"desk":"Research","title":"Source ledger for the Seraphim architecture note","state":"Sourcing","next":"Link primary material and distinguish design choices from validated behavior."},
+    {"desk":"Research","title":"Source ledger for the platform architecture note","state":"Sourcing","next":"Link primary material and distinguish design choices from validated behavior."},
     {"desk":"Development","title":"Flowline playtest report","state":"In preparation","next":"Publish a reproducible demonstration after native validation."},
     {"desk":"Civic","title":"National reform assumptions ledger","state":"Uncosted concept","next":"Develop competing scenarios and cite public data."},
     {"desk":"October issue","title":"Cover selection","state":"Unassigned","next":"Choose the story after its reporting and evidence review."}

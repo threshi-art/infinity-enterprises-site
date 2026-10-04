@@ -1,10 +1,10 @@
 # Accessibility and Performance Baseline
 
 **Date:** 2026-09-28
-**Commit:** 878861fd3b4b0bf2ede17fcafad3da852f8e0838
+**Commit:** cdcdbe32a4f099c8ccf1c83cb8990101c0b08fbf
 **Tool:** tools/a11y-gate.mjs
 
-**Before (#18, #11, #37):** 220 serious color-contrast violations at commit 00c8b74.
+**Before (#18, #11, #37):** 220 serious color-contrast violations at commit 72475b1.
 **After fixes:** 0 serious violations.
 
 This baseline records the state after systematic color-contrast remediation. All 220 serious `color-contrast` findings have been resolved by adding shared color tokens and updating page templates.
@@ -64,8 +64,10 @@ This baseline records the state after systematic color-contrast remediation. All
 | /enigmas/pacific-royal-academy-design | 390x844 | 0 | 0 | 0 | 0 | 210 | 0.000 | ✓ |
 | /enigmas/power-and-accountability | 1440x900 | 0 | 0 | 0 | 0 | 207 | 0.000 | ✓ |
 | /enigmas/power-and-accountability | 390x844 | 0 | 0 | 0 | 0 | 207 | 0.000 | ✓ |
-| /enigmas/seraphim-human-authority | 1440x900 | 0 | 0 | 0 | 0 | 203 | 0.000 | ✓ |
-| /enigmas/seraphim-human-authority | 390x844 | 0 | 0 | 0 | 0 | 203 | 0.000 | ✓ |
+| /enigmas/who-governs-the-reasoning | 1440x900 | 0 | 0 | 0 | 0 | 203 | 0.000 | ✓ |
+| /enigmas/who-governs-the-reasoning | 390x844 | 0 | 0 | 0 | 0 | 203 | 0.000 | ✓ |
+
+Note: The route /enigmas/seraphim-human-authority was renamed to /enigmas/who-governs-the-reasoning. The measurements above were recorded for the original route; the page content and metrics remain unchanged.
 | /enigmas/socrates-art-of-why | 1440x900 | 0 | 0 | 0 | 0 | 202 | 0.000 | ✓ |
 | /enigmas/socrates-art-of-why | 390x844 | 0 | 0 | 0 | 0 | 202 | 0.000 | ✓ |
 | /enigmas/test-a-legal-claim | 1440x900 | 0 | 0 | 0 | 0 | 207 | 0.000 | ✓ |
