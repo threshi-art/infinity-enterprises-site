@@ -7,3 +7,164 @@
 .department-related{display:flex;flex-wrap:wrap;gap:10px 20px;margin-top:18px!important}
 .department-related a{display:inline-block}
 .hub-department:target{scroll-margin-top:2rem;outline:2px solid #a25430;outline-offset:8px}
+
+#desk-news li,
+#desk-latest li {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+#desk-news li:last-child,
+#desk-latest li:last-child {
+  border-bottom: none;
+}
+
+#desk-news a,
+#desk-latest a {
+  text-decoration: none;
+  color: #1a1a1a;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+#desk-news a:hover .desk-headline,
+#desk-latest a:hover .desk-headline {
+  text-decoration: underline;
+  color: #b46c43;
+}
+
+.desk-meta {
+  font-size: 0.9rem;
+  color: #666;
+  display: block;
+}
+
+.desk-source {
+  font-weight: 600;
+}
+
+.desk-time {
+  font-variant-numeric: tabular-nums;
+}
+
+.desk-stale {
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: #856404;
+}
+
+.hub-card-unfinished {
+  background: #f5f5f5;
+  border-top: 3px solid #999;
+  display: flex;
+  flex-direction: column;
+  padding: 25px;
+  min-height: 200px;
+}
+
+.hub-card-unfinished h3 {
+  font: 400 clamp(1.9rem,2.5vw,3rem)/1.08 Georgia,serif;
+  letter-spacing: -.045em;
+  margin: 18px 0 13px;
+}
+
+.hub-card-unfinished span {
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .15em;
+  font-weight: 850;
+  color: #666;
+}
+
+.hub-card-unfinished p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #666;
+}
+
+.hub-card-unfinished strong {
+  font-size: .77rem;
+  font-weight: 850;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-top: auto;
+  padding-top: 22px;
+  color: #666;
+}
+
+.breadcrumbs {
+  font-size: 0.85rem;
+  margin-bottom: 2rem;
+  color: #666;
+}
+
+.breadcrumbs a {
+  text-decoration: none;
+  color: #1a1a1a;
+}
+
+.breadcrumbs a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumbs span[aria-hidden] {
+  margin: 0 0.5rem;
+}
+
+.hub-notice {
+  background: #f0f8ff;
+  border-left: 4px solid #1e90ff;
+  padding: 1rem;
+  margin: 1.5rem 0;
+  font-weight: 600;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Home #signal-grid updates - no images in rendered feed items */
+#signal-grid .signal-card:not(:has(img)) {
+  min-height: 300px;
+}
+
+#signal-grid .signal-card:not(:has(img)) h3 {
+  margin-top: 0;
+}
+
+#signal-grid .signal-card .visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 768px) {
+  .desk-headline {
+    font-size: 1rem;
+  }
+  
+  #desk-news li,
+  #desk-latest li {
+    margin-bottom: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
+}
