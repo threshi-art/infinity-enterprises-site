@@ -105,7 +105,9 @@ GROUP BY referrer_domain ORDER BY views DESC;
 
 This GitHub repository is a public source mirror for Cursor and other collaborators. A GitHub commit alone does not publish the live Site. The live version is built and deployed through the ChatGPT Sites project identified in `.openai/hosting.json`. After publishing, bring the resulting source changes and exact Sites version back to this mirror.
 
-The current mirror records Sites version 28 at source commit `c520fc35270cbadeeda7e5ab051266fa23927e93` in `site-source.json`.
+The current mirror records Sites version 28 at source commit `c520fc35270cbadeeda7e5ab051266fa23927e93`† in `site-source.json`.
+
+† SHAs marked † predate the 2026-10 history rewrite and are not on studio; see #143.
 
 Do not commit runtime secrets, subscriber addresses, contact messages, or proprietary engineering documents. The staff area uses hosted secrets. The Foundation and Pacific Royal Academy are concept briefs, not claims of an operating institution. Music playback links to its original YouTube publisher.
 

@@ -23,7 +23,7 @@ This board sequences focused pull requests from `studio` to `main` in a coherent
 | Order | Slice | Issue(s) | Owner | Evidence Gate | Notes |
 |---|---|---|---|---|---|
 | **1** | Ether phone player fix | #55 / #57 | Forge (via Cursor agent) | Phone screenshots at 320px, 360px, 390px showing iframe ≥200×200px; desktop unchanged; build passes | Only visitor-facing fix on `main`. Independent of all other work. Ships first. |
-| **2** | Privacy cleanup | #58 / #59 | Forge | `git grep` searches for machine paths, host names, and emails show no hits (or justified exceptions); build passes; installer logic confirmed | Removes machine-specific paths and host names from current files. Separate studio commit already exists (`30cff19`, `939ad50`). Squash-merge with automatic co-author trailer removed. |
+| **2** | Privacy cleanup | #58 / #59 | Forge | `git grep` searches for machine paths, host names, and emails show no hits (or justified exceptions); build passes; installer logic confirmed | Removes machine-specific paths and host names from current files. Separate studio commit already exists (`3751f89`, `c1de8ab`). Squash-merge with automatic co-author trailer removed. |
 
 **Phase 1 evidence:** Both PRs provide before/after grep output, build logs, and objective verification at the exact head.
 
@@ -35,16 +35,16 @@ These slices prepare the repository for collaborative work without changing the 
 
 | Order | Slice | Commits / PR | Owner | Evidence Gate | Notes |
 |---|---|---|---|---|---|
-| **3** | Evidence templates + AGENTS.md | #26 / S2 from PR #27 | Forge | Templates exist in `docs/`; AGENTS.md updated; no machine paths reintroduced (see #58) | Cherry-picking `f4543cd` alone would reintroduce machine paths. S2 must include `30cff19`'s AGENTS.md change or be re-cut from studio's current AGENTS.md. |
-| **4** | CODEOWNERS | S3 from PR #27 (`1794f11`) | Forge | File exists; build passes | New file only. Independent. |
-| **5** | LICENSE notice | S4 from PR #27 (`519dda2`) | Forge / Codex | File exists; rights wording approved by Codex | Separate rights decision. Codex approval required. |
-| **6** | SOVRANO v1 design pack | #28 / S5 from PR #27 (`6838c89`) | Ember / Forge | `design/sovrano-v1/` directory complete; ASSETS.md manifest present; build passes | Repo-only reference material. Does not change site pages. |
-| **7** | Redesign boards, covers, textures | #33, #34 / S6 from PR #27 (`c7d5fde`, `0c569b3`) | Ember | Both commits cherry-picked in order; manifest lists source, dimensions, and licenses | Keep both commits in order. Covers and textures are reference material; not yet integrated into site. |
-| **8** | README refresh | S7 from PR #27 (`ee46988`, `26b23b0`) | Forge | Build passes; no conflict with #58's README change | Could conflict with S1b's README change. Needs rebase check against `main` after #59 lands. Depends on S4 (LICENSE) and S6 (design pack). |
-| **9** | Issue wireframe mocks | #29 / S8 from PR #27 (`84e2f80`) | Forge | `design/issue-mocks/` present; HTML and PNG files intact | Repo-only. Mocks for #33 and #42. |
-| **10** | Ether five-journey spec | #56 / S9 from PR #27 (`09091a6`) | Forge | `docs/superpowers/specs/2026-09-27-ether-room-five-journeys-design.md` present | Spec only, not implementation. Guides #56 build. |
+| **3** | Evidence templates + AGENTS.md | #26 / S2 from PR #27 | Forge | Templates exist in `docs/`; AGENTS.md updated; no machine paths reintroduced (see #58) | Cherry-picking `8881684` alone would reintroduce machine paths. S2 must include `3751f89`'s AGENTS.md change or be re-cut from studio's current AGENTS.md. |
+| **4** | CODEOWNERS | S3 from PR #27 (`98beae1`) | Forge | File exists; build passes | New file only. Independent. |
+| **5** | LICENSE notice | S4 from PR #27 (`7fab241`) | Forge / Codex | File exists; rights wording approved by Codex | Separate rights decision. Codex approval required. |
+| **6** | SOVRANO v1 design pack | #28 / S5 from PR #27 (`671cbf6`) | Ember / Forge | `design/sovrano-v1/` directory complete; ASSETS.md manifest present; build passes | Repo-only reference material. Does not change site pages. |
+| **7** | Redesign boards, covers, textures | #33, #34 / S6 from PR #27 (`5470b91`, `b87dff5`) | Ember | Both commits cherry-picked in order; manifest lists source, dimensions, and licenses | Keep both commits in order. Covers and textures are reference material; not yet integrated into site. |
+| **8** | README refresh | S7 from PR #27 (`5fd1054`, `80bd7be`) | Forge | Build passes; no conflict with #58's README change | Could conflict with S1b's README change. Needs rebase check against `main` after #59 lands. Depends on S4 (LICENSE) and S6 (design pack). |
+| **9** | Issue wireframe mocks | #29 / S8 from PR #27 (`a41f1f9`) | Forge | `design/issue-mocks/` present; HTML and PNG files intact | Repo-only. Mocks for #33 and #42. |
+| **10** | Ether five-journey spec | #56 / S9 from PR #27 (`c1b14dc`) | Forge | `docs/superpowers/specs/2026-09-27-ether-room-five-journeys-design.md` present | Spec only, not implementation. Guides #56 build. |
 
-**S10 (sync-script default path, `366ca91`) is dropped:** Superseded by #58's mandatory `-Destination` change.
+**S10 (sync-script default path, `e5879f4`) is dropped:** Superseded by #58's mandatory `-Destination` change.
 
 **Phase 2 evidence:** Each slice provides file lists, manifests, and build logs. No live site changes.
 

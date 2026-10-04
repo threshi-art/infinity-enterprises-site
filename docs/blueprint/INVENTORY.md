@@ -1,7 +1,7 @@
 # Publication Blueprint: Content and Route Inventory
 
 **Inventory date:** 2026-09-27  
-**Source branch:** `studio` @ `09091a6`  
+**Source branch:** `studio` @ `c1b14dc`  
 **Issue:** #60, section A
 
 ## Summary

@@ -222,3 +222,43 @@ test('existing 308 redirects remain unchanged', async () => {
     assert.equal(response.headers.get('location'), location, path);
   }
 });
+
+test('secret-map redirect normalizes paths and returns 308 on hit', async () => {
+  const testMap = JSON.stringify({'/enigmas/old-test-slug': '/enigmas/new-test-slug'});
+  const envWithMap = {...mockEnv, REDIRECT_MAP: testMap};
+  
+  const cases = [
+    '/enigmas/old-test-slug',
+    '/enigmas/Old-Test-Slug',
+    '/enigmas/old-test-slug/',
+    '/enigmas/Old%2DTest%2DSlug'
+  ];
+  
+  for (const path of cases) {
+    const response = await worker.default.fetch(new Request(`https://example.com${path}`), envWithMap);
+    assert.equal(response.status, 308, `should redirect ${path}`);
+    assert.equal(response.headers.get('location'), '/enigmas/new-test-slug', `should redirect ${path} to new slug`);
+  }
+});
+
+test('secret-map redirect returns 404 on miss without throwing', async () => {
+  const testMap = JSON.stringify({'/enigmas/old-test-slug': '/enigmas/new-test-slug'});
+  const envWithMap = {...mockEnv, REDIRECT_MAP: testMap};
+  
+  const response = await worker.default.fetch(new Request('https://example.com/enigmas/nonexistent-slug'), envWithMap);
+  assert.equal(response.status, 404, 'should return 404 on miss');
+});
+
+test('secret-map redirect returns 404 when REDIRECT_MAP is missing', async () => {
+  const envWithoutMap = {...mockEnv, REDIRECT_MAP: undefined};
+  
+  const response = await worker.default.fetch(new Request('https://example.com/enigmas/old-test-slug'), envWithoutMap);
+  assert.equal(response.status, 404, 'should return 404 when secret is missing');
+});
+
+test('secret-map redirect returns 404 on malformed JSON without throwing', async () => {
+  const envWithBadMap = {...mockEnv, REDIRECT_MAP: '{invalid json'};
+  
+  const response = await worker.default.fetch(new Request('https://example.com/enigmas/old-test-slug'), envWithBadMap);
+  assert.equal(response.status, 404, 'should return 404 on malformed JSON');
+});

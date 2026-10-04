@@ -76,7 +76,7 @@ Form, consent checkbox, staff review queue for Tempo Libero pets gallery submiss
 - **Wireframe mockups, placeholder content, not approved design.**
 - All text is obviously placeholder ("Placeholder headline", "Sample data"). No quotes, testimonials, reviews, prices, press mentions or product claims.
 - No outside or copyrighted images; flat color blocks, gradients, and labelled image boxes.
-- Nothing contains the words Seraphim, EiRAM, SovranoX, sovranoinfinitum, domain plans, trademark notes, or personal details.
+- Nothing contains internal project code names, domain plans, trademark notes, or personal details.
 - All PNGs kept under ~600 KB each.
 - Rendered with Playwright/Chromium from HTML source (both HTML and PNG are committed).
 - Room color tokens and fonts from `design/sovrano-v1/README.md` (#28 design pack).
