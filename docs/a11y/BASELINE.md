@@ -66,8 +66,6 @@ This baseline records the state after systematic color-contrast remediation. All
 | /enigmas/power-and-accountability | 390x844 | 0 | 0 | 0 | 0 | 207 | 0.000 | ✓ |
 | /enigmas/who-governs-the-reasoning | 1440x900 | 0 | 0 | 0 | 0 | 203 | 0.000 | ✓ |
 | /enigmas/who-governs-the-reasoning | 390x844 | 0 | 0 | 0 | 0 | 203 | 0.000 | ✓ |
-
-Note: The old route now redirects (308) to `who-governs-the-reasoning` via `REDIRECT_MAP`. The measurements above were recorded for the original route; the page content and metrics remain unchanged.
 | /enigmas/socrates-art-of-why | 1440x900 | 0 | 0 | 0 | 0 | 202 | 0.000 | ✓ |
 | /enigmas/socrates-art-of-why | 390x844 | 0 | 0 | 0 | 0 | 202 | 0.000 | ✓ |
 | /enigmas/test-a-legal-claim | 1440x900 | 0 | 0 | 0 | 0 | 207 | 0.000 | ✓ |
@@ -118,6 +116,8 @@ Note: The old route now redirects (308) to `who-governs-the-reasoning` via `REDI
 | /support | 390x844 | 0 | 0 | 0 | 0 | 712 | 0.000 | ✓ |
 | /tech-lounge | 1440x900 | 0 | 0 | 0 | 0 | 565 | 0.000 | ✓ |
 | /tech-lounge | 390x844 | 0 | 0 | 0 | 0 | 565 | 0.000 | ✓ |
+
+Note: The old route for `who-governs-the-reasoning` will return a 308 redirect to the new slug once the `REDIRECT_MAP` value is configured at deploy time. Until then, old links return 404. The measurements above were recorded for the original route; the page content and metrics remain unchanged.
 
 ## Top Violations by Rule
 
