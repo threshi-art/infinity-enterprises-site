@@ -8,7 +8,7 @@
     "check:images": "scripts/check-image-metadata",
     "check:images:test": "test/image-metadata.test.sh",
     "db:generate": "drizzle-kit generate",
-    "test": "node --test test-feeds.js test-feeds-integration.js test-page-views.js test-publication-name.js test-room-sound.js test-smoke.js test-suspect-days.js test-ukraine-map.js && test/image-metadata.test.sh"
+    "test": "node --test test-daily-desk.js test-feeds.js test-feeds-integration.js test-page-views.js test-publication-name.js test-room-sound.js test-smoke.js test-suspect-days.js test-ukraine-map.js && test/image-metadata.test.sh"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
