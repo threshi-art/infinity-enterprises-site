@@ -7,9 +7,6 @@
 .department-related{display:flex;flex-wrap:wrap;gap:10px 20px;margin-top:18px!important}
 .department-related a{display:inline-block}
 .hub-department:target{scroll-margin-top:2rem;outline:2px solid #a25430;outline-offset:8px}
-  margin: 0;
-  font-variant-numeric: tabular-nums;
-}
 
 #desk-news li,
 #desk-latest li {
@@ -97,7 +94,7 @@
   text-transform: uppercase;
   margin-top: auto;
   padding-top: 22px;
-  color: #999;
+  color: #666;
 }
 
 .breadcrumbs {
