@@ -54,17 +54,17 @@
     "related": null
   },
   {
-    "slug": "seraphim-human-authority",
+    "slug": "who-governs-the-reasoning",
     "section": "The Intelligence Desk",
     "category": "The Intelligence Desk",
     "read": "3 min read",
-    "title": "Seraphim and the question of human authority",
+    "title": "Who governs the reasoning?",
     "dek": "What should an AI platform be permitted to decide, and where must a person remain in command?",
     "image": "/media/tech-lounge.jpg",
     "alt": "A vintage computer and instrumentation in a dark technology lounge",
     "status": "Active build / Architecture",
     "paragraphs": [
-      "Seraphim is being developed as a governed AI platform rather than a single clever chat window. The proposed architecture separates a conversational surface, coordination, evidence work, memory, and actions. The most important boundary sits across them all: human authority.",
+      "The governed AI platform is being developed to keep human authority visible rather than building a single clever chat window. The proposed architecture separates a conversational surface, coordination, evidence work, memory, and actions. The most important boundary sits across them all: human authority.",
       "A system can help gather information, frame alternatives, and produce drafts. Those capabilities do not automatically authorize it to publish a claim, contact another person, or make a consequential choice. Each step needs an explicit scope and an accountable owner.",
       "The design question is operational. Which actions can proceed with routine review? Which require a fresh decision? What record should explain why a path was chosen? What happens when the evidence changes after the system has spoken?",
       "Those questions are part of the build, not proof that the platform has solved them. The next convincing demonstration will show a complete workflow with its permissions, evidence, human review, and failure cases visible."
@@ -82,7 +82,7 @@
     "alt": "A research room with archival papers and a brass armillary sphere",
     "status": "Prototype / Research direction",
     "paragraphs": [
-      "EiRAM is the evidence and analysis engine within the wider Seraphim vision. Its ambition is to make a line of reasoning inspectable: what was observed, what was inferred, what alternatives were considered, and which uncertainties remain.",
+      "EiRAM is the evidence and analysis engine within the wider platform vision. Its ambition is to make a line of reasoning inspectable: what was observed, what was inferred, what alternatives were considered, and which uncertainties remain.",
       "A useful workflow would keep source material separate from the model’s interpretation of it. It would record where sources agree, where they conflict, and whether an apparent contradiction comes from dates, definitions, or missing context.",
       "The engine should also make room for a competing explanation. A favored hypothesis becomes fragile when the process never asks what else could account for the same facts. The countercase need not be equally likely to be worth testing.",
       "A phase one prototype and architecture work exist. Stronger predictive or operational claims need evaluation against real tasks, documented baselines, and human review. The measure is whether a reader can retrace the reasoning, not whether the output merely sounds decisive."
@@ -100,7 +100,7 @@
     "alt": "A luminous corridor of learning and scientific diagrams",
     "status": "Architecture / In development",
     "paragraphs": [
-      "A request for a calculation, a legal source check, and a reflective conversation should not be handled as though they are the same task. NOESIS is the proposed reasoning selection layer in the Seraphim architecture: it helps decide which method, tools, and checks belong to a question.",
+      "A request for a calculation, a legal source check, and a reflective conversation should not be handled as though they are the same task. NOESIS is the proposed reasoning selection layer in the platform's architecture: it helps decide which method, tools, and checks belong to a question.",
       "The key is to make that choice visible. A route may call for retrieval, computation, comparison of alternatives, or a question back to the user. If the system chooses poorly, the result can fail even when every sentence is fluent.",
       "Routing should be tested on cases that look similar but demand different treatment. An ambiguous factual claim may need verification; a values conflict may need clarification; a high consequence action may need human approval.",
       "This is an architectural direction, not a claim that an autonomous router is fully validated. The next useful artifact would show its decision rules, examples where it gets the choice wrong, and the path by which a person can correct it."

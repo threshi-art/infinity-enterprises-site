@@ -273,7 +273,19 @@ export default {
     if (/^\/media\/motor-[1-4]\.jpg$/.test(path)) return image(path.slice(7, -4));
     if (/^\/media\/form-[1-7]\.jpg$/.test(path)) return image(path.slice(7, -4));
     if (path === '/diana' || path === '/atlas') return new Response(null, { status: 308, headers: headers({ location: path === '/diana' ? '/about/diana' : '/development/atlas' }) });
-    if (path.startsWith('/enigmas/')) return enigmaArticles[path.slice('/enigmas/'.length)] ? html(enigmaArticles[path.slice('/enigmas/'.length)]) : notFound();
+    if (path.startsWith('/enigmas/')) {
+      try {
+        const mapJson = env.REDIRECT_MAP;
+        if (mapJson) {
+          const redirectMap = JSON.parse(mapJson);
+          const normalizedPath = decodeURIComponent(path.toLowerCase()).replace(/\/$/, '');
+          if (redirectMap[normalizedPath]) {
+            return new Response(null, { status: 308, headers: headers({ location: redirectMap[normalizedPath] }) });
+          }
+        }
+      } catch (e) {}
+      return enigmaArticles[path.slice('/enigmas/'.length)] ? html(enigmaArticles[path.slice('/enigmas/'.length)]) : notFound();
+    }
     if (publicationPages[path]) return html(publicationPages[path]);
     if (!['/', '/about', '/about/standards', '/about/diana', '/development', '/development/atlas', '/learning', '/journal', '/foundation', '/foundation/youth', '/tech-lounge', '/ether', '/motor', '/form', '/enigmas', '/osint'].includes(path)) return notFound();
     return html(path === '/' ? homeHtml : path === '/about' ? aboutHtml : path === '/about/standards' ? standardsHtml : path === '/about/diana' ? dianaHtml : path === '/development' ? developmentHtml : path === '/learning' ? learningHtml : path === '/journal' ? journalHtml : path === '/foundation' ? foundationHtml : path === '/foundation/youth' ? youthHtml : path === '/tech-lounge' ? techLoungeHtml : path === '/ether' ? etherHtml : path === '/motor' ? motorHtml : path === '/form' ? formHtml : path === '/enigmas' ? enigmasHtml : path === '/osint' ? osintHtml : atlasHtml);

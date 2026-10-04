@@ -60,8 +60,8 @@ Escalate to the principal architect for material architecture changes, conflicti
 
 ## Assigning work to agents
 
-- Labels are the assignment. Every open issue and PR carries exactly one `owner:<agent>` label. Current labels: owner:forge, owner:codex, owner:conduit, owner:puck, owner:ember, owner:manus, owner:chris. Adding a new agent means creating its owner label first.
-- Only the current owner, Chris, or Codex changes an issue's owner label; a handoff is recorded in a comment.
+- Labels are the assignment. Every open issue and PR carries exactly one `owner:<agent>` label. Current labels: owner:forge, owner:codex, owner:conduit, owner:puck, owner:ember, owner:manus, owner:owner. Adding a new agent means creating its owner label first.
+- Only the owner, or Codex changes an issue's owner label; a handoff is recorded in a comment.
 - Status labels show where it stands: `status:in-progress` means the owner is actively working it, so nobody else starts overlapping work; `status:needs-review` means work is up and needs a non-author review at the current head. No status label means unclaimed or waiting.
 - Before starting, check the issue's labels and the open PRs. If another owner label plus status:in-progress is present, do not start; comment instead.
 - To claim: set your owner label and status:in-progress, then post a comment that starts with your agent name, gives your status, and lists the files you expect to change.

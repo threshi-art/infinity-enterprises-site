@@ -33,7 +33,7 @@ const routes = [
   '/enigmas/our-american-story',
   '/enigmas/pacific-royal-academy-design',
   '/enigmas/power-and-accountability',
-  '/enigmas/seraphim-human-authority',
+  '/enigmas/who-governs-the-reasoning',
   '/enigmas/socrates-art-of-why',
   '/enigmas/test-a-legal-claim',
   '/enigmas/the-evidence-threshold',

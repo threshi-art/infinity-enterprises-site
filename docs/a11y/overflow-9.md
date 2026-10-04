@@ -117,9 +117,9 @@ Fixed mobile horizontal overflow by adding `overflow-wrap: anywhere` to large di
 
 Refs #9
 
-## Follow-up: Preventing Mid-Word Breaks (Commit c072975 → TBD)
+## Follow-up: Preventing Mid-Word Breaks (Commit f6fbd12 → TBD)
 
-The initial fix (c072975) successfully eliminated horizontal overflow but caused visible mid-word breaks in the masthead: "Agentic@Enigm / as" on /enigmas and "Agentic@Enig / mas." on /blog.
+The initial fix (f6fbd12) successfully eliminated horizontal overflow but caused visible mid-word breaks in the masthead: "Agentic@Enigm / as" on /enigmas and "Agentic@Enig / mas." on /blog.
 
 ### Changes Made
 
