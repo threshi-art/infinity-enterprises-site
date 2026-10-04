@@ -1,5 +1,5 @@
 // Renderer for external feed items (Daily Desk and home #latest)
-// Fetches /api/feeds?section=mercati only; /api/dispatch is not used
+// Fetches /api/feeds?section=mercati only
 (function() {
   function formatDateTime(isoString) {
     try {
