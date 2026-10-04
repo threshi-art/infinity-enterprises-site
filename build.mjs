@@ -1,6 +1,7 @@
 import { readFile, mkdir, writeFile, rm } from 'node:fs/promises';
 import { createPublicationPages } from './src/publication-pages.mjs';
 import { departments, departmentHref } from './src/departments.mjs';
+import { applyPublicationName } from './src/publication-config.mjs';
 
 const [home, about, standards, atlas, diana, development, learning, journal, foundation, youth, techLounge, ether, motor, form, enigmas, enigmaArticle, enigmaStories, projectsJson, editorialJson, login, admin, roadmaps, osintHtml, osintSourcesJson, sharedCss, music, dispatchScript, splashCss, splashScript, etherScript, etherImages, motorScript, motorImages, formScript, formImages, hero, detail, dianaImage, dianaCardsImage, developmentImage, techLoungeImage, techMacroImage, politicsImage, lawImage, academyImage, researchImage, learningImage, foundationImage, youthImage, coverImage, feedsConfig, feedsScript, pageViewsScript, pvScript, worker] = await Promise.all([
   readFile('src/home.html', 'utf8'),
@@ -126,7 +127,7 @@ function page(source, path = '/') {
   const favicon = '<link rel="icon" type="image/svg+xml" href="/favicon.svg">';
   const metadata = `${source.includes('rel="icon"') ? '' : favicon}<link rel="canonical" href="${origin}${path}"><meta property="og:type" content="${path.startsWith('/enigmas/')?'article':'website'}"><meta property="og:title" content="${title}"><meta property="og:description" content="${description}"><meta property="og:url" content="${origin}${path}"><meta property="og:image" content="${origin}/media/cover.jpg"><meta name="twitter:card" content="summary_large_image">`;
   const readerTools = path.startsWith('/enigmas/') ? `<div class="reading-tools"><button type="button" data-save-story="${path}" aria-pressed="false">Save this story</button><button type="button" id="share-story">Share this story ↗</button><a href="/reading-list">My reading list ↗</a></div><p class="reader-note">Saved stories stay on this device.</p>` : '';
-  const result = source
+  const result = applyPublicationName(source
     .replace('/* SHARED_CSS */', sharedCss)
     .replace('/* PUBLICATION_CSS */', publicationCss)
     .replace(/<nav class="toc-panel"[^>]*>[\s\S]*?<\/nav>/, `<nav class="toc-panel" aria-label="Site contents">${mainNav}</nav>`)
@@ -151,7 +152,7 @@ function page(source, path = '/') {
     .replaceAll('__YOUTH_IMAGE__', '/media/youth.jpg')
     .replaceAll('__COVER_IMAGE__', '/media/cover.jpg')
     .replaceAll('__ENIGMAS_LAW_IMAGE__', '/media/enigmas-law.jpg')
-    .replaceAll('__ENIGMAS_POLITICS_IMAGE__', '/media/enigmas-politics.jpg');
+    .replaceAll('__ENIGMAS_POLITICS_IMAGE__', '/media/enigmas-politics.jpg'));
   if (source.includes('/* PUBLICATION_SCRIPT */')) {
     return result.replace('</body>', '<script src="/pv.js" defer></script></body>');
   } else {
@@ -210,6 +211,7 @@ const compiled = workerWithFeeds
     ...stories.map(story => '/enigmas/' + story.slug)
   ]));
 if (/\/\* (?:HOME_HTML|ABOUT_HTML|ATLAS_HTML|DIANA_HTML|DEVELOPMENT_HTML|LEARNING_HTML|JOURNAL_HTML|FOUNDATION_HTML|YOUTH_HTML|TECH_LOUNGE_HTML|ENIGMAS_HTML|ENIGMA_ARTICLES|LOGIN_HTML|ADMIN_HTML|NOT_FOUND_HTML|HERO_IMAGE|DETAIL_IMAGE|DIANA_IMAGE|DIANA_CARDS_IMAGE|DEVELOPMENT_IMAGE|TECH_LOUNGE_IMAGE|TECH_MACRO_IMAGE|ENIGMAS_POLITICS_IMAGE|ENIGMAS_LAW_IMAGE|ENIGMAS_ACADEMY_IMAGE|PV_SCRIPT|VALID_PUBLIC_PATHS) \*\//.test(compiled)) throw new Error('Build marker missing');
+if (/__PUBLICATION_NAME__/.test(compiled)) throw new Error('Build marker missing: __PUBLICATION_NAME__ token not replaced');
 await rm('dist', { recursive: true, force: true });
 await mkdir('dist/server', { recursive: true });
 await writeFile('dist/server/index.js', compiled);
