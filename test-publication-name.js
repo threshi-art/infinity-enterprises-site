@@ -177,3 +177,7 @@ test('main-release guard: final status passes', async () => {
 test('main-release guard passes when base is studio', async () => {
   await assert.doesNotReject(async () => checkMainReleaseGuard({ GITHUB_BASE_REF: 'studio' }));
 });
+
+test('main-release guard: real build on studio passes as if targeting main', async () => {
+  await checkMainReleaseGuard({ GITHUB_BASE_REF: 'main' });
+});
