@@ -1,4 +1,5 @@
 const homeHtml = /* HOME_HTML */ null;
+const coverStoryHtml = /* COVER_STORY_HTML */ null;
 const aboutHtml = /* ABOUT_HTML */ null;
 const standardsHtml = /* STANDARDS_HTML */ null;
 const atlasHtml = /* ATLAS_HTML */ null;
@@ -203,7 +204,7 @@ export default {
     if (path === '/robots.txt') return new Response('User-agent: *\nAllow: /\nDisallow: /admin\nSitemap: https://infinity-enterprises.infinity-ent-8507.chatgpt.site/sitemap.xml\n', { headers: { 'content-type': 'text/plain; charset=utf-8' } });
     if (path === '/sitemap.xml') {
       const base = 'https://infinity-enterprises.infinity-ent-8507.chatgpt.site';
-      const paths = ['/', '/about', '/about/standards', '/about/diana', '/development', '/development/atlas', '/learning', '/journal', '/foundation', '/foundation/youth', '/tech-lounge', '/ether', '/motor', '/form', '/enigmas', ...Object.keys(publicationPages), ...Object.keys(enigmaArticles).map(slug => '/enigmas/' + slug)];
+      const paths = ['/', '/about', '/about/standards', '/about/diana', '/development', '/development/atlas', '/learning', '/journal', '/foundation', '/foundation/youth', '/tech-lounge', '/ether', '/motor', '/form', '/enigmas', '/cover-story', ...Object.keys(publicationPages), ...Object.keys(enigmaArticles).map(slug => '/enigmas/' + slug)];
       return new Response('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + paths.map(item => '<url><loc>' + base + item + '</loc></url>').join('') + '</urlset>', { headers: { 'content-type': 'application/xml; charset=utf-8' } });
     }
     if (request.method === 'GET' && (path === '/favicon.svg' || path === '/favicon.ico')) return new Response(faviconSvg, { headers: { 'content-type': 'image/svg+xml; charset=utf-8', 'cache-control': 'public, max-age=86400', 'x-content-type-options': 'nosniff' } });
@@ -287,7 +288,7 @@ export default {
       return enigmaArticles[path.slice('/enigmas/'.length)] ? html(enigmaArticles[path.slice('/enigmas/'.length)]) : notFound();
     }
     if (publicationPages[path]) return html(publicationPages[path]);
-    if (!['/', '/about', '/about/standards', '/about/diana', '/development', '/development/atlas', '/learning', '/journal', '/foundation', '/foundation/youth', '/tech-lounge', '/ether', '/motor', '/form', '/enigmas', '/osint'].includes(path)) return notFound();
-    return html(path === '/' ? homeHtml : path === '/about' ? aboutHtml : path === '/about/standards' ? standardsHtml : path === '/about/diana' ? dianaHtml : path === '/development' ? developmentHtml : path === '/learning' ? learningHtml : path === '/journal' ? journalHtml : path === '/foundation' ? foundationHtml : path === '/foundation/youth' ? youthHtml : path === '/tech-lounge' ? techLoungeHtml : path === '/ether' ? etherHtml : path === '/motor' ? motorHtml : path === '/form' ? formHtml : path === '/enigmas' ? enigmasHtml : path === '/osint' ? osintHtml : atlasHtml);
+    if (!['/', '/about', '/about/standards', '/about/diana', '/development', '/development/atlas', '/learning', '/journal', '/foundation', '/foundation/youth', '/tech-lounge', '/ether', '/motor', '/form', '/enigmas', '/osint', '/cover-story'].includes(path)) return notFound();
+    return html(path === '/' ? homeHtml : path === '/cover-story' ? coverStoryHtml : path === '/about' ? aboutHtml : path === '/about/standards' ? standardsHtml : path === '/about/diana' ? dianaHtml : path === '/development' ? developmentHtml : path === '/learning' ? learningHtml : path === '/journal' ? journalHtml : path === '/foundation' ? foundationHtml : path === '/foundation/youth' ? youthHtml : path === '/tech-lounge' ? techLoungeHtml : path === '/ether' ? etherHtml : path === '/motor' ? motorHtml : path === '/form' ? formHtml : path === '/enigmas' ? enigmasHtml : path === '/osint' ? osintHtml : atlasHtml);
   },
 };
