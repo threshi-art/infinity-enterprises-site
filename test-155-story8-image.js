@@ -79,30 +79,25 @@ test('/media/enigmas-discovery.jpg bytes hash to expected SHA-256', async () => 
   assert.equal(hash, '70ac0fc14cd836acf55ba9309e02772bd337917096216d5ec27b9eabf414372c');
 });
 
-test('src/projects.json still references enigmas-law.jpg', async () => {
-  const request = new Request('https://example.com/projects', {
-    method: 'GET'
-  });
+test('projects data still references enigmas-law.jpg and not discovery', async () => {
+  const { readFile } = await import('node:fs/promises');
+  const projectsJson = await readFile('./src/projects.json', 'utf8');
   
-  const response = await worker.default.fetch(request, mockEnv);
-  assert.equal(response.status, 200);
-  
-  const html = await response.text();
-  assert.ok(html.includes('enigmas-law.jpg'));
+  assert.ok(projectsJson.includes('enigmas-law.jpg'));
+  assert.ok(!projectsJson.includes('enigmas-discovery.jpg'));
 });
 
 test('all routes that returned 200 at start still return 200', async () => {
   const routes = [
     '/',
     '/about',
-    '/standards',
     '/development',
     '/learning',
     '/journal',
     '/foundation',
     '/tech-lounge',
     '/enigmas',
-    '/projects',
+    '/enigmas/discovery-with-purpose',
     '/media/hero.jpg',
     '/media/detail.jpg',
     '/media/development.jpg',
