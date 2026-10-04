@@ -43,89 +43,90 @@ This inventory documents all existing hardcoded publication name references as o
 
 These references represent the publication's identity and will be replaced with the `__PUBLICATION_NAME__` token in subsequent changes:
 
-| File | Line(s) | String | Context |
-|------|---------|--------|---------|
-| `src/home.html` | 1 | `Infinity Enterprises` | Site header `.site-brand` text |
-| `src/home.html` | 1 | `· Infinity Enterprises` | Page title suffix |
-| `src/home.html` | Multiple | `From Infinity`, `Infinity after hours`, `INFINITY`, `not an Infinity news report` | Cover copy and labels |
-| `src/about.html` | 1 | `Infinity Enterprises` | Site header and title |
-| `src/admin.html` | 1 | `Infinity Enterprises` | Site header and title |
-| `src/atlas.html` | 1 | `Infinity Enterprises` | Site header and title |
-| `src/development.html` | 1 | `Infinity Enterprises` | Site header and title |
-| `src/diana.html` | 1 | `Infinity Enterprises` | Site header and title |
-| `src/enigma-article.html` | 1 | `Infinity Enterprises` | Site header and title |
-| `src/enigmas.html` | 1 | `Infinity Enterprises` | Site header and title |
-| `src/foundation.html` | 1 | `Infinity Enterprises` | Site header and title |
-| `src/journal.html` | 1 | `Infinity Enterprises` | Site header and title |
-| `src/learning.html` | 1 | `Infinity Enterprises` | Site header and title |
-| `src/osint.html` | 1 | `Infinity Enterprises` | Site header and title |
-| `src/standards.html` | 1 | `Infinity Enterprises` | Site header and title |
-| `src/tech-lounge.html` | 1 | `Infinity Enterprises` | Site header and title |
-| `src/youth.html` | 1 | `Infinity Enterprises` | Site header and title |
-| `src/motor.html` | 1 | `Infinity Enterprises` | Site header and title |
-| `src/ether.html` | 1 | `Infinity Enterprises` | Site header and title |
-| `src/not-found.html` | 1 | `Infinity Enterprises` | Site header and title |
-| `src/publication-pages.mjs` | 5 | `Infinity Enterprises` | Site header in `shell()` function |
-| `src/publication-pages.mjs` | 6 | `· Infinity Enterprises` | Title suffix in page templates |
-| `src/publication-pages.mjs` | 33 | `Food enters Infinity` | Food desk copy |
-| `src/publication-pages.mjs` | 37 | `original notes from Infinity`, `not Infinity reporting` | Daily Desk copy |
-| `src/publication-pages.mjs` | 39 | `Infinity Enterprises` | Search page subtitle |
-| `src/publication-pages.mjs` | 41 | `Infinity Enterprises` | Subscribe page form copy |
-| `src/publication-pages.mjs` | 43 | `Partner with Infinity` | Partnerships page title |
-| `src/standards.html` | Multiple | `Infinity is a magazine…` | Editorial standards copy |
-| `src/dispatch.js` | Multiple | `Infinity editorial picks`, `Outside feed unavailable` | Feed fallback messages |
-| `src/journal.html` | Multiple | `Infinity on Substack` | Journal page copy |
-| `src/tech-lounge.html` | Multiple | `Infinity on Substack` | Tech Lounge copy |
-| `build.mjs` | 121 | `Explore Infinity` | Table of contents label |
-| `build.mjs` | 123 | `Infinity / The complete index` | Home department index label |
-| `build.mjs` | 85 | `Infinity Enterprises` | RSS feed title and description |
-| `build.mjs` | 111 | `By Infinity Enterprises Editorial` | Article credit line |
-| `build.mjs` | 124 | `Infinity Enterprises` | Fallback page title |
+| File | Location | String | Context |
+|------|----------|--------|---------|
+| `src/home.html` | `<a class="site-brand">` | `Infinity Enterprises` | Site header brand text |
+| `src/home.html` | `<title>` | `· Infinity Enterprises` | Page title suffix |
+| `src/home.html` | `<span class="hub-meta">` | `From Infinity` | Section labels (multiple) |
+| `src/home.html` | Cover copy | `Infinity after hours`, `INFINITY`, `not an Infinity news report` | Cover stamps and text |
+| `src/about.html` | `<a class="site-brand">`, `<title>` | `Infinity Enterprises` | Site header and title |
+| `src/admin.html` | `<a class="site-brand">`, `<title>` | `Infinity Enterprises` | Site header and title |
+| `src/atlas.html` | `<a class="site-brand">`, `<title>` | `Infinity Enterprises` | Site header and title |
+| `src/development.html` | `<a class="site-brand">`, `<title>` | `Infinity Enterprises` | Site header and title |
+| `src/diana.html` | `<a class="site-brand">`, `<title>` | `Infinity Enterprises` | Site header and title |
+| `src/enigma-article.html` | `<a class="site-brand">`, `<title>` | `Infinity Enterprises` | Site header and title |
+| `src/enigmas.html` | `<a class="site-brand">`, `<title>` | `Infinity Enterprises` | Site header and title |
+| `src/foundation.html` | `<a class="site-brand">`, `<title>` | `Infinity Enterprises` | Site header and title |
+| `src/journal.html` | `<a class="site-brand">`, `<title>` | `Infinity Enterprises` | Site header and title |
+| `src/learning.html` | `<a class="site-brand">`, `<title>` | `Infinity Enterprises` | Site header and title |
+| `src/osint.html` | `<a class="site-brand">`, `<title>` | `Infinity Enterprises` | Site header and title |
+| `src/standards.html` | `<a class="site-brand">`, `<title>` | `Infinity Enterprises` | Site header and title |
+| `src/tech-lounge.html` | `<a class="site-brand">`, `<title>` | `Infinity Enterprises` | Site header and title |
+| `src/youth.html` | `<a class="site-brand">`, `<title>` | `Infinity Enterprises` | Site header and title |
+| `src/motor.html` | `<a class="site-brand">`, `<title>` | `Infinity Enterprises` | Site header and title |
+| `src/ether.html` | `<a class="site-brand">`, `<title>` | `Infinity Enterprises` | Site header and title |
+| `src/not-found.html` | `<a class="site-brand">`, `<title>` | `Infinity Enterprises` | Site header and title |
+| `src/publication-pages.mjs` | `header` const | `Infinity Enterprises` | Site header in `shell()` function |
+| `src/publication-pages.mjs` | `shell()` title | `· Infinity Enterprises` | Title suffix in page templates |
+| `src/publication-pages.mjs` | `/food` route | `Food enters Infinity` | Food desk copy |
+| `src/publication-pages.mjs` | `/daily-desk` route | `original notes from Infinity`, `not Infinity reporting` | Daily Desk copy |
+| `src/publication-pages.mjs` | `/search` route | `Infinity Enterprises` | Search page subtitle |
+| `src/publication-pages.mjs` | `/subscribe` route | `Infinity Enterprises` | Subscribe page form copy |
+| `src/publication-pages.mjs` | `/partners` route | `Partner with Infinity` | Partnerships page title |
+| `src/standards.html` | Page body | `Infinity is a magazine…` | Editorial standards copy |
+| `src/dispatch.js` | Fallback strings | `Infinity editorial picks`, `Outside feed unavailable` | Feed fallback messages |
+| `src/journal.html` | Page body | `Infinity on Substack` | Journal page copy |
+| `src/tech-lounge.html` | Page body | `Infinity on Substack` | Tech Lounge copy |
+| `build.mjs` | `mainNav` const | `Explore Infinity` | Table of contents label |
+| `build.mjs` | `homeIndex` const | `Infinity / The complete index` | Home department index label |
+| `build.mjs` | `feedXml` const | `Infinity Enterprises` | RSS feed title and description |
+| `build.mjs` | Article credit replace | `By Infinity Enterprises Editorial` | Article credit line |
+| `build.mjs` | `page()` fallback | `Infinity Enterprises` | Fallback page title |
 
 ### Issue Label (#13 - Cover and Issue Numbering)
 
 These references are owned by #13 (issue numbering system) and are separate from the publication name:
 
-| File | Line(s) | String | Context |
-|------|---------|--------|---------|
-| `src/home.html` | 1 | `The September Issue` | Page title and cover copy |
-| `src/home.html` | Multiple | `Volume 01 · September 2026`, `September 2026` | Cover stamps and splash kicker |
-| `src/home.html` | 1 | `· September 2026` | Footer date |
-| `src/publication-pages.mjs` | 6 | `· September 2026` | Footer in `shell()` function |
-| `src/not-found.html` | 1 | `· September 2026` | Footer date |
+| File | Location | String | Context |
+|------|----------|--------|---------|
+| `src/home.html` | `<title>` | `The September Issue` | Page title and cover copy |
+| `src/home.html` | Cover stamps | `Volume 01 · September 2026`, `September 2026` | Cover stamps and splash kicker |
+| `src/home.html` | `<footer>` | `· September 2026` | Footer date |
+| `src/publication-pages.mjs` | `shell()` footer | `· September 2026` | Footer in `shell()` function |
+| `src/not-found.html` | `<footer>` | `· September 2026` | Footer date |
 
 ### Parent Company (Keep As-Is)
 
 These references to the parent organization remain as "Infinity Enterprises":
 
-| File | Line(s) | String | Context |
-|------|---------|--------|---------|
-| `build.mjs` | 113 | `Infinity Enterprises` | JSON-LD author Organization in article schema |
-| `src/about.html` | Multiple | Various | About page company information |
-| `src/foundation.html` | Multiple | `Infinity Foundation` | Foundation page content |
-| `src/feeds.js` | Multiple | `Infinity Enterprises` | SEC User-Agent string |
-| `scripts/image-stamp.json` | 1 | `Property of Infinity Enterprises` | Image metadata stamp |
+| File | Location | String | Context |
+|------|----------|--------|---------|
+| `build.mjs` | JSON-LD `author` field | `Infinity Enterprises` | JSON-LD author Organization in article schema |
+| `src/about.html` | Page body | Various | About page company information |
+| `src/foundation.html` | Page body | `Infinity Foundation` | Foundation page content |
+| `src/feeds.js` | User-Agent header | `Infinity Enterprises` | SEC User-Agent string |
+| `scripts/image-stamp.json` | `stamp` field | `Property of Infinity Enterprises` | Image metadata stamp |
 
 ### Tooling and Documentation (Allowed, Not Templates)
 
 These references exist in documentation, scripts, and workflows (not runtime templates):
 
-| File | Line(s) | String | Context |
-|------|---------|--------|---------|
-| `AGENTS.md` | 21 | `SAVRONO` | Default value documentation |
-| `tools/activation-watch.mjs` | 82 | `SAVRONO Activation Watch` | Heading in activation watch script (#122) |
-| `.github/workflows/activation-watch.yml` | 1 | `SAVRONO` | Workflow name |
-| `.github/workflows/activation-watch.yml` | 16 | `savrano` | Concurrency group name (lowercase variant) |
+| File | Location | String | Context |
+|------|----------|--------|---------|
+| `AGENTS.md` | Line 21 | `SAVRONO` | Default value documentation |
+| `tools/activation-watch.mjs` | Line 82 | `SAVRONO Activation Watch` | Heading in activation watch script (#122) |
+| `.github/workflows/activation-watch.yml` | `name` field | `SAVRONO` | Workflow name |
+| `.github/workflows/activation-watch.yml` | `concurrency.group` | `savrano` | Concurrency group name (lowercase variant) |
 
 ### Path References (Design Assets, Keep for Compatibility)
 
 These references are path segments and filenames for design assets, not reader-facing text:
 
-| File | Line(s) | String | Context |
-|------|---------|--------|---------|
-| `README.md` | Multiple | `design/sovrano-v1/` | Design folder path reference |
-| `scripts/check-image-metadata` | Multiple | `sovrano-plate.png`, `design/sovrano-v1/` | Asset path and filename checks |
-| `test/image-metadata.test.sh` | Multiple | `design/sovrano-v1/`, `sovrano-plate.png` | Path references in image metadata tests |
+| File | Location | String | Context |
+|------|----------|--------|---------|
+| `README.md` | Path references | `design/sovrano-v1/` | Design folder path reference |
+| `scripts/check-image-metadata` | Path checks | `sovrano-plate.png`, `design/sovrano-v1/` | Asset path and filename checks |
+| `test/image-metadata.test.sh` | Path checks | `design/sovrano-v1/`, `sovrano-plate.png` | Path references in image metadata tests |
 
 Changing these paths would break the Image Metadata Check. They are preserved for backwards compatibility.
 
