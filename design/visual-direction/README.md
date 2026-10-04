@@ -6,9 +6,9 @@
 
 ## What this reference is
 
-This directory preserves one generated concept board that Chris selected on 2026-10-02 because it captures the intended **SAVRONO vibe**: cinematic editorial scale, dark orientation fields, warm reading surfaces and accents, strong serif display hierarchy, distinctive desk worlds, generous imagery, and a publication experience that can feel premium on both desktop and phone.
+This directory preserves one generated concept board that the owner selected on 2026-10-02 because it captures the intended **SAVRONO vibe**: cinematic editorial scale, dark orientation fields, warm reading surfaces and accents, strong serif display hierarchy, distinctive desk worlds, generous imagery, and a publication experience that can feel premium on both desktop and phone.
 
-The board is **generated conceptual art** created during a Seraphim / ChatGPT design exploration. It is not a screenshot of the current site, not a live-system image, not reportage, and not evidence that the depicted pages or assets have been implemented.
+The board is **generated conceptual art** created during a principal-architect-led design exploration. It is not a screenshot of the current site, not a live-system image, not reportage, and not evidence that the depicted pages or assets have been implemented.
 
 The owner also explicitly wants to preserve and build from the current Infinity Enterprises site and the existing Wiki brand/marketing work. This reference therefore **adds visual-direction evidence; it does not replace existing work**.
 
@@ -36,7 +36,7 @@ Any future implementation influenced by this board must begin with the actual ex
 - Ether Room slot 01 and the existing music/atmosphere work;
 - FORM and other immersive-room identities;
 - existing articles, routes, artwork, assets, learning paths, foundation concepts, and project history;
-- Manus's existing Wiki Brand Positioning and Marketing and Federated Editorial Worlds direction.
+- the existing Wiki Brand Positioning and Marketing and Federated Editorial Worlds direction.
 
 The durable design principle is **federation, not flattening**: shared publisher standards with desk-specific lighting, pace, typography, image grammar, motion and atmosphere.
 
@@ -69,8 +69,8 @@ Repository review file:
 `savrono-visual-direction-concept-2026-10-02.webp`
 
 - 480 x 320 pixels
-- 19,400 bytes
-- SHA-256: `f60d099b0910ef99f585dd52b9bd738a2edd34717f8b3c11a41fc0a6eb480385`
+- 19,558 bytes
+- SHA-256: `f398e02c764c7b96c2bf846c5ed9316e943c7e12eeb3cfa5387cdc60bf6b0eb1`
 - Type: generated conceptual design board
 - Purpose: fleet alignment and visual-direction review
 - Production status: **not production art**
@@ -79,11 +79,11 @@ Repository review file:
 
 ## Review routing
 
-- **Puck:** evidence/provenance labeling, stale-authority risk, accessibility implications.
-- **Ember:** visual-direction compatibility and what to borrow versus avoid; this is not approval of the depicted production art.
-- **Forge:** compare with current home, MOTOR, Ether and FORM; identify preservation and integration implications.
-- **Manus:** reconcile the reference with the existing Wiki brand/marketing and federated-world guidance; do not start a new planning campaign.
-- **Turris:** ensure any durable owner-direction record points to #125 without converting illustrative copy into architecture authority.
-- **Echo:** coordinate exact-head reviews and merge discipline.
+- **Research and evidence reviewer:** evidence/provenance labeling, stale-authority risk, accessibility implications.
+- **Visual and asset reviewer:** visual-direction compatibility and what to borrow versus avoid; this is not approval of the depicted production art.
+- **Engineering lead:** compare with current home, MOTOR, Ether and FORM; identify preservation and integration implications.
+- **Queue coordinator:** reconcile the reference with the existing Wiki brand/marketing and federated-world guidance; do not start a new planning campaign.
+- **Coordinator:** ensure any durable owner-direction record points to #125 without converting illustrative copy into architecture authority.
+- **Deputy architect:** coordinate exact-head reviews and merge discipline.
 
 No source page, route, runtime asset, main release, deployment, or ChatGPT Sites publication is authorized by this reference.

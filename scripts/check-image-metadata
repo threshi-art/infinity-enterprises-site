@@ -1,0 +1,264 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Fail closed: verify required tools
+if ! command -v exiftool >/dev/null 2>&1; then
+  echo "Error: exiftool is not installed" >&2
+  exit 1
+fi
+
+if ! command -v strings >/dev/null 2>&1; then
+  echo "Error: strings is not installed" >&2
+  exit 1
+fi
+
+# Determine repository root (default: script's parent directory)
+# Override via IMAGE_CHECK_ROOT env var for testing
+# Use pwd -P to resolve symlinks consistently
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+if [ -n "${IMAGE_CHECK_ROOT:-}" ]; then
+  REPO_ROOT="$(cd "$IMAGE_CHECK_ROOT" && pwd -P)"
+else
+  REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd -P)"
+fi
+
+# Read stamp text from config
+STAMP=$(node -p "require('$SCRIPT_DIR/image-stamp.json').stamp")
+
+if [ -z "$STAMP" ]; then
+  echo "Error: stamp text not found in image-stamp.json" >&2
+  exit 1
+fi
+
+# Accept optional file list as arguments, or discover all images
+if [ $# -gt 0 ]; then
+  IMAGES=""
+  MISSING=0
+  for file in "$@"; do
+    if [ -f "$file" ]; then
+      IMAGES="${IMAGES}${file}"$'\n'
+    else
+      echo "Error: file not found: $file" >&2
+      ((MISSING++)) || true
+    fi
+  done
+  IMAGES=$(echo "$IMAGES" | grep -v '^$' | sort || echo "")
+  if [ $MISSING -gt 0 ]; then
+    echo "Error: $MISSING file(s) not found" >&2
+    exit 1
+  fi
+else
+  # Find all image files (excluding node_modules, .git, dist)
+  IMAGES=$(find . -type f \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.webp" -o -iname "*.gif" -o -iname "*.avif" \) \
+    ! -path "*/node_modules/*" \
+    ! -path "*/.git/*" \
+    ! -path "*/dist/*" \
+    ! -path "*/build/*" | sort)
+fi
+
+if [ -z "$IMAGES" ]; then
+  echo "No image files found"
+  exit 0
+fi
+
+TOTAL=$(echo "$IMAGES" | wc -l)
+echo "Checking $TOTAL image files for metadata compliance..."
+
+FAILURES=0
+C2PA_FOUND=()
+GPS_FOUND=()
+MISSING_STAMP=()
+EXIF_DEVICE_FOUND=()
+XMP_FOUND=()
+IPTC_FOUND=()
+
+# 16 known JPEG files with .png extensions that should be checked as JPEG
+JPEG_PNG_NAMES=(
+  "design/sovrano-v1/editorial-art/01-penthouse-portrait.png"
+  "design/sovrano-v1/editorial-art/02-lounge-couple.png"
+  "design/sovrano-v1/editorial-art/03-motore-chrome.png"
+  "design/sovrano-v1/editorial-art/04-house-of-sovrano-plate.png"
+  "design/sovrano-v1/editorial-art/covers/cover-daily-desk.png"
+  "design/sovrano-v1/editorial-art/covers/cover-mercati.png"
+  "design/sovrano-v1/editorial-art/covers/cover-moda.png"
+  "design/sovrano-v1/editorial-art/covers/cover-reading-room.png"
+  "design/sovrano-v1/editorial-art/covers/cover-sport.png"
+  "design/sovrano-v1/editorial-art/covers/cover-tavola.png"
+  "design/sovrano-v1/editorial-art/covers/cover-tech.png"
+  "design/sovrano-v1/editorial-art/covers/cover-viaggi.png"
+  "design/sovrano-v1/forge-web-mocks/pages/01-penthouse-portrait.png"
+  "design/sovrano-v1/forge-web-mocks/pages/02-lounge-couple.png"
+  "design/sovrano-v1/forge-web-mocks/pages/03-motore-chrome.png"
+  "design/sovrano-v1/forge-web-mocks/pages/04-house-of-sovrano-plate.png"
+)
+
+PROCESSED=0
+SKIPPED=0
+
+while IFS= read -r img; do
+  if [ ! -f "$img" ]; then
+    echo "Warning: file not found: $img" >&2
+    ((SKIPPED++)) || true
+    continue
+  fi
+  
+  # Resolve input path's directory to absolute with symlinks resolved, then append basename
+  # Do NOT resolve the file itself - symlinked files on the list must keep their listed name
+  IMG_DIR="$(cd "$(dirname "$img")" && pwd -P)"
+  IMG_ABS="$IMG_DIR/$(basename "$img")"
+  
+  # Make path relative to REPO_ROOT for list matching
+  # Use quoted pattern to prevent glob expansion in REPO_ROOT path
+  IMG_REL=""
+  if [[ "$IMG_ABS" == "$REPO_ROOT/"* ]]; then
+    IMG_REL="${IMG_ABS#"$REPO_ROOT"/}"
+  fi
+  
+  # Identify if this is a known JPEG-with-.png-extension file
+  # Match exactly against normalized list entries (strip leading ./ from list)
+  IS_JPEG_PNG=false
+  if [ -n "$IMG_REL" ]; then
+    for known_jpeg_png in "${JPEG_PNG_NAMES[@]}"; do
+      KNOWN_NORMALIZED="${known_jpeg_png#./}"
+      if [[ "$IMG_REL" == "$KNOWN_NORMALIZED" ]]; then
+        IS_JPEG_PNG=true
+        break
+      fi
+    done
+  fi
+  
+  # Read MIME type once (used for JPEG-as-.png format check and stamp check)
+  MIME_TYPE=$(exiftool -s -s -s -MIMEType "$img" 2>/dev/null || echo "")
+  
+  # Determine expected type based on extension
+  FILE_EXT="${img##*.}"
+  FILE_EXT_LOWER=$(echo "$FILE_EXT" | tr '[:upper:]' '[:lower:]')
+  
+  # For files with image extensions, the actual type must be a recognized image format
+  case "$FILE_EXT_LOWER" in
+    png|jpg|jpeg|webp|gif|avif)
+      if [[ ! "$MIME_TYPE" =~ ^image/(jpeg|png|tiff|webp|gif|avif)$ ]]; then
+        echo "Error: cannot identify file type for: $img (got: ${MIME_TYPE:-unknown})" >&2
+        exit 1
+      fi
+      ;;
+  esac
+  
+  # Check if this is a .png file with JPEG content
+  if [[ "$FILE_EXT_LOWER" == "png" && "$MIME_TYPE" == "image/jpeg" ]]; then
+    # JPEG content in .png file is only allowed at listed paths
+    if [ "$IS_JPEG_PNG" != true ]; then
+      echo "Error: JPEG content in .png file not on the allowed list: $img" >&2
+      exit 1
+    fi
+  fi
+  
+  # For listed JPEG-as-.png files, verify format
+  if [ "$IS_JPEG_PNG" = true ]; then
+    if [[ "$MIME_TYPE" != "image/jpeg" ]]; then
+      echo "Error: expected JPEG format for $img but got $MIME_TYPE" >&2
+      exit 1
+    fi
+  fi
+  
+  # Check for C2PA/JUMBF bytes using strings (covers all markers including APP11)
+  if strings "$img" | grep -qE '(c2pa|jumb|caBX)'; then
+    C2PA_FOUND+=("$img")
+    ((FAILURES++)) || true
+  fi
+  
+  # Check for GPS tags
+  if exiftool -GPS* "$img" 2>/dev/null | grep -q "GPS"; then
+    GPS_FOUND+=("$img")
+    ((FAILURES++)) || true
+  fi
+  
+  # Check for EXIF device/author fields
+  DEVICE_FIELDS=$(exiftool -s -s -s -Make -Model -Artist -Software -LensModel -SerialNumber -BodySerialNumber -OwnerName -HostComputer "$img" 2>/dev/null || echo "")
+  if [ -n "$DEVICE_FIELDS" ]; then
+    EXIF_DEVICE_FOUND+=("$img")
+    ((FAILURES++)) || true
+  fi
+  
+  # Check for XMP blocks
+  if exiftool -G1 "$img" 2>/dev/null | grep -qE '^\[XMP'; then
+    XMP_FOUND+=("$img")
+    ((FAILURES++)) || true
+  fi
+  
+  # Check for IPTC blocks
+  if exiftool -G1 "$img" 2>/dev/null | grep -qE '^\[IPTC'; then
+    IPTC_FOUND+=("$img")
+    ((FAILURES++)) || true
+  fi
+  
+  # Check for ownership stamp in EXIF Copyright field
+  HAS_STAMP=false
+  if exiftool -Copyright "$img" 2>/dev/null | grep -qF "$STAMP"; then
+    HAS_STAMP=true
+  fi
+  
+  if [ "$HAS_STAMP" = false ]; then
+    # JPEG-as-.png files need stamps (already verified as JPEG above)
+    # Other formats that support metadata also need stamps
+    if [ "$IS_JPEG_PNG" = true ] || [[ "$MIME_TYPE" =~ ^image/(jpeg|png|tiff|webp)$ ]]; then
+      MISSING_STAMP+=("$img")
+      ((FAILURES++)) || true
+    fi
+  fi
+  
+  ((PROCESSED++)) || true
+done <<< "$IMAGES"
+
+if [ $SKIPPED -gt 0 ]; then
+  echo "Error: $SKIPPED file(s) were skipped" >&2
+  exit 1
+fi
+
+# Report results
+echo ""
+if [ $FAILURES -eq 0 ]; then
+  echo "✓ All $TOTAL images passed metadata compliance checks"
+  exit 0
+else
+  echo "✗ Found $FAILURES compliance issue(s):"
+  echo ""
+  
+  if [ ${#C2PA_FOUND[@]} -gt 0 ]; then
+    echo "C2PA/JUMBF metadata found in ${#C2PA_FOUND[@]} file(s):"
+    printf '  %s\n' "${C2PA_FOUND[@]}"
+    echo ""
+  fi
+  
+  if [ ${#GPS_FOUND[@]} -gt 0 ]; then
+    echo "GPS tags found in ${#GPS_FOUND[@]} file(s):"
+    printf '  %s\n' "${GPS_FOUND[@]}"
+    echo ""
+  fi
+  
+  if [ ${#EXIF_DEVICE_FOUND[@]} -gt 0 ]; then
+    echo "EXIF device/author fields found in ${#EXIF_DEVICE_FOUND[@]} file(s):"
+    printf '  %s\n' "${EXIF_DEVICE_FOUND[@]}"
+    echo ""
+  fi
+  
+  if [ ${#XMP_FOUND[@]} -gt 0 ]; then
+    echo "XMP blocks found in ${#XMP_FOUND[@]} file(s):"
+    printf '  %s\n' "${XMP_FOUND[@]}"
+    echo ""
+  fi
+  
+  if [ ${#IPTC_FOUND[@]} -gt 0 ]; then
+    echo "IPTC blocks found in ${#IPTC_FOUND[@]} file(s):"
+    printf '  %s\n' "${IPTC_FOUND[@]}"
+    echo ""
+  fi
+  
+  if [ ${#MISSING_STAMP[@]} -gt 0 ]; then
+    echo "Ownership stamp missing in ${#MISSING_STAMP[@]} file(s):"
+    printf '  %s\n' "${MISSING_STAMP[@]}"
+    echo ""
+  fi
+  
+  exit 1
+fi
