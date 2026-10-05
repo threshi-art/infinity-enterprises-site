@@ -1,9 +1,10 @@
 import { readFile, mkdir, writeFile, rm } from 'node:fs/promises';
 import { createPublicationPages } from './src/publication-pages.mjs';
 import { departments, departmentHref } from './src/departments.mjs';
+import { structure, alsoInTheHouse } from './src/publication-structure.mjs';
 import { applyPublicationName } from './src/publication-config.mjs';
 
-const [home, about, standards, atlas, diana, development, learning, journal, foundation, youth, techLounge, ether, motor, form, enigmas, enigmaArticle, enigmaStories, projectsJson, editorialJson, login, admin, roadmaps, osintHtml, osintSourcesJson, sharedCss, music, dispatchScript, splashCss, splashScript, etherScript, etherImages, motorScript, motorImages, formScript, formImages, hero, detail, dianaImage, dianaCardsImage, developmentImage, techLoungeImage, techMacroImage, politicsImage, lawImage, academyImage, researchImage, learningImage, foundationImage, youthImage, coverImage, feedsConfig, feedsScript, pageViewsScript, pvScript, worker] = await Promise.all([
+const [home, about, standards, atlas, diana, development, learning, journal, foundation, youth, techLounge, ether, motor, form, enigmas, enigmaArticle, enigmaStories, projectsJson, editorialJson, login, admin, roadmaps, osintHtml, osintSourcesJson, coverStory, sharedCss, music, dispatchScript, splashCss, splashScript, etherScript, etherImages, motorScript, motorImages, formScript, formImages, hero, detail, dianaImage, dianaCardsImage, developmentImage, techLoungeImage, techMacroImage, politicsImage, lawImage, academyImage, researchImage, learningImage, foundationImage, youthImage, coverImage, feedsConfig, feedsScript, pageViewsScript, pvScript, worker] = await Promise.all([
   readFile('src/home.html', 'utf8'),
   readFile('src/about.html', 'utf8'),
   readFile('src/standards.html', 'utf8'),
@@ -28,6 +29,7 @@ const [home, about, standards, atlas, diana, development, learning, journal, fou
   readFile('src/roadmaps.json', 'utf8'),
   readFile('src/osint.html', 'utf8'),
   readFile('src/data/osint-sources.json', 'utf8'),
+  readFile('src/cover-story.html', 'utf8'),
   readFile('src/site.css', 'utf8'),
   readFile('src/music.js', 'utf8'),
   readFile('src/dispatch.js', 'utf8'),
@@ -117,9 +119,20 @@ function page(source, path = '/') {
   if (path === '/search') source = source.replace('<script>/* PUBLICATION_SCRIPT */</script>', `<script>window.infinityIndex=${JSON.stringify(searchRecords).replace(/</g,'\\u003c')};</script><script>/* PUBLICATION_SCRIPT */</script>`);
   const hasPublicationStyle = source.includes('/* PUBLICATION_CSS */');
   const hasPublicationFooter = source.includes('class="publication-links"');
+  const buildNav = (items, indent = 0) => items.map(item => {
+    const statusText = item.status ? ` · ${item.status}` : '';
+    const noteText = item.note ? ` (${item.note})` : '';
+    const isLink = item.route !== null && item.route !== undefined;
+    const baseHtml = isLink 
+      ? `<a href="${item.route}"${path===item.route?' aria-current="page"':''} class="${indent>0?'child':''}">${item.label}${noteText}<small class="nav-status">${statusText}</small></a>`
+      : `<span class="${indent>0?'child':''}">${item.label}${noteText}<small class="nav-status">${statusText}</small></span>`;
+    const childrenHtml = item.children ? buildNav(item.children, indent + 1) : '';
+    return baseHtml + childrenHtml;
+  }).join('');
+  const mainNav = '<span class="toc-label">Explore Infinity</span>' + buildNav(structure) + '<span class="toc-label toc-secondary">Also in the house</span>' + buildNav(alsoInTheHouse);
+  const topLevelRoutes = structure.filter(item => item.route && item.route !== '/' && item.route !== '/cover-story' && item.route !== '/daily-desk').map(item => [item.route, item.label]);
+  const roomBar = '<nav class="room-bar" aria-label="Main sections"><span>Explore the issue</span><a href="/cover-story"'+(path==='/cover-story'?' aria-current="page"':'')+'>Cover Story</a><a href="/daily-desk"'+(path==='/daily-desk'?' aria-current="page"':'')+'>The Daily Desk</a>' + topLevelRoutes.map(([href,label])=>`<a href="${href}"${path===href?' aria-current="page"':''}>${label}</a>`).join('') + '</nav>';
   const mainLinks = departments.map((d,i)=>[departmentHref(d,i),String(i+1).padStart(2,'0'),d.name]);
-  const mainNav = '<span class="toc-label">Explore Infinity</span><a href="/departments">All departments</a>' + mainLinks.map(([href,no,label]) => `<a href="${href}"${path===href?' aria-current="page"':''}><span>${no}</span>${label}</a>`).join('') + '<span class="toc-label toc-secondary">The publication</span>' + [['/blog','Agentic@Enigmas / Opinion'],['/issues','Issues'],['/search','Search'],['/reading-list','Reading list'],['/subscribe','The monthly letter'],['/partners','Partnerships'],['/support','Support'],['/contact','Contact'],['/about/standards','Editorial standards'],['/admin','Staff']].map(([href,label]) => `<a href="${href}" class="child">${label}</a>`).join('');
-  const roomBar = '<nav class="room-bar" aria-label="Main sections"><span>Explore the issue</span>' + [['/departments','All departments'],['/daily-desk','The Daily Desk'],...departments.filter(d=>d.route && d.route !== '/').slice(0,5).map(d=>[d.route,d.name])].map(([href,label])=>`<a href="${href}"${path===href?' aria-current="page"':''}>${label}</a>`).join('') + '</nav>';
   const homeIndex = `<section class="home-department-index" aria-labelledby="department-index-title"><span class="hub-meta">Infinity / The complete index</span><h2 id="department-index-title">Every room has a door.</h2><div>${mainLinks.map(([href,no,label])=>`<a href="${href}"><span>${no}</span>${label}<span aria-hidden="true">↗</span></a>`).join('')}</div><p>Find original stories and visual editions throughout the house. <a href="/departments">Explore all departments ↗</a></p></section>`;
   const title = source.match(/<title>([^<]+)<\/title>/)?.[1] || 'Infinity Enterprises';
   const description = source.match(/<meta name="description" content="([^"]*)"/)?.[1] || 'An independent publication.';
@@ -127,7 +140,8 @@ function page(source, path = '/') {
   const favicon = '<link rel="icon" type="image/svg+xml" href="/favicon.svg">';
   const metadata = `${source.includes('rel="icon"') ? '' : favicon}<link rel="canonical" href="${origin}${path}"><meta property="og:type" content="${path.startsWith('/enigmas/')?'article':'website'}"><meta property="og:title" content="${title}"><meta property="og:description" content="${description}"><meta property="og:url" content="${origin}${path}"><meta property="og:image" content="${origin}/media/cover.jpg"><meta name="twitter:card" content="summary_large_image">`;
   const readerTools = path.startsWith('/enigmas/') ? `<div class="reading-tools"><button type="button" data-save-story="${path}" aria-pressed="false">Save this story</button><button type="button" id="share-story">Share this story ↗</button><a href="/reading-list">My reading list ↗</a></div><p class="reader-note">Saved stories stay on this device.</p>` : '';
-  const result = applyPublicationName(source
+  const masthead = `<a class="site-brand shell-masthead" href="/" aria-label="Infinity Enterprises home"><span class="shell-wordmark">Infinity Enterprises</span></a><!-- #107: publication name unfinished --><small class="shell-working-name">Publication name: unfinished</small>`;
+  let processed = source
     .replace('/* SHARED_CSS */', sharedCss)
     .replace('/* PUBLICATION_CSS */', publicationCss)
     .replace(/<nav class="toc-panel"[^>]*>[\s\S]*?<\/nav>/, `<nav class="toc-panel" aria-label="Site contents">${mainNav}</nav>`)
@@ -152,16 +166,26 @@ function page(source, path = '/') {
     .replaceAll('__YOUTH_IMAGE__', '/media/youth.jpg')
     .replaceAll('__COVER_IMAGE__', '/media/cover.jpg')
     .replaceAll('__ENIGMAS_LAW_IMAGE__', '/media/enigmas-law.jpg')
-    .replaceAll('__ENIGMAS_POLITICS_IMAGE__', '/media/enigmas-politics.jpg'));
+    .replaceAll('__ENIGMAS_POLITICS_IMAGE__', '/media/enigmas-politics.jpg');
+  if (!['/motor', '/ether', '/form'].includes(path)) {
+    processed = processed.replace(/<a class="site-brand"[^>]*>[\s\S]*?<\/a>/, masthead);
+  }
+  const result = applyPublicationName(processed);
   if (source.includes('/* PUBLICATION_SCRIPT */')) {
     return result.replace('</body>', '<script src="/pv.js" defer></script></body>');
   } else {
     return result.replace('</body>', `<script>${publicationScript}</script><script src="/pv.js" defer></script></body>`);
   }
 }
+const coverEssayHrefMatch = home.match(/<a class="button" href="([^"]+)">Read the cover story/);
+if (!coverEssayHrefMatch) throw new Error('Cover essay button not found in home.html');
+const coverEssayHref = coverEssayHrefMatch[1];
+const coverStoryHtml = page(coverStory, '/cover-story').replace('__COVER_ESSAY_HREF__', coverEssayHref);
+if (coverStoryHtml.includes('__COVER_ESSAY_HREF__')) throw new Error('__COVER_ESSAY_HREF__ token not resolved');
 const workerWithFeeds = feedsScript.replace('/* FEEDS_CONFIG */ null', feedsConfig) + '\n' + pageViewsScript + '\n' + worker;
 const compiled = workerWithFeeds
   .replace('/* HOME_HTML */ null', JSON.stringify(page(home, '/').replace('/* SPLASH_CSS */', splashCss).replace('/* SPLASH_SCRIPT */', splashScript)))
+  .replace('/* COVER_STORY_HTML */ null', JSON.stringify(coverStoryHtml))
   .replace('/* ABOUT_HTML */ null', JSON.stringify(page(about, '/about')))
   .replace('/* STANDARDS_HTML */ null', JSON.stringify(page(standards, '/about/standards')))
   .replace('/* DIANA_HTML */ null', JSON.stringify(page(diana, '/about/diana')))
@@ -206,11 +230,11 @@ const compiled = workerWithFeeds
   .replace('/* VALID_PUBLIC_PATHS */ null', JSON.stringify([
     '/', '/about', '/about/standards', '/about/diana', '/development', '/development/atlas',
     '/learning', '/journal', '/foundation', '/foundation/youth', '/tech-lounge', '/ether',
-    '/motor', '/form', '/enigmas', '/osint',
+    '/motor', '/form', '/enigmas', '/osint', '/cover-story',
     ...Object.keys(publicationPages),
     ...stories.map(story => '/enigmas/' + story.slug)
   ]));
-if (/\/\* (?:HOME_HTML|ABOUT_HTML|ATLAS_HTML|DIANA_HTML|DEVELOPMENT_HTML|LEARNING_HTML|JOURNAL_HTML|FOUNDATION_HTML|YOUTH_HTML|TECH_LOUNGE_HTML|ENIGMAS_HTML|ENIGMA_ARTICLES|LOGIN_HTML|ADMIN_HTML|NOT_FOUND_HTML|HERO_IMAGE|DETAIL_IMAGE|DIANA_IMAGE|DIANA_CARDS_IMAGE|DEVELOPMENT_IMAGE|TECH_LOUNGE_IMAGE|TECH_MACRO_IMAGE|ENIGMAS_POLITICS_IMAGE|ENIGMAS_LAW_IMAGE|ENIGMAS_ACADEMY_IMAGE|PV_SCRIPT|VALID_PUBLIC_PATHS) \*\//.test(compiled)) throw new Error('Build marker missing');
+if (/\/\* (?:HOME_HTML|COVER_STORY_HTML|ABOUT_HTML|ATLAS_HTML|DIANA_HTML|DEVELOPMENT_HTML|LEARNING_HTML|JOURNAL_HTML|FOUNDATION_HTML|YOUTH_HTML|TECH_LOUNGE_HTML|ENIGMAS_HTML|ENIGMA_ARTICLES|LOGIN_HTML|ADMIN_HTML|NOT_FOUND_HTML|HERO_IMAGE|DETAIL_IMAGE|DIANA_IMAGE|DIANA_CARDS_IMAGE|DEVELOPMENT_IMAGE|TECH_LOUNGE_IMAGE|TECH_MACRO_IMAGE|ENIGMAS_POLITICS_IMAGE|ENIGMAS_LAW_IMAGE|ENIGMAS_ACADEMY_IMAGE|PV_SCRIPT|VALID_PUBLIC_PATHS) \*\//.test(compiled)) throw new Error('Build marker missing');
 if (/__PUBLICATION_NAME__/.test(compiled)) throw new Error('Build marker missing: __PUBLICATION_NAME__ token not replaced');
 await rm('dist', { recursive: true, force: true });
 await mkdir('dist/server', { recursive: true });
