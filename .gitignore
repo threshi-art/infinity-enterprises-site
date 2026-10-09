@@ -1,7 +1,7 @@
 dist/
 node_modules/
 .sites-runtime/
-.env
-.env.local
+.env*
+!.env.example
 a11y-report.json
 a11y-report.md
