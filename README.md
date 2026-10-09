@@ -120,3 +120,11 @@ A maintainer keeps a synced working copy that follows `main` for publishing to t
 ## License
 
 All rights reserved. See [LICENSE](LICENSE). The code is visible for reference; it is not open source.
+
+## Repository quick reference
+
+**Status:** active.
+
+**What it is:** Infinity Enterprises publication and project portfolio source.
+
+**How to run:** Run npm ci and npm run build. GitHub changes do not deploy the live site.
